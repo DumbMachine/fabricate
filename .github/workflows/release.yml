@@ -27,6 +27,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      # Docker image names must be lowercase; github.repository_owner
+      # preserves the account's casing (e.g. DumbMachine), so lowercase
+      # it here.
+      - name: compute image owner
+        id: owner
+        run: echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
       - name: push httpmock image
         uses: docker/build-push-action@v6
         with:
@@ -34,8 +40,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/fabricate-httpmock:${{ github.ref_name }}
-            ghcr.io/${{ github.repository_owner }}/fabricate-httpmock:latest
+            ghcr.io/${{ steps.owner.outputs.owner }}/fabricate-httpmock:${{ github.ref_name }}
+            ghcr.io/${{ steps.owner.outputs.owner }}/fabricate-httpmock:latest
       - name: push emulate image
         uses: docker/build-push-action@v6
         with:
@@ -43,5 +49,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/fabricate-emulate:${{ github.ref_name }}
-            ghcr.io/${{ github.repository_owner }}/fabricate-emulate:latest
+            ghcr.io/${{ steps.owner.outputs.owner }}/fabricate-emulate:${{ github.ref_name }}
+            ghcr.io/${{ steps.owner.outputs.owner }}/fabricate-emulate:latest
