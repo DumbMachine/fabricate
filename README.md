@@ -78,40 +78,44 @@ curl -s "$FAB_URL/graphql" -d '{
 }'
 ```
 
-And `support-inbox` is a Gmail-API mailbox with a support backlog to triage. Here's the statefulness in one sitting — every write is visible in the next read:
+And `support-inbox` is a Gmail-API mailbox with a support backlog to triage. Here's the statefulness in one sitting — watch the numbers change as the writes land:
 
 ```bash
 fab create gmail -p support-inbox
 eval "$(fab creds support-inbox --env)"
 
-# The backlog: 5 unread, including an angry double-charge thread.
-curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread"
-# → { "messages": [...], "resultSizeEstimate": 5 }
-
-curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge"
-# → 2 messages: the complaint + an impatient follow-up
+# The backlog: 5 unread, including an angry double-charge thread of 2 messages.
+curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread" | jq .resultSizeEstimate
+# 5
+curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge" | jq '.messages | length'
+# 2
 
 # Reply (messages.send takes base64url RFC 822, like the real API):
 RAW=$(printf 'To: dana@northwind.io\nSubject: Re: Charged twice for March invoice\n\nRefund for the duplicate charge is on its way — 3-5 business days.' \
       | base64 | tr '+/' '-_' | tr -d '=\n')
 curl -s -X POST "$FAB_URL/gmail/v1/users/me/messages/send" \
      -d "{\"raw\": \"$RAW\", \"threadId\": \"thr-doublecharge\"}"
-# → { "id": "msg-sent-0011", "threadId": "thr-doublecharge", "labelIds": ["SENT"] }
+# {"id":"msg-sent-0011","labelIds":["SENT"],"threadId":"thr-doublecharge"}
 
-# The write took: the thread now has 3 messages, the last one yours.
-curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge"
-# → 3 messages; last From: support@acme.dev
+# The write took — the thread grew, and the last message is yours:
+curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge" \
+  | jq '{messages: (.messages | length), last_from: (.messages[-1].payload.headers[] | select(.name == "From").value)}'
+# {
+#   "messages": 3,
+#   "last_from": "support@acme.dev"
+# }
 
-# Mark the follow-up handled...
+# Mark the follow-up handled — UNREAD is gone from its labels...
 curl -s -X POST "$FAB_URL/gmail/v1/users/me/messages/msg-0002/modify" \
-     -d '{"removeLabelIds": ["UNREAD"]}'
+     -d '{"removeLabelIds": ["UNREAD"]}' | jq .labelIds
+# ["IMPORTANT", "INBOX", "Label_billing"]
 
-# ...and the backlog really shrinks.
-curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread"
-# → { ..., "resultSizeEstimate": 4 }
+# ...and the backlog really shrank: 5 → 4.
+curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread" | jq .resultSizeEstimate
+# 4
 ```
 
-Because state lives in SQLite inside the container, the full agent loop — *read, decide, write, re-read* — works against the mock exactly like it would against the real service. (The outputs above are captured from a real run, not mocked-up.)
+Because state lives in SQLite inside the container, the full agent loop — *read, decide, write, re-read* — works against the mock exactly like it would against the real service. (Every output above is captured from a real run, not mocked-up.)
 
 ## Everyday commands
 
