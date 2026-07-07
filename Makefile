@@ -7,7 +7,7 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install test vet fmt check images e2e verify clean
+.PHONY: build install test vet fmt check images push-images e2e verify clean
 
 build:
 	go build -o bin/fab ./cmd/fab
@@ -38,11 +38,27 @@ check: vet test
 	@out=$$(gofmt -l . 2>/dev/null); if [ -n "$$out" ]; then echo "gofmt needed:"; echo "$$out"; exit 1; fi
 	@echo "check: OK"
 
-# Local-only Docker images for the httpmock and github (emulate) engines.
+# Local Docker images for the httpmock and github (emulate) engines.
 # Build once before `fab create gmail|linear|google-play|github ...`.
 images:
 	docker build -t fabricate/httpmock:local mockd
 	docker build -t fabricate/emulate:local engine/github
+
+# Publish multi-arch images to a registry (default GHCR). Normally CI
+# does this on a v* tag (.github/workflows/release.yml); run manually
+# for a one-off:
+#   make push-images IMAGE_TAG=v0.1.0
+# Requires `docker login ghcr.io` and a buildx builder (docker buildx
+# create --use, once). See docs/releasing.md.
+REGISTRY  ?= ghcr.io/dumbmachine
+IMAGE_TAG ?= latest
+PLATFORMS ?= linux/amd64,linux/arm64
+
+push-images:
+	docker buildx build --platform $(PLATFORMS) \
+		-t $(REGISTRY)/fabricate-httpmock:$(IMAGE_TAG) --push mockd
+	docker buildx build --platform $(PLATFORMS) \
+		-t $(REGISTRY)/fabricate-emulate:$(IMAGE_TAG) --push engine/github
 
 # End-to-end smoke: real Docker containers via the real CLI. Needs a
 # running Docker daemon; httpmock cases also need `make images`.

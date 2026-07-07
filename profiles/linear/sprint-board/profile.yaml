@@ -14,8 +14,8 @@ description: |
   follow-up (it gets the next ENG-<n> identifier) → issueUpdate to move a
   card → commentCreate a status note → re-query and see all of it.
 
-  Requires the local `fabricate/httpmock:local` image (`make images` once).
-image: fabricate/httpmock:local
+  Requires the fabricate httpmock image: `make images` builds it locally,
+  or set FAB_HTTPMOCK_IMAGE to a published copy.
 env:
   MOCK_SERVICE: linear
 defaults:

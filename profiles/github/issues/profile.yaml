@@ -34,9 +34,8 @@ description: |
          -d '{"title":"hello","body":"from fab"}' \
          "$FAB_URL/repos/octocat/hello-world/issues"
 
-  Note: requires the local `fabricate/emulate:local` image. Build it
-  once with `make images` from the repo root.
-image: fabricate/emulate:local
+  Note: requires the fabricate emulate image. `make images` builds it
+  locally (or set FAB_EMULATE_IMAGE to a published copy).
 defaults:
   password: ghp_fab_dev
 seed:

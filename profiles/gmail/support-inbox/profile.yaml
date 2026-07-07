@@ -16,8 +16,8 @@ description: |
   messages.send a reply (it lands in the thread as SENT) → modify to clear
   UNREAD → the unread count actually drops.
 
-  Requires the local `fabricate/httpmock:local` image (`make images` once).
-image: fabricate/httpmock:local
+  Requires the fabricate httpmock image: `make images` builds it locally,
+  or set FAB_HTTPMOCK_IMAGE to a published copy.
 env:
   MOCK_SERVICE: gmail
 defaults:

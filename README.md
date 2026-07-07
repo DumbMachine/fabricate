@@ -32,6 +32,8 @@ make install          # → ~/bin/fab
 make images           # builds the local images for the httpmock + github engines
 ```
 
+Container engines (postgres, redis, ...) pull their images from Docker Hub on first use; only the `httpmock` and `github` engines run fabricate-built images, which `make images` builds locally. Published copies (and the `FAB_HTTPMOCK_IMAGE` / `FAB_EMULATE_IMAGE` overrides to use them) are described in [docs/releasing.md](docs/releasing.md).
+
 ## Example 1: a seeded database (testcontainers-backed)
 
 `stripe-payments` is Stripe-shaped payments data — customers, payment intents, charges, refunds, a balance ledger — with two bugs planted in it:
@@ -118,9 +120,15 @@ User profiles shadow built-ins with the same name; set `FAB_PROFILES_DIR` to rel
 
 Organizations can also ship a **private profile catalog** as code: embed a directory in your own small wrapper binary and register it with `profile.RegisterCatalog` — your private profiles appear alongside the built-ins. See [docs/private-catalogs.md](docs/private-catalogs.md).
 
-## Adding a mock service
+## Extending it
 
-New HTTP mocks (a Stripe, a Slack, a Jira...) are a single Go package in [`mockd/services/`](mockd/services/): declare SQLite tables, a fixture loader, and Express-style handlers, then add one registry line. No engine changes. See [docs/adding-a-mock-service.md](docs/adding-a-mock-service.md).
+Three extension points, cheapest first — pick the first row that fits:
+
+| You want | Write | Guide |
+|---|---|---|
+| Your own data/config in a container fab already runs | a **profile** (YAML + seed files, no code) | [docs/authoring-profiles.md](docs/authoring-profiles.md) |
+| A stateful mock of an HTTP API (Stripe, Slack, Jira, an internal service) | a **mockd service** (one Go package + one registry line) | [docs/adding-a-mock-service.md](docs/adding-a-mock-service.md) |
+| New infrastructure software entirely (Kafka, MinIO, Elasticsearch...) | an **engine** (Info/Create/Destroy) | [docs/adding-an-engine.md](docs/adding-an-engine.md) |
 
 ## Development
 

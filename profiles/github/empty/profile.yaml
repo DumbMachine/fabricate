@@ -13,9 +13,8 @@ description: |
     curl -H "Authorization: Bearer $FAB_PASSWORD" "$FAB_URL/user"
     # => {"login":"octocat", ...}
 
-  Note: requires the local `fabricate/emulate:local` image. Build it
-  once with `make images` from the repo root.
-image: fabricate/emulate:local
+  Note: requires the fabricate emulate image. `make images` builds it
+  locally (or set FAB_EMULATE_IMAGE to a published copy).
 defaults:
   # Bearer token Creds.Password is set to. Must match the token slug
   # under `tokens:` in seed.yaml — the engine doesn't parse the seed

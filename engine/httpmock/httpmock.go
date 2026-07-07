@@ -36,6 +36,11 @@ const (
 	// registry maps to this package.
 	Engine = "httpmock"
 
+	// defaultImage is the local dev tag built by `make images`.
+	// $FAB_HTTPMOCK_IMAGE overrides it (see imageDefault) so a
+	// published registry copy can be swapped in without a code change;
+	// once a GHCR release exists this constant flips to the pinned tag
+	// (docs/releasing.md).
 	defaultImage = "fabricate/httpmock:local"
 	defaultPort  = "8080/tcp"
 
@@ -49,10 +54,18 @@ func New() engine.Engine { return &eng{} }
 
 type eng struct{}
 
+// imageDefault resolves the image used when a profile doesn't pin one:
+// $FAB_HTTPMOCK_IMAGE if set, else the local dev tag. Precedence
+// overall is --image flag > profile image: > $FAB_HTTPMOCK_IMAGE >
+// default.
+func imageDefault() string {
+	return engine.OrDefault(os.Getenv("FAB_HTTPMOCK_IMAGE"), defaultImage)
+}
+
 func (eng) Info() engine.Info {
 	return engine.Info{
 		Slug:           Engine,
-		DefaultImage:   defaultImage,
+		DefaultImage:   imageDefault(),
 		DefaultPort:    8080,
 		SupportedSeeds: []string{profile.SeedTypeMockFixture},
 		Description:    "Stateful HTTP-API mock. Hosts SQLite-backed mock services (env.MOCK_SERVICE picks one), seeded from a JSON fixture; writes take effect. Returns base URL + bearer token. Backs any HTTP/OpenAPI resource (Play, Cloudflare, …).",
@@ -60,7 +73,7 @@ func (eng) Info() engine.Info {
 }
 
 func (eng) Create(ctx context.Context, name string, p *profile.Profile) (*engine.Instance, error) {
-	image := engine.OrDefault(p.Image, defaultImage)
+	image := engine.OrDefault(p.Image, imageDefault())
 
 	seedHostPath, cleanup, err := stageSeed(p)
 	if err != nil {

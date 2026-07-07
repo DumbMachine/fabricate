@@ -44,9 +44,11 @@ const (
 	// cmd-layer registry maps to this package.
 	Engine = "github"
 
-	// defaultImage is local-only — there's no upstream registry copy
-	// today. Build with `make images` (see Makefile). When we
-	// publish to GHCR this default flips to the pinned tag.
+	// defaultImage is the local dev tag built by `make images`.
+	// $FAB_EMULATE_IMAGE overrides it (see imageDefault) so a published
+	// registry copy can be swapped in without a code change; once a
+	// GHCR release exists this constant flips to the pinned tag
+	// (docs/releasing.md).
 	defaultImage = "fabricate/emulate:local"
 
 	// emulate listens on 4000 inside the container; testcontainers
@@ -66,10 +68,17 @@ func New() engine.Engine { return &eng{} }
 
 type eng struct{}
 
+// imageDefault resolves the image used when a profile doesn't pin one:
+// $FAB_EMULATE_IMAGE if set, else the local dev tag. Precedence overall
+// is --image flag > profile image: > $FAB_EMULATE_IMAGE > default.
+func imageDefault() string {
+	return engine.OrDefault(os.Getenv("FAB_EMULATE_IMAGE"), defaultImage)
+}
+
 func (eng) Info() engine.Info {
 	return engine.Info{
 		Slug:           Engine,
-		DefaultImage:   defaultImage,
+		DefaultImage:   imageDefault(),
 		DefaultPort:    4000,
 		SupportedSeeds: []string{profile.SeedTypeEmulateConfig, profile.SeedTypeEmulatePostSeed},
 		Description:    "Stateful GitHub REST API emulator (vercel-labs/emulate). Returns base URL + bearer token. emulate-config seeds users/orgs/repos/tokens at boot; emulate-postseed replays API calls (issues/labels/milestones/etc.) after the container is healthy.",
@@ -77,7 +86,7 @@ func (eng) Info() engine.Info {
 }
 
 func (eng) Create(ctx context.Context, name string, p *profile.Profile) (*engine.Instance, error) {
-	image := engine.OrDefault(p.Image, defaultImage)
+	image := engine.OrDefault(p.Image, imageDefault())
 
 	stageDir, seedHostPath, seedBase, postseed, err := stageSeed(p)
 	if err != nil {

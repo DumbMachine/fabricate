@@ -84,9 +84,12 @@ observe it passes.
 
 ### An engine
 
+Full guide: docs/adding-an-engine.md (including the profile-vs-mock-
+service-vs-engine triage). Short version:
+
 1. `engine/<name>/<name>.go` implementing `engine.Engine` (Info /
-   Create / Destroy). Copy the closest existing engine; reject unknown
-   seed types loudly (see any engine's seed loop).
+   Create / Destroy). Copy `engine/redis` (the cleanest template);
+   reject unknown seed types loudly (see any engine's seed loop).
 2. Register in `cli/engines.go`'s `engines` map.
 3. Ship at least an `empty` profile under `profiles/<name>/` and add
    the dir to `profiles/embed.go`.
@@ -110,8 +113,12 @@ embedding.
 - The state file is plain JSON with plaintext creds for local
   throwaways; never log it, never commit it.
 - Images `fabricate/httpmock:local` and `fabricate/emulate:local` are
-  local-only (built by `make images`). Error messages reference that —
-  keep them accurate if you rename targets.
+  the local dev tags (built by `make images`); releases push GHCR
+  copies via .github/workflows/release.yml, and engines honor
+  `FAB_HTTPMOCK_IMAGE` / `FAB_EMULATE_IMAGE` overrides between the
+  profile pin and the compiled default. Publishing/pinning strategy:
+  docs/releasing.md. Error messages reference `make images` — keep
+  them accurate if you rename targets.
 - Comments explain *why* (locking, races, API quirks); keep that
   density when editing. Wrap error chains with package prefixes
   (`fmt.Errorf("httpmock engine: ...: %w", err)`).

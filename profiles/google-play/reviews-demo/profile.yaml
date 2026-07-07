@@ -14,9 +14,8 @@ description: |
   Point your Play API client's base URL at this instance and use any bearer
   token (the mock doesn't validate auth). No live Google call.
 
-  Note: requires the local `fabricate/httpmock:local` image. Build it once
-  with `make images` from the repo root.
-image: fabricate/httpmock:local
+  Note: requires the fabricate httpmock image. `make images` builds it locally
+  (or set FAB_HTTPMOCK_IMAGE to a published copy).
 env:
   # Selects which mock service this container serves.
   MOCK_SERVICE: google-play
