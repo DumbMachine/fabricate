@@ -1,0 +1,18 @@
+name: bastion
+engine: ssh
+label: "SSH bastion — single sudo-capable user"
+description: |
+  A bare linuxserver/openssh-server bastion. One user (`fab`) with
+  sudo, key-only auth (password access disabled), Alpine userland.
+  Connect:
+
+    eval "$(fab creds bastion --env)"
+    ssh -i "$FAB_SSH_KEY_PATH" -p "$FAB_PORT" fab@"$FAB_HOST"
+
+  Smoke-tests the SSH adapter end-to-end: keyfile permissions, port
+  mapping, authorized_keys injection. Drop into a shell and you're
+  on an isolated Alpine you can break without consequences.
+image: lscr.io/linuxserver/openssh-server:latest
+defaults:
+  username: fab
+tags: [smoke, ops]

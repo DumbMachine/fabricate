@@ -1,0 +1,89 @@
+HSET product:sku_001 title "Logo Mug"          price_cents 1500  stock 240
+HSET product:sku_002 title "Hoodie M"          price_cents 4900  stock 80
+HSET product:sku_003 title "Hoodie L"          price_cents 4900  stock 35
+HSET product:sku_004 title "Hoodie XL"         price_cents 4900  stock 12
+HSET product:sku_005 title "Sticker Pack"      price_cents 500   stock 1500
+HSET product:sku_006 title "Notebook A5"       price_cents 1800  stock 220
+HSET product:sku_007 title "Pen — fine"        price_cents 600   stock 700
+HSET product:sku_008 title "Pen — bold"        price_cents 600   stock 700
+HSET product:sku_009 title "T-shirt S"         price_cents 2900  stock 60
+HSET product:sku_010 title "T-shirt M"         price_cents 2900  stock 95
+HSET product:sku_011 title "T-shirt L"         price_cents 2900  stock 110
+HSET product:sku_012 title "T-shirt XL"        price_cents 2900  stock 40
+HSET product:sku_013 title "Tote bag"          price_cents 2500  stock 130
+HSET product:sku_014 title "Cap"               price_cents 2200  stock 75
+HSET product:sku_015 title "Beanie"            price_cents 1900  stock 60
+HSET product:sku_016 title "Socks 3-pack"      price_cents 1500  stock 200
+HSET product:sku_017 title "Water bottle"      price_cents 1800  stock 320
+HSET product:sku_018 title "Coaster set"       price_cents 1200  stock 180
+HSET product:sku_019 title "Lanyard"           price_cents 700   stock 500
+HSET product:sku_020 title "USB-C cable"       price_cents 1600  stock 240
+HSET product:sku_021 title "Mousepad"          price_cents 1700  stock 90
+HSET product:sku_022 title "Keychain"          price_cents 500   stock 1000
+HSET product:sku_023 title "Sticker (logo)"    price_cents 200   stock 4500
+HSET product:sku_024 title "Engineer hoodie"   price_cents 5500  stock 22
+HSET product:sku_025 title "Limited tee"       price_cents 3500  stock 8
+HSET product:sku_026 title "Travel mug"        price_cents 2200  stock 60
+HSET product:sku_027 title "Pin set"           price_cents 900   stock 320
+HSET product:sku_028 title "Patch"             price_cents 600   stock 480
+HSET product:sku_029 title "Backpack"          price_cents 8900  stock 18
+HSET product:sku_030 title "Laptop sleeve"     price_cents 3900  stock 55
+
+SET   stock:sku_001 240
+SET   stock:sku_002 80
+SET   stock:sku_003 35
+SET   stock:sku_004 12
+SET   stock:sku_005 1500
+SET   stock:sku_024 22
+SET   stock:sku_025 8
+SET   stock:sku_029 18
+
+HSET cart:sess_001 user_id 1   subtotal_cents 7400  items 3
+RPUSH cart:sess_001:items sku_002 sku_005 sku_007
+EXPIRE cart:sess_001 1800
+
+HSET cart:sess_002 user_id 2   subtotal_cents 4900  items 1
+RPUSH cart:sess_002:items sku_003
+EXPIRE cart:sess_002 1800
+
+HSET cart:sess_003 user_id 3   subtotal_cents 12100 items 4
+RPUSH cart:sess_003:items sku_001 sku_002 sku_005 sku_006
+EXPIRE cart:sess_003 1800
+
+HSET cart:sess_004 user_id 4   subtotal_cents 8900  items 1
+RPUSH cart:sess_004:items sku_029
+EXPIRE cart:sess_004 1800
+
+HSET cart:sess_005 user_id 5   subtotal_cents 3500  items 1
+RPUSH cart:sess_005:items sku_025
+EXPIRE cart:sess_005 1800
+
+HSET cart:sess_021 user_id 21  subtotal_cents 5500  items 1
+RPUSH cart:sess_021:items sku_024
+EXPIRE cart:sess_021 60
+
+HSET cart:sess_022 user_id 22  subtotal_cents 9800  items 2
+RPUSH cart:sess_022:items sku_002 sku_009
+EXPIRE cart:sess_022 90
+
+HSET cart:sess_023 user_id 23  subtotal_cents 4400  items 2
+RPUSH cart:sess_023:items sku_013 sku_017
+EXPIRE cart:sess_023 120
+
+HSET cart:sess_024 user_id 24  subtotal_cents 13900 items 3
+RPUSH cart:sess_024:items sku_029 sku_005 sku_005
+EXPIRE cart:sess_024 45
+
+HSET cart:sess_025 user_id 25  subtotal_cents 2900  items 1
+RPUSH cart:sess_025:items sku_011
+EXPIRE cart:sess_025 30
+
+SADD abandoned:shop_42 sess_021 sess_022 sess_023 sess_024 sess_025
+
+ZADD leaderboard:products 540 sku_005 280 sku_001 240 sku_023 190 sku_007 170 sku_017 150 sku_022 140 sku_002 110 sku_011 90 sku_019 80 sku_024
+
+INCR rate_limit:checkout:sess_001
+EXPIRE rate_limit:checkout:sess_001 60
+INCR rate_limit:checkout:sess_002
+INCR rate_limit:checkout:sess_002
+EXPIRE rate_limit:checkout:sess_002 60

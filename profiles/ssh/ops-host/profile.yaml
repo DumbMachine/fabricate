@@ -1,0 +1,27 @@
+name: ops-host
+engine: ssh
+label: "SSH ops host with fake logs + a wedged service"
+description: |
+  A bastion variant pre-loaded for ops investigation rehearsals.
+  Two seeded artifacts:
+
+    1. /var/log/app/api.log — 5k lines of realistic nginx-style
+       access logs with a deliberate 5xx burst near the end.
+    2. /etc/systemd-style/<name>.service files plus a fake "stuck"
+       pidfile under /run/api.pid pointing at a PID that doesn't
+       exist. The agent's job: notice the stale pidfile, infer the
+       service is wedged, propose a restart.
+
+  Common patterns:
+    grep ' 5[0-9][0-9] ' /var/log/app/api.log | tail
+    awk '{print $9}' /var/log/app/api.log | sort | uniq -c | sort -nr
+    cat /run/api.pid && ps -p $(cat /run/api.pid)
+image: lscr.io/linuxserver/openssh-server:latest
+defaults:
+  username: fab
+healthcheck:
+  timeout: 120s
+seed:
+  - { type: shell, file: 00-bootstrap.sh }
+  - { type: shell, file: 10-fake-logs.sh }
+tags: [demo, ops, logs, incident]

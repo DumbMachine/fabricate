@@ -1,0 +1,22 @@
+name: s3-public-audit
+engine: aws_console
+label: Moto-backed AWS account for audit automation demos.
+description: |
+  Moto AWS account seeded for cloud-security and SOC2-style automation demos:
+  public S3 exposure, cross-account bucket sharing, broad IAM principals,
+  stale access-key hints, idle load balancers, and NAT gateway cost findings.
+  The fixture uses real AWS-compatible APIs where Moto supports them and tags
+  objects with deterministic evidence for APIs Moto does not emulate yet.
+defaults:
+  username: AKIAFABMOTO
+  password: fab-moto-secret
+  database: us-east-1
+env:
+  AWS_ACCOUNT_ID: "123456789012"
+  AWS_REGION: us-east-1
+healthcheck:
+  timeout: 60s
+seed:
+  - type: moto-seed
+    file: seed.yaml
+tags: [aws, moto, s3, iam, elbv2, ec2, nat-gateway, security-audit, automations]

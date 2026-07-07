@@ -1,0 +1,30 @@
+name: aws-bastion
+engine: ssh
+label: "SSH bastion shaped like an AWS jump host"
+description: |
+  A bastion variant pre-loaded to look like the kind of host an
+  on-call engineer SSHes into to poke at AWS resources from inside
+  a VPC. Drops a fake `aws` CLI in /usr/local/bin/ that returns
+  canned JSON for the handful of commands an investigation usually
+  reaches for (describe-instances, s3 ls, logs tail). Real
+  shape, fake data — so an agent can rehearse the muscle memory
+  without burning real API calls.
+
+  Also seeds:
+    /etc/profile.d/aws.sh    (sets AWS_REGION, AWS_PROFILE)
+    /root/.aws/credentials   (clearly-fake creds for shape)
+    /etc/motd                ("you are on bastion-01")
+    /var/log/secure          (a few synthetic ssh-login lines)
+
+  Tips:
+    aws ec2 describe-instances --query 'Reservations[].Instances[][].InstanceId'
+    aws s3 ls
+    aws logs tail /aws/lambda/checkout --since 5m
+image: lscr.io/linuxserver/openssh-server:latest
+defaults:
+  username: fab
+healthcheck:
+  timeout: 120s
+seed:
+  - { type: shell, file: 00-bootstrap.sh }
+tags: [demo, ops, aws, bastion]

@@ -1,0 +1,22 @@
+name: api-alerts
+engine: prometheus
+label: "Prometheus — API SLO alert rules"
+description: |
+  Prometheus 2.55 with a realistic alerting-rules file modelled on
+  an API-service SLO setup. The recording rules compute
+  request-rate and error-rate windows; the alert rules fire on
+  burn-rate breaches for a 99.9% target.
+
+  No actual scrape target serves the `api` job in this profile, so
+  alerts won't fire — the profile is for rule-validation work:
+
+    promtool check rules /etc/prometheus/rules/api.rules.yml
+    GET /api/v1/rules
+    GET /api/v1/alerts
+
+  Agents practicing the one-pager's pager-fires scenario can use
+  this profile to validate their PromQL before promoting it to a
+  real Prometheus.
+seed:
+  - { type: prom-rule, file: api.rules.yml }
+tags: [demo, observability, slo, alerting]

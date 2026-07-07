@@ -1,0 +1,104 @@
+# Recording + alerting rules patterned on kube-prometheus-stack's
+# kubernetes-apps and kubernetes-system rule groups. The metric
+# names match what kube-state-metrics + kubelet expose; the alert
+# names match what an SRE would already have muscle memory for.
+groups:
+  - name: kubernetes.recording
+    interval: 30s
+    rules:
+      - record: node:cpu_utilization:ratio
+        expr: |
+          1 - avg by (node) (rate(node_cpu_seconds_total{mode="idle"}[5m]))
+      - record: namespace:container_memory_usage_bytes:sum
+        expr: sum by (namespace) (container_memory_working_set_bytes{container!="POD",container!=""})
+      - record: cluster:apiserver_request_total:rate5m
+        expr: sum by (verb, code) (rate(apiserver_request_total[5m]))
+
+  - name: kubernetes.apps
+    rules:
+      - alert: KubePodCrashLooping
+        expr: |
+          increase(kube_pod_container_status_restarts_total[5m]) > 3
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is crash-looping"
+          runbook: "Check `kubectl logs --previous` and recent image/config changes."
+
+      - alert: KubePodNotReady
+        expr: |
+          sum by (namespace, pod) (
+            kube_pod_status_phase{phase=~"Pending|Unknown"}
+          ) > 0
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been not-ready for 15m"
+
+      - alert: KubeDeploymentReplicasMismatch
+        expr: |
+          kube_deployment_spec_replicas != kube_deployment_status_replicas_available
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} replicas mismatch"
+
+      - alert: KubeJobFailed
+        expr: kube_job_failed > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Job {{ $labels.namespace }}/{{ $labels.job_name }} failed"
+
+  - name: kubernetes.system
+    rules:
+      - alert: KubeNodeNotReady
+        expr: |
+          kube_node_status_condition{condition="Ready",status="true"} == 0
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node {{ $labels.node }} is NotReady"
+
+      - alert: KubeMemoryOvercommit
+        expr: |
+          sum(kube_pod_container_resource_requests{resource="memory"})
+            /
+          sum(kube_node_status_allocatable{resource="memory"})
+          > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory requests exceed 90% of cluster allocatable"
+
+      - alert: KubeAPIErrorBudgetBurn
+        expr: |
+          (
+            sum(rate(apiserver_request_total{code=~"5.."}[5m]))
+              /
+            sum(rate(apiserver_request_total[5m]))
+          ) > (14.4 * 0.001)
+        for: 2m
+        labels:
+          severity: page
+          slo: apiserver-availability
+        annotations:
+          summary: "kube-apiserver burning error budget 14× faster than allowed"
+
+      - alert: KubeCPUOvercommit
+        expr: |
+          sum(kube_pod_container_resource_requests{resource="cpu"})
+            /
+          sum(kube_node_status_allocatable{resource="cpu"})
+          > 0.95
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU requests exceed 95% of cluster allocatable"

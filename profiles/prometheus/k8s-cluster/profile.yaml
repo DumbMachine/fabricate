@@ -1,0 +1,25 @@
+name: k8s-cluster
+engine: prometheus
+label: "Prometheus — kube-prometheus-stack alerts (cluster health)"
+description: |
+  Prometheus 2.55 loaded with the alerting rules every Kubernetes
+  SRE has seen at some point: KubePodCrashLooping,
+  KubePodNotReady, KubeMemoryOvercommit, KubeAPIErrorBudgetBurn,
+  KubeNodeNotReady, and a small set of recording rules that the
+  alerts depend on. Modelled on the kube-prometheus-stack catalog
+  the CNCF community maintains.
+
+  No scrape target serves the `kubelet` / `kube-state-metrics`
+  jobs in this profile, so alerts won't fire — the value here is
+  rule-validation and PromQL development:
+
+    promtool check rules /etc/prometheus/rules/k8s.rules.yml
+    GET /api/v1/rules
+    GET /api/v1/alerts
+
+  Use this profile to rehearse the one-pager's pager-fires loop:
+  reach for an alert, read the rule, validate the PromQL, propose
+  a fix — all before promoting it to a real cluster's Prometheus.
+seed:
+  - { type: prom-rule, file: k8s.rules.yml }
+tags: [demo, observability, kubernetes, sre]

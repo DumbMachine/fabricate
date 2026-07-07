@@ -1,0 +1,12 @@
+name: empty-mongo
+engine: mongodb
+label: "Empty MongoDB"
+description: |
+  Blank MongoDB 7. No collections, no indexes. Useful to smoke-test
+  drivers and rehearse rs.initiate-style commands before pointing
+  at a real cluster.
+image: mongo:7
+defaults:
+  database: fab
+  username: fab
+tags: [smoke, blank]

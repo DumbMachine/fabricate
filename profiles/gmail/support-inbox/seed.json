@@ -1,0 +1,110 @@
+{
+  "emailAddress": "support@acme.dev",
+  "labels": [
+    { "id": "Label_billing", "name": "billing", "type": "user" },
+    { "id": "Label_bugs", "name": "bugs", "type": "user" },
+    { "id": "Label_vip", "name": "vip", "type": "user" }
+  ],
+  "messages": [
+    {
+      "id": "msg-0001",
+      "threadId": "thr-doublecharge",
+      "from": "Dana Whitfield <dana@northwind.io>",
+      "to": "support@acme.dev",
+      "subject": "Charged twice for March invoice",
+      "body": "Hi,\n\nOur card was charged twice for invoice INV-2103 ($1,240.00) on March 3rd — I can see both charges on the statement. Can you refund the duplicate?\n\nDana Whitfield\nFinance, Northwind",
+      "labelIds": ["INBOX", "UNREAD", "Label_billing"],
+      "internalDate": 1772707800000
+    },
+    {
+      "id": "msg-0002",
+      "threadId": "thr-doublecharge",
+      "from": "Dana Whitfield <dana@northwind.io>",
+      "to": "support@acme.dev",
+      "subject": "Re: Charged twice for March invoice",
+      "body": "Following up — it's been three days and the duplicate $1,240 charge is still on our card. If this isn't resolved this week I'll have to dispute it with the bank.",
+      "labelIds": ["INBOX", "UNREAD", "IMPORTANT", "Label_billing"],
+      "internalDate": 1772966700000
+    },
+    {
+      "id": "msg-0003",
+      "threadId": "thr-export-bug",
+      "from": "Priya Nair <priya@fernworks.co>",
+      "to": "support@acme.dev",
+      "subject": "CSV export produces empty file",
+      "body": "Since yesterday the dashboard's 'Export as CSV' downloads a 0-byte file. Tried Chrome and Firefox, same result. Workspace: fernworks-prod. This is blocking our month-end reporting.",
+      "labelIds": ["INBOX", "UNREAD", "Label_bugs"],
+      "internalDate": 1772899200000
+    },
+    {
+      "id": "msg-0004",
+      "threadId": "thr-refund",
+      "from": "Marco Silva <marco@tinyshop.dev>",
+      "to": "support@acme.dev",
+      "subject": "Cancel and refund annual plan",
+      "body": "We signed up for the annual Pro plan two weeks ago but the team decided to consolidate tooling. Per your 30-day guarantee I'd like to cancel and get a refund. Account email is billing@tinyshop.dev.",
+      "labelIds": ["INBOX", "UNREAD", "Label_billing"],
+      "internalDate": 1772841600000
+    },
+    {
+      "id": "msg-0005",
+      "threadId": "thr-vip-sso",
+      "from": "Yuki Tanaka <yuki.tanaka@megacorp.example>",
+      "to": "support@acme.dev",
+      "subject": "SSO login loop for 400-seat org",
+      "body": "Since this morning our users are stuck in a redirect loop between Okta and your login page. ~400 seats affected. Our TAM said to mark this urgent — happy to jump on a call.",
+      "labelIds": ["INBOX", "UNREAD", "STARRED", "IMPORTANT", "Label_vip"],
+      "internalDate": 1772953200000
+    },
+    {
+      "id": "msg-0006",
+      "threadId": "thr-feature",
+      "from": "Ben Okafor <ben@laketech.io>",
+      "to": "support@acme.dev",
+      "subject": "Feature request: webhook retries",
+      "body": "Not urgent — it would be great if failed webhooks retried with backoff instead of dropping. We currently poll to compensate.",
+      "labelIds": ["INBOX"],
+      "internalDate": 1772534400000
+    },
+    {
+      "id": "msg-0007",
+      "threadId": "thr-answered",
+      "from": "Sofia Marin <sofia@brightpath.app>",
+      "to": "support@acme.dev",
+      "subject": "How do I rotate API keys?",
+      "body": "Hi! Is there a way to rotate our API keys without downtime? We have a security review next week.",
+      "labelIds": ["INBOX"],
+      "internalDate": 1772448000000
+    },
+    {
+      "id": "msg-0008",
+      "threadId": "thr-answered",
+      "from": "support@acme.dev",
+      "to": "Sofia Marin <sofia@brightpath.app>",
+      "subject": "Re: How do I rotate API keys?",
+      "body": "Hi Sofia — yes: create a second key under Settings → API, deploy it, then revoke the old one. Both keys stay valid during the overlap, so there's no downtime. Guide: https://docs.acme.dev/keys#rotation",
+      "labelIds": ["SENT"],
+      "internalDate": 1772451600000
+    },
+    {
+      "id": "msg-0009",
+      "threadId": "thr-newsletter-1",
+      "from": "The Changelog <news@changelog.example>",
+      "to": "support@acme.dev",
+      "subject": "This week in dev tools",
+      "body": "Releases, launches, and links you might have missed this week.",
+      "labelIds": ["INBOX"],
+      "internalDate": 1772620800000
+    },
+    {
+      "id": "msg-0010",
+      "threadId": "thr-newsletter-2",
+      "from": "Cloud Status <status@vendor.example>",
+      "to": "support@acme.dev",
+      "subject": "Maintenance window: March 12",
+      "body": "Scheduled maintenance on March 12, 02:00–04:00 UTC. No action required.",
+      "labelIds": ["INBOX"],
+      "internalDate": 1772707200000
+    }
+  ]
+}

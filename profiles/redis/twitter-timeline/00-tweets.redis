@@ -1,0 +1,71 @@
+HSET user:1 name "Alice"   handle "alice"   bio "founder, ex-mongo"     tweets 12
+HSET user:2 name "Bob"     handle "bob"     bio "sre, ex-twitter"        tweets 8
+HSET user:3 name "Carol"   handle "carol"   bio "writes about caching"   tweets 21
+HSET user:4 name "Dan"     handle "dan"     bio "devrel @ payments-corp" tweets 5
+HSET user:5 name "Eve"     handle "eve"     bio "security researcher"    tweets 14
+HSET user:6 name "Frank"   handle "frank"   bio "product"                tweets 3
+HSET user:7 name "Grace"   handle "grace"   bio "founder, ex-stripe"     tweets 18
+HSET user:8 name "Heidi"   handle "heidi"   bio "ml infra"               tweets 9
+HSET user:9 name "Ivan"    handle "ivan"    bio "backend, postgres"      tweets 11
+HSET user:10 name "Judy"   handle "judy"    bio "designer"               tweets 6
+HSET user:11 name "Karl"   handle "karl"    bio "devops"                 tweets 7
+HSET user:12 name "Lena"   handle "lena"    bio "ds, time-series"        tweets 15
+HSET user:13 name "Mira"   handle "mira"    bio "embedded eng"           tweets 4
+HSET user:14 name "Niko"   handle "niko"    bio "platform"               tweets 10
+HSET user:15 name "Omar"   handle "omar"    bio "founder, ex-reddit"     tweets 13
+HSET user:16 name "Priya"  handle "priya"   bio "data eng"               tweets 17
+HSET user:17 name "Quinn"  handle "quinn"   bio "front-end"              tweets 5
+HSET user:18 name "Rosa"   handle "rosa"    bio "k8s"                    tweets 8
+HSET user:19 name "Sam"    handle "sam"     bio "sre, oncall lover"      tweets 12
+HSET user:20 name "Tia"    handle "tia"     bio "founder, ex-google"     tweets 9
+
+HSET tweet:1   author_id 1   ts 1717200000  body "shipped a thing"
+HSET tweet:2   author_id 2   ts 1717200120  body "oncall again. coffee acquired."
+HSET tweet:3   author_id 3   ts 1717200300  body "cache stampedes are the worst kind of stampede"
+HSET tweet:4   author_id 1   ts 1717200900  body "did i mention we shipped a thing"
+HSET tweet:5   author_id 7   ts 1717201020  body "fundraising is a part-time job. minimum."
+HSET tweet:6   author_id 5   ts 1717201500  body "rotating secrets is harder than it should be"
+HSET tweet:7   author_id 2   ts 1717202100  body "alert fatigue solved? lol"
+HSET tweet:8   author_id 12  ts 1717202400  body "your p99 is a story about your slowest 1% of users"
+HSET tweet:9   author_id 9   ts 1717203000  body "EXPLAIN ANALYZE will pay your salary"
+HSET tweet:10  author_id 15  ts 1717203600  body "founder mode: 9 meetings and a deploy"
+HSET tweet:11  author_id 3   ts 1717204200  body "if you cache it, label it"
+HSET tweet:12  author_id 19  ts 1717204800  body "saved a 503 in prod with a single ROLLBACK"
+HSET tweet:13  author_id 8   ts 1717205400  body "model size != model quality"
+HSET tweet:14  author_id 1   ts 1717206000  body "writing about why we use postgres for everything"
+HSET tweet:15  author_id 4   ts 1717206600  body "the best devrel is real code"
+HSET tweet:16  author_id 16  ts 1717207200  body "schema-less is schema-everywhere"
+HSET tweet:17  author_id 20  ts 1717207800  body "interview question: what does the GIL do, actually?"
+HSET tweet:18  author_id 7   ts 1717208400  body "PR review > meeting"
+HSET tweet:19  author_id 11  ts 1717209000  body "docker compose, but make it a religion"
+HSET tweet:20  author_id 18  ts 1717209600  body "kube cron jobs are how things get forgotten"
+HSET tweet:21  author_id 3   ts 1717210200  body "TTL on every cache key. no exceptions."
+HSET tweet:22  author_id 12  ts 1717210800  body "histograms over averages, every time"
+HSET tweet:23  author_id 5   ts 1717211400  body "if your audit log is editable, it's not an audit log"
+HSET tweet:24  author_id 1   ts 1717212000  body "fundraised. now actually building."
+HSET tweet:25  author_id 9   ts 1717212600  body "B-trees are forever"
+HSET tweet:26  author_id 19  ts 1717213200  body "the hardest part of oncall is the day after"
+HSET tweet:27  author_id 15  ts 1717213800  body "every feature flag becomes a fork"
+HSET tweet:28  author_id 6   ts 1717214400  body "good design is invisible until it's gone"
+HSET tweet:29  author_id 14  ts 1717215000  body "platform != framework"
+HSET tweet:30  author_id 7   ts 1717215600  body "talked to 5 customers today. learned 5 things."
+HSET tweet:31  author_id 2   ts 1717216200  body "runbooks are a love letter to your future self"
+HSET tweet:32  author_id 16  ts 1717216800  body "your ETL is an API"
+HSET tweet:33  author_id 12  ts 1717217400  body "anomaly detection is mostly arithmetic"
+HSET tweet:34  author_id 1   ts 1717218000  body "fab profiles let agents rehearse before they touch prod"
+HSET tweet:35  author_id 20  ts 1717218600  body "stop calling everything an agent"
+HSET tweet:36  author_id 11  ts 1717219200  body "the only good observability is the kind you wrote yesterday"
+HSET tweet:37  author_id 4   ts 1717219800  body "demo code that becomes prod code is a bug class"
+HSET tweet:38  author_id 8   ts 1717220400  body "training data is product"
+HSET tweet:39  author_id 18  ts 1717221000  body "stateful kube is fine. you just have to mean it."
+HSET tweet:40  author_id 3   ts 1717221600  body "redis is a hash table with a network attached"
+HSET tweet:41  author_id 9   ts 1717222200  body "use the database. then use it some more."
+HSET tweet:42  author_id 5   ts 1717222800  body "security incidents end in a postmortem. always."
+HSET tweet:43  author_id 14  ts 1717223400  body "internal tools are products"
+HSET tweet:44  author_id 19  ts 1717224000  body "two pagers ago, this would have been a five-alarm fire"
+HSET tweet:45  author_id 1   ts 1717224600  body "v0 is a deploy."
+HSET tweet:46  author_id 12  ts 1717225200  body "p50, p95, p99 — and the long tail is where the bugs live"
+HSET tweet:47  author_id 7   ts 1717225800  body "say the boring thing out loud"
+HSET tweet:48  author_id 15  ts 1717226400  body "the best feature you'll ship this year is a deletion"
+HSET tweet:49  author_id 16  ts 1717227000  body "schemas migrate. people don't."
+HSET tweet:50  author_id 3   ts 1717227600  body "cache invalidation: still hard"

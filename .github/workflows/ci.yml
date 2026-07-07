@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: vet + unit tests (root module)
+        run: |
+          go vet ./...
+          go test ./...
+      - name: vet + unit tests (mockd)
+        working-directory: mockd
+        run: |
+          go vet ./...
+          go test ./...
+      - name: build (emulate proxy)
+        working-directory: engine/github/proxy
+        run: go build ./...
+      - name: gofmt
+        run: |
+          out=$(gofmt -l .); if [ -n "$out" ]; then echo "gofmt needed:"; echo "$out"; exit 1; fi
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: build httpmock image
+        run: docker build -t fabricate/httpmock:local mockd
+      - name: end-to-end smoke (real containers)
+        run: go test -tags e2e -count=1 -timeout 15m -v ./e2e/...

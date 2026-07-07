@@ -1,0 +1,20 @@
+# Minimal seed for the `empty` github profile. One user, one token.
+# The token slug below MUST match `defaults.password` in profile.yaml —
+# the engine echoes that value back as Creds.Password and the user
+# passes it as `Authorization: Bearer …` when calling the emulator.
+#
+# See vercel-labs/emulate's README for the full seed schema.
+
+tokens:
+  ghp_fab_dev:
+    login: octocat
+    scopes:
+      - repo
+      - user
+      - admin:org
+
+github:
+  users:
+    - login: octocat
+      name: The Octocat
+      email: octocat@github.com

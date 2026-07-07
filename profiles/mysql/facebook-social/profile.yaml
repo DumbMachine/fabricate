@@ -1,0 +1,43 @@
+name: facebook-social
+engine: mysql
+label: "Facebook-shape social graph (users, friends, posts, likes)"
+description: |
+  A small social-graph schema in the same shape Facebook's TAO docs
+  describe: users connected by symmetric friendship edges, posts
+  authored by users, likes and comments as 1-to-many associations.
+  1k users, ~8k mutual friendships, 3k posts, 25k likes, 5k
+  comments.
+
+  The interesting work here is fan-out: rendering a single user's
+  "feed" pulls posts from all their friends, which means a join
+  against the friendship edge table that's read-heavy in real
+  production. Indexes are placed for the obvious paths; the
+  friend-of-friend query (people you may know) is intentionally
+  unindexed past depth-2, so EXPLAIN gets ugly fast.
+
+  Suggested queries:
+    -- Render user 1's feed (most recent friend posts):
+    SELECT p.id, p.body, u.name, p.created_at
+      FROM friendships f
+      JOIN posts p ON p.author_id = f.friend_id
+      JOIN users u ON u.id = p.author_id
+     WHERE f.user_id = 1 AND f.status = 'accepted'
+     ORDER BY p.created_at DESC LIMIT 30;
+
+    -- People you may know (friends-of-friends, excl. existing friends):
+    SELECT f2.friend_id, COUNT(*) mutuals
+      FROM friendships f1
+      JOIN friendships f2 ON f2.user_id = f1.friend_id
+     WHERE f1.user_id = 1 AND f1.status='accepted' AND f2.status='accepted'
+       AND f2.friend_id <> 1
+       AND f2.friend_id NOT IN (SELECT friend_id FROM friendships WHERE user_id=1)
+     GROUP BY f2.friend_id ORDER BY mutuals DESC LIMIT 10;
+defaults:
+  database: social
+  username: social
+healthcheck:
+  timeout: 240s
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+tags: [demo, social-graph, fanout]

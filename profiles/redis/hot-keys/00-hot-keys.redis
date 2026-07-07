@@ -1,0 +1,43 @@
+SET web:user:1 {"id":1,"name":"Alice","plan":"pro"}
+SET web:user:2 {"id":2,"name":"Bob","plan":"free"}
+SET web:user:3 {"id":3,"name":"Carol","plan":"pro"}
+SET web:user:4 {"id":4,"name":"Dan","plan":"free"}
+SET web:user:5 {"id":5,"name":"Eve","plan":"enterprise"}
+SET web:user:6 {"id":6,"name":"Frank","plan":"free"}
+SET web:user:7 {"id":7,"name":"Grace","plan":"pro"}
+SET web:user:8 {"id":8,"name":"Heidi","plan":"free"}
+SET web:user:9 {"id":9,"name":"Ivan","plan":"pro"}
+SET web:user:10 {"id":10,"name":"Judy","plan":"enterprise"}
+SET web:session:abc123 {"user":1,"ts":1717200000}
+EXPIRE web:session:abc123 900
+SET web:session:def456 {"user":2,"ts":1717200030}
+EXPIRE web:session:def456 900
+SET web:session:ghi789 {"user":3,"ts":1717200060}
+EXPIRE web:session:ghi789 900
+SET web:session:jkl012 {"user":4,"ts":1717200090}
+EXPIRE web:session:jkl012 900
+SET web:session:mno345 {"user":5,"ts":1717200120}
+EXPIRE web:session:mno345 600
+SET web:page:about <html><body>About us — a tiny rendered page snippet.</body></html>
+SET web:page:pricing <html><body>Pricing — plans, FAQs, and a small comparison table.</body></html>
+SET web:page:docs <html><body>Docs landing page.</body></html>
+SET web:page:blog <html><body>Latest blog posts (paginated).</body></html>
+SET web:page:hero <html><head><title>Welcome</title></head><body><h1>Welcome to the platform</h1><section>Massive hero block with a lot of inline content used to demonstrate a hot, oversized cache value. This blob intentionally repeats a paragraph many times to push memory usage. Each agent that GETs this key pulls the whole thing across the wire and into the client's memory. In a real production cache, this is the kind of hot+big key that drives p99 latency up — both the network round-trip and the deserialization on the client. The fix is usually to either shard the payload (per-section caches) or push the rendering downstream to a CDN. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again. Same paragraph again.</section></body></html>
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:hero
+INCR web:counters:hits:web:page:pricing
+INCR web:counters:hits:web:page:pricing
+INCR web:counters:hits:web:page:about
+LPUSH web:queue:emails {"to":"a@example.com","subject":"Welcome"}
+LPUSH web:queue:emails {"to":"b@example.com","subject":"Welcome"}
+LPUSH web:queue:emails {"to":"c@example.com","subject":"Welcome"}
+SADD web:online:users u1 u2 u3 u4 u5
+ZADD web:leaderboard 1820 alice 1640 bob 1510 carol 1490 dan 1280 eve

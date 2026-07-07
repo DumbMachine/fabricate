@@ -1,0 +1,28 @@
+name: support-inbox
+engine: httpmock
+label: "Gmail (stateful mock — support inbox to triage)"
+description: |
+  A stateful mock Gmail mailbox (support@acme.dev) backed by fab's httpmock
+  engine (SQLite). Serves the Gmail API v1 subset an email-triage agent uses:
+  users.getProfile, labels.list/get, messages.list/get/modify/trash,
+  messages.send, threads.list/get. Search supports is:unread, in:/label:,
+  from:, to:, subject:, and bare words.
+
+  Seeded with a realistic support backlog: a double-charge complaint (with an
+  impatient follow-up), a data-export bug report, a refund request, a starred
+  VIP escalation, plus already-handled threads and newsletters for contrast.
+
+  Because state is real, the loop closes: list is:unread → read the thread →
+  messages.send a reply (it lands in the thread as SENT) → modify to clear
+  UNREAD → the unread count actually drops.
+
+  Requires the local `fabricate/httpmock:local` image (`make images` once).
+image: fabricate/httpmock:local
+env:
+  MOCK_SERVICE: gmail
+defaults:
+  # Bearer token clients send; the mock doesn't validate it.
+  password: fab-gmail-token
+seed:
+  - { type: mock-fixture, file: seed.json }
+tags: [mock, gmail, email, support, triage, stateful]

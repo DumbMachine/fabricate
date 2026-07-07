@@ -1,0 +1,26 @@
+name: shopify-cart
+engine: redis
+label: "Shopify-shape cart sessions + stock + rate-limits"
+description: |
+  An e-commerce cache layout: cart hashes per session, product
+  catalog hashes, stock counters, abandoned-cart sets, and rate-
+  limit counters with TTLs. 30 products, 25 carts (5 of them with
+  TTLs near expiry — the abandoned ones), and a few "hot product"
+  counters showing the long tail of demand.
+
+  Suggested commands:
+    HGETALL cart:sess_001
+    GET stock:sku_001
+    SMEMBERS abandoned:shop_42
+    TTL cart:sess_021               -- one of the near-expiry carts
+    INCR rate_limit:checkout:sess_001
+    ZRANGE leaderboard:products 0 9 REV WITHSCORES
+
+  Cart abandonment is the classic real-world signal here: the
+  agent's job is to flag carts whose TTLs are about to fire so a
+  follow-up email can land before the session expires.
+defaults:
+  database: "0"
+seed:
+  - { type: redis-cli, file: 00-cart.redis }
+tags: [demo, cache, ecommerce, sessions]

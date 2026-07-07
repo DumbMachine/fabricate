@@ -1,0 +1,22 @@
+name: pagila
+engine: postgres
+label: "Pagila — DVD rental sample"
+description: |
+  Sakila ported to Postgres. The classic teaching schema: films,
+  actors, customers, rentals, payments, stores. Rich FKs make it a
+  great target for schema-discover and EXPLAIN demos.
+
+  Source: https://github.com/devrimgunduz/pagila (vendored).
+image: postgres:16-alpine
+defaults:
+  # pagila's dump references the `postgres` role as schema/object
+  # owner; running as username=postgres avoids needing to pre-create
+  # a no-login role to satisfy `OWNER TO postgres`.
+  database: pagila
+  username: postgres
+healthcheck:
+  timeout: 180s    # data load can run >30s on a cold image
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-data.sql }
+tags: [demo, oltp, classic]

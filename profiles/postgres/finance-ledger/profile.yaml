@@ -1,0 +1,22 @@
+name: finance-ledger
+engine: postgres
+label: "Finance Ledger — synthetic double-entry"
+description: |
+  A small double-entry bookkeeping schema (accounts, journals,
+  entries, plus a balances view). Synthetic but realistic: chart of
+  accounts with assets/liabilities/income/expenses, a couple thousand
+  journal entries spread across a year, and a deliberate handful of
+  unbalanced journals so analyst-style queries have something to
+  catch.
+
+  Good for: agent practice on "show me the largest expense category
+  this quarter", "find the unbalanced journal", "what's the cash
+  account's running balance over time".
+image: postgres:16-alpine
+defaults:
+  database: ledger
+  username: ledger
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+tags: [finance, oltp, analyst]

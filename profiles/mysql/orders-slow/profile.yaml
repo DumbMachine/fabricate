@@ -1,0 +1,26 @@
+name: orders-slow
+engine: mysql
+label: "Orders + line items, missing index on order_id"
+description: |
+  A tiny e-commerce schema (users → orders → order_items) seeded
+  with ~5k orders and ~25k line items. order_items has no index on
+  order_id, so the "show me a customer's order history" join scans
+  the full table. The exact shape the one-pager's pager-fires
+  scenario rehearses: pull slow query log → EXPLAIN → spot the
+  missing FK index → write fix to memory.
+
+  Suggested queries:
+    EXPLAIN SELECT * FROM orders o
+      JOIN order_items i ON i.order_id = o.id
+     WHERE o.user_id = 42;
+
+    SHOW INDEX FROM order_items;
+defaults:
+  database: shop
+  username: shop
+healthcheck:
+  timeout: 240s
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+tags: [demo, oltp, slow-query, missing-index]

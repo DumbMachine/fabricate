@@ -1,0 +1,14 @@
+name: empty-prom
+engine: prometheus
+label: "Prometheus — self-scrape only"
+description: |
+  Prometheus 2.55 with the default self-scrape config (job_name:
+  prometheus, target: localhost:9090). No rules, no remote targets.
+  Smoke-test for the HTTP API, PromQL syntax, and query timeouts
+  before pointing at a real cluster.
+
+  Endpoints worth knowing:
+    /api/v1/query?query=up
+    /api/v1/targets
+    /-/ready
+tags: [smoke, observability]

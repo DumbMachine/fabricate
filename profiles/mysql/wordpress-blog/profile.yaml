@@ -1,0 +1,41 @@
+name: wordpress-blog
+engine: mysql
+label: "WordPress-shape blog (wp_posts, wp_postmeta, wp_terms…)"
+description: |
+  The classic WordPress table layout — wp_users, wp_posts,
+  wp_postmeta, wp_comments, wp_terms, wp_term_taxonomy,
+  wp_term_relationships — with 50 users, 200 posts (mix of
+  published/draft/trash), ~600 postmeta rows, 400 comments, and a
+  taxonomy of categories and tags.
+
+  The famous "postmeta is a key-value pit" pattern is reproduced
+  faithfully: meta_value is a LONGTEXT, queries that filter on it
+  can't use an index, and the typical "show me all posts where
+  custom field X = Y" turns into a full table scan with a
+  type-cast. Useful for rehearsing the kind of advice every
+  WordPress consultant has given:
+
+    -- Common slow query an agent should be able to flag:
+    SELECT p.ID, p.post_title
+      FROM wp_posts p
+      JOIN wp_postmeta m ON m.post_id = p.ID
+     WHERE m.meta_key = 'featured'
+       AND m.meta_value = '1'
+       AND p.post_status = 'publish';
+
+    -- Recover the canonical "posts in category X":
+    SELECT p.ID, p.post_title
+      FROM wp_posts p
+      JOIN wp_term_relationships tr ON tr.object_id = p.ID
+      JOIN wp_term_taxonomy tt ON tt.term_taxonomy_id = tr.term_taxonomy_id
+      JOIN wp_terms t ON t.term_id = tt.term_id
+     WHERE tt.taxonomy = 'category' AND t.slug = 'news';
+defaults:
+  database: wordpress
+  username: wordpress
+healthcheck:
+  timeout: 180s
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+tags: [demo, cms, wordpress, eav]

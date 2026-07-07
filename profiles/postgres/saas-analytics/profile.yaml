@@ -1,0 +1,50 @@
+name: saas-analytics
+engine: postgres
+label: "SaaS product analytics — subscriptions, MRR, usage, funnels"
+description: |
+  A B2B SaaS company's analytics warehouse: accounts (orgs), users,
+  plans, subscriptions + items, invoices + line items, payments,
+  high-volume feature/usage events, sessions, support tickets, NPS,
+  plan-change flows, and an onboarding funnel. ~16 base tables with a
+  rich spread of types (citext email, text[], jsonb, inet, interval,
+  enums, timestamptz) plus a dozen flat analytics VIEWS that hide all
+  the joins/windows/percentile/cohort logic so a single-table-source
+  visualizer (GROUP BY + aggregate + date_trunc + WHERE + bin only)
+  can chart everything.
+
+  Seeded so the charts actually show something:
+    - a Q4 (Oct–Dec) signup spike — created_at is skewed toward year-end
+    - one plan tier ('starter') churns harder — more canceled subscriptions
+    - an NPS dip in a single month (detractor-heavy responses)
+    - a couple of countries (US, GB) dominate signups
+    - a power-law in feature usage (a few features dominate event volume)
+
+  Suggested queries (all against the views — no joins needed):
+    -- MRR trend, monthly grain
+    SELECT date_trunc('month', day) m, max(active_mrr_cents) mrr
+      FROM v_mrr_daily GROUP BY 1 ORDER BY 1;
+
+    -- Onboarding funnel, ordered by step
+    SELECT step_name, accounts_reached
+      FROM v_onboarding_funnel ORDER BY step_order;
+
+    -- The single NPS headline number
+    SELECT nps_score, responses FROM v_nps_summary;
+
+    -- Session duration spread (box plot) per plan tier
+    SELECT segment,
+           percentile_cont(0.5) WITHIN GROUP (ORDER BY duration_seconds) p50,
+           percentile_cont(0.9) WITHIN GROUP (ORDER BY duration_seconds) p90
+      FROM v_session_facts GROUP BY segment ORDER BY segment;
+image: postgres:16-alpine
+defaults:
+  database: saas
+  username: saas
+healthcheck:
+  timeout: 240s
+extensions: [pg_trgm, citext]
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+  - { type: sql, file: 20-views.sql }
+tags: [analytics, saas, olap, demo]

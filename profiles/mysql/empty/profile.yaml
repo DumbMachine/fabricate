@@ -1,0 +1,12 @@
+name: empty-mysql
+engine: mysql
+label: "Empty MySQL"
+description: |
+  Blank MySQL 8.4. No tables, no extensions. The cheapest way to
+  prove your driver, DSN, and SSL config land in a real connection
+  before you point an agent at a production replica.
+image: mysql:8.4
+defaults:
+  database: fab
+  username: fab
+tags: [smoke, blank]

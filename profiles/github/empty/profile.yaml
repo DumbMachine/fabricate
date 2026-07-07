@@ -1,0 +1,26 @@
+name: empty
+engine: github
+label: "Empty GitHub (emulate)"
+description: |
+  Stateful GitHub REST API on a random host port, backed by
+  vercel-labs/emulate. One seeded user (octocat) and one bearer token
+  with broad scopes — nothing else. Useful as a smoke test and as a
+  base for one-off scripted seeding.
+
+  After `fab create github -p empty`:
+
+    eval "$(fab creds <name> --env)"
+    curl -H "Authorization: Bearer $FAB_PASSWORD" "$FAB_URL/user"
+    # => {"login":"octocat", ...}
+
+  Note: requires the local `fabricate/emulate:local` image. Build it
+  once with `make images` from the repo root.
+image: fabricate/emulate:local
+defaults:
+  # Bearer token Creds.Password is set to. Must match the token slug
+  # under `tokens:` in seed.yaml — the engine doesn't parse the seed
+  # to extract it.
+  password: ghp_fab_dev
+seed:
+  - { type: emulate-config, file: seed.yaml }
+tags: [smoke, blank]

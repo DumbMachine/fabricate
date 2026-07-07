@@ -1,0 +1,40 @@
+name: stripe-payments
+engine: postgres
+label: "Stripe-shape payment intents + charges + refunds"
+description: |
+  A payments schema modelled on Stripe's public API objects:
+  customers → payment_methods → payment_intents → charges →
+  refunds, plus a balance_transactions ledger and a disputes table.
+  ~200 customers, 1k payment intents, 800 successful charges, a
+  realistic spread of failures and refunds.
+
+  Two seeded "find the bug" patterns:
+    1. The balance_transactions ledger and the charges ledger
+       disagree on net for a specific day — a missing refund entry.
+       Classic reconciliation gap.
+    2. A handful of payment intents stuck in `requires_action` past
+       their 24h window — the kind of stale state that quietly
+       grows in real payment systems.
+
+  Suggested queries:
+    SELECT date_trunc('day', created_at) d,
+           COUNT(*) FILTER (WHERE status='succeeded') ok,
+           COUNT(*) FILTER (WHERE status='failed')    failed
+      FROM charges GROUP BY 1 ORDER BY 1;
+
+    SELECT pm.type, COUNT(*) tries,
+           ROUND(100.0 * SUM((c.status='failed')::int) / COUNT(*), 1) fail_pct
+      FROM payment_intents pi
+      JOIN payment_methods pm ON pm.id = pi.payment_method_id
+      LEFT JOIN charges c ON c.payment_intent_id = pi.id
+      GROUP BY pm.type ORDER BY fail_pct DESC;
+image: postgres:16-alpine
+defaults:
+  database: payments
+  username: payments
+healthcheck:
+  timeout: 180s
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+tags: [demo, fintech, payments, reconciliation]

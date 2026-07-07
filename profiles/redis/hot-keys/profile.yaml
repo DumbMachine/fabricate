@@ -1,0 +1,24 @@
+name: hot-keys
+engine: redis
+label: "Redis cache with a skewed key distribution"
+description: |
+  Pre-seeded with ~1k cache keys across three namespaces:
+    web:user:N        — small JSON blobs, even distribution
+    web:session:N     — short-lived session payloads (TTLs set)
+    web:page:N        — page renders, deliberately skewed: one key
+                        is ~50KB and gets the lion's share of GETs
+                        in the seeded MONITOR-style trace.
+
+  Plus a few "big keys" that the agent should find with
+  `MEMORY USAGE` / `DEBUG OBJECT`.
+
+  Suggested commands:
+    DBSIZE
+    SCAN 0 MATCH 'web:page:*' COUNT 1000
+    MEMORY USAGE web:page:hero
+    DEBUG OBJECT web:user:1
+defaults:
+  database: "0"
+seed:
+  - { type: redis-cli, file: 00-hot-keys.redis }
+tags: [demo, cache, hot-keys, big-keys]

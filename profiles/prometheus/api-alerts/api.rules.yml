@@ -1,0 +1,59 @@
+# API SLO recording + alerting rules. Patterned after the
+# "Burn-rate alerts" recipe from Google's SRE Workbook: short-window
+# + long-window burn rates so a 99.9% objective doesn't page on
+# every transient blip but still catches a sustained regression
+# within a couple of minutes.
+groups:
+  - name: api.recording
+    interval: 30s
+    rules:
+      - record: job:http_requests:rate5m
+        expr: sum(rate(http_requests_total{job="api"}[5m])) by (status)
+      - record: job:http_errors:ratio_rate5m
+        expr: |
+          sum(rate(http_requests_total{job="api",status=~"5.."}[5m]))
+            /
+          sum(rate(http_requests_total{job="api"}[5m]))
+      - record: job:http_errors:ratio_rate1h
+        expr: |
+          sum(rate(http_requests_total{job="api",status=~"5.."}[1h]))
+            /
+          sum(rate(http_requests_total{job="api"}[1h]))
+
+  - name: api.alerts
+    rules:
+      - alert: APIErrorBudgetBurnFast
+        expr: |
+          job:http_errors:ratio_rate5m > (14.4 * 0.001)
+          and
+          job:http_errors:ratio_rate1h > (14.4 * 0.001)
+        for: 2m
+        labels:
+          severity: page
+          slo: api-availability
+        annotations:
+          summary: "API burning error budget 14× faster than allowed"
+          runbook: "Investigate recent deploys; check downstream services."
+
+      - alert: APIErrorBudgetBurnSlow
+        expr: |
+          job:http_errors:ratio_rate5m > (3 * 0.001)
+          and
+          job:http_errors:ratio_rate1h > (3 * 0.001)
+        for: 15m
+        labels:
+          severity: ticket
+          slo: api-availability
+        annotations:
+          summary: "API sustained error rate above 3× budget burn"
+
+      - alert: APIHighLatency
+        expr: |
+          histogram_quantile(0.99,
+            sum by (le) (rate(http_request_duration_seconds_bucket{job="api"}[5m]))
+          ) > 1
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "API p99 latency above 1s for 5m"

@@ -1,0 +1,6 @@
+/bin/
+*.test
+*.out
+.DS_Store
+# fab state/keys never belong in a repo (plaintext creds for local throwaways)
+state.json

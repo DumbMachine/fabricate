@@ -1,0 +1,12 @@
+name: empty
+engine: postgres
+label: "Empty Postgres"
+description: |
+  Blank Postgres 16. No tables, no extensions beyond the defaults.
+  Useful as a smoke test and as a base for ad-hoc seeding via
+  `psql $DATABASE_URL < your.sql`.
+image: postgres:16-alpine
+defaults:
+  database: fab
+  username: fab
+tags: [smoke, blank]

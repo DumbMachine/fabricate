@@ -1,0 +1,45 @@
+name: neobank-ledger
+engine: mongodb
+label: "Neobank-shape ledger — accounts, transactions, KYC"
+description: |
+  A synthetic neobank back-of-house: `accounts` with KYC status,
+  `transactions` with idempotency keys and merchant categories,
+  `kyc_events` recording the verification trail. 200 accounts, ~5k
+  transactions across 90 days, mix of currencies and types
+  (deposit / withdrawal / transfer / card_payment / fee). The data
+  shape matches what Monzo / Revolut / Mercury back-of-house teams
+  actually read.
+
+  Three seeded "find the bug" patterns:
+    1. Structuring: one account makes 12 deposits between $9,400
+       and $9,900 within 24 hours — the textbook anti-money-
+       laundering velocity signal.
+    2. Sanctions hit unhandled: one account has a
+       `sanctions_hit` KYC event but still posts outbound transfers
+       afterwards. Compliance gap.
+    3. Stuck `pending` transactions older than 48h that should
+       have settled or reversed.
+
+  Suggested queries:
+    db.transactions.aggregate([
+      { $match: { ts: { $gte: ISODate("2024-06-01") },
+                  type: "deposit",
+                  amount_cents: { $gte: 900000, $lt: 1000000 } } },
+      { $group: { _id: "$account_id", n: { $sum: 1 },
+                  total: { $sum: "$amount_cents" } } },
+      { $match: { n: { $gte: 5 } } }
+    ])
+
+    db.accounts.aggregate([
+      { $lookup: { from: "kyc_events", localField: "_id",
+                   foreignField: "account_id", as: "kyc" } },
+      { $match: { "kyc.event": "sanctions_hit" } }
+    ])
+defaults:
+  database: bank
+  username: bank
+healthcheck:
+  timeout: 180s
+seed:
+  - { type: js, file: 00-seed.js }
+tags: [demo, fintech, neobank, aml, kyc]

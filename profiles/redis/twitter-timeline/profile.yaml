@@ -1,0 +1,27 @@
+name: twitter-timeline
+engine: redis
+label: "Twitter-shape timeline cache (fanout-on-write)"
+description: |
+  The canonical Twitter timeline-cache layout: each tweet lives in
+  a HASH, each user's home timeline is a sorted set keyed by tweet
+  timestamp, followers/following are SETs, per-user tweet counters
+  are simple integers. ~100 users, ~500 tweets, home timelines
+  prefilled for ten of them so you can read a feed without writing
+  any tweets first.
+
+  Commands worth knowing:
+    HGETALL tweet:42
+    ZREVRANGE timeline:home:1 0 19 WITHSCORES
+    SCARD followers:1
+    SMEMBERS following:1
+    INFO clients
+
+  This is the same fanout-on-write pattern Twitter's "ranked
+  timelines" service starts from before the ML layer fans things
+  back in.
+defaults:
+  database: "0"
+seed:
+  - { type: redis-cli, file: 00-tweets.redis }
+  - { type: redis-cli, file: 10-timelines.redis }
+tags: [demo, cache, social, fanout]

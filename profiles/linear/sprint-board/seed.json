@@ -1,0 +1,86 @@
+{
+  "viewer": { "id": "usr-val", "name": "Val Ops", "email": "val@acme.dev" },
+  "teams": [{ "id": "team-eng", "key": "ENG", "name": "Engineering" }],
+  "users": [
+    { "id": "usr-val", "name": "Val Ops", "email": "val@acme.dev" },
+    { "id": "usr-kim", "name": "Kim Rivera", "email": "kim@acme.dev" },
+    { "id": "usr-jo", "name": "Jo Park", "email": "jo@acme.dev" }
+  ],
+  "workflowStates": [
+    { "id": "st-backlog", "teamId": "team-eng", "name": "Backlog", "type": "backlog", "position": 0 },
+    { "id": "st-todo", "teamId": "team-eng", "name": "Todo", "type": "unstarted", "position": 1 },
+    { "id": "st-progress", "teamId": "team-eng", "name": "In Progress", "type": "started", "position": 2 },
+    { "id": "st-review", "teamId": "team-eng", "name": "In Review", "type": "started", "position": 3 },
+    { "id": "st-done", "teamId": "team-eng", "name": "Done", "type": "completed", "position": 4 },
+    { "id": "st-canceled", "teamId": "team-eng", "name": "Canceled", "type": "canceled", "position": 5 }
+  ],
+  "issues": [
+    {
+      "id": "iss-101", "teamId": "team-eng", "number": 101,
+      "title": "Checkout API returns 500 above ~100 rps",
+      "description": "Load test and prod traces both show connection-pool exhaustion in the payments service. Started after the 2026-06-18 deploy.",
+      "priority": 1, "stateId": "st-todo", "createdAt": "2026-06-19T08:12:00Z"
+    },
+    {
+      "id": "iss-102", "teamId": "team-eng", "number": 102,
+      "title": "Rotate leaked staging credentials",
+      "description": "A staging DB password appeared in CI logs (run #8841). Rotate and add a masking rule.",
+      "priority": 1, "stateId": "st-progress", "assigneeId": "usr-kim",
+      "createdAt": "2026-06-20T14:30:00Z"
+    },
+    {
+      "id": "iss-103", "teamId": "team-eng", "number": 103,
+      "title": "Migrate invoice PDFs to the new renderer",
+      "description": "Old renderer mis-kerns currency symbols for non-USD invoices.",
+      "priority": 2, "stateId": "st-progress", "assigneeId": "usr-jo",
+      "createdAt": "2026-06-16T11:00:00Z"
+    },
+    {
+      "id": "iss-104", "teamId": "team-eng", "number": 104,
+      "title": "Add webhook delivery retries with backoff",
+      "description": "Customers poll to compensate for dropped webhooks. Retry 3x with exponential backoff, then dead-letter.",
+      "priority": 2, "stateId": "st-review", "assigneeId": "usr-kim",
+      "createdAt": "2026-06-12T09:45:00Z"
+    },
+    {
+      "id": "iss-105", "teamId": "team-eng", "number": 105,
+      "title": "Dark mode: settings page flashes white on load",
+      "priority": 3, "stateId": "st-backlog", "createdAt": "2026-05-28T16:20:00Z"
+    },
+    {
+      "id": "iss-106", "teamId": "team-eng", "number": 106,
+      "title": "Upgrade Postgres client to v16 driver",
+      "description": "Blocked on the ORM release; check monthly.",
+      "priority": 4, "stateId": "st-backlog", "createdAt": "2026-04-02T10:00:00Z"
+    },
+    {
+      "id": "iss-107", "teamId": "team-eng", "number": 107,
+      "title": "Sessions table missing index on user_id",
+      "description": "Found during the June slow-query review. EXPLAIN shows a full scan on every login.",
+      "priority": 2, "stateId": "st-done", "assigneeId": "usr-jo",
+      "createdAt": "2026-06-10T13:00:00Z"
+    },
+    {
+      "id": "iss-108", "teamId": "team-eng", "number": 108,
+      "title": "Evaluate switching CDN vendors",
+      "priority": 0, "stateId": "st-canceled", "createdAt": "2026-03-15T12:00:00Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "cmt-1", "issueId": "iss-101", "userId": "usr-jo",
+      "body": "Repro'd with k6: pool maxes at 20 conns, requests queue and time out. Bumping the pool hides it but the leak is in the retry path.",
+      "createdAt": "2026-06-19T15:40:00Z"
+    },
+    {
+      "id": "cmt-2", "issueId": "iss-102", "userId": "usr-kim",
+      "body": "Password rotated. Masking rule PR is up; leaving this In Progress until CI confirms no new hits.",
+      "createdAt": "2026-06-21T10:05:00Z"
+    },
+    {
+      "id": "cmt-3", "issueId": "iss-104", "userId": "usr-val",
+      "body": "Review feedback: dead-letter queue needs an alert, otherwise failures just move somewhere quieter.",
+      "createdAt": "2026-06-22T09:10:00Z"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+name: empty
+engine: kubernetes
+label: "Empty k3s"
+description: |
+  Single-node k3s cluster with no extra workloads. Ships the default
+  namespaces (default, kube-system, kube-public, kube-node-lease) and
+  k3s's built-in addons (coredns, metrics-server, local-path).
+
+  The admin kubeconfig is returned inline on creds.kubeconfig — agents
+  can write it to a file and use kubectl directly, or feed it to any
+  tool that speaks kubeconfig for end-to-end testing.
+image: docker.io/rancher/k3s:v1.31.2-k3s1
+tags: [smoke, blank]

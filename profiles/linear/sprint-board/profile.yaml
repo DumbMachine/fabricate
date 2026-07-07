@@ -1,0 +1,26 @@
+name: sprint-board
+engine: httpmock
+label: "Linear (stateful mock — a sprint mid-flight)"
+description: |
+  A stateful mock Linear workspace backed by fab's httpmock engine (SQLite).
+  Serves the GraphQL subset a project-management agent uses on POST /graphql:
+  viewer, teams, users, workflowStates, issues (with state/team/assignee/
+  priority filters), issue(id or "ENG-104"), and the issueCreate /
+  issueUpdate / commentCreate mutations.
+
+  Seeded with the ENG team mid-sprint: an urgent unassigned production bug,
+  work in progress and in review, a stale backlog, and a comment trail.
+  Because state is real, the loop closes: query the board → issueCreate a
+  follow-up (it gets the next ENG-<n> identifier) → issueUpdate to move a
+  card → commentCreate a status note → re-query and see all of it.
+
+  Requires the local `fabricate/httpmock:local` image (`make images` once).
+image: fabricate/httpmock:local
+env:
+  MOCK_SERVICE: linear
+defaults:
+  # Linear clients send an API key; the mock doesn't validate it.
+  password: fab-linear-token
+seed:
+  - { type: mock-fixture, file: seed.json }
+tags: [mock, linear, issues, project-management, stateful]

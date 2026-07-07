@@ -1,0 +1,11 @@
+name: empty-redis
+engine: redis
+label: "Empty Redis"
+description: |
+  Blank Redis 7. Auth on (requirepass), DB index 0. Cheapest way to
+  prove your client, password handling, and TLS termination land
+  before pointing at a real cache.
+image: redis:7.4-alpine
+defaults:
+  database: "0"
+tags: [smoke, blank]

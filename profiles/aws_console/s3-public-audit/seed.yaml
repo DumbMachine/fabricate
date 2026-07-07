@@ -1,0 +1,375 @@
+account_id: "123456789012"
+region: us-east-1
+s3:
+  buckets:
+    - name: legacy-marketing-assets
+      public_access_block:
+        block_public_acls: false
+        ignore_public_acls: false
+        block_public_policy: false
+        restrict_public_buckets: false
+      encryption: false
+      policy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicReadCampaignAssets
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: arn:aws:s3:::legacy-marketing-assets/*
+      objects:
+        - key: public/launch-plan.txt
+          content_type: text/plain
+          body: |
+            Launch plan draft.
+            Owner: marketing
+        - key: public/pricing.csv
+          content_type: text/csv
+          body: |
+            sku,region,price
+            pro,us-east-1,99
+            enterprise,us-east-1,499
+
+    - name: support-upload-dropbox
+      public_access_block:
+        block_public_acls: false
+        ignore_public_acls: false
+        block_public_policy: false
+        restrict_public_buckets: false
+      encryption: true
+      policy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicWriteLegacyDrop
+            Effect: Allow
+            Principal: "*"
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource: arn:aws:s3:::support-upload-dropbox/*
+      objects:
+        - key: uploads/readme.txt
+          content_type: text/plain
+          body: |
+            Legacy support upload bucket.
+            This should be restricted before production use.
+
+    - name: prod-audit-logs
+      public_access_block:
+        block_public_acls: true
+        ignore_public_acls: true
+        block_public_policy: true
+        restrict_public_buckets: true
+      encryption: true
+      objects:
+        - key: cloudtrail/2026/06/01/events.json
+          content_type: application/json
+          body: |
+            {"Records":[]}
+
+    - name: terraform-state-prod
+      public_access_block:
+        block_public_acls: true
+        ignore_public_acls: true
+        block_public_policy: true
+        restrict_public_buckets: true
+      encryption: true
+      objects:
+        - key: global/s3/terraform.tfstate
+          content_type: application/json
+          body: |
+            {"version":4,"resources":[]}
+
+    - name: partner-data-exchange
+      public_access_block:
+        block_public_acls: true
+        ignore_public_acls: true
+        block_public_policy: false
+        restrict_public_buckets: false
+      encryption: true
+      policy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: VendorReadExchange
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::210987654321:root
+            Action:
+              - s3:GetObject
+              - s3:ListBucket
+            Resource:
+              - arn:aws:s3:::partner-data-exchange
+              - arn:aws:s3:::partner-data-exchange/*
+      objects:
+        - key: exports/acme-q2-summary.csv
+          content_type: text/csv
+          body: |
+            customer,records,status
+            acme,4200,shared
+
+iam:
+  managed_policies:
+    - name: LegacyBroadOps
+      description: Deliberately broad fixture policy for least-privilege automation demos.
+      document:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: BroadLegacyOps
+            Effect: Allow
+            Action:
+              - s3:*
+              - ec2:*
+              - elasticloadbalancing:*
+              - iam:*
+              - kms:*
+              - rds:*
+              - lambda:*
+              - secretsmanager:*
+            Resource: "*"
+
+    - name: MarketingS3ReadOnly
+      description: Narrow fixture policy for marketing asset reads.
+      document:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: MarketingAssetsRead
+            Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:ListBucket
+            Resource:
+              - arn:aws:s3:::legacy-marketing-assets
+              - arn:aws:s3:::legacy-marketing-assets/*
+
+    - name: DashboardReadOnly
+      description: Narrow fixture policy for dashboard inventory reads.
+      document:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DashboardReadOnly
+            Effect: Allow
+            Action:
+              - cloudwatch:GetMetricData
+              - cloudwatch:ListMetrics
+              - elasticloadbalancing:Describe*
+            Resource: "*"
+
+  users:
+    - name: contractor-2024-mary
+      tags:
+        Owner: security@example.com
+        Department: contractor
+        SOC2Control: CC6.1
+        ExpectedFinding: unused-broad-access
+        UsedServices90d: s3,ec2,cloudwatch
+        UnusedServices90d: iam,kms,rds,lambda,secretsmanager
+        KeyAgeHintDays: "412"
+      attached_policies: [LegacyBroadOps]
+      access_keys: 1
+
+    - name: legacy-build
+      tags:
+        Owner: platform@example.com
+        Department: ci
+        SOC2Control: CC6.6
+        ExpectedFinding: stale-access-key
+        LastUsedService: s3
+        LastUsedHint: "2022-08-04"
+        KeyAgeHintDays: "1420"
+      attached_policies: [LegacyBroadOps]
+      inline_policies:
+        - name: AllowLegacyStateBucket
+          document:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: arn:aws:s3:::terraform-state-prod/*
+      access_keys: 1
+
+    - name: dashboard-reader
+      tags:
+        Owner: analytics@example.com
+        Department: analytics
+        SOC2Control: CC6.1
+        ExpectedFinding: already-minimal
+        UsedServices90d: cloudwatch,elasticloadbalancing
+      attached_policies: [DashboardReadOnly]
+
+  roles:
+    - name: legacy-deploy
+      tags:
+        Owner: platform@example.com
+        SOC2Control: CC6.1
+        ExpectedFinding: broad-role
+        UsedServices90d: ec2,elasticloadbalancing,s3
+        UnusedServices90d: iam,kms,rds,lambda,secretsmanager
+      attached_policies: [LegacyBroadOps]
+
+    - name: marketing-assets-reader
+      tags:
+        Owner: marketing@example.com
+        SOC2Control: CC6.1
+        ExpectedFinding: narrow-role
+      attached_policies: [MarketingS3ReadOnly]
+
+ec2:
+  vpcs:
+    - name: dev-vpc
+      cidr_block: 10.20.0.0/16
+      tags:
+        Owner: platform-dev@example.com
+        Environment: dev
+        CostCenter: sandbox
+      subnets:
+        - name: dev-public-a
+          cidr_block: 10.20.1.0/24
+          availability_zone: us-east-1a
+          tags:
+            Tier: public
+        - name: dev-public-b
+          cidr_block: 10.20.2.0/24
+          availability_zone: us-east-1b
+          tags:
+            Tier: public
+      security_groups:
+        - name: legacy-dashboard-lb
+          description: Fixture security group for idle dashboard ALB.
+          tags:
+            Owner: analytics@example.com
+      nat_gateways:
+        - name: nat-dev-idle
+          subnet: dev-public-a
+          tags:
+            Owner: platform-dev@example.com
+            Environment: dev
+            ExpectedFinding: idle-nat
+            BytesPerDay30d: 12MB
+            AnnualSavingsHintUSD: "394"
+
+    - name: prod-vpc
+      cidr_block: 10.30.0.0/16
+      tags:
+        Owner: platform@example.com
+        Environment: prod
+        CostCenter: shared-network
+      subnets:
+        - name: prod-public-a
+          cidr_block: 10.30.1.0/24
+          availability_zone: us-east-1a
+          tags:
+            Tier: public
+        - name: prod-public-b
+          cidr_block: 10.30.2.0/24
+          availability_zone: us-east-1b
+          tags:
+            Tier: public
+      security_groups:
+        - name: prod-alb
+          description: Fixture security group for healthy production ALB.
+          tags:
+            Owner: payments@example.com
+        - name: staging-nlb
+          description: Fixture security group for cutover NLB ownership notes.
+          tags:
+            Owner: api-platform@example.com
+      nat_gateways:
+        - name: nat-prod-s3-egress
+          subnet: prod-public-a
+          tags:
+            Owner: data-platform@example.com
+            Environment: prod
+            ExpectedFinding: gateway-endpoint-candidate
+            S3DynamoPercent: "82"
+            BytesPerMonthToS3: 4.1TB
+            EstimatedMonthlySavingsUSD: "185"
+        - name: nat-prod-general-egress
+          subnet: prod-public-b
+          tags:
+            Owner: platform@example.com
+            Environment: prod
+            ExpectedFinding: healthy
+            S3DynamoPercent: "8"
+            BytesPerDay30d: 210GB
+
+elbv2:
+  load_balancers:
+    - name: dashboard-legacy-alb
+      type: application
+      scheme: internet-facing
+      subnets: [dev-public-a, dev-public-b]
+      security_groups: [legacy-dashboard-lb]
+      tags:
+        Owner: analytics@example.com
+        Environment: dev
+        ExpectedFinding: zero-traffic-delete
+        RequestCount30d: "0"
+        CreatedDaysAgo: "412"
+        MonthlyCostHintUSD: "18"
+      target_groups:
+        - name: dashboard-legacy-empty
+          vpc: dev-vpc
+          protocol: HTTP
+          port: 80
+          target_type: ip
+          health_check_path: /healthz
+          listener_port: 80
+          tags:
+            Owner: analytics@example.com
+            ExpectedFinding: no-targets
+
+    - name: stg-api-cutover-nlb
+      type: network
+      scheme: internet-facing
+      subnets: [prod-public-a, prod-public-b]
+      tags:
+        Owner: api-platform@example.com
+        Environment: staging
+        ExpectedFinding: near-idle-confirm
+        ActiveFlowCount30d: "12"
+        CreatedDaysAgo: "220"
+        MonthlyCostHintUSD: "18"
+      target_groups:
+        - name: stg-api-cutover-targets
+          vpc: prod-vpc
+          protocol: TCP
+          port: 443
+          target_type: ip
+          listener_port: 443
+          listener_protocol: TCP
+          tags:
+            Owner: api-platform@example.com
+            ExpectedFinding: orphan-targets-present
+          targets:
+            - id: 10.30.1.45
+              port: 443
+
+    - name: payments-prod-alb
+      type: application
+      scheme: internet-facing
+      subnets: [prod-public-a, prod-public-b]
+      security_groups: [prod-alb]
+      tags:
+        Owner: payments@example.com
+        Environment: prod
+        ExpectedFinding: healthy
+        RequestCount30d: "1849200"
+        CreatedDaysAgo: "96"
+      target_groups:
+        - name: payments-prod-web
+          vpc: prod-vpc
+          protocol: HTTP
+          port: 8080
+          target_type: ip
+          health_check_path: /health
+          listener_port: 80
+          tags:
+            Owner: payments@example.com
+            ExpectedFinding: healthy-targets
+          targets:
+            - id: 10.30.1.20
+              port: 8080
+            - id: 10.30.2.20
+              port: 8080

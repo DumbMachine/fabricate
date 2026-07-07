@@ -1,0 +1,31 @@
+name: events
+engine: mongodb
+label: "Web events stream — anomaly hunting"
+description: |
+  A `events` collection with ~10k synthetic web events (page view,
+  click, error) spread across one day. Two deliberate anomalies are
+  seeded:
+    1. a burst of `error` events from a single user_id in a 5-minute
+       window;
+    2. a sudden zero-traffic gap of 30 minutes mid-day.
+
+  Suggested queries:
+    db.events.aggregate([
+      { $group: { _id: { $dateTrunc: { date: "$ts", unit: "minute", binSize: 5 } },
+                  errors: { $sum: { $cond: [{ $eq: ["$kind","error"] }, 1, 0] } } } },
+      { $sort: { _id: 1 } }
+    ])
+
+    db.events.aggregate([
+      { $match: { kind: "error" } },
+      { $group: { _id: "$user_id", n: { $sum: 1 } } },
+      { $sort: { n: -1 } }, { $limit: 5 }
+    ])
+defaults:
+  database: analytics
+  username: analytics
+healthcheck:
+  timeout: 180s
+seed:
+  - { type: js, file: 00-seed.js }
+tags: [demo, analytics, anomaly]
