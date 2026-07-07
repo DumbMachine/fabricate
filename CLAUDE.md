@@ -101,7 +101,10 @@ service-vs-engine triage). Short version:
 `profiles/<engine>/<name>/profile.yaml` + seed files. Schema reference:
 `fab profiles schema`, authoring guide: docs/authoring-profiles.md.
 Test cheaply with `FAB_PROFILES_DIR` pointing at a scratch dir before
-embedding.
+embedding. Related CLI surface to keep coherent when touching this
+area: `profiles show --files/--file/--head` (bounded example reading),
+`profiles init --from` (copy-an-example), `profiles add` (template
+packs from GitHub/local dirs — cli/profiles_add.go).
 
 ## Conventions & gotchas
 

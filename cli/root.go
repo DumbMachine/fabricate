@@ -31,7 +31,8 @@ Discover what's available, then create:
 Author your own profile without reading source:
 
   fab profiles schema                    # the profile.yaml reference
-  fab profiles show <name> --files       # crib a working example + its seed files
+  fab profiles show <name> --files       # list a working example's seed files
+  fab profiles show <name> --file <f>     # print one seed file (head-capped)
   fab profiles init <slug> <name>        # scaffold under ~/.config/fab/profiles/`,
 	SilenceUsage: true,
 }

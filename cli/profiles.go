@@ -1,8 +1,10 @@
 package cli
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -29,9 +31,11 @@ runnable ` + "`fab create <slug> -p <name>`" + `.
 The authoring loop, end to end:
 
   fab profiles schema                  # profile.yaml reference (+ seed types per engine)
-  fab profiles show <name> --files     # working example incl. its seed files
-  fab profiles init <slug> <name>      # scaffold; slug = engine OR mock service
-  fab create <slug> <-p name>          # run it`,
+  fab profiles show <name> --files     # list a working example's seed files
+  fab profiles show <name> --file <f>  # print one of them (head-capped)
+  fab profiles init <slug> <name>      # scaffold; --from <example> to copy one
+  fab profiles add <owner>/<repo>      # install a template pack from GitHub
+  fab create <slug> -p <name>          # run it`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		f, err := output.Resolve(outputFlag)
 		if err != nil {
@@ -48,22 +52,23 @@ The authoring loop, end to end:
 var (
 	profilesShowEngine string
 	profilesShowFiles  bool
+	profilesShowFile   string
+	profilesShowHead   int
 )
-
-// showFileCap bounds how much of one seed file `show --files` prints.
-// Big SQL seeds run to megabytes; the point of --files is learning the
-// shape, not dumping the corpus.
-const showFileCap = 200 << 10
 
 var profilesShowCmd = &cobra.Command{
 	Use:   "show <name>",
 	Short: "Show a profile's full definition",
-	Long: `Show prints one profile: metadata, seed steps, the exact create
-command, and (with --files) the seed files themselves. --files is how
-you learn a fixture format from a working example before authoring
-your own — e.g. the gmail mock's JSON shape:
+	Long: `Show prints one profile: metadata, seed steps, and the exact create
+command. Learning a seed/fixture format from a working example is a
+two-step read designed to stay small:
 
-  fab profiles show support-inbox --files`,
+  fab profiles show support-inbox --files             # manifest: file names + sizes
+  fab profiles show support-inbox --file seed.json    # ONE file, first 100 lines
+  fab profiles show support-inbox --file seed.json --head 400   # more if needed
+
+--file prints to stdout only (no metadata), so it pipes cleanly.
+--head 0 removes the line cap.`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		f, err := output.Resolve(outputFlag)
@@ -74,6 +79,12 @@ your own — e.g. the gmail mock's JSON shape:
 		if err != nil {
 			return err
 		}
+		// --file short-circuits everything: one seed file's content,
+		// head-capped, no envelope. Same bytes in every output format —
+		// content is content.
+		if profilesShowFile != "" {
+			return printSeedFile(os.Stdout, p, profilesShowFile, profilesShowHead)
+		}
 		if f == output.FormatJSON {
 			entry := profile.Entry{
 				Name: p.Name, Engine: p.Engine, Slug: slug, Label: p.Label,
@@ -82,7 +93,7 @@ your own — e.g. the gmail mock's JSON shape:
 			if !profilesShowFiles {
 				return output.Profiles(os.Stdout, []profile.Entry{entry}, f)
 			}
-			files, err := readSeedFiles(p)
+			manifest, err := seedManifest(p)
 			if err != nil {
 				return err
 			}
@@ -90,7 +101,8 @@ your own — e.g. the gmail mock's JSON shape:
 				"profile": entry,
 				"create":  fmt.Sprintf("fab create %s -p %s", slug, args[0]),
 				"env":     p.Env,
-				"files":   files,
+				"files":   manifest,
+				"next":    fmt.Sprintf("fab profiles show %s --file <name>  # print one file (first %d lines; --head N for more)", args[0], defaultShowHead),
 			})
 		}
 		fmt.Fprintf(os.Stdout, "name:        %s\n", p.Name)
@@ -132,42 +144,103 @@ your own — e.g. the gmail mock's JSON shape:
 			fmt.Fprintf(os.Stdout, "\ndescription:\n%s\n", p.Description)
 		}
 		if profilesShowFiles {
-			for _, s := range p.Seed {
-				data, err := p.ReadSeed(s)
-				if err != nil {
-					return fmt.Errorf("read seed %q: %w", s.File, err)
-				}
-				fmt.Fprintf(os.Stdout, "\n--- %s (%s, %d bytes) ---\n", s.File, s.Type, len(data))
-				if len(data) > showFileCap {
-					os.Stdout.Write(data[:showFileCap])
-					fmt.Fprintf(os.Stdout, "\n... truncated at %d of %d bytes ...\n", showFileCap, len(data))
-					continue
-				}
-				os.Stdout.Write(data)
-				if len(data) > 0 && data[len(data)-1] != '\n' {
-					fmt.Fprintln(os.Stdout)
-				}
+			manifest, err := seedManifest(p)
+			if err != nil {
+				return err
 			}
+			fmt.Fprintln(os.Stdout, "\nfiles:")
+			for _, m := range manifest {
+				fmt.Fprintf(os.Stdout, "  %-28s %-14s %8d bytes  %6d lines\n", m.File, m.Type, m.Bytes, m.Lines)
+			}
+			fmt.Fprintf(os.Stdout, "\nnext: fab profiles show %s --file <name>   # print one file (first %d lines; --head N for more)\n", args[0], defaultShowHead)
 		}
 		return nil
 	},
 }
 
-// readSeedFiles returns seed contents keyed by filename for the JSON
-// --files view, applying the same per-file cap as the table view.
-func readSeedFiles(p *profile.Profile) (map[string]string, error) {
-	files := map[string]string{}
+// defaultShowHead is the default line cap for `show --file`. Seed
+// corpora run to megabytes; the first hundred lines carry the shape,
+// and the caller can always raise the cap explicitly.
+const defaultShowHead = 100
+
+// seedFileInfo is one row of the --files manifest: enough to decide
+// which file to open and how big a read that is, without the content.
+type seedFileInfo struct {
+	File  string `json:"file"`
+	Type  string `json:"type"`
+	Bytes int    `json:"bytes"`
+	Lines int    `json:"lines"`
+}
+
+func seedManifest(p *profile.Profile) ([]seedFileInfo, error) {
+	manifest := []seedFileInfo{}
 	for _, s := range p.Seed {
 		data, err := p.ReadSeed(s)
 		if err != nil {
 			return nil, fmt.Errorf("read seed %q: %w", s.File, err)
 		}
-		if len(data) > showFileCap {
-			data = data[:showFileCap]
-		}
-		files[s.File] = string(data)
+		manifest = append(manifest, seedFileInfo{
+			File:  s.File,
+			Type:  s.Type,
+			Bytes: len(data),
+			Lines: bytes.Count(data, []byte("\n")),
+		})
 	}
-	return files, nil
+	return manifest, nil
+}
+
+// printSeedFile writes one seed file's content, capped at head lines
+// (0 = unlimited). The cap note goes to stderr so stdout stays clean
+// for piping/parsing.
+func printSeedFile(w io.Writer, p *profile.Profile, name string, head int) error {
+	for _, s := range p.Seed {
+		if s.File != name {
+			continue
+		}
+		data, err := p.ReadSeed(s)
+		if err != nil {
+			return fmt.Errorf("read seed %q: %w", name, err)
+		}
+		total := bytes.Count(data, []byte("\n"))
+		if head > 0 {
+			if idx := nthLineEnd(data, head); idx >= 0 {
+				data = data[:idx+1]
+				fmt.Fprintf(os.Stderr, "fab: showing first %d of %d lines — pass --head %d (or --head 0 for all) for more\n",
+					head, total, min(total, head*4))
+			}
+		}
+		if _, err := w.Write(data); err != nil {
+			return err
+		}
+		if len(data) > 0 && data[len(data)-1] != '\n' {
+			fmt.Fprintln(w)
+		}
+		return nil
+	}
+	var have []string
+	for _, s := range p.Seed {
+		have = append(have, s.File)
+	}
+	return fmt.Errorf("no seed file %q in profile %q (have: %s)", name, p.Name, strings.Join(have, ", "))
+}
+
+// nthLineEnd returns the index of the byte ending the n-th line, or -1
+// if the data has fewer than n+1 lines (i.e. no truncation needed).
+func nthLineEnd(data []byte, n int) int {
+	count := 0
+	for i, b := range data {
+		if b != '\n' {
+			continue
+		}
+		count++
+		if count == n {
+			if i == len(data)-1 {
+				return -1 // cap lands exactly at EOF — nothing cut
+			}
+			return i
+		}
+	}
+	return -1
 }
 
 var profilesSchemaCmd = &cobra.Command{
@@ -211,7 +284,14 @@ httpmock engine (` + strings.Join(httpmock.KnownServices, ", ") + `):
   fab profiles init gmail my-inbox      # httpmock-backed Gmail fixture
 
 For mock services, learn the fixture shape from a built-in example,
-e.g.` + " `fab profiles show support-inbox --files` " + `for gmail.
+e.g.` + " `fab profiles show support-inbox --file seed.json` " + `for gmail.
+
+--from copies an existing profile (built-in or user) under the same
+slug as your starting point instead of a blank skeleton — the fastest
+route from a working example to your own:
+
+  fab profiles init linear my-board --from sprint-board
+  fab profiles init postgres my-app --from stripe-payments
 
 A user-authored profile shadows a built-in with the same name.`,
 	Args: cobra.ExactArgs(2),
@@ -242,10 +322,20 @@ A user-authored profile shadows a built-in with the same name.`,
 		} else if !errors.Is(err, fs.ErrNotExist) {
 			return fmt.Errorf("stat %s: %w", dir, err)
 		}
+
+		if profilesInitFrom != "" {
+			if err := initFromExample(slug, profilesInitFrom, name, dir); err != nil {
+				return err
+			}
+			fmt.Fprintf(os.Stderr, "fab: copied profile %q to:\n", profilesInitFrom)
+			fmt.Fprintln(os.Stdout, dir)
+			fmt.Fprintf(os.Stderr, "fab: next: edit the seed files, then run `fab create %s -p %s`.\n", slug, name)
+			return nil
+		}
+
 		if err := os.MkdirAll(dir, 0o755); err != nil {
 			return fmt.Errorf("mkdir %s: %w", dir, err)
 		}
-
 		var body string
 		if mockService != "" {
 			body = starterMockProfileYAML(mockService, name)
@@ -264,7 +354,8 @@ A user-authored profile shadows a built-in with the same name.`,
 		fmt.Fprintln(os.Stdout, dir)
 		if mockService != "" {
 			if example, ok := mockServiceExamples[mockService]; ok {
-				fmt.Fprintf(os.Stderr, "fab: next: fill seed.json — see the fixture shape with `fab profiles show %s --files`,\n", example)
+				fmt.Fprintf(os.Stderr, "fab: next: fill seed.json — see the fixture shape with `fab profiles show %s --file seed.json`,\n", example)
+				fmt.Fprintf(os.Stderr, "fab:       or start from the working example: `fab profiles init %s %s --from %s`.\n", slug, name, example)
 			} else {
 				fmt.Fprintf(os.Stderr, "fab: next: fill seed.json — the fixture shape is documented in mockd/services/%s,\n", mockService)
 			}
@@ -274,6 +365,60 @@ A user-authored profile shadows a built-in with the same name.`,
 		fmt.Fprintf(os.Stderr, "fab:       then run `fab create %s -p %s`.\n", slug, name)
 		return nil
 	},
+}
+
+var profilesInitFrom string
+
+// initFromExample copies an existing profile (resolved under the same
+// slug) into dir, rewriting its `name:` so the copy lists and loads
+// under the new name.
+func initFromExample(slug, from, name, dir string) error {
+	src, err := profile.LoadForEngine(slug, from)
+	if err != nil {
+		return fmt.Errorf("--from %q: %w", from, err)
+	}
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return fmt.Errorf("mkdir %s: %w", dir, err)
+	}
+	err = fs.WalkDir(src.FS, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			if path == "." {
+				return nil
+			}
+			return os.MkdirAll(filepath.Join(dir, filepath.FromSlash(path)), 0o755)
+		}
+		data, err := fs.ReadFile(src.FS, path)
+		if err != nil {
+			return err
+		}
+		if path == "profile.yaml" {
+			data = rewriteProfileName(data, name)
+		}
+		return os.WriteFile(filepath.Join(dir, filepath.FromSlash(path)), data, 0o644)
+	})
+	if err != nil {
+		os.RemoveAll(dir) // don't leave a half-copied profile behind
+		return fmt.Errorf("copy profile %q: %w", from, err)
+	}
+	return nil
+}
+
+// rewriteProfileName swaps the top-level `name:` value in a
+// profile.yaml, textually, so comments and formatting survive. Only
+// the first name: at column 0 is the profile name; nested keys are
+// indented.
+func rewriteProfileName(data []byte, name string) []byte {
+	lines := bytes.Split(data, []byte("\n"))
+	for i, line := range lines {
+		if bytes.HasPrefix(line, []byte("name:")) {
+			lines[i] = []byte("name: " + name)
+			break
+		}
+	}
+	return bytes.Join(lines, []byte("\n"))
 }
 
 // mockServiceExamples maps a mock service to the built-in profile that
@@ -319,7 +464,7 @@ func starterMockProfileYAML(service, name string) string {
 	b.WriteString("  - { type: mock-fixture, file: seed.json }\n")
 	fmt.Fprintf(&b, "# Fixture shape: see mockd/services/%s (package comment)", service)
 	if example, ok := mockServiceExamples[service]; ok {
-		fmt.Fprintf(&b, ",\n# or a working example: fab profiles show %s --files", example)
+		fmt.Fprintf(&b, ",\n# or a working example: fab profiles show %s --file seed.json", example)
 	}
 	b.WriteString("\ntags: []\n")
 	return b.String()
@@ -356,7 +501,7 @@ func profileSchemaYAML(infos []engine.Info) string {
 	b.WriteString("  KEY: value               # ssh: passed through to the container.\n")
 	b.WriteString("  # httpmock only — REQUIRED: which mock service this container serves.\n")
 	b.WriteString("  # MOCK_SERVICE: " + strings.Join(httpmock.KnownServices, " | ") + "\n")
-	b.WriteString("  # Fixture shapes: `fab profiles show <example> --files` (e.g. support-inbox,\n")
+	b.WriteString("  # Fixture shapes: `fab profiles show <example> --file seed.json` (e.g. support-inbox,\n")
 	b.WriteString("  # sprint-board, reviews-demo) or mockd/services/<service> package docs.\n")
 	b.WriteString("healthcheck:\n")
 	b.WriteString("  timeout: 180s            # how long fab waits for the container to be ready.\n")
@@ -421,7 +566,10 @@ func suggestedExt(seedType string) string {
 func init() {
 	profilesCmd.Flags().StringVar(&profilesEngine, "engine", "", "Filter by catalog slug: an engine ("+supportedEngines()+") or a mock service ("+joinComma(httpmock.KnownServices)+")")
 	profilesShowCmd.Flags().StringVar(&profilesShowEngine, "engine", "", "Disambiguate when the profile name exists across engines (e.g. `empty`)")
-	profilesShowCmd.Flags().BoolVar(&profilesShowFiles, "files", false, "Also print the profile's seed files (learn a fixture shape from a working example)")
+	profilesShowCmd.Flags().BoolVar(&profilesShowFiles, "files", false, "List the profile's seed files (names, types, sizes — not contents)")
+	profilesShowCmd.Flags().StringVar(&profilesShowFile, "file", "", "Print ONE seed file's content to stdout (head-capped; see --head)")
+	profilesShowCmd.Flags().IntVar(&profilesShowHead, "head", defaultShowHead, "Max lines --file prints (0 = no cap)")
+	profilesInitCmd.Flags().StringVar(&profilesInitFrom, "from", "", "Copy an existing profile (same slug) as the starting point instead of a blank skeleton")
 	profilesCmd.AddCommand(profilesShowCmd)
 	profilesCmd.AddCommand(profilesSchemaCmd)
 	profilesCmd.AddCommand(profilesInitCmd)

@@ -2,8 +2,23 @@
 
 The built-in catalog is generic on purpose. Organizations usually have
 profiles that shouldn't be public — fixtures shaped like internal
-schemas, seeded with product-specific scenarios. There are two ways to
-ship them.
+schemas, seeded with product-specific scenarios. There are three ways
+to ship them, cheapest first.
+
+## Option 0: a template-pack repo (`fab profiles add`)
+
+Keep profiles in any repo laid out like the catalog
+(`<slug>/<name>/profile.yaml`, optionally under `profiles/`) and
+install from it directly — private repos work with `GITHUB_TOKEN`:
+
+```bash
+fab profiles add acme/fab-profiles --all
+fab profiles add acme/fab-profiles#v1.2.0 --profile checkout-db
+```
+
+This is a copy at install time (degit-style): update by re-running
+with `--force`. Right when profiles change often and you don't want a
+custom binary.
 
 ## Option A: a profiles directory (no code)
 

@@ -108,15 +108,29 @@ Every command takes `-o {json,table,env,url}` — `json` is the default on a pip
 
 ## Bring your own profiles
 
-A profile is a directory: a `profile.yaml` plus seed files that run at boot (SQL for Postgres/MySQL, JS for Mongo, redis-cli lines, a JSON fixture for httpmock services, ...).
+A profile is a directory: a `profile.yaml` plus seed files that run at boot (SQL for Postgres/MySQL, JS for Mongo, redis-cli lines, a JSON fixture for httpmock services, ...). The CLI teaches the whole authoring loop — no source reading required:
 
 ```bash
-fab profiles init postgres my-app    # scaffolds ~/.config/fab/profiles/postgres/my-app/
-fab profiles schema                  # the commented profile.yaml reference
-fab create postgres -p my-app
+fab profiles schema                            # the commented profile.yaml reference
+fab profiles show support-inbox --files        # a working example's seed files (names + sizes)
+fab profiles show support-inbox --file seed.json   # one file, head-capped — safe for agents
+fab profiles init linear my-board --from sprint-board   # start from the working example
+fab create linear -p my-board
 ```
 
 User profiles shadow built-ins with the same name; set `FAB_PROFILES_DIR` to relocate the directory.
+
+### Template packs
+
+Any GitHub repo (or local directory) laid out like the built-in catalog — `<slug>/<name>/profile.yaml` — is an installable profile pack, degit-style (one tarball, no git, no history):
+
+```bash
+fab profiles add acme/fab-profiles --list            # discover
+fab profiles add acme/fab-profiles --profile checkout-db
+fab profiles add acme/fab-profiles#v1.2.0 --all      # pin a tag; GITHUB_TOKEN for private repos
+```
+
+Installed profiles land in your user dir and immediately work with `fab create`. This makes profile packs shareable the way `npx skills add owner/repo` shares agent skills.
 
 Organizations can also ship a **private profile catalog** as code: embed a directory in your own small wrapper binary and register it with `profile.RegisterCatalog` — your private profiles appear alongside the built-ins. See [docs/private-catalogs.md](docs/private-catalogs.md).
 

@@ -1,13 +1,20 @@
 # Authoring profiles
 
 A profile is a directory: `profile.yaml` plus the seed files it
-references. Scaffold one with:
+references. The CLI carries the whole loop:
 
 ```bash
-fab profiles init postgres my-app   # → ~/.config/fab/profiles/postgres/my-app/
 fab profiles schema                 # commented schema reference
 fab engines -o json                 # per-engine seed types + defaults
+fab profiles show stripe-payments --files            # a working example's file manifest
+fab profiles show stripe-payments --file 00-schema.sql   # one file, head-capped (--head N)
+fab profiles init postgres my-app                    # blank scaffold, or:
+fab profiles init postgres my-app --from stripe-payments # copy the example and edit
 ```
+
+`show --file` is deliberately bounded (first 100 lines by default) so
+reading examples stays cheap for agents; raise with `--head N` or
+`--head 0`.
 
 ## profile.yaml
 
@@ -55,6 +62,10 @@ must stay inside the profile directory (no `..`, no absolute paths).
   `//go:embed` line when you introduce a new engine/service dir.
 - **Registered catalogs** — private packs shipped by downstream
   binaries; see [private-catalogs.md](private-catalogs.md).
+- **Template packs** — any GitHub repo or local dir with the
+  `<slug>/<name>/profile.yaml` layout installs into the user dir via
+  `fab profiles add <owner>/<repo>[#ref] [--list|--profile <n>|--all]`
+  (degit-style tarball; `GITHUB_TOKEN` for private repos).
 
 The `-p` argument to `fab create <slug> -p <name>` is resolved by
 directory: `<slug>/<name>/profile.yaml`. For httpmock services the
