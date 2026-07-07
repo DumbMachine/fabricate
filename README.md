@@ -78,19 +78,40 @@ curl -s "$FAB_URL/graphql" -d '{
 }'
 ```
 
-And `support-inbox` is a Gmail-API mailbox with a support backlog to triage:
+And `support-inbox` is a Gmail-API mailbox with a support backlog to triage. Here's the statefulness in one sitting — every write is visible in the next read:
 
 ```bash
 fab create gmail -p support-inbox
 eval "$(fab creds support-inbox --env)"
 
-curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread"          # the backlog
-curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge"      # read the angry thread
-# messages.send appends a reply to the thread; modify clears UNREAD —
-# and the next is:unread search really shrinks.
+# The backlog: 5 unread, including an angry double-charge thread.
+curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread"
+# → { "messages": [...], "resultSizeEstimate": 5 }
+
+curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge"
+# → 2 messages: the complaint + an impatient follow-up
+
+# Reply (messages.send takes base64url RFC 822, like the real API):
+RAW=$(printf 'To: dana@northwind.io\nSubject: Re: Charged twice for March invoice\n\nRefund for the duplicate charge is on its way — 3-5 business days.' \
+      | base64 | tr '+/' '-_' | tr -d '=\n')
+curl -s -X POST "$FAB_URL/gmail/v1/users/me/messages/send" \
+     -d "{\"raw\": \"$RAW\", \"threadId\": \"thr-doublecharge\"}"
+# → { "id": "msg-sent-0011", "threadId": "thr-doublecharge", "labelIds": ["SENT"] }
+
+# The write took: the thread now has 3 messages, the last one yours.
+curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge"
+# → 3 messages; last From: support@acme.dev
+
+# Mark the follow-up handled...
+curl -s -X POST "$FAB_URL/gmail/v1/users/me/messages/msg-0002/modify" \
+     -d '{"removeLabelIds": ["UNREAD"]}'
+
+# ...and the backlog really shrinks.
+curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread"
+# → { ..., "resultSizeEstimate": 4 }
 ```
 
-Because state lives in SQLite inside the container, the full agent loop — *read, decide, write, re-read* — works against the mock exactly like it would against the real service.
+Because state lives in SQLite inside the container, the full agent loop — *read, decide, write, re-read* — works against the mock exactly like it would against the real service. (The outputs above are captured from a real run, not mocked-up.)
 
 ## Everyday commands
 
@@ -151,8 +172,6 @@ make check     # fmt + vet + unit tests, no Docker, seconds
 make e2e       # real containers through the real CLI (needs Docker + make images)
 make verify    # both — run before calling anything done
 ```
-
-[CLAUDE.md](CLAUDE.md) documents the repo layout and the verification loops in detail (it doubles as the guide for AI coding agents working on this repo).
 
 ## License
 
