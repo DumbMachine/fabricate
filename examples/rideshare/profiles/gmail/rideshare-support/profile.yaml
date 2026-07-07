@@ -1,0 +1,22 @@
+name: rideshare-support
+engine: httpmock
+label: "Rideshare support inbox — payout complaints piling up"
+description: |
+  Wheelio's support mailbox (examples/rideshare suite). Since the
+  payments-webhook broke on 2026-07-03, driver payout complaints and
+  rider "payment still processing" emails have been piling up unread —
+  they cite real trips from the rideshare-core database (TR-1042,
+  TR-1049), so an agent can cross-check the claims with SQL.
+
+  Triage loop: list is:unread → read a thread → verify the trip in
+  postgres → reply (messages.send) → clear UNREAD (modify) → watch the
+  backlog shrink.
+
+  Requires the fabricate httpmock image (`make images` once).
+env:
+  MOCK_SERVICE: gmail
+defaults:
+  password: fab-wheelio-support
+seed:
+  - { type: mock-fixture, file: seed.json }
+tags: [example, rideshare, support, gmail, stateful]

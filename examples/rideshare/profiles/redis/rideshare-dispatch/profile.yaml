@@ -1,0 +1,17 @@
+name: rideshare-dispatch
+engine: redis
+label: "Rideshare dispatch cache — live drivers, surge, queue"
+description: |
+  Wheelio's dispatch state (examples/rideshare suite): live driver
+  positions as a GEO set, per-zone surge multipliers, the dispatch
+  queue, and the two in-flight trips from the core DB (TR-1055,
+  TR-1056) as hashes.
+
+  What to poke:
+    GEOSEARCH drivers:live FROMLONLAT -122.4194 37.7749 BYRADIUS 5 km ASC
+    ZRANGE surge:zones 0 -1 REV WITHSCORES     -- soma is surging (1.8)
+    LRANGE queue:dispatch 0 -1                 -- waiting requests
+    HGETALL trip:active:TR-1056                -- matches the postgres row
+tags: [example, rideshare, dispatch, geo]
+seed:
+  - { type: redis-cli, file: 00-dispatch.redis }

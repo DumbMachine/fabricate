@@ -173,8 +173,13 @@ func runCreate(cmd *cobra.Command, args []string) error {
 	}
 	fmt.Fprintf(os.Stderr, "fab: ready in %s\n", time.Since(start).Round(time.Millisecond))
 
-	store.Add(inst)
-	if err := store.Save(); err != nil {
+	// Record under the state lock — parallel `fab create` calls are
+	// normal in scripts, and an unlocked read-modify-write drops the
+	// slower writer's record (the container then leaks).
+	if err := state.Update(func(s *state.Store) error {
+		s.Add(inst)
+		return nil
+	}); err != nil {
 		return fmt.Errorf("save state (instance is running, ID=%s): %w", inst.ArtifactKey(), err)
 	}
 

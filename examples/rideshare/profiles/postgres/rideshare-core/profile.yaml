@@ -1,0 +1,28 @@
+name: rideshare-core
+engine: postgres
+label: "Rideshare core DB — trips, payments, and a payout gap"
+description: |
+  The transactional core of "Wheelio", a small rideshare: riders,
+  drivers, trips, payments. Part of the examples/rideshare suite —
+  every resource in the suite tells one story:
+
+  On 2026-07-03 ~14:05 UTC the payments-webhook v2.4.1 rollout wedged
+  (the image tag was never pushed). Since then completed trips get no
+  payment capture: 14 trips sit completed with payments stuck
+  'pending', and driver payouts show a gap.
+
+  What to find:
+    SELECT count(*) FROM v_unpaid_completed_trips;          -- 14
+    SELECT min(completed_at) FROM v_unpaid_completed_trips; -- right after the deploy
+    SELECT * FROM v_driver_payout_gap ORDER BY missing_cents DESC;
+
+  Cross-references: support emails (gmail/rideshare-support) cite trips
+  TR-1042 and TR-1049; the ops board (linear/rideshare-ops) tracks the
+  incident; k8s/rideshare.yaml contains the actually-broken Deployment.
+defaults:
+  database: wheelio
+  username: postgres
+seed:
+  - { type: sql, file: 00-schema.sql }
+  - { type: sql, file: 10-seed.sql }
+tags: [example, rideshare, payments, incident]

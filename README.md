@@ -117,6 +117,18 @@ curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread" | jq .resultSizeEstima
 
 Because state lives in SQLite inside the container, the full agent loop — *read, decide, write, re-read* — works against the mock exactly like it would against the real service. (Every output above is captured from a real run, not mocked-up.)
 
+## A whole company in one incident
+
+[`examples/rideshare/`](examples/rideshare/) replicates a small rideshare's entire surface — Postgres core, Redis dispatch cache, Gmail support inbox, Linear ops board, and Kubernetes manifests with one **intentionally broken** Deployment — all seeded with the *same* incident, cross-referenced down to individual trip IDs. `./up.sh` and start investigating like on-call would.
+
+## Agent skills
+
+The [`skills/`](skills/) directory ships [agent skills](https://github.com/vercel-labs/skills) for fab itself and each flagship mock (linear, gmail, google-play):
+
+```bash
+npx skills add dumbmachine/fabricate            # install into Claude Code / Cursor / ...
+```
+
 ## Everyday commands
 
 ```bash

@@ -57,7 +57,7 @@ func runDestroy(cmd *cobra.Command, args []string) error {
 		wg.Add(1)
 		go func(name string) {
 			defer wg.Done()
-			err := destroyOne(ctx, s, &mu, name)
+			err := destroyOne(ctx, s, name)
 			mu.Lock()
 			defer mu.Unlock()
 			if err != nil {
@@ -71,25 +71,29 @@ func runDestroy(cmd *cobra.Command, args []string) error {
 		}(name)
 	}
 	wg.Wait()
-
-	if err := s.Save(); err != nil {
-		return fmt.Errorf("save state: %w", err)
-	}
 	return firstErr
 }
 
-func destroyOne(ctx context.Context, s *state.Store, mu *sync.Mutex, name string) error {
-	mu.Lock()
+// destroyOne tears down one instance and drops its record via
+// state.Update — per-name, under the state lock, so parallel destroys
+// (and concurrent creates in other processes) never clobber each
+// other's records with a stale snapshot.
+func destroyOne(ctx context.Context, s *state.Store, name string) error {
 	inst := s.Find(name)
-	mu.Unlock()
 	if inst == nil {
 		return fmt.Errorf("not found")
 	}
+	removeRecord := func() error {
+		return state.Update(func(st *state.Store) error {
+			st.Remove(name)
+			return nil
+		})
+	}
 	eng, err := resolveEngine(inst.Engine)
 	if err != nil && inst.ProviderTarget() == fabtarget.Docker {
-		mu.Lock()
-		s.Remove(name)
-		mu.Unlock()
+		if rmErr := removeRecord(); rmErr != nil {
+			return rmErr
+		}
 		return fmt.Errorf("%w (state entry removed; container %s may need manual `docker rm -f`)", err, inst.ContainerID)
 	}
 	switch inst.ProviderTarget() {
@@ -104,8 +108,5 @@ func destroyOne(ctx context.Context, s *state.Store, mu *sync.Mutex, name string
 	default:
 		return fmt.Errorf("target %q is not supported", inst.ProviderTarget())
 	}
-	mu.Lock()
-	s.Remove(name)
-	mu.Unlock()
-	return nil
+	return removeRecord()
 }

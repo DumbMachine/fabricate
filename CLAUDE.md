@@ -25,6 +25,8 @@ mockd/            OWN MODULE — the httpmock server that runs inside the contai
   mock/           framework: Service, router ({param}, :verb), Ctx, SQLite store
   services/       one package per mocked API (linear, gmail, googleplay, ...)
 e2e/              build-tagged (`e2e`) tests driving the real binary + real Docker
+skills/           agent skills (SKILL.md per topic; installable via `npx skills add`)
+examples/         full-suite scenarios (rideshare: 4 resources + k8s, one incident)
 ```
 
 Key indirections:
@@ -81,6 +83,8 @@ observe it passes.
    top-level dir to `profiles/embed.go`'s `//go:embed` line.
 5. `make check`, then `make images && make e2e` (add an e2e case if the
    service is a flagship like gmail/linear).
+6. Flagship services also get an agent skill: `skills/<service>/SKILL.md`
+   (endpoints, the stateful loop, fixture shape — copy skills/gmail).
 
 ### An engine
 

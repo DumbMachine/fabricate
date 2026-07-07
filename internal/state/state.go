@@ -1,8 +1,9 @@
 // Package state persists the set of live fab instances to
 // ~/.config/fab/state.json so the CLI can list/destroy across
-// invocations. The store is a single JSON file under a flock for
-// the duration of any read-modify-write; fab is a single-user
-// local tool, contention is rare.
+// invocations. Mutations go through Update, which holds an exclusive
+// flock around the whole read-modify-write — concurrent `fab create`
+// calls (parallel provisioning is normal in scripts) must not lose
+// each other's records to a last-writer-wins race.
 package state
 
 import (
@@ -57,6 +58,30 @@ func Load() (*Store, error) {
 		s.Version = currentVersion
 	}
 	return &s, nil
+}
+
+// Update applies fn to the freshest on-disk store under an exclusive
+// file lock, then saves. This is the only safe way to mutate state:
+// Load + mutate + Save without the lock loses records when two fab
+// processes interleave (each Save writes its own stale snapshot).
+func Update(fn func(*Store) error) error {
+	p := Path()
+	if err := os.MkdirAll(filepath.Dir(p), 0o700); err != nil {
+		return fmt.Errorf("mkdir state dir: %w", err)
+	}
+	unlock, err := lockFile(p + ".lock")
+	if err != nil {
+		return fmt.Errorf("lock state: %w", err)
+	}
+	defer unlock()
+	s, err := Load()
+	if err != nil {
+		return err
+	}
+	if err := fn(s); err != nil {
+		return err
+	}
+	return s.Save()
 }
 
 // Save writes the store atomically (write to temp + rename).
