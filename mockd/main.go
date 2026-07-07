@@ -32,7 +32,9 @@ import (
 )
 
 // registry maps a MOCK_SERVICE slug to its factory. Add a service by importing
-// its package and adding an entry — no other wiring.
+// its package and adding an entry — plus the same slug in
+// engine/httpmock's KnownServices, which is the CLI's discovery copy
+// of this map (the two builds can't import each other).
 var registry = map[string]func() *mock.Service{
 	"google-play": googleplay.New,
 	"gmail":       gmail.New,

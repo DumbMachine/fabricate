@@ -198,6 +198,11 @@ func writeJSON(w io.Writer, v any) error {
 	return enc.Encode(v)
 }
 
+// JSON writes any value in the CLI's standard indented-JSON form.
+// Exposed for commands whose JSON payload isn't one of the canned
+// shapes above (e.g. `profiles show --files`).
+func JSON(w io.Writer, v any) error { return writeJSON(w, v) }
+
 // writeCredsEnv emits the FAB_* baseline plus engine-conventional
 // env vars (PGHOST, MYSQL_*, MONGO_URL, REDIS_URL, etc.) so a user
 // can `eval "$(fab creds X --env)"` and have the engine's stock

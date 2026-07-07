@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/dumbmachine/fabricate/engine"
@@ -49,6 +50,17 @@ const (
 	defaultToken = "fab-mock-token"
 )
 
+// KnownServices lists the MOCK_SERVICE slugs the httpmock image serves.
+// It MUST mirror the registry in mockd/main.go (the registry itself is
+// compiled into the separately-built image, so the CLI keeps this copy
+// for discovery: `fab profiles init <service>`, schema hints, errors).
+// Each service documents its fixture shape in its package comment
+// under mockd/services/<slug>/.
+var KnownServices = []string{
+	"cloudflare", "fly", "gmail", "google-play", "linear",
+	"railway", "render", "supabase", "vercel",
+}
+
 // New returns an httpmock engine.
 func New() engine.Engine { return &eng{} }
 
@@ -68,7 +80,7 @@ func (eng) Info() engine.Info {
 		DefaultImage:   imageDefault(),
 		DefaultPort:    8080,
 		SupportedSeeds: []string{profile.SeedTypeMockFixture},
-		Description:    "Stateful HTTP-API mock. Hosts SQLite-backed mock services (env.MOCK_SERVICE picks one), seeded from a JSON fixture; writes take effect. Returns base URL + bearer token. Backs any HTTP/OpenAPI resource (Play, Cloudflare, …).",
+		Description:    "Stateful HTTP-API mock. Hosts SQLite-backed mock services (env.MOCK_SERVICE picks one: " + strings.Join(KnownServices, ", ") + "), seeded from a JSON fixture; writes take effect. Returns base URL + bearer token.",
 	}
 }
 
