@@ -69,7 +69,7 @@ kubectl -n rideshare set image deploy/payments-webhook webhook=nginx:1.27-alpine
 kubectl -n rideshare rollout status deploy/payments-webhook                        # → Ready
 
 # 5. Close the loop — these writes stick:
-curl -s "$FAB_URL/graphql" -d '{"query":"mutation($id: String!, $in: IssueUpdateInput!){ issueUpdate(id: $id, input: $in){ success } }","variables":{"id":"OPS-301","in":{"stateId":"st-monitor"}}}'
+curl -s "$FAB_URL/graphql" -d '{"query":"mutation($id: String!, $input: IssueUpdateInput!){ issueUpdate(id: $id, input: $input){ success } }","variables":{"id":"OPS-301","input":{"stateId":"st-monitor"}}}'
 RAW=$(printf 'To: driver11@example.net\nSubject: Re: Payout missing for trip TR-1042\n\nFound it — a bad deploy on our side stopped payout processing. Fixed; your TR-1042 and TR-1054 payouts land within 24h.' | base64 | tr '+/' '-_' | tr -d '=\n')
 eval "$(fab creds rideshare-support --env)"
 curl -s -X POST "$FAB_URL/gmail/v1/users/me/messages/send" -d "{\"raw\": \"$RAW\", \"threadId\": \"thr-payout-drv11\"}"

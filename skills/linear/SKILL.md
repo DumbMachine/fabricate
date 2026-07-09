@@ -38,25 +38,32 @@ Mutations: `issueCreate(input:)`, `issueUpdate(id:, input:)`,
 Anything else returns a GraphQL error — the mock answers what real
 clients send, it is not a full executor. Auth is not validated.
 
+The mock dispatches on the query text and reads variables **by name**,
+not by resolving the GraphQL argument mapping. So the variables must be
+named exactly `filter`, `id`, and `input` — a query written as
+`issues(filter: $f)` with a `$f` variable silently gets no filter (it
+returns everything); a mutation with `input: $in` fails with
+`"id and input are required"`. Name them `$filter`/`$id`/`$input`.
+
 ## Examples
 
 ```bash
-# Urgent and unassigned?
+# Urgent and unassigned? (variable MUST be named `filter`)
 curl -s "$FAB_URL/graphql" -d '{
-  "query": "query($f: IssueFilter) { issues(filter: $f) { nodes { identifier title } } }",
-  "variables": {"f": {"assignee": {"null": true}, "priority": {"lte": 1}}}
+  "query": "query($filter: IssueFilter) { issues(filter: $filter) { nodes { identifier title } } }",
+  "variables": {"filter": {"assignee": {"null": true}, "priority": {"lte": 1}}}
 }'
 
 # Take it: assign + move (stateIds come from a workflowStates query).
 curl -s "$FAB_URL/graphql" -d '{
-  "query": "mutation($id: String!, $in: IssueUpdateInput!) { issueUpdate(id: $id, input: $in) { success issue { state { name } } } }",
-  "variables": {"id": "ENG-101", "in": {"assigneeId": "usr-val", "stateId": "st-progress"}}
+  "query": "mutation($id: String!, $input: IssueUpdateInput!) { issueUpdate(id: $id, input: $input) { success issue { state { name } } } }",
+  "variables": {"id": "ENG-101", "input": {"assigneeId": "usr-val", "stateId": "st-progress"}}
 }'
 
 # Create a follow-up; response carries the fresh identifier.
 curl -s "$FAB_URL/graphql" -d '{
-  "query": "mutation($in: IssueCreateInput!) { issueCreate(input: $in) { success issue { identifier } } }",
-  "variables": {"in": {"teamId": "team-eng", "title": "Add pool metrics", "priority": 2}}
+  "query": "mutation($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { identifier } } }",
+  "variables": {"input": {"teamId": "team-eng", "title": "Add pool metrics", "priority": 2}}
 }'
 ```
 

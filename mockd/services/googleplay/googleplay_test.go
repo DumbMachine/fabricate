@@ -67,12 +67,18 @@ func TestAppsSearch(t *testing.T) {
 	var resp struct {
 		Apps []struct {
 			Name        string `json:"name"`
+			PackageName string `json:"packageName"`
 			DisplayName string `json:"displayName"`
 		} `json:"apps"`
 	}
 	json.Unmarshal(body, &resp)
 	if len(resp.Apps) != 2 || resp.Apps[0].Name != "apps/com.acme.fit" {
 		t.Fatalf("apps:search = %+v (want 2, sorted, name=apps/<pkg>)", resp.Apps)
+	}
+	// The real App resource carries name, packageName, and displayName —
+	// the official client reads packageName directly (see e2e/sdk).
+	if resp.Apps[0].PackageName != "com.acme.fit" {
+		t.Fatalf("apps:search[0].packageName = %q (want com.acme.fit)", resp.Apps[0].PackageName)
 	}
 }
 

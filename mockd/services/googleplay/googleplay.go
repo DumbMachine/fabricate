@@ -118,7 +118,10 @@ func listApps(c *mock.Ctx) error {
 		if err := rows.Scan(&pkg, &name); err != nil {
 			return c.GErr(500, "INTERNAL", err.Error())
 		}
-		apps = append(apps, map[string]any{"name": "apps/" + pkg, "displayName": name})
+		// The real App resource carries name ("apps/{app}"), packageName,
+		// and displayName — the official client and callers read
+		// packageName directly, so emit all three.
+		apps = append(apps, map[string]any{"name": "apps/" + pkg, "packageName": pkg, "displayName": name})
 	}
 	return c.JSON(200, map[string]any{"apps": apps})
 }
