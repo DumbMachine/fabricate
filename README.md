@@ -1,48 +1,83 @@
 # fabricate
 
-Real, seeded, throwaway resources for testing agents and apps — one command, credentials out.
+**A registry for live, stateful environments.** Instead of hand-rolling fixtures, pull a ready-made one from the catalog — a seeded database, a cache, a real API mock — spin it up in one command, point your code at the credentials, and throw it away.
 
 ```
 fab create postgres -p stripe-payments
 # → postgresql://postgres:Nd1aStFzdjcT4vCERuGjYpGH@localhost:62935/payments
 
-fab create linear -p sprint-board
-# → http://localhost:59320   (a stateful Linear API with a sprint mid-flight)
+fab create gmail -p support-inbox
+# → http://localhost:59320   (a stateful Gmail API with a support backlog)
 ```
 
-`fab` provisions two kinds of fixtures from declarative **profiles**:
+Each entry in the catalog is a declarative **profile** (`fab profiles` lists them). Two kinds of environment back them:
 
 - **Container engines** (via [testcontainers-go](https://github.com/testcontainers/testcontainers-go)): Postgres, MySQL, MongoDB, Redis, Prometheus, SSH hosts, k3s Kubernetes, a Moto-backed fake AWS.
-- **Stateful HTTP-API mocks** (the `httpmock` engine): real HTTP servers for services like Linear, Gmail, Google Play, Vercel, Cloudflare — backed by SQLite, so **writes actually take effect**. Reply to an email and the thread grows; create an issue and it gets the next `ENG-<n>`; the next read reflects it. It behaves like the real API, not a canned response.
+- **Stateful HTTP-API mocks** (the `httpmock` engine): real HTTP servers for REST APIs like Gmail, Google Play, Vercel, Cloudflare — backed by SQLite, so **writes actually take effect**. Reply to an email and the thread grows; the next read reflects it.
+
+The catalog is **open**: built-ins ship in the box, you can install more from any GitHub repo (`fab profiles add owner/repo`), and [contributions are welcome](#contributing). We aim for every mock to be **drop-in compatible with the service's official client SDK** — not just stateful but wire-compatible, verified end to end (Gmail and Google Play are checked against Google's `googleapis` client, writes included). GraphQL mocks (Linear, Railway) are **experimental** — they answer hand-written queries but don't yet satisfy the generated GraphQL SDKs.
 
 ## Why this exists
 
-If you're building an agent (or testing an app) that talks to databases, inboxes, and issue trackers, you need something real to talk to — but production is off-limits and live sandboxes are slow, rate-limited, and shared. Recorded HTTP fixtures break the moment your code does a write and expects to read it back.
+If you're building an agent (or testing an app) that talks to databases, inboxes, and issue trackers, you need something real to talk to. Standing those environments up yourself is the hard part — fiddly to seed, a chore to keep current, and painful to reproduce — and the moment you want a *different* scenario, or ten of them running at once, you're back to hand-rolling fixtures. Recorded HTTP fixtures don't cut it either: they break the instant your code does a write and expects to read it back.
 
-`fabricate` gives you the same *kinds* of resources with realistic state already inside: a payments database with two seeded reconciliation bugs, a support inbox with an angry follow-up waiting, a sprint board with an urgent unassigned issue. Spin one up, point your code at the credentials, throw it away.
+`fabricate` is that environment, on demand. One command spins up a real, seeded engineering resource — a Postgres/MySQL/Mongo database, a Redis cache, an SSH host, a Kubernetes cluster, or a stateful HTTP-API mock — with realistic state already inside (a payments database with two seeded reconciliation bugs, a support inbox with an angry follow-up waiting). Point your code at the credentials, exercise the full read/write loop, throw it away. Because each one is just a container, everything you already do with containers still works — snapshot one to pin a scenario, run N in parallel to cover more of them at once.
 
 ## Install
 
-Requires Go 1.25+ and a running Docker daemon (Docker Desktop, OrbStack, or Colima all work).
+```bash
+curl -fsSL https://raw.githubusercontent.com/dumbmachine/fabricate/main/install.sh | sh
+```
+
+That drops the `fab` binary on your PATH — nothing else to configure. The only runtime requirement is a running Docker daemon (Docker Desktop, OrbStack, or Colima all work); every engine's container image is pulled automatically on first use, including fabricate's own `httpmock` and `emulate` images.
+
+```bash
+fab create gmail -p support-inbox      # first run pulls the image, then you're in
+```
+
+<details>
+<summary><b>Build from source</b></summary>
+
+Requires Go 1.25+ and Docker.
 
 ```bash
 git clone https://github.com/dumbmachine/fabricate
 cd fabricate
 make install          # → ~/bin/fab
-make images           # builds the local images for the httpmock + github engines
+make images           # build the httpmock + emulate images locally
 ```
 
-Container engines (postgres, redis, ...) pull their images from Docker Hub on first use; only the `httpmock` and `github` engines run fabricate-built images, which `make images` builds locally. Published copies (and the `FAB_HTTPMOCK_IMAGE` / `FAB_EMULATE_IMAGE` overrides to use them) are described in [docs/releasing.md](docs/releasing.md).
+A source build defaults to the local `fabricate/httpmock:local` / `fabricate/emulate:local` images (what `make images` builds), so unlike the released binary it doesn't auto-pull them. Set `FAB_HTTPMOCK_IMAGE` / `FAB_EMULATE_IMAGE` to point at a published copy instead. Publishing details: [docs/releasing.md](docs/releasing.md).
 
-## Example 1: a seeded database (testcontainers-backed)
+</details>
+
+## Example 1: A seeded postgres
 
 `stripe-payments` is Stripe-shaped payments data — customers, payment intents, charges, refunds, a balance ledger — with two bugs planted in it:
 
 ```bash
-fab create postgres -p stripe-payments
-eval "$(fab creds stripe-payments --env)"    # sets DATABASE_URL, FAB_HOST, ...
+$ fab create postgres -p stripe-payments
 
-psql "$DATABASE_URL" <<'SQL'
+fab: starting postgres instance "stripe-payments" from profile "stripe-payments" on target docker...
+fab: provisioning container (timeout 5m0s)...
+fab: ready in 4.789s
+name        stripe-payments
+engine      postgres
+target      docker
+profile     stripe-payments
+image       postgres:16-alpine
+id          deab95cc88e6
+host        localhost
+port        63084
+username    payments
+password    uWBp5ZhiF7LwrIiDZLzGEDVH
+database    payments
+url         postgresql://payments:uWBp5ZhiF7LwrIiDZLzGEDVH@localhost:63084/payments?sslmode=disable
+created_at  2026-07-09T04:01:04Z
+
+$ eval "$(fab creds stripe-payments --env)"    # sets DATABASE_URL, FAB_HOST, ...
+
+$ psql "$DATABASE_URL" <<'SQL'
 -- Bug #1: a refund missing from the ledger.
 SELECT r.id, r.amount_cents
   FROM refunds r
@@ -51,43 +86,55 @@ SELECT r.id, r.amount_cents
  WHERE bt.id IS NULL;
 SQL
 
-fab destroy stripe-payments
+      id       | amount_cents
+---------------+--------------
+ re_0000000017 |          223
+(1 row)
+
+
+$ fab destroy stripe-payments
+
+fab: destroyed stripe-payments
 ```
 
 Other seeded databases: `pagila` (DVD rental), `finance-ledger` (unbalanced journals to find), `saas-analytics` (a BI warehouse with 250k events), `orders-slow` (MySQL with a missing index), `neobank-ledger` (MongoDB with structuring patterns to detect). Run `fab profiles` for the full catalog.
 
-## Example 2: a stateful API mock (httpmock-backed)
+## Example 2: Gmail
 
-`sprint-board` is a mock Linear workspace: one team, six workflow states, a sprint mid-flight with an urgent unassigned bug. It answers GraphQL on `/graphql`:
+> **GraphQL mocks (e.g. Linear) are under active development.** They answer
+> hand-written GraphQL but are not yet compatible with the official
+> generated SDKs (`@linear/sdk`), which assume the full connection /
+> `pageInfo` / relation-resolution contract. Treat the GraphQL engine as
+> experimental until this note is removed. The REST mock below (Gmail) is
+> the stable, worked example.
 
-```bash
-fab create linear -p sprint-board
-eval "$(fab creds sprint-board --env)"       # sets FAB_URL, FAB_PASSWORD
-
-# What's urgent and unassigned?
-curl -s "$FAB_URL/graphql" -d '{
-  "query": "query($f: IssueFilter) { issues(filter: $f) { nodes { identifier title } } }",
-  "variables": {"f": {"assignee": {"null": true}, "priority": {"lte": 1}}}
-}'
-# → {"data":{"issues":{"nodes":[{"identifier":"ENG-101","title":"Checkout API returns 500 above ~100 rps"}]}}}
-
-# Take it: assign + move to In Progress. This is a real write.
-curl -s "$FAB_URL/graphql" -d '{
-  "query": "mutation($id: String!, $in: IssueUpdateInput!) { issueUpdate(id: $id, input: $in) { success } }",
-  "variables": {"id": "ENG-101", "in": {"assigneeId": "usr-val", "stateId": "st-progress"}}
-}'
-```
-
-And `support-inbox` is a Gmail-API mailbox with a support backlog to triage. Here's the statefulness in one sitting — watch the numbers change as the writes land:
+`support-inbox` is a Gmail-API mailbox with a support backlog to triage. Here's the statefulness in one sitting — watch the numbers change as the writes land:
 
 ```bash
-fab create gmail -p support-inbox
-eval "$(fab creds support-inbox --env)"
+$ fab create gmail -p support-inbox
+fab: starting httpmock instance "support-inbox" from profile "support-inbox" on target docker...
+fab: provisioning container (timeout 5m0s)...
+fab: ready in 603ms
+name        support-inbox
+engine      httpmock
+target      docker
+profile     support-inbox
+image       fabricate/httpmock:local
+id          b8f134934b6d
+host        localhost
+port        63205
+username
+password    fab-gmail-token
+database
+url         http://localhost:63205
+created_at  2026-07-09T04:05:38Z
+
+$ eval "$(fab creds support-inbox --env)"
 
 # The backlog: 5 unread, including an angry double-charge thread of 2 messages.
-curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread" | jq .resultSizeEstimate
+$ curl -s "$FAB_URL/gmail/v1/users/me/messages?q=is:unread" | jq .resultSizeEstimate
 # 5
-curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge" | jq '.messages | length'
+$ curl -s "$FAB_URL/gmail/v1/users/me/threads/thr-doublecharge" | jq '.messages | length'
 # 2
 
 # Reply (messages.send takes base64url RFC 822, like the real API):
@@ -123,10 +170,10 @@ Because state lives in SQLite inside the container, the full agent loop — *rea
 
 ## Agent skills
 
-The [`skills/`](skills/) directory ships [agent skills](https://github.com/vercel-labs/skills) for fab itself and each flagship mock (linear, gmail, google-play):
+The [`skills/`](skills/) directory ships [agent skills](https://github.com/vercel-labs/skills) for fab itself, each flagship mock (linear, gmail, google-play), and [contributing](skills/contributing/SKILL.md) (how to add a service to the catalog):
 
 ```bash
-npx skills add dumbmachine/fabricate            # install into Claude Code / Cursor / ...
+npx skills add dumbmachine/fabricate
 ```
 
 ## Everyday commands
@@ -145,7 +192,7 @@ Every command takes `-o {json,table,env,url}` — `json` is the default on a pip
 
 ## Bring your own profiles
 
-A profile is a directory: a `profile.yaml` plus seed files that run at boot (SQL for Postgres/MySQL, JS for Mongo, redis-cli lines, a JSON fixture for httpmock services, ...). The CLI teaches the whole authoring loop — no source reading required:
+A profile is a directory: a `profile.yaml` plus seed files that run at boot (SQL for Postgres/MySQL, JS for Mongo, redis-cli lines, a JSON fixture for httpmock services, ...). Check the `/examples` folder.
 
 ```bash
 fab profiles schema                            # the commented profile.yaml reference
@@ -180,6 +227,12 @@ Three extension points, cheapest first — pick the first row that fits:
 | Your own data/config in a container fab already runs | a **profile** (YAML + seed files, no code) | [docs/authoring-profiles.md](docs/authoring-profiles.md) |
 | A stateful mock of an HTTP API (Stripe, Slack, Jira, an internal service) | a **mockd service** (one Go package + one registry line) | [docs/adding-a-mock-service.md](docs/adding-a-mock-service.md) |
 | New infrastructure software entirely (Kafka, MinIO, Elasticsearch...) | an **engine** (Info/Create/Destroy) | [docs/adding-an-engine.md](docs/adding-an-engine.md) |
+
+## Contributing
+
+The catalog grows by contribution — **new services and profiles are welcome**. The fastest way in (for a human or a coding agent) is the [`fabricate-contributing`](skills/contributing/SKILL.md) skill, which maps out exactly what to add and where: the service package under `mockd/services/`, the two registry lines, the profile, the tests, and the verify loops.
+
+The bar for a mock is **compatibility with the service's official client SDK**, not just statefulness — a real integration should be able to point its SDK at the mock and work, writes included. New REST services ship an SDK-conformance test under [`e2e/sdk/`](e2e/sdk/) that drives the vendor's own client against the mock; `make sdk-e2e` runs them, and CI keeps them green. (GraphQL is still experimental — see above.)
 
 ## Development
 

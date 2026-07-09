@@ -15,9 +15,11 @@ and prints connection credentials. Two kinds:
   google-play, vercel, cloudflare, supabase, render, fly, railway.
   SQLite-backed — POST/PATCH mutate state and later GETs reflect it.
 
-Requirements: a running Docker daemon. Mock profiles additionally need
-the `fabricate/httpmock:local` image (`make images` in the repo, or
-set `FAB_HTTPMOCK_IMAGE` to a published copy).
+Requirements: a running Docker daemon — nothing else. Every engine's
+container image (including fab's own httpmock/emulate images) is pulled
+automatically on first `fab create`. (Exception: a source/`make install`
+build defaults to the local `fabricate/httpmock:local` image built by
+`make images`; released binaries auto-pull the published copy.)
 
 ## Core loop
 
