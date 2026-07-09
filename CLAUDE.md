@@ -58,12 +58,21 @@ observe it passes.
    through the public CLI + HTTP surface, destroys them. Tests skip
    with a clear message when Docker or an image is missing — a skip is
    NOT a pass for changes those tests cover.
-3. **Manual probe (when touching an engine):**
+3. **SDK-conformance loop (Docker + Node):**
+   `make sdk-e2e` — drives the REST httpmock services with each vendor's
+   OFFICIAL client (`e2e/sdk/`, using `googleapis` etc.), proving the
+   mocks match the real wire contract, not just hand-written curl. This
+   is the loop that catches "stateful but not compliant" bugs (e.g. a
+   missing `packageName` the official client expects). Same skip policy.
+   Run it after any change under `mockd/services/` that a real client
+   would observe. GraphQL services (linear, railway) are NOT yet covered
+   — they don't satisfy the generated GraphQL SDKs.
+4. **Manual probe (when touching an engine):**
    `make install && fab create <engine> -p <profile>` then talk to the
    returned URL yourself; `fab destroy` after. `fab ls -o json` and
    `docker ps --filter label=org.testcontainers=true` show leaks.
 
-`make verify` = 1 + 2. CI (.github/workflows/ci.yml) runs both jobs.
+`make verify` = 1 + 2 + 3. CI (.github/workflows/ci.yml) runs both jobs.
 
 ## How to add things
 
@@ -77,13 +86,23 @@ observe it passes.
    GraphQL-ish example (dispatch on query text): `services/linear`.
 2. Register it in `mockd/main.go`'s `registry` map.
 3. Unit tests beside it: in-memory DB, fixture JSON, httptest. Cover
-   the stateful loop (write → read reflects it), not just reads.
+   the stateful loop (write → read reflects it), not just reads. Assert
+   the real resource shape (every field the official client reads), not
+   just the fields your handler happens to emit — that's how a missing
+   field gets caught in the fast loop.
 4. Profile: `profiles/<name>/<profile-name>/{profile.yaml,seed.json}`
    with `engine: httpmock` and `env.MOCK_SERVICE: <name>`; add the new
    top-level dir to `profiles/embed.go`'s `//go:embed` line.
 5. `make check`, then `make images && make e2e` (add an e2e case if the
    service is a flagship like gmail/linear).
-6. Flagship services also get an agent skill: `skills/<service>/SKILL.md`
+6. If the service has an official client library, add an SDK-conformance
+   test: `e2e/sdk/<service>.test.mjs` driving the real vendor client
+   against a `fab`-created instance (copy `e2e/sdk/gmail.test.mjs`), add
+   the dep to `e2e/sdk/package.json`, and run `make sdk-e2e`. This is the
+   contract that stops a stateful-but-non-compliant mock from shipping.
+   (REST services map cleanly; the query-text-dispatch GraphQL services
+   do not yet satisfy generated SDKs — leave those uncovered.)
+7. Flagship services also get an agent skill: `skills/<service>/SKILL.md`
    (endpoints, the stateful loop, fixture shape — copy skills/gmail).
 
 ### An engine

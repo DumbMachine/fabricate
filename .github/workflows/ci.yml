@@ -37,7 +37,12 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: build httpmock image
         run: docker build -t fabricate/httpmock:local mockd
       - name: end-to-end smoke (real containers)
         run: go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
+      - name: SDK conformance (official vendor clients ⇄ the mocks)
+        run: make sdk-e2e

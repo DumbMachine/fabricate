@@ -7,7 +7,7 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install test vet fmt check images push-images e2e verify clean
+.PHONY: build install test vet fmt check images push-images e2e sdk-e2e verify clean
 
 build:
 	go build -o bin/fab ./cmd/fab
@@ -65,9 +65,18 @@ push-images:
 e2e:
 	go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
+# SDK conformance: drive the REST httpmock services with each vendor's
+# OFFICIAL client (googleapis, ...), proving the mocks match the real wire
+# contract — not just hand-written curl. Needs Docker + `make images` +
+# Node; skips per-service (with a message) when a prerequisite is missing.
+sdk-e2e:
+	go build -o bin/fab ./cmd/fab
+	cd e2e/sdk && npm install --no-audit --no-fund --silent && FAB_BIN="$(CURDIR)/bin/fab" npm test
+
 # verify is the full loop an agent (or CI) runs before calling work done:
-# fast checks first, then the Docker-backed end-to-end smoke.
-verify: check e2e
+# fast checks first, then the Docker-backed end-to-end smoke, then the
+# official-client conformance suite.
+verify: check e2e sdk-e2e
 	@echo "verify: OK"
 
 clean:
