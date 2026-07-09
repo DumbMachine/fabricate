@@ -1,0 +1,49 @@
+# GoReleaser builds the `fab` CLI binaries and attaches them to the
+# GitHub release on every v* tag (see .github/workflows/release.yml).
+#
+# The archive names omit the version (fabricate_<os>_<arch>.tar.gz) so
+# install.sh can fetch them from the stable /releases/latest/download/
+# URL without first querying the API for the tag.
+#
+# ldflags pin each released binary's DEFAULT engine image to the GHCR
+# copy published for this same tag, so `fab create gmail ...` auto-pulls
+# it — no `make images`. Source builds keep the local `:local` default.
+version: 2
+
+project_name: fabricate
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: fab
+    main: ./cmd/fab
+    binary: fab
+    env:
+      - CGO_ENABLED=0
+    goos: [darwin, linux]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w
+      - -X github.com/dumbmachine/fabricate/engine/httpmock.defaultImage=ghcr.io/dumbmachine/fabricate-httpmock:{{ .Tag }}
+      - -X github.com/dumbmachine/fabricate/engine/github.defaultImage=ghcr.io/dumbmachine/fabricate-emulate:{{ .Tag }}
+
+archives:
+  - id: fab
+    ids: [fab]
+    # Stable, versionless names → /releases/latest/download/ resolves
+    # without knowing the tag. Keep in sync with install.sh.
+    name_template: "fabricate_{{ .Os }}_{{ .Arch }}"
+    formats: [tar.gz]
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: checksums.txt
+
+release:
+  github:
+    owner: dumbmachine
+    name: fabricate

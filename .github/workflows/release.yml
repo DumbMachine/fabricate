@@ -16,6 +16,29 @@ permissions:
   packages: write
 
 jobs:
+  # Cross-compile the `fab` CLI and attach the archives to the GitHub
+  # release, so `install.sh` (curl | sh) can fetch them. GoReleaser pins
+  # each binary's default engine image to this tag's GHCR copy via
+  # -ldflags (see .goreleaser.yaml), so a released binary auto-pulls with
+  # no `make images`.
+  binaries:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release + upload the binary archives
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # GoReleaser needs tags + history
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          version: "~> v2"
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   images:
     runs-on: ubuntu-latest
     steps:

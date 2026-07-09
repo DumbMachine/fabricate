@@ -13,8 +13,10 @@
 // catalog is fixed (no Android Publisher / Play Reporting) and it can't ingest a
 // spec; this gives us full control per service.
 //
-// The image (fabricate/httpmock:local) is local-only today: build once with
-// `make images`.
+// The image ships two ways: a released binary defaults to the published
+// GHCR tag (Docker auto-pulls it on first `fab create`), while a
+// source/`make install` build defaults to the local `fabricate/httpmock:local`
+// tag that `make images` builds. $FAB_HTTPMOCK_IMAGE overrides either.
 package httpmock
 
 import (
@@ -35,20 +37,20 @@ import (
 const (
 	// Engine is the slug profiles set in `engine:` and the key the cmd-layer
 	// registry maps to this package.
-	Engine = "httpmock"
-
-	// defaultImage is the local dev tag built by `make images`.
-	// $FAB_HTTPMOCK_IMAGE overrides it (see imageDefault) so a
-	// published registry copy can be swapped in without a code change;
-	// once a GHCR release exists this constant flips to the pinned tag
-	// (docs/releasing.md).
-	defaultImage = "fabricate/httpmock:local"
-	defaultPort  = "8080/tcp"
+	Engine      = "httpmock"
+	defaultPort = "8080/tcp"
 
 	// defaultToken is the bearer Creds.Password falls back to when a profile
 	// leaves defaults.password unset. The mock never checks it.
 	defaultToken = "fab-mock-token"
 )
+
+// defaultImage is the image fab pulls when a profile doesn't pin one and
+// $FAB_HTTPMOCK_IMAGE is unset. Source builds default to the local dev
+// tag (`make images` builds it); release binaries have this overwritten
+// via -ldflags to the published, auto-pullable GHCR tag (see
+// .goreleaser.yaml), so `fab create` "just works" with no `make images`.
+var defaultImage = "fabricate/httpmock:local"
 
 // KnownServices lists the MOCK_SERVICE slugs the httpmock image serves.
 // It MUST mirror the registry in mockd/main.go (the registry itself is

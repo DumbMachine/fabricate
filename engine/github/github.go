@@ -14,9 +14,10 @@
 // via EMULATE_SERVICE env at container start — so when we add stripe /
 // slack engines they reuse the same baked image.
 //
-// The image is local-only today: build it once with `make images`
-// (top-level Makefile) before `fab create github -p ...`. The engine
-// fails with a clear "image not cached locally" message if you forget.
+// The image ships two ways: a released binary defaults to the published
+// GHCR tag (Docker auto-pulls it on first `fab create`), while a
+// source/`make install` build defaults to the local `fabricate/emulate:local`
+// tag that `make images` builds. $FAB_EMULATE_IMAGE overrides either.
 package github
 
 import (
@@ -44,13 +45,6 @@ const (
 	// cmd-layer registry maps to this package.
 	Engine = "github"
 
-	// defaultImage is the local dev tag built by `make images`.
-	// $FAB_EMULATE_IMAGE overrides it (see imageDefault) so a published
-	// registry copy can be swapped in without a code change; once a
-	// GHCR release exists this constant flips to the pinned tag
-	// (docs/releasing.md).
-	defaultImage = "fabricate/emulate:local"
-
 	// emulate listens on 4000 inside the container; testcontainers
 	// maps it to a random host port.
 	defaultPort = "4000/tcp"
@@ -62,6 +56,12 @@ const (
 	// parse the seed YAML to extract the token.
 	defaultToken = "ghp_fab_dev"
 )
+
+// defaultImage is the image fab pulls when a profile doesn't pin one and
+// $FAB_EMULATE_IMAGE is unset. Source builds default to the local dev tag
+// (`make images` builds it); release binaries have this overwritten via
+// -ldflags to the published GHCR tag (see .goreleaser.yaml).
+var defaultImage = "fabricate/emulate:local"
 
 // New returns a GitHub engine.
 func New() engine.Engine { return &eng{} }
