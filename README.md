@@ -26,7 +26,7 @@ If you're building an agent (or testing an app) that talks to databases, inboxes
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dumbmachine/fabricate/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
 ```
 
 That drops the `fab` binary on your PATH — nothing else to configure. The only runtime requirement is a running Docker daemon (Docker Desktop, OrbStack, or Colima all work); every engine's container image is pulled automatically on first use, including fabricate's own `httpmock` and `emulate` images.

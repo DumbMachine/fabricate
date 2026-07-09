@@ -11,7 +11,7 @@ Two things ship on every `v*` tag, from `.github/workflows/release.yml`:
 End users install the binary with no build step:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dumbmachine/fabricate/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
 ```
 
 `install.sh` downloads the archive for the host OS/arch from

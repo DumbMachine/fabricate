@@ -3,7 +3,7 @@
 # from GitHub Releases and puts it on your PATH. No build step, no Docker
 # image to build: engine images auto-pull on the first `fab create`.
 #
-#   curl -fsSL https://raw.githubusercontent.com/dumbmachine/fabricate/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
 #
 # Optional environment overrides:
 #   FAB_INSTALL_DIR       where to install (default: /usr/local/bin if
@@ -12,7 +12,9 @@
 #   FAB_INSTALL_BASE_URL  base URL for release assets (advanced / testing)
 set -eu
 
-REPO="dumbmachine/fabricate"
+# Canonical owner casing: github.com redirects case-insensitively, but
+# raw.githubusercontent.com (used for `curl | sh`) is case-sensitive.
+REPO="DumbMachine/fabricate"
 BINARY="fab"
 
 info() { printf '%s\n' "$*" >&2; }
