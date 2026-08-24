@@ -2,6 +2,8 @@
 
 `fab` is a small pipeline: **profile → engine → target → creds**.
 
+Product direction (sandbox as the unit, versioned states, SQLite as the API store) lives in [product-vision.md](product-vision.md). This file describes the current pipeline.
+
 ```
 profile.yaml ──▶ profile.Load ──▶ engine.Create ──▶ Instance{Creds} ──▶ state.json
    (what)          (loader)      (how: container)     (connection)      (lifecycle)
