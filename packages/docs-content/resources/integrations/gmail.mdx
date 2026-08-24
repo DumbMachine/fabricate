@@ -1,0 +1,54 @@
+---
+title: Gmail
+description: A seeded Gmail v1 API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/gmail
+---
+
+Fabricate ships a Gmail v1 resource with a strict local API and synthetic OAuth
+token handling. It covers profile, labels, messages, threads, and sending mail.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `gmail.minimal.v1` | An empty inbox for a clean test. |
+| `gmail.acme-corp.v1` | A seeded support inbox with 12 messages, labels, and threads. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep Google’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. Fabricate injects a URL and a short-lived
+token for the service name in your environment file.
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml -- \
+  sh -c 'curl -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+  "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
+```
+
+The service is named `support-mail` in the example manifest, so the variables
+are `FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`. If you name the
+service `gmail`, they become `FAB_GMAIL_URL` and `FAB_GMAIL_TOKEN`.
+
+### Start it through the proxy
+
+Use this when your app uses the normal Gmail/Google URLs and follows standard
+proxy and CA environment variables:
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml --proxy -- your-app
+```
+
+Fabricate handles `gmail.googleapis.com` and the Gmail path on
+`www.googleapis.com` locally, including the token-refresh route. Other hosts
+fail closed unless the manifest lists them in `proxy.passthrough`.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.

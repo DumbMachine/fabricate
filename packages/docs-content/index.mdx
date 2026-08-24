@@ -1,0 +1,72 @@
+---
+title: Introduction
+description: Local, seeded services for testing the parts of your app that talk to the outside world.
+---
+
+Fabricate gives your app real local services with predictable data. Start one,
+run your app against it, and throw it away when the command exits.
+
+It has two lanes:
+
+- **Infrastructure**: databases, Redis, SSH hosts, Kubernetes, Prometheus, and
+  AWS Console. Use `fab create` with a profile.
+- **HTTP resources**: provider-shaped APIs with versioned scenarios. Use
+  `fab run` with an environment file.
+
+No shared state. No global proxy setup. No surprise calls to a real provider.
+
+## The basic loop
+
+For HTTP resources, the environment file names a resource and the scenario it
+should start with:
+
+```yaml
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-gmail
+services:
+  support-mail:
+    resource: gmail
+    scenario: gmail.acme-corp.v1
+```
+
+Then wrap the command you want to test:
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml -- your-app
+```
+
+Fabricate starts the local service, passes its URL and token to `your-app`, and
+cleans up afterward. In this example those variables are
+`FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`.
+
+## Direct URL or transparent proxy?
+
+Use the **direct URL** when your application can point a client at a local base
+URL. It is the simplest route.
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml -- \
+  sh -c 'curl -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+  "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/profile"'
+```
+
+Use the **transparent proxy** when an SDK insists on its normal production
+hostname. Add `--proxy`; Fabricate sets proxy and CA variables only for the
+wrapped process. Your shell and system trust store stay untouched.
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml --proxy -- your-app
+```
+
+The proxy only handles hosts claimed by the environment. Anything else is
+blocked unless it is explicitly listed under `proxy.passthrough`.
+
+## What a scenario is
+
+A scenario is the starting state for one HTTP resource. It is versioned data,
+not a sequence of mocked replies. Your app can read and write normally; the
+next run starts fresh from the same scenario.
+
+See [Resources](/resources) for the shipped catalog and its integration modes.

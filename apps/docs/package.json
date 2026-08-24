@@ -1,0 +1,16 @@
+{
+  "name": "@fabricate/docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "blume dev",
+    "build": "blume build",
+    "check": "blume check"
+  },
+  "dependencies": {
+    "blume": "1.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

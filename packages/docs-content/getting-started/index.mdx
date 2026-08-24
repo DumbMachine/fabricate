@@ -1,0 +1,61 @@
+---
+title: Getting started
+description: Install the CLI, check the catalog, and run the first local environment.
+---
+
+## Prerequisites
+
+You need macOS or Linux on `amd64` or `arm64`, plus one of `curl` or `wget`.
+Docker is only needed when you create an infrastructure resource such as
+Postgres or Redis. It is not needed for the Gmail environment below.
+
+## Install the CLI
+
+The release workflow publishes `fab` binaries on every `v*` tag. The installer
+downloads the right one for your machine:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
+```
+
+It installs to `/usr/local/bin` when that directory is writable; otherwise it
+uses `~/.local/bin`. If the installer prints a PATH hint, add it to your shell
+profile and open a new shell.
+
+```bash
+fab --help
+```
+
+## Run Gmail locally
+
+Clone Fabricate if you want to use the included environment file:
+
+```bash
+git clone https://github.com/DumbMachine/fabricate.git
+cd fabricate
+```
+
+Run a command with the seeded Gmail API available as local environment
+variables:
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml -- \
+  sh -c 'curl -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+  "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/profile"'
+```
+
+You should get the seeded Gmail profile back. When the command exits, the
+service and its state are gone.
+
+## Try an infrastructure profile
+
+Use profiles for services that are meant to be actual containers, not provider
+API emulators:
+
+```bash
+fab profiles
+fab create postgres -p stripe-payments
+fab destroy --all
+```
+
+`fab create` prints the connection details. `fab destroy` tears them down.

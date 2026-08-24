@@ -1,0 +1,136 @@
+/*
+ * Fabricate's shared visual vocabulary.
+ *
+ * Keep product surfaces on these semantic variables. The landing page can use
+ * this same palette and scale without inheriting any documentation-specific
+ * selectors below.
+ */
+:root {
+  --fabricate-canvas: #fff;
+  --fabricate-surface: #fff;
+  --fabricate-surface-raised: #f5f5f5;
+  --fabricate-surface-active: #f0f0f0;
+  --fabricate-border: #d8d8d8;
+  --fabricate-text: #0a0a0a;
+  --fabricate-text-secondary: #333;
+  --fabricate-text-muted: #707070;
+  --fabricate-code-background: #f5f5f5;
+  --fabricate-accent: #33c482;
+  --fabricate-accent-hover: #2dac72;
+
+  --fabricate-radius-sm: 4px;
+  --fabricate-radius-md: 6px;
+  --fabricate-radius-lg: 8px;
+  --fabricate-space-1: 4px;
+  --fabricate-space-2: 8px;
+  --fabricate-space-3: 12px;
+  --fabricate-space-4: 16px;
+
+  --fabricate-font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --fabricate-font-display: Teko, "Arial Narrow", Impact, sans-serif;
+  --fabricate-font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas,
+    monospace;
+}
+
+:root[data-theme="dark"] {
+  --fabricate-canvas: #1b1b1b;
+  --fabricate-surface: #1b1b1b;
+  --fabricate-surface-raised: #292929;
+  --fabricate-surface-active: #2c2c2c;
+  --fabricate-border: #444;
+  --fabricate-text: #e6e6e6;
+  --fabricate-text-secondary: #ccc;
+  --fabricate-text-muted: #6e6e6e;
+  --fabricate-code-background: #1f1f1f;
+}
+
+:root,
+:root[data-theme="dark"] {
+  --blume-background: var(--fabricate-canvas);
+  --blume-foreground: var(--fabricate-text);
+  --blume-muted: var(--fabricate-surface-raised);
+  --blume-muted-foreground: var(--fabricate-text-muted);
+  --blume-border: var(--fabricate-border);
+  --blume-accent: var(--fabricate-accent);
+  --blume-accent-foreground: #171717;
+  --blume-action: var(--fabricate-accent);
+  --blume-action-foreground: #171717;
+  --blume-code-background: var(--fabricate-code-background);
+  --blume-radius: var(--fabricate-radius-lg);
+  --blume-font-body: var(--fabricate-font-sans);
+  --blume-font-display: var(--fabricate-font-display);
+  --blume-font-mono: var(--fabricate-font-mono);
+}
+
+/* Docs chrome: dense, quiet sections; one clear active row. */
+[data-blume-nav-drawer] {
+  background: var(--fabricate-canvas) !important;
+  border-inline-end: 1px solid var(--fabricate-border) !important;
+}
+
+/* Teko is the product voice. Keep it out of navigation and body copy. */
+[data-blume-header] > a:first-of-type {
+  font-family: var(--fabricate-font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  line-height: 0.8;
+  text-transform: uppercase;
+}
+
+.prose :where(h1) {
+  font-family: var(--fabricate-font-display);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 0.9;
+}
+
+[data-blume-nav-tree] p {
+  color: var(--fabricate-text-muted);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+[data-blume-nav-tree] a {
+  border-radius: var(--fabricate-radius-lg);
+  color: var(--fabricate-text);
+}
+
+[data-blume-nav-tree] a[aria-current="page"] {
+  background: var(--fabricate-surface-active);
+  color: var(--fabricate-text);
+}
+
+[data-blume-nav-tree] a:hover {
+  background: var(--fabricate-surface-raised);
+}
+
+/* Code should read like a compact terminal pane, not a card inside a card. */
+.prose :where(pre) {
+  margin: 1.25rem 0;
+  padding: 0.75rem 0;
+}
+
+.prose :where(pre[data-language]) {
+  padding-top: 3.25rem;
+}
+
+.prose :where(pre[data-language])::before {
+  height: 2.5rem;
+  padding-inline: 0.875rem 2.75rem;
+}
+
+.prose > :where(pre[data-language][data-icon]) > .blume-lang-icon {
+  left: 0.875rem;
+  top: 0.8125rem;
+}
+
+.prose > :where(pre[data-language][data-icon])::before {
+  padding-left: 2.25rem;
+}
+
+.prose :where(pre:not(.twoslash, .twoslash pre, blume-panel-tabs *) > code) {
+  padding: 0 1rem 0.25rem;
+}

@@ -5,3 +5,11 @@
 .DS_Store
 # fab state/keys never belong in a repo (plaintext creds for local throwaways)
 state.json
+
+# Documentation app outputs
+apps/docs/.blume/
+apps/docs/dist/
+
+# JavaScript dependencies
+node_modules/
+.pnpm-store/

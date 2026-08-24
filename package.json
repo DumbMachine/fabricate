@@ -1,0 +1,10 @@
+{
+  "name": "fabricate",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "docs:dev": "pnpm --filter @fabricate/docs dev",
+    "docs:build": "pnpm --filter @fabricate/docs build",
+    "docs:check": "pnpm --filter @fabricate/docs check"
+  }
+}
