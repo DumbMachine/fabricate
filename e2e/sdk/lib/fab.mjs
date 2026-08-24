@@ -13,6 +13,7 @@ import { join } from "node:path";
 
 const FAB_BIN = process.env.FAB_BIN || "fab";
 const HTTPMOCK_IMAGE = process.env.FAB_HTTPMOCK_IMAGE || "fabricate/httpmock:local";
+const EMULATE_IMAGE = process.env.FAB_EMULATE_IMAGE || "fabricate/emulate:local";
 
 function runs(cmd, args) {
   try {
@@ -25,17 +26,35 @@ function runs(cmd, args) {
 
 // preflight returns a human-readable skip reason, or null when the suite
 // can run. Check it at the top of each test and `t.skip(reason)` if set.
-export function preflight() {
+//
+// runtime: "httpmock" (default) or "emulate" (GitHub / vercel-labs emulate).
+export function preflight({ runtime = "httpmock" } = {}) {
   if (!runs(FAB_BIN, ["--help"])) {
     return `fab binary not runnable — set FAB_BIN or run via 'make sdk-e2e' (got: ${FAB_BIN})`;
   }
   if (!runs("docker", ["info"])) {
     return "docker daemon not available";
   }
-  if (!runs("docker", ["image", "inspect", HTTPMOCK_IMAGE])) {
-    return `${HTTPMOCK_IMAGE} missing — run 'make images' first`;
+  const image = runtime === "emulate" ? EMULATE_IMAGE : HTTPMOCK_IMAGE;
+  if (!runs("docker", ["image", "inspect", image])) {
+    return `${image} missing — run 'make images' first`;
   }
   return null;
+}
+
+// missingProfile is a skip reason when the catalog has no such
+// engine/profile yet (Stripe isn't shipped). Used so the SDK test
+// can land before the mock, then become a hard gate.
+export function missingProfile(engine, profile) {
+  try {
+    execFileSync(FAB_BIN, ["profiles", "show", profile, "-o", "json"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    return null;
+  } catch {
+    return `${engine}/${profile} is not in the catalog yet — SDK test is the acceptance gate once it ships`;
+  }
 }
 
 // createInstance provisions a real fab instance from a built-in profile
@@ -57,8 +76,12 @@ export function createInstance(engine, profile, name) {
     { env, encoding: "utf8" },
   );
   const info = JSON.parse(out);
+  const creds = info.creds || {};
   return {
-    url: info.creds.url,
+    url: creds.url,
+    token: creds.password || "",
+    host: creds.host,
+    port: creds.port,
     name,
     destroy() {
       try {

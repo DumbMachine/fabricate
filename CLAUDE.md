@@ -59,14 +59,12 @@ observe it passes.
    with a clear message when Docker or an image is missing — a skip is
    NOT a pass for changes those tests cover.
 3. **SDK-conformance loop (Docker + Node):**
-   `make sdk-e2e` — drives the REST httpmock services with each vendor's
-   OFFICIAL client (`e2e/sdk/`, using `googleapis` etc.), proving the
-   mocks match the real wire contract, not just hand-written curl. This
-   is the loop that catches "stateful but not compliant" bugs (e.g. a
-   missing `packageName` the official client expects). Same skip policy.
-   Run it after any change under `mockd/services/` that a real client
-   would observe. GraphQL services (linear, railway) are NOT yet covered
-   — they don't satisfy the generated GraphQL SDKs.
+   `make sdk-e2e` — drives services with each vendor's OFFICIAL first-party
+   JS client (`e2e/sdk/`): `googleapis` (Gmail, Play), `@octokit/rest`
+   (GitHub emulate), `stripe` (gate for the Stripe mock). Proves the
+   mocks match the real wire contract, not just hand-written curl. Same
+   skip policy. GraphQL services (linear, railway) are NOT yet covered
+   — they don't satisfy `@linear/sdk`. See docs/sdk-conformance.md.
 4. **Manual probe (when touching an engine):**
    `make install && fab create <engine> -p <profile>` then talk to the
    returned URL yourself; `fab destroy` after. `fab ls -o json` and

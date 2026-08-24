@@ -63,9 +63,11 @@ being **compatible with the service's official client SDK**: a real
 integration should be able to point its SDK at the mock's URL and work —
 reads *and* stateful writes. We aim for every REST mock to clear this
 bar, verified end to end in `e2e/sdk/` against the vendor's own client
-(e.g. Gmail and Google Play are checked against `googleapis`). Match the
-real wire contract — paths, response envelopes, field names, error codes
-— because that is exactly what the generated client depends on.
+(Gmail/Play: `googleapis`; GitHub: `@octokit/rest`; Stripe: npm `stripe`
+once the mock ships — see `docs/sdk-conformance.md`). Match the
+real wire contract — paths, response envelopes, field names, error codes,
+and Stripe's form-encoded POSTs — because that is exactly what the
+generated client depends on.
 
 GraphQL mocks are harder: generated GraphQL SDKs expect the full
 connection / `pageInfo` / relation-resolution contract, which the

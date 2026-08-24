@@ -15,7 +15,7 @@ Each entry in the catalog is a declarative **profile** (`fab profiles` lists the
 - **Container engines** (via [testcontainers-go](https://github.com/testcontainers/testcontainers-go)): Postgres, MySQL, MongoDB, Redis, Prometheus, SSH hosts, k3s Kubernetes, a Moto-backed fake AWS.
 - **Stateful HTTP-API mocks** (the `httpmock` engine): real HTTP servers for REST APIs like Gmail, Google Play, Vercel, Cloudflare — backed by SQLite, so **writes actually take effect**. Reply to an email and the thread grows; the next read reflects it.
 
-The catalog is **open**: built-ins ship in the box, you can install more from any GitHub repo (`fab profiles add owner/repo`), and [contributions are welcome](#contributing). We aim for every mock to be **drop-in compatible with the service's official client SDK** — not just stateful but wire-compatible, verified end to end (Gmail and Google Play are checked against Google's `googleapis` client, writes included). GraphQL mocks (Linear, Railway) are **experimental** — they answer hand-written queries but don't yet satisfy the generated GraphQL SDKs.
+The catalog is **open**: built-ins ship in the box, you can install more from any GitHub repo (`fab profiles add owner/repo`), and [contributions are welcome](#contributing). We aim for every mock to be **drop-in compatible with the service's official client SDK** — not just stateful but wire-compatible, verified end to end (Gmail/Play against `googleapis`, GitHub against `@octokit/rest`; Stripe against npm `stripe` when that mock ships). GraphQL mocks (Linear, Railway) are **experimental** — they answer hand-written queries but don't yet satisfy the generated GraphQL SDKs.
 
 ## Why this exists
 

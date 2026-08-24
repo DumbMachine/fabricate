@@ -8,6 +8,8 @@
     "test": "node --test"
   },
   "dependencies": {
-    "googleapis": "^173.0.0"
+    "@octokit/rest": "^22.0.0",
+    "googleapis": "^173.0.0",
+    "stripe": "^18.0.0"
   }
 }

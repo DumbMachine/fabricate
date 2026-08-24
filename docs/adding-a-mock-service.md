@@ -99,5 +99,13 @@ curl -s "$FAB_URL/v1/charges"
 fab destroy demo-account
 ```
 
-If the service is a flagship, add a case to `e2e/e2e_test.go` following
-`TestHttpmockGmailFlow` so CI exercises it in a real container.
+If the service has an official client library, add an SDK-conformance
+test: `e2e/sdk/<service>.test.mjs` driving the vendor's **first-party JS
+SDK** (Stripe: npm `stripe` with `host`/`port`/`protocol`; GitHub:
+`@octokit/rest` with `baseUrl`; Google: `googleapis` with `rootUrl`).
+Copy `gmail.test.mjs` or `github.test.mjs`. Add the dep to
+`e2e/sdk/package.json` and run `make sdk-e2e`. This is the contract that
+stops a stateful-but-non-compliant mock from shipping. See
+[sdk-conformance.md](sdk-conformance.md). GraphQL generated clients
+(Linear `@linear/sdk`) are not the bar until the mock speaks the real
+schema.
