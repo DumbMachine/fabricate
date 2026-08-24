@@ -38,7 +38,7 @@ A missing prerequisite (no Docker, image not built, no `fab` binary) is a
 |---|---|---|---|
 | `gmail` | `googleapis` (`google.gmail`) | `rootUrl` | ✅ |
 | `google-play` | `googleapis` (`androidpublisher`, `playdeveloperreporting`) | `rootUrl` | ✅ |
-| `github` | `@octokit/rest` | `baseUrl` | ✅ (emulate image) |
+| `github` | `@octokit/rest` | `baseUrl` | ✅ today on emulate (stopgap); moves to httpmock when GitHub is a mockd service |
 | `stripe` | `stripe` (stripe-node) | `host` + `port` + `protocol` | ⏳ skip until `fab create stripe` exists; then a hard gate |
 | `linear` | `@linear/sdk` | `apiUrl` | ❌ GraphQL mock is not schema-complete |
 

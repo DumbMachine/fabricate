@@ -16,14 +16,19 @@ Pick the smallest extension that fits:
 | You want to add | Write | Where it lives |
 |---|---|---|
 | Data/config for an environment fab already runs | a **profile** (YAML + seed files, no code) | `profiles/<slug>/<name>/` |
-| A stateful mock of an HTTP API (Stripe, Slack, an internal service) | a **mockd service** (one Go package + one registry line) | `mockd/services/<name>/` |
+| A stateful mock of an HTTP API (Stripe, GitHub, Slack, an internal service) | a **mockd service** on the HTTP/OpenAPI engine | `mockd/services/<name>/` |
 | New infrastructure software (Kafka, MinIO, Elasticsearch…) | an **engine** (Info/Create/Destroy) | `engine/<name>/` |
+
+Do **not** add a new engine for an HTTP API. GitHub's `engine/github`
+(emulate) is a stopgap; new API services — including a real GitHub —
+are mockd packages like Gmail.
 
 ## Repo layout (three Go modules)
 
 - `cli/` cobra commands; `cmd/fab/` the entrypoint.
-- `engine/` the `Engine` interface + one package per engine
-  (`postgres/`, `redis/`, `httpmock/`, `github/`, …).
+- `engine/` the `Engine` interface + one package per **infra** engine
+  (`postgres/`, `redis/`, `httpmock/` as the API runtime, `github/`
+  emulate stopgap). All API mocks live under mockd, not a new engine.
 - `mockd/` — **own module** — the HTTP-mock server that runs inside the
   `httpmock` container. `mockd/mock/` is the framework (router, `Ctx`,
   SQLite store); `mockd/services/` is one package per mocked API.

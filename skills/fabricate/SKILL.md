@@ -9,11 +9,13 @@ allowed-tools: Bash(fab:*)
 `fab` provisions ephemeral, seeded resources from declarative profiles
 and prints connection credentials. Two kinds:
 
-- **Container engines**: postgres, mysql, mongodb, redis, prometheus,
-  ssh, kubernetes (k3s), aws_console (Moto), github (emulate).
-- **Stateful HTTP-API mocks** (httpmock engine): linear, gmail,
-  google-play, vercel, cloudflare, supabase, render, fly, railway.
-  SQLite-backed — POST/PATCH mutate state and later GETs reflect it.
+- **Container engines** (real infra): postgres, mysql, mongodb, redis,
+  prometheus, ssh, kubernetes (k3s), aws_console (Moto).
+- **Stateful HTTP-API mocks** (httpmock / OpenAPI engine): linear,
+  gmail, google-play, vercel, cloudflare, supabase, render, fly,
+  railway — and every future API (Stripe, GitHub, Slack). SQLite-backed;
+  POST/PATCH mutate state and later GETs reflect it. GitHub today still
+  runs vercel-labs emulate; that is a stopgap, not a second API stack.
 
 Requirements: a running Docker daemon — nothing else. Every engine's
 container image (including fab's own httpmock/emulate images) is pulled

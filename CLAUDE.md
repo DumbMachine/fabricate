@@ -14,8 +14,9 @@ engine/           the Engine interface + one package per engine
   engine.go       Engine, Creds, Instance, Info — start here
   postgres/ mysql/ mongodb/ redis/ prometheus/ ssh/ kubernetes/
   awsconsole/     Moto-backed fake AWS (seeds via real AWS SDK calls)
-  github/         vercel-labs/emulate image + proxy/ (own module, baked into image)
-  httpmock/       engine that runs mockd containers
+  github/         STOPGAP: vercel-labs/emulate image. Do not extend.
+                  Port GitHub onto mockd (same Service iface as Gmail).
+  httpmock/       THE API engine — runs mockd. All API-like services go here.
 profile/          profile.yaml loading, validation, catalog stack (RegisterCatalog)
 profiles/         embedded built-in catalog: profiles/<slug>/<name>/profile.yaml
 target/           docker vs kubernetes provisioning targets (kubetarget/)
@@ -61,7 +62,7 @@ observe it passes.
 3. **SDK-conformance loop (Docker + Node):**
    `make sdk-e2e` — drives services with each vendor's OFFICIAL first-party
    JS client (`e2e/sdk/`): `googleapis` (Gmail, Play), `@octokit/rest`
-   (GitHub emulate), `stripe` (gate for the Stripe mock). Proves the
+   (GitHub — today emulate, target mockd), `stripe` (gate for the Stripe mock). Proves the
    mocks match the real wire contract, not just hand-written curl. Same
    skip policy. GraphQL services (linear, railway) are NOT yet covered
    — they don't satisfy `@linear/sdk`. See docs/sdk-conformance.md.

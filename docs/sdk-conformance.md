@@ -72,14 +72,16 @@ const octokit = new Octokit({
 });
 ```
 
-Our GitHub engine (vercel-labs emulate) is `api.github.com`-shaped:
-paths are `/repos/{owner}/{repo}/issues`, not `/api/v3/…`. So
-`baseUrl` is the instance URL itself, not `url + "/api/v3"`.
+Our GitHub engine **today** is vercel-labs emulate (`api.github.com`
+shape: `/repos/{owner}/{repo}/issues`, so `baseUrl` is the instance
+URL, not `url + "/api/v3"`). The Octokit test against the `issues`
+profile stays green on that stopgap.
 
-Acceptance test: [`e2e/sdk/github.test.mjs`](../e2e/sdk/github.test.mjs)
-against the `issues` profile — `users.getAuthenticated`, `repos.get`,
-`issues.listForRepo`, `issues.create`, re-list. Needs the emulate
-image (`make images`).
+**Target:** GitHub is a mockd service on the same HTTP/OpenAPI engine
+as Gmail and Stripe — SQLite + JSON state + the same `baseUrl` seam.
+`e2e/sdk/github.test.mjs` should not care which process is behind the
+URL. Do not keep emulate as a second API runtime. See
+[adapters-and-states.md](adapters-and-states.md).
 
 ### Gmail / Play — npm `googleapis`
 

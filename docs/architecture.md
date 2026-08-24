@@ -29,6 +29,18 @@ resolves by directory (`<slug>/<name>/profile.yaml`); the yaml's
 
 ## Engines (how to build it)
 
+Two families, not three:
+
+1. **Real infra** — postgres, mysql, mongo, redis, prometheus, ssh,
+   k3s, aws_console. These stay container engines.
+2. **API-shaped services** — one `httpmock` / OpenAPI engine (`mockd`).
+   Gmail, Linear, Stripe, GitHub, Slack, … all belong here. A new API
+   is a service package on that engine, not a new engine.
+
+`engine/github` (vercel-labs `emulate` in Docker) is a **stopgap**. Do
+not wrap it in the `Service` iface and do not add a fourth HTTP stack.
+Port GitHub onto mockd the same way Gmail already runs.
+
 `engine.Engine` is three methods: `Info` (agent-discoverable metadata:
 default image, port, accepted seed types), `Create` (profile → running
 container → `Creds`), `Destroy` (container ID → gone). Each engine maps
@@ -59,7 +71,10 @@ works.
 A service is one package under `mockd/services/`: SQLite DDL, a fixture
 loader, and Express-style handlers on a tiny router (`{param}` segments
 and AIP `:verb` suffixes). REST and GraphQL-dispatch styles both fit —
-see `services/gmail` and `services/linear`.
+see `services/gmail` and `services/linear`. That package *is* the
+adapter: OpenAPI surface + collections + `Load`/`Dump`/`Reset` on a
+shared SQLite store. Every API-like environment uses this iface so
+state, snapshot, and SDK e2e stay one code path.
 
 ## Targets (where to build it)
 

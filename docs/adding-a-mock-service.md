@@ -2,9 +2,15 @@
 
 A mock service is one Go package under `mockd/services/` plus one
 registry line and one profile. No engine changes, no CLI changes.
+**Every API-like service lives here** — Gmail, Stripe, GitHub, Slack,
+Linear — on the same HTTP / OpenAPI engine and `mock.Service` iface.
+Do not add a new `engine/` package or wrap an existing HTTP mock
+(vercel-labs emulate, Prism, etc.) as a second runtime.
 
 Use `services/gmail` as the REST template and `services/linear` as the
-GraphQL template.
+GraphQL template. GitHub's current emulate engine is a stopgap; a
+real GitHub service is this same package shape, not an emulate
+wrapper.
 
 ## 1. The service package
 
