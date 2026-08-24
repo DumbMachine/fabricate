@@ -143,10 +143,11 @@ That is the same loop a company's `npm test` will run after
 - **User states.** `stripe.language-learning.v1` is only useful if
   `stripe.customers.list()` returns those students. The SDK test
   should run against a catalog state, not an empty world.
-- **CI DevEx.** The constructor options above *are* the company seam.
-  `fab env` must emit `STRIPE_API_BASE` / `STRIPE_SECRET_KEY` /
-  `GITHUB_API_URL` / `GITHUB_TOKEN`. Document Node's host/port split
-  next to PHP's `api_base` so we don't copy the wrong knob.
+- **CI DevEx.** The constructor options above *are* seam A
+  (`STRIPE_API_BASE`). Seam B is [proxy.md](proxy.md): stripe-node
+  with **no** `host:` override, only `HTTPS_PROXY` + a sandbox CA,
+  still dialing `api.stripe.com`. That job lands after the explicit
+  host-override suite is green.
 - **Vision.** Official-SDK e2e stays on the "protect while
   simplifying" list, now with names: `stripe`, `@octokit/rest`,
   `googleapis`. GraphQL generated clients are a later hardening

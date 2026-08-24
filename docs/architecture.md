@@ -2,7 +2,8 @@
 
 `fab` is a small pipeline: **profile → engine → target → creds**.
 
-Product direction (sandbox as the unit, versioned states, SQLite as the API store) lives in [product-vision.md](product-vision.md). How services vs states vs runtimes split — and how users author their own worlds — is [adapters-and-states.md](adapters-and-states.md). How that world shows up in CI without a language SDK: [ci-and-devex.md](ci-and-devex.md). First-party JS SDKs as the compliance bar: [sdk-conformance.md](sdk-conformance.md). This file describes the current pipeline.
+Product direction (sandbox as the unit, versioned states, SQLite as the API store) lives in [product-vision.md](product-vision.md). How services vs states vs runtimes split — and how users author their own worlds — is [adapters-and-states.md](adapters-and-states.md). How that world shows up in CI without a language SDK: [ci-and-devex.md](ci-and-devex.md). First-party JS SDKs as the compliance bar: [sdk-conformance.md](sdk-conformance.md).
+Transparent proxy (no `apiBase`): [proxy.md](proxy.md). This file describes the current pipeline.
 
 ```
 profile.yaml ──▶ profile.Load ──▶ engine.Create ──▶ Instance{Creds} ──▶ state.json
