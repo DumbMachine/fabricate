@@ -7,8 +7,6 @@ import (
 
 	"github.com/dumbmachine/fabricate/engine"
 	"github.com/dumbmachine/fabricate/engine/awsconsole"
-	"github.com/dumbmachine/fabricate/engine/github"
-	"github.com/dumbmachine/fabricate/engine/httpmock"
 	"github.com/dumbmachine/fabricate/engine/kubernetes"
 	"github.com/dumbmachine/fabricate/engine/mongodb"
 	"github.com/dumbmachine/fabricate/engine/mysql"
@@ -32,9 +30,7 @@ var engines = map[string]engine.Engine{
 	prometheus.Engine: prometheus.New(),
 	ssh.Engine:        ssh.New(),
 	kubernetes.Engine: kubernetes.New(),
-	github.Engine:     github.New(),
 	awsconsole.Engine: awsconsole.New(),
-	httpmock.Engine:   httpmock.New(),
 }
 
 // resolveEngine returns the engine for the named slug or a clear

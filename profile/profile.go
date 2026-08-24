@@ -63,10 +63,6 @@ type Healthcheck struct {
 //	redis:      redis-cli         (one RESP/CLI command per line)
 //	prometheus: prom-config, prom-rule
 //	ssh:        shell             (executed as root inside the container)
-//	github:     emulate-config (single YAML for vercel-labs/emulate)
-//	            emulate-postseed (JSON list of API calls to replay after boot —
-//	                             for state emulate doesn't seed natively, like
-//	                             issues / labels / milestones)
 //	aws_console: moto-seed (YAML describing AWS-compatible Moto state)
 type SeedStep struct {
 	Type string `yaml:"type"`
@@ -77,19 +73,14 @@ type SeedStep struct {
 // types surface as an engine-level error so a typo isn't silently
 // dropped.
 const (
-	SeedTypeSQL             = "sql"
-	SeedTypeJS              = "js"
-	SeedTypeMongoImport     = "mongoimport"
-	SeedTypeRedisCLI        = "redis-cli"
-	SeedTypePromConfig      = "prom-config"
-	SeedTypePromRule        = "prom-rule"
-	SeedTypeShell           = "shell"
-	SeedTypeEmulateConfig   = "emulate-config"
-	SeedTypeEmulatePostSeed = "emulate-postseed"
-	SeedTypeMotoSeed        = "moto-seed"
-	// SeedTypeMockFixture is the httpmock engine's seed: a JSON fixture the
-	// selected mock service loads into its SQLite tables at boot.
-	SeedTypeMockFixture = "mock-fixture"
+	SeedTypeSQL         = "sql"
+	SeedTypeJS          = "js"
+	SeedTypeMongoImport = "mongoimport"
+	SeedTypeRedisCLI    = "redis-cli"
+	SeedTypePromConfig  = "prom-config"
+	SeedTypePromRule    = "prom-rule"
+	SeedTypeShell       = "shell"
+	SeedTypeMotoSeed    = "moto-seed"
 )
 
 // Validate enforces the small invariants downstream code relies on

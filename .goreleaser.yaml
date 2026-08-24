@@ -5,9 +5,6 @@
 # install.sh can fetch them from the stable /releases/latest/download/
 # URL without first querying the API for the tag.
 #
-# ldflags pin each released binary's DEFAULT engine image to the GHCR
-# copy published for this same tag, so `fab create gmail ...` auto-pulls
-# it — no `make images`. Source builds keep the local `:local` default.
 version: 2
 
 project_name: fabricate
@@ -26,8 +23,6 @@ builds:
     goarch: [amd64, arm64]
     ldflags:
       - -s -w
-      - -X github.com/dumbmachine/fabricate/engine/httpmock.defaultImage=ghcr.io/dumbmachine/fabricate-httpmock:{{ .Tag }}
-      - -X github.com/dumbmachine/fabricate/engine/github.defaultImage=ghcr.io/dumbmachine/fabricate-emulate:{{ .Tag }}
 
 archives:
   - id: fab

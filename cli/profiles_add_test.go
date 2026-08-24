@@ -49,8 +49,7 @@ func TestParseAddSource(t *testing.T) {
 	}
 }
 
-// writePack lays out a two-profile pack: catalog shape with one
-// container profile and one httpmock profile.
+// writePack lays out a two-profile catalog pack.
 func writePack(t *testing.T, root string, underProfilesDir bool) {
 	t.Helper()
 	base := root
@@ -69,8 +68,8 @@ func writePack(t *testing.T, root string, underProfilesDir bool) {
 	}
 	write("postgres/checkout-db/profile.yaml", "name: checkout-db\nengine: postgres\nlabel: \"Checkout DB\"\nseed:\n  - { type: sql, file: 00-schema.sql }\n")
 	write("postgres/checkout-db/00-schema.sql", "CREATE TABLE carts(id int);")
-	write("linear/acme-board/profile.yaml", "name: acme-board\nengine: httpmock\nenv:\n  MOCK_SERVICE: linear\nseed:\n  - { type: mock-fixture, file: seed.json }\n")
-	write("linear/acme-board/seed.json", "{}")
+	write("redis/acme-cache/profile.yaml", "name: acme-cache\nengine: redis\nseed:\n  - { type: redis-cli, file: 00-cache.redis }\n")
+	write("redis/acme-cache/00-cache.redis", "SET status ready")
 }
 
 func TestDiscoverPackLayouts(t *testing.T) {
@@ -89,7 +88,7 @@ func TestDiscoverPackLayouts(t *testing.T) {
 
 func TestDiscoverSingleProfileRootDerivesSlug(t *testing.T) {
 	root := t.TempDir()
-	yaml := "name: solo-board\nengine: httpmock\nenv:\n  MOCK_SERVICE: linear\n"
+	yaml := "name: solo-cache\nengine: redis\n"
 	if err := os.WriteFile(filepath.Join(root, "profile.yaml"), []byte(yaml), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -97,7 +96,7 @@ func TestDiscoverSingleProfileRootDerivesSlug(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(found) != 1 || found[0].Slug != "linear" || found[0].Name != "solo-board" {
+	if len(found) != 1 || found[0].Slug != "redis" || found[0].Name != "solo-cache" {
 		t.Fatalf("found = %+v", found)
 	}
 }
@@ -105,13 +104,13 @@ func TestDiscoverSingleProfileRootDerivesSlug(t *testing.T) {
 func TestSelectFromPack(t *testing.T) {
 	found := []packEntry{
 		{Slug: "postgres", Name: "checkout-db"},
-		{Slug: "linear", Name: "acme-board"},
+		{Slug: "redis", Name: "acme-cache"},
 	}
 	if _, err := selectFromPack(found, nil, false); err == nil {
 		t.Fatal("multi-profile pack with no selection should error, not prompt")
 	}
-	sel, err := selectFromPack(found, []string{"linear/acme-board"}, false)
-	if err != nil || len(sel) != 1 || sel[0].Name != "acme-board" {
+	sel, err := selectFromPack(found, []string{"redis/acme-cache"}, false)
+	if err != nil || len(sel) != 1 || sel[0].Name != "acme-cache" {
 		t.Fatalf("slug/name selection = %+v, %v", sel, err)
 	}
 	sel, err = selectFromPack(found, []string{"checkout-db"}, false)
@@ -188,7 +187,7 @@ func TestCopyProfileDirInstall(t *testing.T) {
 	for _, want := range []string{
 		"postgres/checkout-db/profile.yaml",
 		"postgres/checkout-db/00-schema.sql",
-		"linear/acme-board/seed.json",
+		"redis/acme-cache/00-cache.redis",
 	} {
 		if _, err := os.Stat(filepath.Join(target, filepath.FromSlash(want))); err != nil {
 			t.Fatalf("missing installed file %s: %v", want, err)

@@ -1,0 +1,36 @@
+#!/bin/sh
+set -eu
+
+# Resolve the real script location even when invoked through the installed
+# ~/bin/fab-dev symlink. The repository can be cloned at any absolute path.
+script_path=$0
+while [ -L "$script_path" ]; do
+	script_dir=$(CDPATH= cd -P -- "$(dirname -- "$script_path")" && pwd)
+	link_target=$(readlink "$script_path")
+	case "$link_target" in
+		/*) script_path=$link_target ;;
+		*) script_path=$script_dir/$link_target ;;
+	esac
+done
+script_dir=$(CDPATH= cd -P -- "$(dirname -- "$script_path")" && pwd)
+repo_root=$(CDPATH= cd -P -- "$script_dir/.." && pwd)
+
+if [ ! -f "$repo_root/go.mod" ] || [ ! -d "$repo_root/cmd/fab" ]; then
+	echo "fab-dev: resolved repository is not a Fabricate checkout: $repo_root" >&2
+	exit 1
+fi
+
+go_command=${FAB_DEV_GO:-go}
+if ! command -v "$go_command" >/dev/null 2>&1; then
+	echo "fab-dev: Go is required (set FAB_DEV_GO to an alternate Go binary)" >&2
+	exit 1
+fi
+
+mkdir -p "$repo_root/bin"
+dev_binary="$repo_root/bin/fab-dev-bin"
+
+# `go -C` builds in the module without changing this script's working
+# directory. The resulting CLI therefore resolves relative user arguments from
+# wherever the contributor invoked fab-dev.
+"$go_command" -C "$repo_root" build -o "$dev_binary" ./cmd/fab
+exec "$dev_binary" "$@"

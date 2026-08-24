@@ -1,94 +1,70 @@
 # Architecture
 
-`fab` is a small pipeline: **profile → engine → target → creds**.
+Fabricate has a shared CLI but two independent lifecycle models.
 
-Product direction (sandbox as the unit, versioned states, SQLite as the API store) lives in [product-vision.md](product-vision.md). How services vs states vs runtimes split — and how users author their own worlds — is [adapters-and-states.md](adapters-and-states.md). How that world shows up in CI without a language SDK: [ci-and-devex.md](ci-and-devex.md). First-party JS SDKs as the compliance bar: [sdk-conformance.md](sdk-conformance.md).
-Transparent proxy (no `apiBase`): [proxy.md](proxy.md). This file describes the current pipeline.
+## Compiled HTTP/API environments
 
+```text
+scenario.Document
+  -> resource ScenarioCodec
+  -> engine/http baseline.db + live.db
+  -> generated strict provider server
+  -> request validation + synthetic authentication
+  -> direct listener and/or transparent HTTPS proxy
+  -> official provider client
 ```
-profile.yaml ──▶ profile.Load ──▶ engine.Create ──▶ Instance{Creds} ──▶ state.json
-   (what)          (loader)      (how: container)     (connection)      (lifecycle)
+
+The packages have narrow ownership:
+
+- `scenario/` defines the strict immutable envelope and canonical digest.
+- `httpresource/` defines the provider-independent resource contract.
+- `resources/<id>/` owns one provider's OpenAPI contract, generated bindings,
+  SQLite schema, scenario codec, behavior, and built-in scenarios.
+- `resources/all/` is the single compile-time registry.
+- `engine/http/` materializes isolated baseline and live SQLite state and hosts
+  resource handlers.
+- `environment/` composes named services and the proxy for one foreground run.
+- `engine/http/proxy/` provides CONNECT/TLS interception, per-run CA material,
+  exact host/path routing, synthetic authentication, and fail-closed behavior.
+- `requestlog/` stores redacted request/response JSONL outside ephemeral state.
+
+Gmail is the first reference resource. `gmail.acme-corp.v1` contains twelve
+handcrafted messages. The environment at `environments/acme-gmail.yaml` routes
+normal Gmail and Google OAuth hosts to local handlers, allowing an unmodified
+official Google API client to run inside the wrapper.
+
+```bash
+fab run --environment ./environments/acme-gmail.yaml --proxy -- <command>
 ```
 
-## Profiles (what to build)
+The current supervisor is foreground-only. It deletes live state on shutdown
+but retains the redacted request log. Detached environments, explicit reset,
+capture, and general multi-resource lifecycle commands remain future work.
 
-A profile is a directory — `profile.yaml` plus seed files — describing
-one fixture: which engine, which image, what state to seed. Profiles
-come from a stack of sources, highest precedence first:
+## Infrastructure profiles
 
-1. the user dir (`~/.config/fab/profiles`, or `$FAB_PROFILES_DIR`)
-2. catalogs registered via `profile.RegisterCatalog`, newest first
-   (this is how downstream repos ship private profiles — see
-   [private-catalogs.md](private-catalogs.md))
-3. the embedded built-in catalog (`profiles/`, registered in init)
+The established profile pipeline remains for real infrastructure:
 
-Same-name profiles shadow down the stack. `fab create <slug> -p <name>`
-resolves by directory (`<slug>/<name>/profile.yaml`); the yaml's
-`engine:` field selects the implementation, which is how
-`fab create linear ...` maps onto the `httpmock` engine.
+```text
+profile.yaml -> profile.Load -> engine.Engine -> target -> Instance/Creds
+```
 
-## Engines (how to build it)
+`fab create`, `fab ls`, `fab creds`, `fab wait`, and `fab destroy` operate on
+that pipeline. Docker is the default target; supported engines may also use the
+Kubernetes target. Profile seeds are engine-specific SQL, JavaScript,
+Redis commands, Prometheus config, shell, and similar infrastructure inputs.
 
-Two families, not three:
+HTTP APIs do not pass through the profile pipeline. This prevents two resource
+registries, two state formats, and provider-specific container lifecycles from
+reappearing.
 
-1. **Real infra** — postgres, mysql, mongo, redis, prometheus, ssh,
-   k3s, aws_console. These stay container engines.
-2. **API-shaped services** — one `httpmock` / OpenAPI engine (`mockd`).
-   Gmail, Linear, Stripe, GitHub, Slack, … all belong here. A new API
-   is a service package on that engine, not a new engine.
+## Extension boundary
 
-`engine/github` (vercel-labs `emulate` in Docker) is a **stopgap**. Do
-not wrap it in the `Service` iface and do not add a fourth HTTP stack.
-Port GitHub onto mockd the same way Gmail already runs.
+- New provider API: implement `httpresource.Resource` under `resources/`.
+- New provider scenario: add a strict versioned document under its resource.
+- New runnable composition: add an `environment` manifest.
+- New infrastructure product: implement `engine.Engine` and add profiles.
 
-`engine.Engine` is three methods: `Info` (agent-discoverable metadata:
-default image, port, accepted seed types), `Create` (profile → running
-container → `Creds`), `Destroy` (container ID → gone). Each engine maps
-the profile's `seed:` steps onto whatever first-boot mechanism its
-image provides — init SQL for Postgres/MySQL, `.js` for Mongo,
-`redis-cli` lines post-boot, shell for SSH, a JSON fixture for
-httpmock. Engines reject seed types they don't understand so a typo
-never silently no-ops.
-
-Containers are started via testcontainers-go with Ryuk (the reaper)
-disabled on purpose: the CLI exits, the container stays. Cleanup is
-`fab destroy`, driven by the state file.
-
-## The httpmock engine and mockd
-
-Container engines give you real databases. `httpmock` gives you real
-*APIs*: one Go server (`mockd/`, its own module) hosts many mock
-services; `env.MOCK_SERVICE` in the profile picks which one a container
-serves, and the profile's `mock-fixture` seed is mounted at
-`/seed.json` and loaded into per-container SQLite at boot.
-
-Because the backing store is a real database, writes behave like the
-real API: `messages.send` inserts a row that the next `threads.get`
-returns; `issueCreate` allocates the next `ENG-<n>`. This is the
-difference from recorded-fixture mocking — the read-after-write loop
-works.
-
-A service is one package under `mockd/services/`: SQLite DDL, a fixture
-loader, and Express-style handlers on a tiny router (`{param}` segments
-and AIP `:verb` suffixes). REST and GraphQL-dispatch styles both fit —
-see `services/gmail` and `services/linear`. That package *is* the
-adapter: OpenAPI surface + collections + `Load`/`Dump`/`Reset` on a
-shared SQLite store. Every API-like environment uses this iface so
-state, snapshot, and SDK e2e stay one code path.
-
-## Targets (where to build it)
-
-The default target is local Docker. `--target kubernetes`
-(`target/kubetarget`) creates the same fixture as labeled Kubernetes
-primitives (Secret/ConfigMap/Deployment/Service + seed Jobs) in an
-existing cluster via your kubeconfig, returning in-cluster DNS
-endpoints instead of localhost ports.
-
-## State and creds
-
-Every `fab create` writes the full instance record — including the
-generated password / SSH key / kubeconfig — to `~/.config/fab/state.json`
-(atomic rename; `$FAB_STATE_FILE` overrides). `fab ls / creds / destroy`
-are views and edits of that file. Losing your terminal never loses the
-credentials; `fab destroy` is the only way they become unrecoverable,
-at which point the container is gone too.
+The detailed HTTP/API v1 contract is
+[http-api-engine-v1-plan.md](http-api-engine-v1-plan.md). The SQLite/module
+decision is [ADR 0001](adr/0001-http-api-sqlite-and-module.md).

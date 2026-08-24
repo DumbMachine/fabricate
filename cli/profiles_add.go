@@ -25,7 +25,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dumbmachine/fabricate/engine/httpmock"
 	"github.com/dumbmachine/fabricate/internal/output"
 	"github.com/dumbmachine/fabricate/profile"
 
@@ -449,19 +448,16 @@ func scanCatalogLayout(base string) ([]packEntry, error) {
 }
 
 // packEntryFromDir parses a profile dir into a packEntry. slug may be
-// empty (single-profile source) — then it's derived from the yaml:
-// env.MOCK_SERVICE for httpmock profiles (matching the catalog
-// convention), the engine otherwise.
+// empty (single-profile source) — then it is derived from engine in YAML.
 func packEntryFromDir(dir, slug string) (*packEntry, error) {
 	data, err := os.ReadFile(filepath.Join(dir, "profile.yaml"))
 	if err != nil {
 		return nil, err
 	}
 	var p struct {
-		Name   string            `yaml:"name"`
-		Engine string            `yaml:"engine"`
-		Label  string            `yaml:"label"`
-		Env    map[string]string `yaml:"env"`
+		Name   string `yaml:"name"`
+		Engine string `yaml:"engine"`
+		Label  string `yaml:"label"`
 	}
 	if err := yaml.Unmarshal(data, &p); err != nil {
 		return nil, fmt.Errorf("parse profile.yaml: %w", err)
@@ -472,9 +468,6 @@ func packEntryFromDir(dir, slug string) (*packEntry, error) {
 	}
 	if slug == "" {
 		slug = p.Engine
-		if p.Engine == httpmock.Engine && p.Env["MOCK_SERVICE"] != "" {
-			slug = p.Env["MOCK_SERVICE"]
-		}
 	}
 	if slug == "" {
 		return nil, fmt.Errorf("profile %q declares no engine", name)

@@ -1,0 +1,12 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "gmail.minimal.v1",
+  "$resource": "gmail",
+  "$resourceVersion": "v1",
+  "state": {
+    "emailAddress": "me@acme.example",
+    "labels": [],
+    "messages": []
+  }
+}

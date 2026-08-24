@@ -1,117 +1,70 @@
-# Adding a mock service
+# Adding an HTTP API resource
 
-A mock service is one Go package under `mockd/services/` plus one
-registry line and one profile. No engine changes, no CLI changes.
-**Every API-like service lives here** — Gmail, Stripe, GitHub, Slack,
-Linear — on the same HTTP / OpenAPI engine and `mock.Service` iface.
-Do not add a new `engine/` package or wrap an existing HTTP mock
-(vercel-labs emulate, Prism, etc.) as a second runtime.
+Provider APIs are compiled resources in the root Go module. Gmail under
+`resources/gmail` is the reference layout.
 
-Use `services/gmail` as the REST template and `services/linear` as the
-GraphQL template. GitHub's current emulate engine is a stopgap; a
-real GitHub service is this same package shape, not an emulate
-wrapper.
+## Required files
 
-## 1. The service package
-
-```go
-// Package payments is a stateful mock of <the API subset you need>.
-package payments
-
-import (
-    "database/sql"
-    "github.com/dumbmachine/fabricate/mockd/mock"
-)
-
-func New() *mock.Service {
-    s := mock.NewService("payments")
-    s.Tables = []mock.Table{
-        {Name: "charges", DDL: "id TEXT PRIMARY KEY, amount INTEGER, status TEXT"},
-    }
-    s.Seed = seed // func(db *sql.DB, fixture []byte) error — parse JSON, insert rows
-
-    s.GET("/v1/charges", listCharges)          // {param} segments are captured
-    s.GET("/v1/charges/{id}", getCharge)       // into c.Params
-    s.POST("/v1/charges/{id}:capture", capture) // AIP-style :verb suffixes work
-    return s
-}
+```text
+resources/<id>/
+  openapi.yaml
+  oapi-codegen.yaml
+  generate.go
+  generated/server.gen.go
+  resource.go
+  scenario.go
+  scenario.schema.json
+  schema.sql
+  server.go
+  scenarios/minimal.v1.json
+  scenarios/<use-case>.v1.json
+  resource_test.go
 ```
 
-Handlers receive `*mock.Ctx`: `DB` (the live SQLite), `Params`,
-`Query`, `Body`, and helpers `Bind` (JSON in), `JSON` (respond),
-`GErr` (Google-style error envelope). Return errors only for
-"already wrote the response, log this" cases; API errors are
-`c.GErr(404, "NOT_FOUND", "...")` + `return nil`-style via the helper.
-
-Design rules that keep mocks useful:
-
-- **Make writes real.** The point of SQLite-backed mocking is that
-  `POST` mutates rows the next `GET` returns. If a write is fire-and-
-  forget, the mock teaches clients the wrong lessons.
-- **Mirror the real API's envelopes** (field names, pagination shape,
-  error format) for the subset you implement. Clients — especially
-  agent tool-use code — are written against docs of the real service.
-- **Reject what you don't implement loudly** (404 with a clear message,
-  or a GraphQL error) rather than returning empty success.
-- For GraphQL APIs, don't build an executor: dispatch on the query
-  text (`strings.Contains(query, "issueCreate")`) and read variables
-  from the request, the way `services/linear` and `services/railway`
-  do. Document the supported operations in the package comment.
-
-## 2. Register it
-
-Add the import + one line to the `registry` map in `mockd/main.go`:
-
-```go
-"payments": payments.New,
-```
-
-## 3. Tests (before the profile)
-
-The whole service is unit-testable without Docker:
-
-```go
-svc := New()
-svc.Init(":memory:", []byte(fixtureJSON))
-rec := httptest.NewRecorder()
-svc.ServeHTTP(rec, httptest.NewRequest("GET", "/v1/charges", nil))
-```
-
-Cover the stateful loop, not just reads: create/modify something, then
-assert the follow-up read reflects it. Run with `make check`.
-
-## 4. The profile
-
-```
-profiles/payments/demo-account/
-├── profile.yaml    # engine: httpmock, env.MOCK_SERVICE: payments,
-│                   # seed: [{type: mock-fixture, file: seed.json}]
-└── seed.json       # the fixture your Seed func parses
-```
-
-Add `all:payments` to the `//go:embed` directive in
-`profiles/embed.go`. Seed something with a story in it — see
-[authoring-profiles.md](authoring-profiles.md).
-
-## 5. Verify end to end
+Curate the upstream OpenAPI document to the supported surface. Keep its source
+and revision in `UPSTREAM.md`. Generate a strict server with the pinned tool:
 
 ```bash
-make check                 # unit loop
-make images                # rebuild fabricate/httpmock:local with your service
-make install
-fab create payments -p demo-account
-eval "$(fab creds demo-account --env)"
-curl -s "$FAB_URL/v1/charges"
-fab destroy demo-account
+make generate
+make generate-check
 ```
 
-If the service has an official client library, add an SDK-conformance
-test: `e2e/sdk/<service>.test.mjs` driving the vendor's **first-party JS
-SDK** (Stripe: npm `stripe` with `host`/`port`/`protocol`; GitHub:
-`@octokit/rest` with `baseUrl`; Google: `googleapis` with `rootUrl`).
-Copy `gmail.test.mjs` or `github.test.mjs`. Add the dep to
-`e2e/sdk/package.json` and run `make sdk-e2e`. This is the contract that
-stops a stateful-but-non-compliant mock from shipping. See
-[sdk-conformance.md](sdk-conformance.md). GraphQL generated clients
-(Linear `@linear/sdk`) are not the bar until the mock speaks the real
-schema.
+Implement `httpresource.Resource`:
+
+- a stable descriptor ID and provider host allowlist;
+- the embedded OpenAPI and scenario contracts;
+- strict scenario lookup and validation;
+- SQLite `Initialize`, `Load`, and `Dump` with round-trip fidelity;
+- a generated strict server using only injected clock, IDs, secrets, and DB.
+
+Register the resource exactly once in `resources/all/all.go`. Do not add a CLI
+registry, engine, image, or environment-variable switch.
+
+## Scenarios
+
+Scenario documents use `$contract: fabricate.scenario`, contract version 1,
+a globally meaningful `$id`, matching `$resource`, explicit resource version,
+and an object-valued `state`. Unknown envelope and resource-state fields must
+fail validation. Include `minimal.v1` plus at least one realistic workflow.
+
+Tests must prove validation, canonical digest stability, load/dump round trips,
+write-then-read behavior, and baseline/live isolation.
+
+## Proxy and official-client proof
+
+Add an environment manifest that selects the resource and scenario. Provider
+routes come from `Descriptor.ProviderHosts`; only add exact path routing where
+hosts are shared. OAuth behavior belongs in reusable proxy/auth components, not
+in a second provider server.
+
+Conformance must include:
+
+1. direct HTTP tests against the generated handler;
+2. the provider's official client using its normal production host through
+   `fab run --proxy`;
+3. mutation followed by a read that observes the new state;
+4. request-log assertions and proof that unknown hosts fail closed;
+5. redaction tests for provider-specific secrets.
+
+The removed `mockd` service shape is not a compatibility contract. Port data
+and behavior intentionally into this format; do not wrap the old router.

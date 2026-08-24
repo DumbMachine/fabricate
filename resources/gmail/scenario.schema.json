@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/gmail/scenario-v1.json",
+  "title": "Fabricate Gmail scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["emailAddress", "labels", "messages"],
+  "properties": {
+    "emailAddress": {"type": "string", "format": "email"},
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^Label_[A-Za-z0-9_-]+$"},
+          "name": {"type": "string", "minLength": 1},
+          "type": {"const": "user"}
+        }
+      }
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "threadId", "from", "to", "subject", "body", "labelIds", "internalDate"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "threadId": {"type": "string", "minLength": 1},
+          "from": {"type": "string", "minLength": 1},
+          "to": {"type": "string", "minLength": 1},
+          "subject": {"type": "string"},
+          "body": {"type": "string"},
+          "labelIds": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "internalDate": {"type": "integer", "minimum": 0}
+        }
+      }
+    }
+  }
+}

@@ -434,8 +434,7 @@ func writeProfilesTable(w io.Writer, items []profile.Entry) {
 			desc = e.Label
 		}
 		// The slug is what `fab create` takes; show the implementation
-		// engine alongside when it differs (httpmock-backed profiles
-		// like linear/sprint-board).
+		// engine alongside when a catalog slug differs from its implementation.
 		eng := e.Engine
 		if e.Slug != "" && e.Slug != e.Engine {
 			eng = fmt.Sprintf("%s (%s)", e.Slug, e.Engine)

@@ -1,0 +1,138 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "gmail.acme-corp.v1",
+  "$resource": "gmail",
+  "$resourceVersion": "v1",
+  "state": {
+    "emailAddress": "support@acme.example",
+    "labels": [
+      {"id": "Label_billing", "name": "Billing", "type": "user"},
+      {"id": "Label_bug", "name": "Product bug", "type": "user"},
+      {"id": "Label_enterprise", "name": "Enterprise", "type": "user"},
+      {"id": "Label_security", "name": "Security", "type": "user"}
+    ],
+    "messages": [
+      {
+        "id": "msg-0001",
+        "threadId": "thr-double-charge",
+        "from": "Dana Whitfield <dana@northwind.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Charged twice for August invoice INV-4812",
+        "body": "Hi Acme team,\n\nOur card shows two $1,240 charges for invoice INV-4812 on August 18. The billing page only shows one invoice. Could you refund the duplicate and confirm which charge will remain?\n\nDana Whitfield\nFinance, Northwind Traders",
+        "labelIds": ["INBOX", "UNREAD", "Label_billing"],
+        "internalDate": 1787469300000
+      },
+      {
+        "id": "msg-0002",
+        "threadId": "thr-double-charge",
+        "from": "Dana Whitfield <dana@northwind.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: Charged twice for August invoice INV-4812",
+        "body": "Following up before our books close: both charges have settled. If possible, please send the refund reference today so I can attach it to our reconciliation.",
+        "labelIds": ["INBOX", "UNREAD", "IMPORTANT", "Label_billing"],
+        "internalDate": 1787638500000
+      },
+      {
+        "id": "msg-0003",
+        "threadId": "thr-sso-outage",
+        "from": "Mei Chen <mei.chen@contoso.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Urgent: SAML login loop affecting 380 users",
+        "body": "Since 09:10 UTC our employees loop between Okta and Acme's callback page. Existing sessions work, but nobody can sign in again. Org slug: contoso-eu. We can join a bridge immediately.",
+        "labelIds": ["INBOX", "UNREAD", "STARRED", "IMPORTANT", "Label_enterprise"],
+        "internalDate": 1787641200000
+      },
+      {
+        "id": "msg-0004",
+        "threadId": "thr-csv-export",
+        "from": "Priya Nair <priya@fernworks.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "CSV export downloads an empty file",
+        "body": "The Analytics > Export CSV action now downloads a zero-byte file for every date range. I reproduced it in Chrome and Firefox in workspace fernworks-prod. This blocks our Monday board report.",
+        "labelIds": ["INBOX", "UNREAD", "Label_bug"],
+        "internalDate": 1787605200000
+      },
+      {
+        "id": "msg-0005",
+        "threadId": "thr-refund",
+        "from": "Marco Silva <marco@tinyshop.example>",
+        "to": "Acme Billing <support@acme.example>",
+        "subject": "Cancel annual Pro plan under 30-day guarantee",
+        "body": "We bought annual Pro twelve days ago but have decided to consolidate tools. Please cancel the renewal and refund the original payment under the 30-day guarantee. Account owner: billing@tinyshop.example.",
+        "labelIds": ["INBOX", "UNREAD", "Label_billing"],
+        "internalDate": 1787558400000
+      },
+      {
+        "id": "msg-0006",
+        "threadId": "thr-domain-verification",
+        "from": "Owen Brooks <owen@adatum.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Domain verification TXT record still pending",
+        "body": "We added the TXT record acme-domain-verification=adatum-7f31 about 20 hours ago. Public DNS resolves it, but the admin page still says Pending. Is there a way to recheck it?",
+        "labelIds": ["INBOX", "Label_enterprise"],
+        "internalDate": 1787475600000
+      },
+      {
+        "id": "msg-0007",
+        "threadId": "thr-webhook-retries",
+        "from": "Ben Okafor <ben@laketech.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Feature request: retry failed webhooks",
+        "body": "Not urgent: could failed webhook deliveries retry with exponential backoff? We currently poll the API to recover from brief receiver outages. A delivery log with replay would also help.",
+        "labelIds": ["INBOX"],
+        "internalDate": 1787385600000
+      },
+      {
+        "id": "msg-0008",
+        "threadId": "thr-api-key-rotation",
+        "from": "Sofia Marin <sofia@brightpath.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "How can we rotate API keys without downtime?",
+        "body": "Our security review is next week. Can two API keys overlap while we deploy the replacement, or does creating a new key revoke the current one immediately?",
+        "labelIds": ["INBOX", "Label_security"],
+        "internalDate": 1787299200000
+      },
+      {
+        "id": "msg-0009",
+        "threadId": "thr-api-key-rotation",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Sofia Marin <sofia@brightpath.example>",
+        "subject": "Re: How can we rotate API keys without downtime?",
+        "body": "Hi Sofia,\n\nKeys can overlap. Create a second key, deploy it, verify traffic, and then revoke the old key. Creating the replacement does not invalidate the current key.\n\nRegards,\nAcme Support",
+        "labelIds": ["SENT"],
+        "internalDate": 1787302800000
+      },
+      {
+        "id": "msg-0010",
+        "threadId": "thr-audit-log",
+        "from": "Leila Haddad <leila@fabrikam.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Audit log missing SCIM group changes",
+        "body": "Our audit export includes user provisioning but not SCIM group membership changes made yesterday. Are those events recorded under a different action name? Request ID from one change: req_7Q4K2.",
+        "labelIds": ["INBOX", "UNREAD", "Label_enterprise", "Label_security"],
+        "internalDate": 1787623200000
+      },
+      {
+        "id": "msg-0011",
+        "threadId": "thr-maintenance",
+        "from": "Cloud Status <status@vendor.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Scheduled database maintenance - August 29",
+        "body": "Maintenance is scheduled for August 29 from 02:00 to 04:00 UTC. Connections may be interrupted for up to 60 seconds. No action is required.",
+        "labelIds": ["INBOX"],
+        "internalDate": 1787414400000
+      },
+      {
+        "id": "msg-0012",
+        "threadId": "thr-phishing",
+        "from": "Acme Password Desk <security-alert@acme-login.example.net>",
+        "to": "support@acme.example",
+        "subject": "Mailbox suspension: verify password now",
+        "body": "Your mailbox will be suspended today. Confirm your password at the linked portal to retain access.",
+        "labelIds": ["SPAM", "TRASH"],
+        "internalDate": 1787544000000
+      }
+    ]
+  }
+}

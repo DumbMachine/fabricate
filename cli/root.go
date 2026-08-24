@@ -18,9 +18,9 @@ var rootCmd = &cobra.Command{
 	Long: `fab provisions ephemeral, seeded resources from declarative profiles
 and returns connection credentials: real databases and hosts
 (postgres, mysql, mongodb, redis, prometheus, ssh, kubernetes,
-aws_console) and stateful HTTP-API mocks where writes take effect
-(linear, gmail, google-play, github, ...). Docker-backed by default,
-with an optional Kubernetes target.
+aws_console). HTTP APIs run in foreground environments with compiled
+OpenAPI contracts and optional transparent proxying. Container resources
+are Docker-backed by default, with an optional Kubernetes target.
 
 Discover what's available, then create:
 
@@ -50,6 +50,8 @@ func init() {
 	rootCmd.AddCommand(profilesCmd)
 	rootCmd.AddCommand(enginesCmd)
 	rootCmd.AddCommand(waitCmd)
+	rootCmd.AddCommand(runCmd)
+	rootCmd.AddCommand(logsCmd)
 }
 
 // Execute is main's entrypoint.

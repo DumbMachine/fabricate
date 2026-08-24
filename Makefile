@@ -1,13 +1,10 @@
 # fabricate — build, test, verify.
 #
-# The three-module layout:
-#   .        the fab CLI + engines (module github.com/dumbmachine/fabricate)
-#   mockd/   the httpmock server that runs inside the container (own module, CGO/SQLite)
-#   engine/github/proxy/  tiny proxy baked into the emulate image (own module)
+# The root module contains the CLI, infrastructure engines, and compiled HTTP resources.
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install test vet fmt check images push-images e2e sdk-e2e verify clean
+.PHONY: build install install-dev test vet fmt check generate generate-check e2e verify clean
 
 build:
 	go build -o bin/fab ./cmd/fab
@@ -18,16 +15,18 @@ install:
 	go build -o "$(FAB_INSTALL_DIR)/fab" ./cmd/fab
 	@echo "fab → $(FAB_INSTALL_DIR)/fab"
 
-# Fast unit tests across all modules. No Docker required.
+# Contributor command: install an absolute symlink back to this checkout.
+# fab-dev recompiles through Go's build cache on every invocation, so it always
+# executes the current source while preserving the caller's working directory.
+install-dev:
+	@FAB_INSTALL_DIR="$(FAB_INSTALL_DIR)" ./scripts/install-dev.sh
+
+# Fast unit tests. No Docker required.
 test:
 	go test ./...
-	cd mockd && go test ./...
-	cd engine/github/proxy && go build ./...
 
 vet:
 	go vet ./...
-	cd mockd && go vet ./...
-	cd engine/github/proxy && go vet ./...
 
 fmt:
 	gofmt -l -w .
@@ -38,46 +37,21 @@ check: vet test
 	@out=$$(gofmt -l . 2>/dev/null); if [ -n "$$out" ]; then echo "gofmt needed:"; echo "$$out"; exit 1; fi
 	@echo "check: OK"
 
-# Local Docker images for the httpmock and github (emulate) engines.
-# Build once before `fab create gmail|linear|google-play|github ...`.
-images:
-	docker build -t fabricate/httpmock:local mockd
-	docker build -t fabricate/emulate:local engine/github
+# Compiled HTTP resources own committed strict server bindings. The generator
+# is pinned through go.mod's tool directive; no global binary is required.
+generate:
+	go generate ./resources/...
 
-# Publish multi-arch images to a registry (default GHCR). Normally CI
-# does this on a v* tag (.github/workflows/release.yml); run manually
-# for a one-off:
-#   make push-images IMAGE_TAG=v0.1.0
-# Requires `docker login ghcr.io` and a buildx builder (docker buildx
-# create --use, once). See docs/releasing.md.
-REGISTRY  ?= ghcr.io/dumbmachine
-IMAGE_TAG ?= latest
-PLATFORMS ?= linux/amd64,linux/arm64
+generate-check: generate
+	git diff --exit-code -- 'resources/*/generated/**'
 
-push-images:
-	docker buildx build --platform $(PLATFORMS) \
-		-t $(REGISTRY)/fabricate-httpmock:$(IMAGE_TAG) --push mockd
-	docker buildx build --platform $(PLATFORMS) \
-		-t $(REGISTRY)/fabricate-emulate:$(IMAGE_TAG) --push engine/github
-
-# End-to-end smoke: real Docker containers via the real CLI. Needs a
-# running Docker daemon; httpmock cases also need `make images`.
+# End-to-end smoke for container engines through the real CLI.
 e2e:
 	go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
-# SDK conformance: drive services with each vendor's OFFICIAL first-party
-# JS client (googleapis, @octokit/rest, stripe), proving the mocks match
-# the real wire contract — not just hand-written curl. Needs Docker +
-# `make images` + Node; skips per-service (with a message) when a
-# prerequisite or catalog profile is missing.
-sdk-e2e:
-	go build -o bin/fab ./cmd/fab
-	cd e2e/sdk && npm install --no-audit --no-fund --silent && FAB_BIN="$(CURDIR)/bin/fab" npm test
-
-# verify is the full loop an agent (or CI) runs before calling work done:
-# fast checks first, then the Docker-backed end-to-end smoke, then the
-# official-client conformance suite.
-verify: check e2e sdk-e2e
+# HTTP-resource conformance belongs in root-module Go tests and each
+# resource's official-client proxy suite as it is brought back.
+verify: check e2e
 	@echo "verify: OK"
 
 clean:

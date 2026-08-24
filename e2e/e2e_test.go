@@ -6,7 +6,6 @@
 //
 // Run via `make e2e` (or `go test -tags e2e ./e2e/...`). Requirements:
 //   - a running Docker daemon (tests skip, loudly, without one)
-//   - `make images` for the httpmock cases (they skip if the image is absent)
 //
 // Every test uses an isolated FAB_STATE_FILE so a developer's real
 // ~/.config/fab/state.json is never touched.
@@ -16,9 +15,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -71,10 +68,6 @@ func requireDocker(t *testing.T) {
 	if err := exec.Command("docker", "info").Run(); err != nil {
 		t.Skip("docker daemon not available — skipping e2e")
 	}
-}
-
-func haveImage(image string) bool {
-	return exec.Command("docker", "image", "inspect", image).Run() == nil
 }
 
 // creds is the -o json shape of `fab create` / `fab creds`.
@@ -132,113 +125,5 @@ func TestRedisLifecycle(t *testing.T) {
 	// wait should return immediately for a live instance.
 	if out, err := fab(t, stateFile, "wait", "e2e-redis"); err != nil {
 		t.Fatalf("fab wait: %v\n%s", err, out)
-	}
-}
-
-// TestHttpmockGmailFlow closes the stateful-mock loop through real HTTP:
-// list unread, send a reply into the thread, mark the original read,
-// and watch the unread count drop.
-func TestHttpmockGmailFlow(t *testing.T) {
-	requireDocker(t)
-	if !haveImage("fabricate/httpmock:local") {
-		t.Skip("fabricate/httpmock:local missing — run `make images` first")
-	}
-	stateFile := filepath.Join(t.TempDir(), "state.json")
-
-	c := createInstance(t, stateFile, "gmail", "support-inbox", "e2e-gmail")
-	base := c.Creds.URL
-
-	getJSON := func(path string, v any) {
-		t.Helper()
-		resp, err := http.Get(base + path)
-		if err != nil {
-			t.Fatalf("GET %s: %v", path, err)
-		}
-		defer resp.Body.Close()
-		body, _ := io.ReadAll(resp.Body)
-		if resp.StatusCode != 200 {
-			t.Fatalf("GET %s = %d: %s", path, resp.StatusCode, body)
-		}
-		if err := json.Unmarshal(body, v); err != nil {
-			t.Fatalf("GET %s: parse: %v\n%s", path, err, body)
-		}
-	}
-
-	var profile struct {
-		EmailAddress string `json:"emailAddress"`
-	}
-	getJSON("/gmail/v1/users/me/profile", &profile)
-	if profile.EmailAddress != "support@acme.dev" {
-		t.Fatalf("profile = %+v", profile)
-	}
-
-	var unread struct {
-		Messages []struct{ ID, ThreadID string } `json:"messages"`
-	}
-	getJSON("/gmail/v1/users/me/messages?q=is:unread", &unread)
-	if len(unread.Messages) == 0 {
-		t.Fatal("seeded inbox should have unread messages")
-	}
-	before := len(unread.Messages)
-	first := unread.Messages[0]
-
-	// Mark the first unread message read; the unread count must drop.
-	resp, err := http.Post(
-		base+"/gmail/v1/users/me/messages/"+first.ID+"/modify",
-		"application/json",
-		strings.NewReader(`{"removeLabelIds":["UNREAD"]}`),
-	)
-	if err != nil {
-		t.Fatalf("modify: %v", err)
-	}
-	resp.Body.Close()
-	if resp.StatusCode != 200 {
-		t.Fatalf("modify = %d", resp.StatusCode)
-	}
-
-	getJSON("/gmail/v1/users/me/messages?q=is:unread", &unread)
-	if len(unread.Messages) != before-1 {
-		t.Fatalf("unread count = %d, want %d", len(unread.Messages), before-1)
-	}
-}
-
-// TestHttpmockLinearFlow proves a GraphQL mutation really lands: create
-// an issue, then find its fresh identifier in the next query.
-func TestHttpmockLinearFlow(t *testing.T) {
-	requireDocker(t)
-	if !haveImage("fabricate/httpmock:local") {
-		t.Skip("fabricate/httpmock:local missing — run `make images` first")
-	}
-	stateFile := filepath.Join(t.TempDir(), "state.json")
-
-	c := createInstance(t, stateFile, "linear", "sprint-board", "e2e-linear")
-
-	gql := func(query string, variables map[string]any) string {
-		t.Helper()
-		payload, _ := json.Marshal(map[string]any{"query": query, "variables": variables})
-		resp, err := http.Post(c.Creds.URL+"/graphql", "application/json", bytes.NewReader(payload))
-		if err != nil {
-			t.Fatalf("graphql: %v", err)
-		}
-		defer resp.Body.Close()
-		body, _ := io.ReadAll(resp.Body)
-		if resp.StatusCode != 200 {
-			t.Fatalf("graphql = %d: %s", resp.StatusCode, body)
-		}
-		return string(body)
-	}
-
-	if out := gql("query { viewer { email } }", nil); !strings.Contains(out, "val@acme.dev") {
-		t.Fatalf("viewer = %s", out)
-	}
-
-	out := gql("mutation($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { identifier } } }",
-		map[string]any{"input": map[string]any{"teamId": "team-eng", "title": "e2e follow-up", "priority": 3}})
-	if !strings.Contains(out, `"success":true`) {
-		t.Fatalf("issueCreate = %s", out)
-	}
-
-	if out := gql("query { issues { nodes { title } } }", nil); !strings.Contains(out, "e2e follow-up") {
-		t.Fatalf("created issue missing: %s", out)
 	}
 }

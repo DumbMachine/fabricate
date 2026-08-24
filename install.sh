@@ -1,7 +1,7 @@
 #!/bin/sh
 # fabricate installer — downloads the latest `fab` binary for this OS/arch
 # from GitHub Releases and puts it on your PATH. No build step, no Docker
-# image to build: engine images auto-pull on the first `fab create`.
+# image to build: infrastructure engine images auto-pull on `fab create`.
 #
 #   curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
 #
@@ -97,5 +97,5 @@ case ":$PATH:" in
 esac
 
 info ""
-info "get started (needs a running Docker daemon; engine images auto-pull):"
-info "  fab create gmail -p support-inbox"
+info "get started:"
+info "  fab run --environment ./environments/acme-gmail.yaml --proxy -- <command>"

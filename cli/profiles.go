@@ -12,7 +12,6 @@ import (
 	"strings"
 
 	"github.com/dumbmachine/fabricate/engine"
-	"github.com/dumbmachine/fabricate/engine/httpmock"
 	"github.com/dumbmachine/fabricate/internal/output"
 	"github.com/dumbmachine/fabricate/profile"
 
@@ -63,9 +62,9 @@ var profilesShowCmd = &cobra.Command{
 command. Learning a seed/fixture format from a working example is a
 two-step read designed to stay small:
 
-  fab profiles show support-inbox --files             # manifest: file names + sizes
-  fab profiles show support-inbox --file seed.json    # ONE file, first 100 lines
-  fab profiles show support-inbox --file seed.json --head 400   # more if needed
+  fab profiles show pagila --files             # manifest: file names + sizes
+  fab profiles show pagila --file 00-schema.sql # ONE file, first 100 lines
+  fab profiles show pagila --file 10-data.sql --head 400
 
 --file prints to stdout only (no metadata), so it pipes cleanly.
 --head 0 removes the line cap.`,
@@ -267,7 +266,7 @@ profile under ~/.config/fab/profiles/<engine>/<name>/.
 }
 
 var profilesInitCmd = &cobra.Command{
-	Use:   "init <engine|mock-service> <name>",
+	Use:   "init <engine> <name>",
 	Short: "Scaffold a starter profile under ~/.config/fab/profiles/",
 	Long: `Init creates a new profile directory at
   ~/.config/fab/profiles/<slug>/<name>/
@@ -275,22 +274,15 @@ with a commented profile.yaml that matches the slug's seed-type
 contract. The directory's path is printed on stdout — drop your
 seed files next to profile.yaml and run` + " `fab create <slug> -p <name>`." + `
 
-The slug is either a container engine or a mock service hosted by the
-httpmock engine (` + strings.Join(httpmock.KnownServices, ", ") + `):
+The slug must be a registered container engine:
 
   fab profiles init postgres my-app
   fab profiles init ssh dev-bastion
-  fab profiles init linear my-board     # httpmock-backed Linear fixture
-  fab profiles init gmail my-inbox      # httpmock-backed Gmail fixture
-
-For mock services, learn the fixture shape from a built-in example,
-e.g.` + " `fab profiles show support-inbox --file seed.json` " + `for gmail.
 
 --from copies an existing profile (built-in or user) under the same
 slug as your starting point instead of a blank skeleton — the fastest
 route from a working example to your own:
 
-  fab profiles init linear my-board --from sprint-board
   fab profiles init postgres my-app --from stripe-payments
 
 A user-authored profile shadows a built-in with the same name.`,
@@ -301,19 +293,9 @@ A user-authored profile shadows a built-in with the same name.`,
 			return fmt.Errorf("invalid profile name %q (no slashes, must be non-empty)", name)
 		}
 
-		// A slug is either a real engine or a mock service that the
-		// httpmock engine serves; mock services get an httpmock-shaped
-		// starter with env.MOCK_SERVICE prefilled.
-		mockService := ""
-		eng, engErr := resolveEngine(slug)
-		if engErr != nil {
-			if !isMockService(slug) {
-				return fmt.Errorf("%q is neither an engine (%s) nor a mock service (%s)",
-					slug, supportedEngines(), joinComma(httpmock.KnownServices))
-			}
-			mockService = slug
-		} else if slug == httpmock.Engine {
-			mockService = "TODO" // bare `init httpmock` — user picks the service
+		eng, err := resolveEngine(slug)
+		if err != nil {
+			return err
 		}
 
 		dir := filepath.Join(profile.UserDir(), slug, name)
@@ -336,32 +318,14 @@ A user-authored profile shadows a built-in with the same name.`,
 		if err := os.MkdirAll(dir, 0o755); err != nil {
 			return fmt.Errorf("mkdir %s: %w", dir, err)
 		}
-		var body string
-		if mockService != "" {
-			body = starterMockProfileYAML(mockService, name)
-			seedPath := filepath.Join(dir, "seed.json")
-			if err := os.WriteFile(seedPath, []byte("{}\n"), 0o644); err != nil {
-				return fmt.Errorf("write %s: %w", seedPath, err)
-			}
-		} else {
-			body = starterProfileYAML(eng.Info(), name)
-		}
+		body := starterProfileYAML(eng.Info(), name)
 		yamlPath := filepath.Join(dir, "profile.yaml")
 		if err := os.WriteFile(yamlPath, []byte(body), 0o644); err != nil {
 			return fmt.Errorf("write %s: %w", yamlPath, err)
 		}
 		fmt.Fprintln(os.Stderr, "fab: scaffolded profile at:")
 		fmt.Fprintln(os.Stdout, dir)
-		if mockService != "" {
-			if example, ok := mockServiceExamples[mockService]; ok {
-				fmt.Fprintf(os.Stderr, "fab: next: fill seed.json — see the fixture shape with `fab profiles show %s --file seed.json`,\n", example)
-				fmt.Fprintf(os.Stderr, "fab:       or start from the working example: `fab profiles init %s %s --from %s`.\n", slug, name, example)
-			} else {
-				fmt.Fprintf(os.Stderr, "fab: next: fill seed.json — the fixture shape is documented in mockd/services/%s,\n", mockService)
-			}
-		} else {
-			fmt.Fprintln(os.Stderr, "fab: next: edit profile.yaml, drop seed files next to it,")
-		}
+		fmt.Fprintln(os.Stderr, "fab: next: edit profile.yaml, drop seed files next to it,")
 		fmt.Fprintf(os.Stderr, "fab:       then run `fab create %s -p %s`.\n", slug, name)
 		return nil
 	},
@@ -421,55 +385,6 @@ func rewriteProfileName(data []byte, name string) []byte {
 	return bytes.Join(lines, []byte("\n"))
 }
 
-// mockServiceExamples maps a mock service to the built-in profile that
-// demonstrates its fixture shape (viewable with `profiles show
-// <example> --files`). Services without an entry document the shape in
-// their mockd package comment instead.
-var mockServiceExamples = map[string]string{
-	"gmail":       "support-inbox",
-	"linear":      "sprint-board",
-	"google-play": "reviews-demo",
-}
-
-// isMockService reports whether slug is one of the httpmock image's
-// MOCK_SERVICE values.
-func isMockService(slug string) bool {
-	for _, s := range httpmock.KnownServices {
-		if s == slug {
-			return true
-		}
-	}
-	return false
-}
-
-// starterMockProfileYAML is the httpmock-shaped counterpart of
-// starterProfileYAML: env.MOCK_SERVICE prefilled and a single
-// mock-fixture seed pointing at the scaffolded seed.json.
-func starterMockProfileYAML(service, name string) string {
-	var b strings.Builder
-	fmt.Fprintf(&b, "name: %s\n", name)
-	b.WriteString("engine: httpmock\n")
-	fmt.Fprintf(&b, "label: \"%s — TODO\"\n", name)
-	b.WriteString("description: |\n")
-	b.WriteString("  TODO: describe the seeded state and what workflows it rehearses.\n")
-	b.WriteString("env:\n")
-	fmt.Fprintf(&b, "  MOCK_SERVICE: %s", service)
-	if service == "TODO" {
-		fmt.Fprintf(&b, "   # one of: %s", strings.Join(httpmock.KnownServices, ", "))
-	}
-	b.WriteString("\n")
-	b.WriteString("defaults:\n")
-	b.WriteString("  password: \"\"      # bearer token clients send; blank → fab generates one\n")
-	b.WriteString("seed:\n")
-	b.WriteString("  - { type: mock-fixture, file: seed.json }\n")
-	fmt.Fprintf(&b, "# Fixture shape: see mockd/services/%s (package comment)", service)
-	if example, ok := mockServiceExamples[service]; ok {
-		fmt.Fprintf(&b, ",\n# or a working example: fab profiles show %s --file seed.json", example)
-	}
-	b.WriteString("\ntags: []\n")
-	return b.String()
-}
-
 // profileSchemaYAML returns the canonical, commented profile.yaml
 // schema. It's authored as a string (not generated from struct tags)
 // so the field comments — which are the load-bearing context for an
@@ -499,10 +414,6 @@ func profileSchemaYAML(infos []engine.Info) string {
 	b.WriteString("  password: \"\"             # blank → fab generates a random one (preferred).\n")
 	b.WriteString("env:                       # optional. Extra container env vars.\n")
 	b.WriteString("  KEY: value               # ssh: passed through to the container.\n")
-	b.WriteString("  # httpmock only — REQUIRED: which mock service this container serves.\n")
-	b.WriteString("  # MOCK_SERVICE: " + strings.Join(httpmock.KnownServices, " | ") + "\n")
-	b.WriteString("  # Fixture shapes: `fab profiles show <example> --file seed.json` (e.g. support-inbox,\n")
-	b.WriteString("  # sprint-board, reviews-demo) or mockd/services/<service> package docs.\n")
 	b.WriteString("healthcheck:\n")
 	b.WriteString("  timeout: 180s            # how long fab waits for the container to be ready.\n")
 	b.WriteString("seed:                      # optional. Run after the engine is ready, in array order.\n")
@@ -564,7 +475,7 @@ func suggestedExt(seedType string) string {
 }
 
 func init() {
-	profilesCmd.Flags().StringVar(&profilesEngine, "engine", "", "Filter by catalog slug: an engine ("+supportedEngines()+") or a mock service ("+joinComma(httpmock.KnownServices)+")")
+	profilesCmd.Flags().StringVar(&profilesEngine, "engine", "", "Filter by engine: "+supportedEngines())
 	profilesShowCmd.Flags().StringVar(&profilesShowEngine, "engine", "", "Disambiguate when the profile name exists across engines (e.g. `empty`)")
 	profilesShowCmd.Flags().BoolVar(&profilesShowFiles, "files", false, "List the profile's seed files (names, types, sizes — not contents)")
 	profilesShowCmd.Flags().StringVar(&profilesShowFile, "file", "", "Print ONE seed file's content to stdout (head-capped; see --head)")
@@ -593,9 +504,7 @@ func resolveProfileForShow(engineSlug, name string) (*profile.Profile, string, e
 	var slugs []string
 	for _, e := range entries {
 		if e.Name == name {
-			// The slug (catalog directory) is what LoadForEngine keys
-			// on — for httpmock-backed profiles it differs from the
-			// implementation engine (e.g. linear/sprint-board).
+			// The slug (catalog directory) is what LoadForEngine keys on.
 			slugs = append(slugs, e.Slug)
 		}
 	}

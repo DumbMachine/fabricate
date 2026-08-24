@@ -41,8 +41,8 @@ or selected kubeconfig context.
 
 The <engine> argument is the profile's catalog directory: a container
 engine slug (postgres, mysql, mongodb, redis, prometheus, ssh,
-kubernetes, github, aws_console) or a mock-service slug backed by the
-httpmock engine (linear, gmail, google-play, ...). Run ` + "`fab profiles`" + `
+kubernetes, aws_console). HTTP APIs run as foreground environments with
+` + "`fab run --environment <file> --proxy -- <command>`" + `. Run ` + "`fab profiles`" + `
 to see every (slug, profile) pair.
 
 Examples:
@@ -51,9 +51,6 @@ Examples:
   fab create redis --profile hot-keys
   fab create prometheus --profile api-alerts
   fab create ssh --profile bastion
-  fab create linear --profile sprint-board     # stateful Linear API mock
-  fab create gmail --profile support-inbox     # stateful Gmail API mock
-  fab create github --profile empty            # local GitHub REST API (emulate)
   fab create aws_console --profile s3-public-audit
   fab create postgres --profile pagila --target kubernetes --namespace fabricate
   fab create postgres --profile finance-ledger -o env > .env`,

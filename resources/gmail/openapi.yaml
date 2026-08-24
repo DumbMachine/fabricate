@@ -1,0 +1,388 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Gmail API
+  version: v1
+  description: >-
+    Curated Gmail API v1 contract supported by Fabricate. Every operation in
+    this document has stateful behavior; undeclared Gmail operations are not
+    advertised.
+servers:
+  - url: https://www.googleapis.com
+security:
+  - bearerAuth: []
+tags:
+  - name: Users
+  - name: Labels
+  - name: Messages
+  - name: Threads
+paths:
+  /gmail/v1/users/{userId}/profile:
+    get:
+      operationId: gmail.users.getProfile
+      summary: Gets the current user's Gmail profile.
+      tags: [Users]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Mailbox profile.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Profile'}
+              example: {emailAddress: support@acme.example, messagesTotal: 12, threadsTotal: 11, historyId: '1'}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/labels:
+    get:
+      operationId: gmail.users.labels.list
+      summary: Lists all labels in the user's mailbox.
+      tags: [Labels]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Label list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListLabelsResponse'}
+              example: {labels: [{id: INBOX, name: INBOX, type: system}]}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/labels/{id}:
+    get:
+      operationId: gmail.users.labels.get
+      summary: Gets a label and its current message and thread counts.
+      tags: [Labels]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Label.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Label'}
+              example: {id: INBOX, name: INBOX, type: system, messagesTotal: 10, messagesUnread: 5}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/messages:
+    get:
+      operationId: gmail.users.messages.list
+      summary: Lists messages, optionally filtered by Gmail search syntax and labels.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/IncludeSpamTrash'
+        - $ref: '#/components/parameters/MaxResults'
+        - $ref: '#/components/parameters/PageToken'
+        - $ref: '#/components/parameters/Query'
+        - name: labelIds
+          in: query
+          description: Return messages containing all requested label IDs.
+          schema: {type: array, items: {type: string}}
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Matching messages.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListMessagesResponse'}
+              example: {messages: [{id: msg-0001, threadId: thr-billing}], resultSizeEstimate: 1}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/messages/{id}:
+    get:
+      operationId: gmail.users.messages.get
+      summary: Gets a message.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Format'
+        - name: metadataHeaders
+          in: query
+          schema: {type: array, items: {type: string}}
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Message.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Message'}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/messages/{id}/modify:
+    post:
+      operationId: gmail.users.messages.modify
+      summary: Modifies labels on a message.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ModifyMessageRequest'}
+            example: {removeLabelIds: [UNREAD], addLabelIds: [STARRED]}
+      responses:
+        '200':
+          description: Modified message.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Message'}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/messages/{id}/trash:
+    post:
+      operationId: gmail.users.messages.trash
+      summary: Moves a message to trash.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Trashed message.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Message'}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/messages/send:
+    post:
+      operationId: gmail.users.messages.send
+      summary: Sends an RFC 2822 message encoded as base64url.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/SendMessageRequest'}
+            example: {threadId: thr-billing, raw: VG86IGRlbW9AZXhhbXBsZS5jb20NCg0KSGVsbG8}
+      responses:
+        '200':
+          description: Sent message.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Message'}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/threads:
+    get:
+      operationId: gmail.users.threads.list
+      summary: Lists threads containing matching messages.
+      tags: [Threads]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/IncludeSpamTrash'
+        - $ref: '#/components/parameters/MaxResults'
+        - $ref: '#/components/parameters/PageToken'
+        - $ref: '#/components/parameters/Query'
+        - name: labelIds
+          in: query
+          schema: {type: array, items: {type: string}}
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Matching threads.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListThreadsResponse'}
+              example: {threads: [{id: thr-billing, snippet: Charged twice, historyId: '1'}], resultSizeEstimate: 1}
+        default: {$ref: '#/components/responses/Error'}
+  /gmail/v1/users/{userId}/threads/{id}:
+    get:
+      operationId: gmail.users.threads.get
+      summary: Gets a thread and all its messages.
+      tags: [Threads]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Format'
+        - name: metadataHeaders
+          in: query
+          schema: {type: array, items: {type: string}}
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Thread.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Thread'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Environment- and service-scoped synthetic bearer token.
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: User email address or `me`.
+      schema: {type: string, minLength: 1}
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    IncludeSpamTrash:
+      name: includeSpamTrash
+      in: query
+      schema: {type: boolean, default: false}
+    MaxResults:
+      name: maxResults
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 500, default: 100}
+    PageToken:
+      name: pageToken
+      in: query
+      schema: {type: string}
+    Query:
+      name: q
+      in: query
+      description: Gmail-style search query supported by the resource.
+      schema: {type: string}
+    Format:
+      name: format
+      in: query
+      schema:
+        type: string
+        enum: [minimal, full, raw, metadata]
+        default: full
+  responses:
+    Error:
+      description: Gmail-style error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorEnvelope'}
+  schemas:
+    Profile:
+      type: object
+      required: [emailAddress, messagesTotal, threadsTotal, historyId]
+      properties:
+        emailAddress: {type: string, format: email}
+        messagesTotal: {type: integer, minimum: 0}
+        threadsTotal: {type: integer, minimum: 0}
+        historyId: {type: string}
+    Label:
+      type: object
+      required: [id, name, type]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        type: {type: string, enum: [system, user]}
+        messagesTotal: {type: integer, minimum: 0}
+        messagesUnread: {type: integer, minimum: 0}
+        threadsTotal: {type: integer, minimum: 0}
+        threadsUnread: {type: integer, minimum: 0}
+    ListLabelsResponse:
+      type: object
+      required: [labels]
+      properties:
+        labels: {type: array, items: {$ref: '#/components/schemas/Label'}}
+    MessagePartHeader:
+      type: object
+      required: [name, value]
+      properties:
+        name: {type: string}
+        value: {type: string}
+    MessagePartBody:
+      type: object
+      required: [size]
+      properties:
+        size: {type: integer, minimum: 0}
+        data: {type: string, description: Base64url-encoded body data.}
+        attachmentId: {type: string}
+    MessagePart:
+      type: object
+      required: [mimeType, headers, body]
+      properties:
+        partId: {type: string}
+        mimeType: {type: string}
+        filename: {type: string}
+        headers: {type: array, items: {$ref: '#/components/schemas/MessagePartHeader'}}
+        body: {$ref: '#/components/schemas/MessagePartBody'}
+        parts: {type: array, items: {$ref: '#/components/schemas/MessagePart'}}
+    Message:
+      type: object
+      required: [id, threadId, labelIds, snippet, historyId, internalDate, sizeEstimate]
+      properties:
+        id: {type: string}
+        threadId: {type: string}
+        labelIds: {type: array, items: {type: string}}
+        snippet: {type: string}
+        historyId: {type: string}
+        internalDate: {type: string}
+        sizeEstimate: {type: integer, minimum: 0}
+        payload: {$ref: '#/components/schemas/MessagePart'}
+        raw: {type: string}
+    MessageRef:
+      type: object
+      required: [id, threadId]
+      properties:
+        id: {type: string}
+        threadId: {type: string}
+    ListMessagesResponse:
+      type: object
+      required: [messages, resultSizeEstimate]
+      properties:
+        messages: {type: array, items: {$ref: '#/components/schemas/MessageRef'}}
+        nextPageToken: {type: string}
+        resultSizeEstimate: {type: integer, minimum: 0}
+    ModifyMessageRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        addLabelIds: {type: array, items: {type: string}, maxItems: 100}
+        removeLabelIds: {type: array, items: {type: string}, maxItems: 100}
+    SendMessageRequest:
+      type: object
+      additionalProperties: false
+      required: [raw]
+      properties:
+        raw: {type: string, minLength: 1, description: Base64url-encoded RFC 2822 message.}
+        threadId: {type: string}
+    Thread:
+      type: object
+      required: [id, historyId, snippet, messages]
+      properties:
+        id: {type: string}
+        historyId: {type: string}
+        snippet: {type: string}
+        messages: {type: array, items: {$ref: '#/components/schemas/Message'}}
+    ThreadRef:
+      type: object
+      required: [id, snippet, historyId]
+      properties:
+        id: {type: string}
+        snippet: {type: string}
+        historyId: {type: string}
+    ListThreadsResponse:
+      type: object
+      required: [threads, resultSizeEstimate]
+      properties:
+        threads: {type: array, items: {$ref: '#/components/schemas/ThreadRef'}}
+        nextPageToken: {type: string}
+        resultSizeEstimate: {type: integer, minimum: 0}
+    ErrorDetail:
+      type: object
+      required: [message, domain, reason]
+      properties:
+        message: {type: string}
+        domain: {type: string}
+        reason: {type: string}
+    ErrorBody:
+      type: object
+      required: [code, message, status, errors]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        status: {type: string}
+        errors: {type: array, items: {$ref: '#/components/schemas/ErrorDetail'}}
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error: {$ref: '#/components/schemas/ErrorBody'}

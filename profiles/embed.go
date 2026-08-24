@@ -18,7 +18,7 @@ import (
 // directive — the loader picks engines up from the FS shape, no
 // further wiring required.
 //
-//go:embed all:postgres all:mysql all:mongodb all:redis all:prometheus all:ssh all:kubernetes all:github all:aws_console all:google-play all:gmail all:linear
+//go:embed all:postgres all:mysql all:mongodb all:redis all:prometheus all:ssh all:kubernetes all:aws_console
 var builtin embed.FS
 
 func init() {
