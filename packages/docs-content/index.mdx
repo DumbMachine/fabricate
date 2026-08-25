@@ -1,72 +1,94 @@
 ---
 title: Introduction
-description: Local, seeded services for testing the parts of your app that talk to the outside world.
+description: Run your app against disposable, provider-shaped local services with known data.
 ---
 
-Fabricate gives your app real local services with predictable data. Start one,
-run your app against it, and throw it away when the command exits.
+Fabricate lets you test the code that talks to outside systems without relying
+on a shared test account, hand-written HTTP stubs, or the real provider. It
+starts local services that speak a provider-shaped API, loads a known starting
+state, runs your application, then tears everything down when the command
+exits.
 
-It has two lanes:
+For example, run an email workflow against a seeded Gmail support inbox, let
+the workflow search, label, and send mail, and run it again from the exact same
+inbox. The shipped Gmail scenario has 12 handcrafted support messages, so a
+test can exercise realistic threads instead of a blank or generic fixture.
 
-- **Infrastructure**: databases, Redis, SSH hosts, Kubernetes, Prometheus, and
-  AWS Console. Use `fab create` with a profile.
-- **HTTP resources**: provider-shaped APIs with versioned scenarios. Use
-  `fab run` with an environment file.
+## What Fabricate is for
 
-No shared state. No global proxy setup. No surprise calls to a real provider.
+- **Integration tests:** exercise API calls, authentication, reads, and writes
+  against a repeatable provider state in CI.
+- **Local development:** reproduce a support-inbox or data condition without
+  changing a real account or coordinating a shared test tenant.
+- **Agent and workflow QA:** give an agent a safe, inspectable external system
+  to work with, then start the next attempt from the same baseline.
+- **Provider SDK compatibility:** keep an SDK's production hostname through
+  Fabricate's opt-in, process-scoped proxy when changing its base URL is not
+  possible.
 
-## The basic loop
+Fabricate does not replace your test runner, agent harness, application, or
+provider SDK. It provides the disposable systems those tools need to talk to.
 
-For HTTP resources, the environment file names a resource and the scenario it
-should start with:
+## The model
 
-```yaml
-apiVersion: fabricate.dev/v1alpha1
-kind: Environment
-metadata:
-  name: acme-gmail
-services:
-  support-mail:
-    resource: gmail
-    scenario: gmail.acme-corp.v1
+```text
+Environment
+└── support-mail service
+    └── Gmail resource + Acme Corp scenario
 ```
 
-Then wrap the command you want to test:
+- **Environment = `fn(services)`:** the disposable lifecycle and isolation
+  boundary for everything your command needs.
+- **Service = `fn(resource, scenario)`:** one named provider instance, such as
+  a support-mail Gmail service started from a chosen dataset.
+- **Resource:** the provider-shaped API implementation, such as Gmail today;
+  Stripe, GitHub, or another provider can use the same model.
+- **Scenario:** versioned data and the initial state for a service—such as a
+  Gmail support inbox, or conceptually Stripe data for a Duolingo app versus a
+  Netflix app.
+
+The scenario is the baseline, not a scripted sequence of mock responses. The
+service starts from that baseline, your application can change it normally,
+and the next run starts clean again.
+
+## The first useful run
+
+Install [`fab`](/getting-started) first. Then paste this command; it downloads
+the checked-in Gmail environment and lists its seeded inbox. No repository
+clone or environment file is required.
 
 ```bash
-fab run --environment ./environments/acme-gmail.yaml -- your-app
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
 ```
 
-Fabricate starts the local service, passes its URL and token to `your-app`, and
-cleans up afterward. In this example those variables are
-`FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`.
+`fab run` starts the `support-mail` service, injects
+`FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN` into the wrapped command,
+and removes the service state afterward. See the [Gmail integration](/resources/integrations/gmail)
+for the seeded response and proxy example.
 
 ## Direct URL or transparent proxy?
 
-Use the **direct URL** when your application can point a client at a local base
-URL. It is the simplest route.
+Use the **direct URL** when your application can point its client at a local
+base URL. It is the default and simplest option: use the URL and token that
+Fabricate injects into the process.
 
-```bash
-fab run --environment ./environments/acme-gmail.yaml -- \
-  sh -c 'curl -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-  "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/profile"'
-```
+Use the **transparent proxy** when an SDK must keep its normal provider
+hostname. Add `--proxy` to `fab run`; Fabricate sets proxy and CA variables
+only for the wrapped process, routes the provider hosts declared by the
+environment to local services, and blocks everything else unless explicitly
+allowed.
 
-Use the **transparent proxy** when an SDK insists on its normal production
-hostname. Add `--proxy`; Fabricate sets proxy and CA variables only for the
-wrapped process. Your shell and system trust store stay untouched.
+## Infrastructure is a separate path
 
-```bash
-fab run --environment ./environments/acme-gmail.yaml --proxy -- your-app
-```
+Provider APIs use `fab run` environments. For actual infrastructure such as a
+database or Redis, use a container profile with `fab create`. The two paths are
+deliberately separate: Fabricate is not pretending that a provider API is a
+Docker container, and it is not replacing a real database with a provider
+mock.
 
-The proxy only handles hosts claimed by the environment. Anything else is
-blocked unless it is explicitly listed under `proxy.passthrough`.
-
-## What a scenario is
-
-A scenario is the starting state for one HTTP resource. It is versioned data,
-not a sequence of mocked replies. Your app can read and write normally; the
-next run starts fresh from the same scenario.
-
-See [Resources](/resources) for the shipped catalog and its integration modes.
+Continue with [Getting started](/getting-started) to install the CLI, or open
+the [Gmail integration](/resources/integrations/gmail) for the runnable API
+examples.

@@ -2,6 +2,10 @@ import { defineConfig } from "blume";
 
 export default defineConfig({
   title: "Fabricate",
+  logo: {
+    image: "/fabricate-mark.svg",
+    text: "Fabricate",
+  },
   content: {
     root: "../../packages/docs-content",
   },
@@ -46,6 +50,22 @@ export default defineConfig({
                 label: "Gmail",
                 href: "/resources/integrations/gmail",
                 icon: "https://logos.composio.dev/api/gmail",
+              },
+              {
+                label: "GitHub (planned)",
+                href: "/resources/integrations/github",
+                icon: "https://logos.composio.dev/api/github",
+              },
+            ],
+          },
+          {
+            label: "Environments",
+            display: "group",
+            collapsed: false,
+            items: [
+              {
+                label: "Acme's Gmail",
+                href: "/resources/environments/acme-gmail",
               },
             ],
           },

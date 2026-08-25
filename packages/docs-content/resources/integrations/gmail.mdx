@@ -24,26 +24,54 @@ token handling. It covers profile, labels, messages, threads, and sending mail.
 
 ### Start it with a direct URL
 
-Use `fab run` without `--proxy`. Fabricate injects a URL and a short-lived
-token for the service name in your environment file.
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
-fab run --environment ./environments/acme-gmail.yaml -- \
-  sh -c 'curl -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-  "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
 ```
 
 The service is named `support-mail` in the example manifest, so the variables
 are `FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`. If you name the
 service `gmail`, they become `FAB_GMAIL_URL` and `FAB_GMAIL_TOKEN`.
 
+The response is the seeded support inbox:
+
+```json
+{
+  "messages": [
+    { "id": "msg-0003", "threadId": "thr-sso-outage" },
+    { "id": "msg-0002", "threadId": "thr-double-charge" },
+    { "id": "msg-0010", "threadId": "thr-audit-log" },
+    { "id": "msg-0004", "threadId": "thr-csv-export" },
+    { "id": "msg-0005", "threadId": "thr-refund" },
+    { "id": "msg-0006", "threadId": "thr-domain-verification" },
+    { "id": "msg-0001", "threadId": "thr-double-charge" },
+    { "id": "msg-0011", "threadId": "thr-maintenance" },
+    { "id": "msg-0007", "threadId": "thr-webhook-retries" },
+    { "id": "msg-0009", "threadId": "thr-api-key-rotation" },
+    { "id": "msg-0008", "threadId": "thr-api-key-rotation" }
+  ],
+  "resultSizeEstimate": 11
+}
+```
+
 ### Start it through the proxy
 
 Use this when your app uses the normal Gmail/Google URLs and follows standard
-proxy and CA environment variables:
+proxy and CA environment variables. This one-paste check calls Gmail's normal
+production hostname; replace the final `sh -c ...` command with your app.
 
 ```bash
-fab run --environment ./environments/acme-gmail.yaml --proxy -- your-app
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+      "https://gmail.googleapis.com/gmail/v1/users/me/messages"'
 ```
 
 Fabricate handles `gmail.googleapis.com` and the Gmail path on

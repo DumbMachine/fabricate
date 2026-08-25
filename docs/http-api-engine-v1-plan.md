@@ -1610,20 +1610,29 @@ Exit criteria:
 - packet/request assertions prove no Google endpoint was contacted;
 - direct mode still works unchanged.
 
-### Phase 5: GitHub clean-slate resource
+### Phase 5: GitHub metadata and collaboration resource
 
-Rewrite GitHub as a Go HTTP resource using a curated GitHub OpenAPI subset and
-scenario state. Do not retain ordered post-seed HTTP replay.
+Implement GitHub as a Go HTTP resource using a curated GitHub OpenAPI subset
+and scenario state. Its first surface is repository metadata and collaboration,
+not a synthetic Git server. Do not retain ordered post-seed HTTP replay.
 
 Deliverables:
 
 - GitHub OpenAPI, generated server, models, and embedded spec;
-- canonical scenarios containing users, orgs, repos, labels, milestones,
-  issues, comments, and supported relationships directly;
+- canonical scenarios containing users, orgs, repository metadata, labels,
+  milestones, issues, pull requests, reviews, comments, and check/status
+  metadata with their supported relationships directly;
+- read-only commit metadata only where it explains a pull request or check;
 - provider-shaped URLs generated from request context;
 - Octokit direct and proxy conformance;
 - fixture and reset/capture tests;
 - deletion of the Emulate runtime and proxy.
+
+The initial subset excludes Git smart HTTP, clone/fetch/push/SSH, Git
+objects and refs, file or branch writes, pull-request merges, Actions
+execution, artifacts, releases, uploads, webhooks, and GraphQL. Repository
+mutation is a later resource contract: it must model the ref-to-commit-to-tree-
+to-blob graph atomically rather than expose independent file-write routes.
 
 The Emulate runtime, image/release path, seed types, HTTP profiles, and
 compatibility documentation have already been deleted. Reintroduction starts

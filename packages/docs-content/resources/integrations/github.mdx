@@ -1,0 +1,52 @@
+---
+title: GitHub (planned)
+description: A deliberately bounded GitHub REST API resource for repository metadata and collaboration.
+sidebar:
+  icon: https://logos.composio.dev/api/github
+---
+
+> **Planned, not available yet.** This page defines the intended first GitHub
+> surface. It does not describe a runnable Fabricate resource or environment.
+
+Fabricate's GitHub integration will focus on the information an agent needs to
+understand engineering work: repository metadata, issues, pull requests,
+reviews, comments, and check status. It will not try to emulate a Git server.
+
+## Intended first surface
+
+- Organizations and repositories: identity, visibility, default branch,
+  topics, and repository settings that explain the work.
+- Collaboration: issues, labels, pull requests, requested reviewers, reviews,
+  review comments, and issue comments.
+- Delivery status: read-only commit metadata and check/status results attached
+  to a pull request or commit.
+
+This makes workflows such as “find the PR for this Jira ticket, explain why it
+is blocked, and tell the owning Slack channel” testable without inventing a
+repository filesystem or CI runtime.
+
+## Deliberately outside the first surface
+
+- Git smart HTTP, clone, fetch, push, SSH, or a working tree.
+- Creating branches, commits, trees, blobs, or files.
+- Pull-request merges, branch protection administration, forks, and template
+  repositories.
+- Actions execution, workflow jobs, artifacts, deployments, releases, package
+  publishing, webhooks, and upload endpoints.
+- GraphQL.
+
+Repository mutation is a separate future contract. A valid implementation must
+preserve the real Git relationship between refs, commits, trees, and blobs, and
+must reset that state atomically with the scenario. It will not be added as
+isolated file-write routes.
+
+## Contract and validation
+
+The resource will use a curated subset of GitHub's official REST OpenAPI
+description, pinned to a GitHub REST API version. The full description is an
+operation inventory—not Fabricate's supported surface. Direct and transparent
+proxy conformance will run through `@octokit/rest` for the selected operations.
+
+The first engineering environment will combine this bounded GitHub resource
+with Jira and Slack. Its scenario will have a small, fixed set of linked work:
+a repository, a pull request, its ticket, reviews, comments, and check status.

@@ -15,6 +15,8 @@
   --fabricate-text-secondary: #333;
   --fabricate-text-muted: #707070;
   --fabricate-code-background: #f5f5f5;
+  --fabricate-code-content-min-height: 3.5rem;
+  --fabricate-code-content-max-height: min(32rem, 65svh);
   --fabricate-accent: #33c482;
   --fabricate-accent-hover: #2dac72;
 
@@ -28,7 +30,8 @@
 
   --fabricate-font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", sans-serif;
-  --fabricate-font-display: Teko, "Arial Narrow", Impact, sans-serif;
+  --fabricate-font-display: var(--fabricate-font-sans);
+  --fabricate-font-brand: Teko, "Arial Narrow", Impact, sans-serif;
   --fabricate-font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas,
     monospace;
 }
@@ -39,8 +42,8 @@
   --fabricate-surface-raised: #292929;
   --fabricate-surface-active: #2c2c2c;
   --fabricate-border: #444;
-  --fabricate-text: #e6e6e6;
-  --fabricate-text-secondary: #ccc;
+  --fabricate-text: #f0f0f0;
+  --fabricate-text-secondary: #dedede;
   --fabricate-text-muted: #6e6e6e;
   --fabricate-code-background: #1f1f1f;
 }
@@ -69,9 +72,9 @@
   border-inline-end: 1px solid var(--fabricate-border) !important;
 }
 
-/* Teko is the product voice. Keep it out of navigation and body copy. */
+/* Keep the display face readable in docs; Teko remains the product wordmark. */
 [data-blume-header] > a:first-of-type {
-  font-family: var(--fabricate-font-display);
+  font-family: var(--fabricate-font-brand);
   font-size: 1.45rem;
   font-weight: 600;
   letter-spacing: 0.025em;
@@ -81,9 +84,31 @@
 
 .prose :where(h1) {
   font-family: var(--fabricate-font-display);
-  font-weight: 600;
-  letter-spacing: 0.005em;
-  line-height: 0.9;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  font-size: 2.25rem;
+}
+
+/* Article copy is the primary interface in the docs. Keep chrome quiet, but
+   give prose the contrast and size of comfortable long-form reading. */
+.prose {
+  --tw-prose-body: var(--fabricate-text-secondary);
+  --tw-prose-headings: var(--fabricate-text);
+  --tw-prose-lead: var(--fabricate-text-secondary);
+  --tw-prose-links: var(--fabricate-text);
+  --tw-prose-bold: var(--fabricate-text);
+  --tw-prose-counters: var(--fabricate-text-secondary);
+  --tw-prose-bullets: var(--fabricate-text-secondary);
+  --tw-prose-quotes: var(--fabricate-text-secondary);
+  --tw-prose-captions: var(--fabricate-text-secondary);
+  color: var(--fabricate-text-secondary);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.prose > h1 + p.text-muted-foreground {
+  color: var(--fabricate-text-secondary);
 }
 
 [data-blume-nav-tree] p {
@@ -132,5 +157,8 @@
 }
 
 .prose :where(pre:not(.twoslash, .twoslash pre, blume-panel-tabs *) > code) {
+  min-height: var(--fabricate-code-content-min-height);
+  max-height: var(--fabricate-code-content-max-height);
   padding: 0 1rem 0.25rem;
+  scrollbar-gutter: stable;
 }

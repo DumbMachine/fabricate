@@ -1,6 +1,6 @@
 import { defineMeta } from "blume";
 
 export default defineMeta({
-  title: "Integrations",
-  pages: ["gmail", "github"],
+  title: "Environments",
+  pages: ["acme-gmail"],
 });
