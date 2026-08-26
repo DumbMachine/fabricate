@@ -15,6 +15,11 @@ export default defineConfig({
         "astro:config:setup": ({ updateConfig }) =>
           updateConfig({
             vite: {
+              server: {
+                // Cursor cloud port-forward hostnames look like
+                // <id>-pod-<id>-4322.<region>.cursorvm.com.
+                allowedHosts: [".cursorvm.com"],
+              },
               plugins: [
                 {
                   name: "fabricate-command-substitution",
