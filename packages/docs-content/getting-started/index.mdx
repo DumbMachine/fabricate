@@ -26,26 +26,109 @@ profile and open a new shell.
 fab --help
 ```
 
-## Run Gmail locally
+## Run an environment
 
-Clone Fabricate if you want to use the included environment file:
-
-```bash
-git clone https://github.com/DumbMachine/fabricate.git
-cd fabricate
-```
-
-Run a command with the seeded Gmail API available as local environment
-variables:
+Run a command with the Acme Gmail environment available as local environment
+variables. This command fetches the canonical manifest, so you do not need to
+clone Fabricate:
 
 ```bash
-fab run --environment ./environments/acme-gmail.yaml -- \
-  sh -c 'curl -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin -- \
+  sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
   "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/profile"'
 ```
 
-You should get the seeded Gmail profile back. When the command exits, the
-service and its state are gone.
+You should get the Acme Gmail profile back. When the command exits, the
+environment and its state are gone.
+
+## Connect your application
+
+`fab run` starts the environment only for the command it wraps. Choose one of
+two connection modes for that command.
+
+### Direct base URL
+
+Use this when your application can read its API base URL from configuration.
+Fabricate injects a local service URL and token; point your Gmail client at
+`$FAB_SUPPORT_MAIL_URL/gmail/v1` while it runs under `fab run`.
+
+For a small FastAPI application using `httpx`, make the base URL configurable:
+
+```python
+import os
+
+import httpx
+from fastapi import FastAPI
+
+app = FastAPI()
+gmail_base_url = os.getenv("GMAIL_API_BASE_URL", "https://gmail.googleapis.com/gmail/v1")
+
+@app.get("/profile")
+def profile():
+    response = httpx.get(
+        f"{gmail_base_url}/users/me/profile",
+        headers={"Authorization": f"Bearer {os.environ['FAB_SUPPORT_MAIL_TOKEN']}"},
+    )
+    response.raise_for_status()
+    return response.json()
+```
+
+Run it with the local URL only for this process:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin -- \
+  sh -c 'GMAIL_API_BASE_URL="$FAB_SUPPORT_MAIL_URL/gmail/v1" uvicorn main:app'
+```
+
+### Transparent proxy
+
+Use `--proxy` when your application already calls normal provider hosts and
+you do not want to add a Fabricate base-URL configuration. Fabricate injects a
+process-scoped HTTPS proxy and CA trust settings, then routes supported Gmail
+and Google OAuth traffic to the local environment. Other provider traffic fails
+closed unless the environment explicitly allows it.
+
+For an existing FastAPI app that uses `httpx`'s default environment-aware
+transport, keep the normal Gmail URL unchanged:
+
+```python
+@app.get("/profile")
+def profile():
+    response = httpx.get(
+        "https://gmail.googleapis.com/gmail/v1/users/me/profile",
+        headers={"Authorization": f"Bearer {os.environ['FAB_SUPPORT_MAIL_TOKEN']}"},
+    )
+    response.raise_for_status()
+    return response.json()
+```
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+  uvicorn main:app
+```
+
+The same applies to an existing JavaScript application using Google's official
+client: retain its normal Gmail construction and run it under the proxy.
+
+```js
+import {google} from "googleapis";
+
+const gmail = google.gmail({version: "v1", auth});
+const profile = await gmail.users.getProfile({userId: "me"});
+console.log(profile.data);
+```
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+  node app.mjs
+```
+
+Your client must respect standard proxy and CA environment variables. Use the
+direct base URL when it pins certificates or bypasses proxy settings.
 
 ## Try an infrastructure profile
 

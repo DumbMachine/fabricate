@@ -4,7 +4,7 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install install-dev test vet fmt check generate generate-check e2e verify clean start landing docs
+.PHONY: build install install-dev test vet fmt check generate generate-check e2e gmail-sdk verify clean start landing docs
 
 # `make start` runs both public-site dev servers. Add `landing` or `docs` to
 # start just that app: `make start landing` or `make start docs`.
@@ -66,6 +66,11 @@ generate-check: generate
 # End-to-end smoke for container engines through the real CLI.
 e2e:
 	go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
+
+# Black-box Google APIs Node SDK conformance. The SDK is installed into a
+# disposable directory by the test script; it never enters this workspace.
+gmail-sdk:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-gmail-sdk-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-gmail-sdk.sh "$$tmp/fab"
 
 # HTTP-resource conformance belongs in root-module Go tests and each
 # resource's official-client proxy suite as it is brought back.

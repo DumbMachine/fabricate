@@ -22,7 +22,7 @@ checking out Fabricate or creating an environment file by hand.
 - Show representative response output for a read-only request when it helps a
   reader confirm that the integration works.
 - Keep output in a `json` code block, pretty-print it with two-space
-  indentation, and match the scenario's actual seeded data. Do not include
+  indentation, and match the environment's actual data. Do not include
   ephemeral URLs, generated paths, request-log locations, or tokens.
 - Shared documentation styling gives code content a readable minimum height and
   a viewport-aware maximum height with scrolling. Do not add per-page height
@@ -30,6 +30,56 @@ checking out Fabricate or creating an environment file by hand.
 - Re-run a changed example against the referenced manifest and scenario before
   publishing. Check direct-URL and proxy examples independently when both are
   documented.
+
+## Compatibility verification
+
+Every implemented integration page must finish with a `## Compatibility
+verification` section. State that Fabricate works with any API client, then
+explain exactly which client the latest check used. Do not imply that the
+tested SDK is the only supported way to call the API.
+
+The section uses the registered MDX primitive and a generated report; do not
+build bespoke status UI on individual pages:
+
+```mdx
+import compatibility from "./_generated/<integration>.compatibility.json";
+
+<IntegrationCompatibility compatibility={compatibility} />
+```
+
+The report must identify the environment, test commit and time, verification
+client, direct/proxy modes where applicable, and the result of each operation.
+Keep it under `_generated/`, and update it only after a passing real-client
+test. Start every integration with `curl` verification. Add official-SDK
+verification only when the integration requirement specifically names an SDK.
+The report’s `verification` object supports two evidence kinds:
+
+- `curl`: direct HTTP read/write/read coverage that proves API behavior is
+  stateful.
+- `official-sdk`: add this only when an SDK is named. It provides the same
+  stateful coverage using the provider’s official SDK. When that SDK can use
+  normal provider hosts, it must run in both direct base-URL and `fab run
+  --proxy` modes; proxy mode proves an existing SDK integration can run without
+  a provider base-URL change.
+
+Each resource owns its test client under `resources/<id>/conformance/`, plus a
+script or Make target that runs it through `fab run`. The test must fail when
+its client prerequisite is unavailable; a skipped compatibility test is not a
+pass. Add the resource and its shared runtime dependencies to CI path filters.
+
+For a new integration, use this report shape as the starting point:
+
+```json
+{
+  "integration": "example",
+  "environment": {"label": "Example environment", "manifest": "environments/example.yaml", "messages": 0},
+  "verification": {"kind": "curl", "label": "HTTP client", "client": "curl@8", "title": "HTTP API verification"},
+  "operationLabels": {"read": "Read record", "write": "Create record", "persistence": "Confirm persistence"},
+  "modes": {"direct": {"operations": {"read": "passed", "write": "passed", "persistence": "passed"}, "status": "passed"}},
+  "testedAt": "2026-01-01T00:00:00Z",
+  "testedCommit": "abcdef0"
+}
+```
 
 ## Planned integrations
 
