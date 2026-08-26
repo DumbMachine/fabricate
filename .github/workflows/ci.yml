@@ -11,6 +11,7 @@ jobs:
     outputs:
       gmail: ${{ steps.filter.outputs.gmail }}
       asana: ${{ steps.filter.outputs.asana }}
+      hubspot: ${{ steps.filter.outputs.hubspot }}
     steps:
       - uses: actions/checkout@v4
       - id: filter
@@ -39,6 +40,18 @@ jobs:
               - 'scenario/**'
               - 'cli/run.go'
               - 'scripts/test-asana-curl.sh'
+              - 'Makefile'
+              - '.github/workflows/ci.yml'
+            hubspot:
+              - 'resources/hubspot/**'
+              - 'environments/acme-hubspot.yaml'
+              - 'environment/**'
+              - 'engine/http/**'
+              - 'httpresource/**'
+              - 'requestlog/**'
+              - 'scenario/**'
+              - 'cli/run.go'
+              - 'scripts/test-hubspot-curl.sh'
               - 'Makefile'
               - '.github/workflows/ci.yml'
 
@@ -117,4 +130,27 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add packages/docs-content/resources/integrations/_generated/asana.compatibility.json
           git commit -m "chore(compat): update Asana verification"
+          git push
+
+  hubspot-curl:
+    runs-on: ubuntu-latest
+    needs: [check, changes]
+    if: needs.changes.outputs.hubspot == 'true'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: HubSpot HTTP API conformance
+        run: make hubspot-curl
+      - name: Publish verified HubSpot compatibility data
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git diff --quiet -- packages/docs-content/resources/integrations/_generated/hubspot.compatibility.json && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add packages/docs-content/resources/integrations/_generated/hubspot.compatibility.json
+          git commit -m "chore(compat): update HubSpot verification"
           git push

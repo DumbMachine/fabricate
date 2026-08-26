@@ -1,0 +1,80 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "hubspot.acme-pipeline.v1",
+  "$resource": "hubspot",
+  "$resourceVersion": "v3",
+  "state": {
+    "contacts": [
+      {
+        "id": "101",
+        "properties": {
+          "email": "dana@northwind.example",
+          "firstname": "Dana",
+          "lastname": "Whitfield",
+          "lifecyclestage": "opportunity"
+        },
+        "createdAt": "2026-08-18T14:00:00Z",
+        "updatedAt": "2026-08-25T16:40:00Z"
+      },
+      {
+        "id": "102",
+        "properties": {
+          "email": "val@acme.example",
+          "firstname": "Val",
+          "lastname": "Ortega",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-01-10T09:00:00Z",
+        "updatedAt": "2026-08-01T00:00:00Z"
+      }
+    ],
+    "companies": [
+      {
+        "id": "201",
+        "properties": {
+          "domain": "acme.example",
+          "name": "Acme"
+        },
+        "createdAt": "2026-01-10T09:00:00Z",
+        "updatedAt": "2026-01-10T09:00:00Z"
+      },
+      {
+        "id": "202",
+        "properties": {
+          "domain": "northwind.example",
+          "name": "Northwind Traders"
+        },
+        "createdAt": "2026-08-18T14:00:00Z",
+        "updatedAt": "2026-08-18T14:00:00Z"
+      }
+    ],
+    "deals": [
+      {
+        "id": "301",
+        "properties": {
+          "amount": "12400",
+          "dealname": "Northwind checkout expansion",
+          "dealstage": "appointmentscheduled",
+          "pipeline": "default"
+        },
+        "createdAt": "2026-08-18T15:00:00Z",
+        "updatedAt": "2026-08-25T16:40:00Z"
+      }
+    ],
+    "tickets": [
+      {
+        "id": "401",
+        "properties": {
+          "content": "Employees loop between Okta and the Acme callback. Existing sessions work. Org slug: contoso-eu.",
+          "hs_pipeline": "0",
+          "hs_pipeline_stage": "1",
+          "hs_ticket_priority": "HIGH",
+          "subject": "SAML login loop affecting Contoso"
+        },
+        "createdAt": "2026-08-26T09:12:00Z",
+        "updatedAt": "2026-08-26T09:12:00Z"
+      }
+    ]
+  }
+}
