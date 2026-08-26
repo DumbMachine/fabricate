@@ -3,13 +3,13 @@
   "environment": {
     "label": "Acme HubSpot",
     "manifest": "environments/acme-hubspot.yaml",
-    "messages": 6
+    "messages": 10
   },
   "integration": "hubspot",
   "modes": {
     "direct": {
-      "messagesAfter": 7,
-      "messagesBefore": 6,
+      "messagesAfter": 11,
+      "messagesBefore": 10,
       "operations": {
         "read": "passed",
         "write": "passed",
@@ -18,8 +18,8 @@
       "status": "passed"
     },
     "proxy": {
-      "messagesAfter": 7,
-      "messagesBefore": 6,
+      "messagesAfter": 11,
+      "messagesBefore": 10,
       "operations": {
         "read": "passed",
         "write": "passed",
@@ -39,6 +39,6 @@
     "client": "curl@8.5.0",
     "title": "HTTP API verification"
   },
-  "testedAt": "2026-08-26T14:48:31.106Z",
-  "testedCommit": "a2cc8e7acb1b4ab43607073556dbcefa66f102c4"
+  "testedAt": "2026-08-26T20:02:31.333Z",
+  "testedCommit": "c3358d3da0eaf926662f3d696bc5def356e7ded6"
 }
