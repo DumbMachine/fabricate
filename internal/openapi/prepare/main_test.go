@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"encoding/json"
+	"testing"
+)
 
 func TestStripCodegenIncompatibilities(t *testing.T) {
 	doc := map[string]any{
@@ -43,6 +46,23 @@ func TestStripExamples(t *testing.T) {
 	stripCodegenIncompatibilities(doc, true)
 	if _, ok := doc["schema"].(map[string]any)["example"]; ok {
 		t.Fatal("examples should be stripped")
+	}
+}
+
+func TestJSONAbleConvertsYAMLMaps(t *testing.T) {
+	converted := jsonable(map[string]any{
+		"paths": map[any]any{
+			"/tasks": []any{
+				map[any]any{"gid": "1"},
+			},
+		},
+	}).(map[string]any)
+	raw, err := json.Marshal(converted)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(raw) != `{"paths":{"/tasks":[{"gid":"1"}]}}` {
+		t.Fatalf("jsonable = %s", raw)
 	}
 }
 

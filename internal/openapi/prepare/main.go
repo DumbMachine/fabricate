@@ -35,6 +35,12 @@ func main() {
 		fmt.Fprintf(os.Stderr, "openapi prepare: %v\n", err)
 		os.Exit(1)
 	}
+	typed, ok := jsonable(merged).(map[string]any)
+	if !ok {
+		fmt.Fprintln(os.Stderr, "openapi prepare: document must be an object")
+		os.Exit(1)
+	}
+	merged = typed
 	stripCodegenIncompatibilities(merged, *stripExamples)
 	encoded, err := json.Marshal(merged)
 	if err != nil {
@@ -116,6 +122,31 @@ func mergeNamedMap(dst, src map[string]any, key, source string) error {
 	}
 	_ = source
 	return nil
+}
+
+func jsonable(value any) any {
+	switch typed := value.(type) {
+	case map[string]any:
+		out := make(map[string]any, len(typed))
+		for key, child := range typed {
+			out[key] = jsonable(child)
+		}
+		return out
+	case map[any]any:
+		out := make(map[string]any, len(typed))
+		for key, child := range typed {
+			out[fmt.Sprint(key)] = jsonable(child)
+		}
+		return out
+	case []any:
+		out := make([]any, len(typed))
+		for i, child := range typed {
+			out[i] = jsonable(child)
+		}
+		return out
+	default:
+		return value
+	}
 }
 
 func stripCodegenIncompatibilities(value any, stripExamples bool) {
