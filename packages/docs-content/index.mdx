@@ -31,11 +31,51 @@ provider SDK. It provides the disposable systems those tools need to talk to.
 
 ## The model
 
-```text
-Environment
-└── support-mail service
-    └── Gmail resource + Acme Corp scenario
-```
+<div class="environment-model" role="img" aria-label="An environment contains services. Each service combines a provider resource and a scenario. The customer-renewal environment has Gmail, HubSpot, and Postgres services.">
+  <section class="environment-model__environment">
+    <p class="environment-model__kind">Environment</p>
+    <h3>support-test</h3>
+    <p class="environment-model__description">One disposable lifecycle.</p>
+    <section class="environment-model__service">
+      <p class="environment-model__kind">Service</p>
+      <h4>support-mail</h4>
+      <p class="environment-model__description">A named provider instance.</p>
+      <div class="environment-model__parts">
+        <div class="environment-model__part">
+          <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/gmail" width="20" height="20" alt="Gmail" />
+          <p class="environment-model__kind">Resource</p>
+          <strong>Gmail</strong>
+        </div>
+        <div class="environment-model__part environment-model__part--scenario">
+          <span class="environment-model__scenario-mark" aria-hidden="true">≡</span>
+          <p class="environment-model__kind">Scenario</p>
+          <strong>Acme Corp</strong>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="environment-model__environment">
+    <p class="environment-model__kind">Environment</p>
+    <h3>customer-renewal</h3>
+    <p class="environment-model__description">The whole account state, reset together.</p>
+    <div class="environment-model__service-list">
+      <div class="environment-model__service environment-model__service--compact">
+        <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/gmail" width="20" height="20" alt="Gmail" />
+        <div><p class="environment-model__kind">Service · support-mail</p><h4>Gmail</h4><p>Acme support inbox · 12 seeded messages.</p></div>
+      </div>
+      <div class="environment-model__service environment-model__service--compact">
+        <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/hubspot" width="20" height="20" alt="HubSpot" />
+        <div><p class="environment-model__kind">Service · customer-records</p><h4>HubSpot</h4><p>Acme account · renewal awaiting confirmation.</p></div>
+      </div>
+      <div class="environment-model__service environment-model__service--compact">
+        <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/postgres" width="20" height="20" alt="Postgres" />
+        <div><p class="environment-model__kind">Service · billing-data</p><h4>Postgres</h4><p>Invoices and subscription rows for the same account.</p></div>
+      </div>
+    </div>
+    <p class="environment-model__footer">fab run starts every service from known state</p>
+  </section>
+</div>
 
 - **Environment = `fn(services)`:** the disposable lifecycle and isolation
   boundary for everything your command needs.

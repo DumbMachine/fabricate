@@ -401,7 +401,7 @@ const faqs = [
             </button>
           </div>
         </div>
-        <div class="environment-preview" aria-live="polite">
+        <div class="environment-preview" data-environment-selection="gmail" aria-live="polite">
           <article class="environment-demo" data-environment-preview="gmail">
             <div class="environment-demo-head">
               <div><span class="demo-kicker">READY ENVIRONMENT</span><h3>Acme Gmail support</h3></div>
@@ -622,6 +622,9 @@ const faqs = [
       environmentPreviews.forEach((preview) => {
         preview.hidden = preview.dataset.environmentPreview !== selection;
       });
+      document
+        .querySelector<HTMLElement>("[data-environment-selection]")
+        ?.setAttribute("data-environment-selection", selection || "gmail");
     });
   });
 </script>

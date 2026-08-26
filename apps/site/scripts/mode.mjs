@@ -1,4 +1,4 @@
-import { copyFile, cp, mkdir, readdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { copyFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
@@ -50,57 +50,15 @@ const run = (executable, commandArgs, options = {}) => new Promise((resolveRun, 
   });
 });
 
-const prepareDevelopmentDocs = async () => {
-  if (mode !== "development") return undefined;
-
-  const source = resolve(repositoryRoot, "packages", "docs-content");
-  const modeRoot = resolve(appRoot, ".fabricate-mode");
-  const contentDirectory = resolve(modeRoot, "docs-content");
-  const developmentAppRoot = resolve(modeRoot, "app");
-  await rm(modeRoot, { force: true, recursive: true });
-  await cp(source, contentDirectory, { recursive: true });
-  const developmentPublic = resolve(developmentAppRoot, "public");
-  await mkdir(developmentPublic, { recursive: true });
-  await writeFile(
-    resolve(developmentAppRoot, "blume.config.ts"),
-    'export { default } from "../../blume.config.ts";\n',
-  );
-  // Serve the checked-in assets directly. The generated development project
-  // only selects the violet icon; it never creates or overwrites an asset.
-  for (const entry of await readdir(resolve(appRoot, "public"), { withFileTypes: true })) {
-    const sourcePath = resolve(appRoot, "public", entry.name === "icon.svg" ? "icon-dev.svg" : entry.name);
-    await symlink(sourcePath, resolve(developmentPublic, entry.name), entry.isDirectory() ? "dir" : "file");
-  }
-
-  const replaceCommands = async (directory) => {
-    for (const entry of await readdir(directory, { withFileTypes: true })) {
-      const path = resolve(directory, entry.name);
-      if (entry.isDirectory()) await replaceCommands(path);
-      else if (/\.mdx?$/.test(entry.name)) {
-        const contents = await readFile(path, "utf8");
-        await writeFile(path, contents.replace(/(?<![A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, command));
-      }
-    }
-  };
-  await replaceCommands(contentDirectory);
-  return { contentDirectory, developmentAppRoot };
-};
-
 if (app === "landing") {
   const portArgs = task === "dev" && !args.includes("--port") ? ["--port", new URL(landingOrigin).port || "4321"] : [];
   await run("pnpm", ["exec", "astro", task, ...portArgs, ...args]);
 } else {
-  const developmentDocs = await prepareDevelopmentDocs();
-  if (developmentDocs) env.FABRICATE_DOCS_CONTENT_DIR = developmentDocs.contentDirectory;
   const portArgs = task === "dev" && !args.includes("--port") ? ["--port", new URL(docsOrigin).port || "4322"] : [];
   const checkArgs = task === "check" && !args.includes("--isolated") ? ["--isolated"] : [];
-  const blumeArgs = ["exec", "blume", task, ...(developmentDocs && task === "dev" ? ["--content-dir", developmentDocs.contentDirectory] : []), ...portArgs, ...checkArgs, ...args];
-  if (task === "dev") {
-    await run("pnpm", blumeArgs, { cwd: developmentDocs.developmentAppRoot });
-  } else {
-    await run("pnpm", blumeArgs);
-    if (mode === "development" && task === "build") {
-      await copyFile(resolve(appRoot, "public", "icon-dev.svg"), resolve(appRoot, "dist", "icon.svg"));
-    }
+  const blumeArgs = ["exec", "blume", task, ...portArgs, ...checkArgs, ...args];
+  await run("pnpm", blumeArgs);
+  if (mode === "development" && task === "build") {
+    await copyFile(resolve(appRoot, "public", "icon-dev.svg"), resolve(appRoot, "dist", "icon.svg"));
   }
 }

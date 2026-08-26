@@ -3,9 +3,33 @@ import { defineConfig } from "blume";
 const fab = process.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const docsBase = process.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
 const isDevelopment = process.env.PUBLIC_FABRICATE_SITE_MODE === "development";
+const replaceFabCommand = (value: string) =>
+  value.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`);
 
 export default defineConfig({
   title: "Fabricate",
+  integrations: [
+    {
+      name: "fabricate-mode-aware-commands",
+      hooks: {
+        "astro:config:setup": ({ updateConfig }) =>
+          updateConfig({
+            vite: {
+              plugins: [
+                {
+                  name: "fabricate-command-substitution",
+                  enforce: "pre",
+                  transform(code, id) {
+                    if (!id.includes("packages/docs-content/") || !/\.mdx?$/.test(id)) return;
+                    return { code: replaceFabCommand(code), map: null };
+                  },
+                },
+              ],
+            },
+          }),
+      },
+    },
+  ],
   logo: {
     image: isDevelopment ? "/fabricate-mark-dev.svg" : "/fabricate-mark.svg",
     text: "Fabricate",
