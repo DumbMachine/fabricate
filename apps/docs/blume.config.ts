@@ -1,13 +1,17 @@
 import { defineConfig } from "blume";
 
+const fab = process.env.PUBLIC_FABRICATE_COMMAND || "fab";
+const docsBase = process.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
+const isDevelopment = process.env.PUBLIC_FABRICATE_SITE_MODE === "development";
+
 export default defineConfig({
   title: "Fabricate",
   logo: {
-    image: "/fabricate-mark.svg",
+    image: isDevelopment ? "/fabricate-mark-dev.svg" : "/fabricate-mark.svg",
     text: "Fabricate",
   },
   content: {
-    root: "../../packages/docs-content",
+    root: process.env.FABRICATE_DOCS_CONTENT_DIR || "../../packages/docs-content",
   },
   theme: {
     accent: "#33c482",
@@ -83,15 +87,15 @@ export default defineConfig({
             display: "group",
             collapsed: false,
             items: [
-              { label: "fab create", href: "/cli/commands/create" },
-              { label: "fab ls", href: "/cli/commands/ls" },
-              { label: "fab creds", href: "/cli/commands/creds" },
-              { label: "fab destroy", href: "/cli/commands/destroy" },
-              { label: "fab profiles", href: "/cli/commands/profiles" },
-              { label: "fab engines", href: "/cli/commands/engines" },
-              { label: "fab wait", href: "/cli/commands/wait" },
-              { label: "fab run", href: "/cli/commands/run" },
-              { label: "fab logs", href: "/cli/commands/logs" },
+              { label: `${fab} create`, href: "/cli/commands/create" },
+              { label: `${fab} ls`, href: "/cli/commands/ls" },
+              { label: `${fab} creds`, href: "/cli/commands/creds" },
+              { label: `${fab} destroy`, href: "/cli/commands/destroy" },
+              { label: `${fab} profiles`, href: "/cli/commands/profiles" },
+              { label: `${fab} engines`, href: "/cli/commands/engines" },
+              { label: `${fab} wait`, href: "/cli/commands/wait" },
+              { label: `${fab} run`, href: "/cli/commands/run" },
+              { label: `${fab} logs`, href: "/cli/commands/logs" },
             ],
           },
         ],
@@ -102,8 +106,8 @@ export default defineConfig({
     llmsTxt: true,
   },
   deployment: {
-    base: "/docs",
+    base: docsBase,
     output: "static",
-    site: "https://fabricate.dmach.in",
+    site: process.env.PUBLIC_FABRICATE_SITE_URL || "https://fabricate.dmach.in",
   },
 });

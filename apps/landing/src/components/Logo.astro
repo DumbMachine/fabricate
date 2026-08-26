@@ -1,8 +1,10 @@
 ---
 const { compact = false } = Astro.props;
+const isDevelopment = import.meta.env.PUBLIC_FABRICATE_SITE_MODE === "development";
+const mark = isDevelopment ? "/fabricate-mark-dev.svg" : "/fabricate-mark.svg";
 ---
 
 <a class="brand" href="/" aria-label="Fabricate home">
-  <img class="brand-mark" src="/fabricate-mark.svg" width="32" height="32" alt="" />
+  <img class="brand-mark" src={mark} width="32" height="32" alt="" />
   {!compact && <span>fabricate</span>}
 </a>

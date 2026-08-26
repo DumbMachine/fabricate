@@ -7,7 +7,14 @@ visual vocabulary as `apps/docs/theme.css`.
 
 Run it with `pnpm landing:dev`; build with `pnpm landing:build`.
 
-Set `PUBLIC_DOCS_URL` when documentation is on a separate host. The default
+The site-mode runner sets the host and docs URL automatically: landing
+development is `http://localhost:4321`, docs development is
+`http://localhost:4322/docs`, and production defaults to
+`https://fabricate.dmach.in/docs`. Set `FABRICATE_DEV_SITE_URL`,
+`FABRICATE_DEV_LANDING_URL`, `FABRICATE_DEV_DOCS_URL`,
+`FABRICATE_PROD_SITE_URL`, or `FABRICATE_DOCS_BASE` to change those defaults
+(for example, when moving to a new domain). `PUBLIC_DOCS_URL` still overrides
+the landing link when documentation is on a separate host. The default
 target is `/docs`, for a single-domain deployment.
 
 ## UI primitives

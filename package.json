@@ -9,7 +9,11 @@
     "landing:dev": "pnpm --filter @fabricate/landing dev",
     "landing:build": "pnpm --filter @fabricate/landing build",
     "landing:check": "pnpm --filter @fabricate/landing check",
+    "site:dev": "pnpm --parallel --filter @fabricate/landing --filter @fabricate/docs dev",
+    "docs:staging-build": "FABRICATE_ALLOW_DEVELOPMENT_BUILD=1 FABRICATE_SITE_MODE=development pnpm --filter @fabricate/docs build",
+    "landing:staging-build": "FABRICATE_ALLOW_DEVELOPMENT_BUILD=1 FABRICATE_SITE_MODE=development pnpm --filter @fabricate/landing build",
     "site:build": "pnpm landing:build && pnpm --filter @fabricate/docs build && node apps/site/scripts/stage.mjs",
+    "site:staging-build": "pnpm landing:staging-build && pnpm docs:staging-build && node apps/site/scripts/stage.mjs",
     "site:deploy": "pnpm site:build && pnpm --filter @fabricate/site run deploy"
   }
 }

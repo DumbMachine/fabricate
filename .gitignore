@@ -8,6 +8,7 @@ state.json
 
 # Documentation app outputs
 apps/docs/.blume/
+apps/docs/.fabricate-mode/
 apps/docs/dist/
 apps/site/dist/
 

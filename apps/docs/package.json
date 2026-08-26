@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "blume dev",
-    "build": "blume build",
-    "check": "blume check"
+    "dev": "node ../site/scripts/mode.mjs docs dev",
+    "build": "node ../site/scripts/mode.mjs docs build",
+    "check": "node ../site/scripts/mode.mjs docs check"
   },
   "dependencies": {
     "blume": "1.4.3"

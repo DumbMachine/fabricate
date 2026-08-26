@@ -4,7 +4,25 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install install-dev test vet fmt check generate generate-check e2e verify clean
+.PHONY: build install install-dev test vet fmt check generate generate-check e2e verify clean start landing docs
+
+# `make start` runs both public-site dev servers. Add `landing` or `docs` to
+# start just that app: `make start landing` or `make start docs`.
+START_APPS := $(filter landing docs,$(MAKECMDGOALS))
+
+start:
+ifeq ($(START_APPS),landing)
+	pnpm landing:dev
+else ifeq ($(START_APPS),docs)
+	pnpm docs:dev
+else
+	pnpm site:dev
+endif
+
+# These are selector goals consumed by `start`; they deliberately do nothing
+# on their own so `make start landing` does not launch a second process.
+landing docs:
+	@:
 
 build:
 	go build -o bin/fab ./cmd/fab

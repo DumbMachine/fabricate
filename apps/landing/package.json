@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "node ../site/scripts/mode.mjs landing dev",
+    "build": "node ../site/scripts/mode.mjs landing build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "node ../site/scripts/mode.mjs landing check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

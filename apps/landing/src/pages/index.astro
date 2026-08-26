@@ -2,22 +2,25 @@
 import Header from "../components/Header.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-// Deployments can point this at a standalone docs host. `/docs` keeps the
-// default correct for a single-domain deployment.
-const docsHref = import.meta.env.PUBLIC_DOCS_URL || "/docs";
+const siteUrl = import.meta.env.PUBLIC_FABRICATE_SITE_URL || "https://fabricate.dmach.in";
+const docsBase = import.meta.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
+// Keep copyable links absolute: an agent reading this prompt is not browsing
+// the site, so `/docs` has no host to resolve against.
+const docsHref = import.meta.env.PUBLIC_FABRICATE_DOCS_URL || import.meta.env.PUBLIC_DOCS_URL || `${siteUrl.replace(/\/$/, "")}${docsBase}`;
+const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const consultHref = "https://cal.com/dumbmachine/30min";
 const agentPrompt = `You are setting up Fabricate in this repository.
 
 Fabricate runs reproducible local environments with real, stateful provider data. Start with the Acme Gmail environment and keep the application's normal provider SDK behavior intact.
 
 1. Read the Fabricate getting-started and Gmail integration docs:
-   - https://github.com/DumbMachine/fabricate/tree/main/packages/docs-content/getting-started
-   - https://github.com/DumbMachine/fabricate/tree/main/packages/docs-content/resources/integrations
+   - ${docsHref}/getting-started
+   - ${docsHref}/resources/integrations/gmail
 2. Check whether the fab CLI is installed. If it is not, install it with:
    curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
 3. Inspect this repository's run and test commands. Propose the smallest command that wraps the relevant command with Fabricate; do not edit application code or configuration until I approve.
 4. Use Fabricate's canonical Acme Gmail environment manifest. For direct service URLs, start from:
-   curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | fab run --environment /dev/stdin -- <my command>
+   curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | ${fab} run --environment /dev/stdin -- <my command>
 5. If the app must retain Gmail's normal production hostname, use --proxy. Fabricate injects proxy, CA, service URL, and short-lived token variables only into the wrapped process.
 6. Do not use Docker for this Gmail environment. Docker is only required for infrastructure resources such as Postgres or Redis.
 
