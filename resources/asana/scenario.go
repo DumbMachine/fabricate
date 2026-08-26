@@ -367,17 +367,28 @@ func (scenarioCodec) Dump(ctx context.Context, db *sql.DB, metadata scenario.Met
 	if err != nil {
 		return scenario.Document{}, fmt.Errorf("asana scenario: dump tasks: %w", err)
 	}
-	defer taskRows.Close()
+	var tasks []fixtureTask
 	for taskRows.Next() {
 		var task fixtureTask
 		var completed int
 		var assignee, dueOn sql.NullString
 		if err := taskRows.Scan(&task.Gid, &task.WorkspaceGid, &task.Name, &task.Notes, &completed, &assignee, &dueOn, &task.CreatedAt, &task.ModifiedAt); err != nil {
+			taskRows.Close()
 			return scenario.Document{}, err
 		}
 		task.Completed = completed != 0
 		task.AssigneeGid = assignee.String
 		task.DueOn = dueOn.String
+		tasks = append(tasks, task)
+	}
+	if err := taskRows.Close(); err != nil {
+		return scenario.Document{}, err
+	}
+	if err := taskRows.Err(); err != nil {
+		return scenario.Document{}, err
+	}
+	for i := range tasks {
+		task := &tasks[i]
 		memberships, err := db.QueryContext(ctx, "SELECT project_gid, section_gid FROM task_projects WHERE task_gid=? ORDER BY project_gid", task.Gid)
 		if err != nil {
 			return scenario.Document{}, err
@@ -397,11 +408,8 @@ func (scenarioCodec) Dump(ctx context.Context, db *sql.DB, metadata scenario.Met
 		if err := memberships.Close(); err != nil {
 			return scenario.Document{}, err
 		}
-		state.Tasks = append(state.Tasks, task)
 	}
-	if err := taskRows.Err(); err != nil {
-		return scenario.Document{}, err
-	}
+	state.Tasks = tasks
 	storyRows, err := db.QueryContext(ctx, "SELECT gid, task_gid, text, created_by, created_at, resource_subtype FROM stories ORDER BY gid")
 	if err != nil {
 		return scenario.Document{}, fmt.Errorf("asana scenario: dump stories: %w", err)

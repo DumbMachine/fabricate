@@ -603,20 +603,30 @@ func (s *server) listTasks(ctx context.Context, project, assignee, workspace, se
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-	var tasks []storedTask
+	var gids []string
 	for rows.Next() {
 		var gid string
 		if err := rows.Scan(&gid); err != nil {
+			rows.Close()
 			return nil, err
 		}
+		gids = append(gids, gid)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	var tasks []storedTask
+	for _, gid := range gids {
 		task, err := s.loadTask(ctx, gid)
 		if err != nil {
 			return nil, err
 		}
 		tasks = append(tasks, task)
 	}
-	return tasks, rows.Err()
+	return tasks, nil
 }
 
 func (s *server) taskResponse(ctx context.Context, task storedTask) (*generated.TaskResponse, error) {

@@ -19,10 +19,10 @@ if [ "$mode" = "direct" ]; then
     exit 1
   fi
   base=${FAB_ASANA_URL%/}
-  curl_opts=(-sS)
+  curl_opts=(-sS --fail)
 else
   base="https://app.asana.com/api/1.0"
-  curl_opts=(-sS --proxy "${HTTPS_PROXY:?HTTPS_PROXY is required in proxy mode}")
+  curl_opts=(-sS --fail --proxy "${HTTPS_PROXY:?HTTPS_PROXY is required in proxy mode}")
   if [ -n "${SSL_CERT_FILE:-}" ]; then
     curl_opts+=(--cacert "$SSL_CERT_FILE")
   fi
@@ -59,6 +59,53 @@ tasks_after=$(read_json "$base/projects/proj-checkout/tasks")
 echo "$tasks_after" | jq -e --arg gid "$created_gid" '[.data[].gid] | index($gid)' >/dev/null
 echo "$tasks_after" | jq -e '.data | length == 6' >/dev/null
 
-operations='{"read":"passed","write":"passed","persistence":"passed"}'
-mode_report=$(jq -n --argjson operations "$operations" '{operations:$operations,status:"passed",messagesBefore:5,messagesAfter:6}')
-echo "$mode_report"
+python3 - "$mode" <<'PY'
+import json, os, sys
+from datetime import datetime, timezone
+
+mode = sys.argv[1]
+mode_report = {
+    "messagesAfter": 6,
+    "messagesBefore": 5,
+    "operations": {"read": "passed", "write": "passed", "persistence": "passed"},
+    "status": "passed",
+}
+path = os.environ.get("FAB_COMPATIBILITY_REPORT")
+if path:
+    report = {
+        "api": "Asana REST API 1.0",
+        "environment": {
+            "label": "Acme Asana",
+            "manifest": "environments/acme-asana.yaml",
+            "messages": 5,
+        },
+        "integration": "asana",
+        "modes": {},
+        "operationLabels": {
+            "read": "Read sprint board",
+            "write": "Complete task and comment",
+            "persistence": "Confirm persistence",
+        },
+        "verification": {
+            "kind": "curl",
+            "label": "HTTP client",
+            "client": os.environ.get("FAB_COMPATIBILITY_CLIENT", "curl"),
+            "title": "HTTP API verification",
+        },
+    }
+    try:
+        with open(path, encoding="utf-8") as fh:
+            report = json.load(fh)
+    except FileNotFoundError:
+        pass
+    report["modes"][mode] = mode_report
+    report["testedAt"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+    report["testedCommit"] = os.environ.get("FAB_COMPATIBILITY_COMMIT", "unknown")
+    client = os.environ.get("FAB_COMPATIBILITY_CLIENT")
+    if client:
+        report.setdefault("verification", {})["client"] = client
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(report, fh, indent=2)
+        fh.write("\n")
+print(json.dumps({"mode": mode, **mode_report}))
+PY

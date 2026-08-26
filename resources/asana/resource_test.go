@@ -66,6 +66,7 @@ func openTestDB(t *testing.T, doc scenario.Document) *sql.DB {
 	if err != nil {
 		t.Fatal(err)
 	}
+	db.SetMaxOpenConns(1)
 	t.Cleanup(func() { _ = db.Close() })
 	codec := scenarioCodec{}
 	if err := codec.Initialize(context.Background(), db); err != nil {
