@@ -80,9 +80,29 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/gmail",
               },
               {
+                label: "Asana",
+                href: "/resources/integrations/asana",
+                icon: "https://logos.composio.dev/api/asana",
+              },
+              {
+                label: "HubSpot",
+                href: "/resources/integrations/hubspot",
+                icon: "https://logos.composio.dev/api/hubspot",
+              },
+              {
+                label: "Intercom",
+                href: "/resources/integrations/intercom",
+                icon: "https://logos.composio.dev/api/intercom",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
+              },
+              {
+                label: "Shopify (planned)",
+                href: "/resources/integrations/shopify",
+                icon: "https://logos.composio.dev/api/shopify",
               },
             ],
           },

@@ -1,0 +1,106 @@
+---
+title: HubSpot
+description: A reproducible HubSpot CRM v3 API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/hubspot
+---
+
+import compatibility from "./_generated/hubspot.compatibility.json";
+
+Fabricate ships a HubSpot CRM v3 resource with a strict local API and a
+synthetic bearer token. It covers contacts, companies, deals, and tickets in
+the included Acme HubSpot environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `hubspot.minimal.v1` | Empty CRM objects for a clean test. |
+| `hubspot.acme-pipeline.v1` | Dana at Northwind, a stalled checkout deal, and an open SSO ticket. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep HubSpot’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_HUBSPOT_TOKEN" \
+      "$FAB_HUBSPOT_URL/crm/v3/objects/contacts"'
+```
+
+The service is named `hubspot` in the example manifest, so the variables are
+`FAB_HUBSPOT_URL` and `FAB_HUBSPOT_TOKEN`.
+
+The response is the Acme CRM contact list:
+
+```json
+{
+  "results": [
+    {
+      "archived": false,
+      "createdAt": "2026-08-18T14:00:00Z",
+      "id": "101",
+      "properties": {
+        "email": "dana@northwind.example",
+        "firstname": "Dana",
+        "lastname": "Whitfield",
+        "lifecyclestage": "opportunity"
+      },
+      "updatedAt": "2026-08-25T16:40:00Z"
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-01-10T09:00:00Z",
+      "id": "102",
+      "properties": {
+        "email": "val@acme.example",
+        "firstname": "Val",
+        "lastname": "Ortega",
+        "lifecyclestage": "customer"
+      },
+      "updatedAt": "2026-08-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal HubSpot URLs and follows standard proxy
+and CA environment variables. This one-paste check calls HubSpot's normal
+production hostname; replace the final `sh -c ...` command with your app.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_HUBSPOT_TOKEN" \
+      "https://api.hubapi.com/crm/v3/objects/contacts"'
+```
+
+Fabricate handles `api.hubapi.com` locally. Object-type aliases such as
+`/crm/v3/objects/deals` are accepted in addition to HubSpot's `/crm/v3/objects/0-3`
+deal path. Other hosts fail closed unless the manifest lists them in
+`proxy.passthrough`.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest HubSpot check ran against the Acme HubSpot
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />
