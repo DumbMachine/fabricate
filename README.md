@@ -70,7 +70,7 @@ Profiles are only for infrastructure engines. Provider APIs do not use
 
 ## Bringing back another HTTP API
 
-Follow [Adding an HTTP API resource](docs/adding-a-mock-service.md). The short
+Follow [Adding an HTTP API resource](docs/adding-an-http-api-resource.md). The short
 version is:
 
 1. add `resources/<id>/` with a curated OpenAPI contract and generated strict

@@ -2,7 +2,7 @@
 
 An engine provisions real infrastructure software such as a database, cache,
 broker, or host. A provider-shaped HTTP API belongs under `resources/<id>`; see
-[Adding an HTTP API resource](adding-a-mock-service.md).
+[Adding an HTTP API resource](adding-an-http-api-resource.md).
 
 1. Add `engine/<id>/<id>.go` implementing `engine.Engine` (`Info`, `Create`,
    `Destroy`). `engine/redis` is the smallest reference.
