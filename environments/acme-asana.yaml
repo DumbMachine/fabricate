@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-asana
+
+services:
+  asana:
+    resource: asana
+    scenario: asana.acme-sprint.v1

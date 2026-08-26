@@ -1,0 +1,163 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "asana.acme-sprint.v1",
+  "$resource": "asana",
+  "$resourceVersion": "v1",
+  "state": {
+    "currentUserGid": "user-val",
+    "workspaces": [
+      {
+        "gid": "ws-acme",
+        "name": "Acme",
+        "isOrganization": true
+      }
+    ],
+    "users": [
+      {
+        "gid": "user-dana",
+        "name": "Dana Whitfield",
+        "email": "dana@northwind.example"
+      },
+      {
+        "gid": "user-mei",
+        "name": "Mei Chen",
+        "email": "mei.chen@acme.example"
+      },
+      {
+        "gid": "user-val",
+        "name": "Val Ortega",
+        "email": "val@acme.example"
+      }
+    ],
+    "projects": [
+      {
+        "gid": "proj-archive",
+        "workspaceGid": "ws-acme",
+        "name": "2019 website relaunch",
+        "archived": true
+      },
+      {
+        "gid": "proj-checkout",
+        "workspaceGid": "ws-acme",
+        "name": "Checkout reliability",
+        "archived": false
+      }
+    ],
+    "sections": [
+      {
+        "gid": "sec-blocked",
+        "projectGid": "proj-checkout",
+        "name": "Blocked",
+        "position": 2
+      },
+      {
+        "gid": "sec-done",
+        "projectGid": "proj-checkout",
+        "name": "Done",
+        "position": 3
+      },
+      {
+        "gid": "sec-inbox",
+        "projectGid": "proj-checkout",
+        "name": "Inbox",
+        "position": 0
+      },
+      {
+        "gid": "sec-progress",
+        "projectGid": "proj-checkout",
+        "name": "In progress",
+        "position": 1
+      }
+    ],
+    "tasks": [
+      {
+        "gid": "task-csv-export",
+        "workspaceGid": "ws-acme",
+        "name": "CSV export downloads an empty file",
+        "notes": "Analytics > Export CSV returns a zero-byte file in fernworks-prod. Blocked on a warehouse schema change.",
+        "completed": false,
+        "assigneeGid": "user-val",
+        "sectionGid": "sec-blocked",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-25T11:00:00Z",
+        "modifiedAt": "2026-08-25T18:22:00Z"
+      },
+      {
+        "gid": "task-double-charge",
+        "workspaceGid": "ws-acme",
+        "name": "Refund duplicate charge on INV-4812",
+        "notes": "Northwind was billed twice for $1,240 on August 18. Finance needs a refund reference before books close.",
+        "completed": false,
+        "assigneeGid": "user-mei",
+        "dueOn": "2026-08-20",
+        "sectionGid": "sec-progress",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-18T14:15:00Z",
+        "modifiedAt": "2026-08-25T16:40:00Z"
+      },
+      {
+        "gid": "task-rotate-keys",
+        "workspaceGid": "ws-acme",
+        "name": "Rotate webhook signing keys",
+        "notes": "Completed ahead of the security review. Old key retired after 24h overlap.",
+        "completed": true,
+        "assigneeGid": "user-val",
+        "sectionGid": "sec-done",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-10T09:00:00Z",
+        "modifiedAt": "2026-08-14T17:30:00Z"
+      },
+      {
+        "gid": "task-sso",
+        "workspaceGid": "ws-acme",
+        "name": "SAML login loop affecting Contoso (380 users)",
+        "notes": "Employees loop between Okta and the Acme callback. Existing sessions work. Org slug: contoso-eu.",
+        "completed": false,
+        "sectionGid": "sec-inbox",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-26T09:12:00Z",
+        "modifiedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "gid": "task-webhook-retries",
+        "workspaceGid": "ws-acme",
+        "name": "Retry failed webhooks with backoff",
+        "notes": "Failed deliveries currently drop. Add exponential backoff so integrations recover without polling.",
+        "completed": false,
+        "sectionGid": "sec-inbox",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-12T16:04:00Z",
+        "modifiedAt": "2026-08-12T16:04:00Z"
+      }
+    ],
+    "stories": [
+      {
+        "gid": "story-csv-1",
+        "taskGid": "task-csv-export",
+        "text": "Warehouse team says the export view is missing the events table after yesterday's migration.",
+        "createdBy": "user-mei",
+        "createdAt": "2026-08-25T18:22:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-double-charge-1",
+        "taskGid": "task-double-charge",
+        "text": "Dana from Northwind finance pinged again \u2014 both charges have settled.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-25T16:40:00Z",
+        "resourceSubtype": "comment_added"
+      }
+    ]
+  }
+}

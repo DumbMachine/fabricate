@@ -6,11 +6,12 @@ import (
 	"fmt"
 
 	"github.com/dumbmachine/fabricate/httpresource"
+	"github.com/dumbmachine/fabricate/resources/asana"
 	"github.com/dumbmachine/fabricate/resources/gmail"
 )
 
 func Registry() *httpresource.Registry {
-	registry, err := httpresource.NewRegistry(gmail.NewResource())
+	registry, err := httpresource.NewRegistry(asana.NewResource(), gmail.NewResource())
 	if err != nil {
 		panic(fmt.Sprintf("official HTTP resource registry: %v", err))
 	}

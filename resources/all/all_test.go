@@ -2,13 +2,15 @@ package all
 
 import "testing"
 
-func TestRegistryContainsGmailOnce(t *testing.T) {
+func TestRegistryContainsOfficialResources(t *testing.T) {
 	registry := Registry()
-	if _, ok := registry.Get("gmail"); !ok {
-		t.Fatal("gmail is not registered")
+	for _, id := range []string{"asana", "gmail"} {
+		if _, ok := registry.Get(id); !ok {
+			t.Fatalf("%s is not registered", id)
+		}
 	}
 	descriptors := registry.Descriptors()
-	if len(descriptors) != 1 || descriptors[0].ID != "gmail" {
+	if len(descriptors) != 2 || descriptors[0].ID != "asana" || descriptors[1].ID != "gmail" {
 		t.Fatalf("descriptors = %+v", descriptors)
 	}
 }
