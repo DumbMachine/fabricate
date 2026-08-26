@@ -40,6 +40,7 @@ echo "$contacts" | jq -e '[.results[].properties.email] | index("dana@northwind.
 
 deal=$(read_json "$base/crm/v3/objects/deals/301")
 echo "$deal" | jq -e '.properties.dealstage == "appointmentscheduled"' >/dev/null
+echo "$deal" | jq -e '.properties.invoice == "INV-4812"' >/dev/null
 
 updated=$(read_json -X PATCH "$base/crm/v3/objects/deals/301" -d '{"properties":{"dealstage":"closedwon"}}')
 echo "$updated" | jq -e '.properties.dealstage == "closedwon"' >/dev/null
@@ -61,8 +62,8 @@ from datetime import datetime, timezone
 
 mode = sys.argv[1]
 mode_report = {
-    "messagesAfter": 7,
-    "messagesBefore": 6,
+    "messagesAfter": 11,
+    "messagesBefore": 10,
     "operations": {"read": "passed", "write": "passed", "persistence": "passed"},
     "status": "passed",
 }
@@ -73,7 +74,7 @@ if path:
         "environment": {
             "label": "Acme HubSpot",
             "manifest": "environments/acme-hubspot.yaml",
-            "messages": 6,
+            "messages": 10,
         },
         "integration": "hubspot",
         "modes": {},

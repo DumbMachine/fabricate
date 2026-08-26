@@ -1,0 +1,65 @@
+---
+title: "Acme Support Desk"
+description: A disposable Acme support world spanning Gmail, Intercom, Asana, and HubSpot, with incidents that join across services.
+---
+
+Acme Support Desk is a ready-to-run environment for testing software that
+triages customer incidents across mail, chat, a work board, and CRM. Every run
+starts from the same Acme Corp world and is removed when the wrapped command
+exits.
+
+Its manifest identifier is `acme-support-desk`.
+
+## Included integrations
+
+- <img src="https://logos.composio.dev/api/gmail" alt="" width="20" height="20" /> **[Gmail](/resources/integrations/gmail)** — service name: `support-mail`; scenario: `gmail.acme-corp.v1`.
+- <img src="https://logos.composio.dev/api/intercom" alt="" width="20" height="20" /> **[Intercom](/resources/integrations/intercom)** — service name: `inbox`; scenario: `intercom.acme-inbox.v1`.
+- <img src="https://logos.composio.dev/api/asana" alt="" width="20" height="20" /> **[Asana](/resources/integrations/asana)** — service name: `board`; scenario: `asana.acme-sprint.v1`.
+- <img src="https://logos.composio.dev/api/hubspot" alt="" width="20" height="20" /> **[HubSpot](/resources/integrations/hubspot)** — service name: `crm`; scenario: `hubspot.acme-pipeline.v1`.
+
+## Scenario data
+
+The four scenarios describe one company, not four unrelated demos. Shared
+people, companies, and incident IDs appear in more than one service so an
+application has to corroborate records before it writes.
+
+| Join key | Gmail | Intercom | Asana | HubSpot |
+| --- | --- | --- | --- | --- |
+| Invoice `INV-4812` / $1,240 | thread `thr-double-charge` from Dana Whitfield | open conversation `101` | incomplete task `task-double-charge` | stalled deal `301` (`invoice`: `INV-4812`) |
+| `dana@northwind.example` | From on the billing thread | contact `contact-dana` | user `user-dana` | contact `101`, company Northwind Traders |
+| Contoso SSO / `contoso-eu` | starred mail from Mei Chen | open conversation `102` | unassigned inbox task `task-sso` | high-priority ticket `401`, company Contoso, contact `103` |
+| Fernworks CSV export | thread `thr-csv-export` from Priya Nair | — | blocked task `task-csv-export` | contact `104`, company Fernworks |
+
+The data is intentionally incomplete in places. Asana's Mei Chen is
+`mei.chen@acme.example` (internal); Gmail and HubSpot have a different Mei Chen
+at `mei.chen@contoso.example`. The SSO task is unassigned. The Northwind deal is
+still `appointmentscheduled` while finance is waiting on a refund reference. A
+safe agent task should read at least two of these services before it sends mail,
+closes a ticket, or marks a task complete.
+
+Single-service manifests such as [Acme's Gmail](/resources/environments/acme-gmail)
+remain available for integration tests that only need one provider.
+
+## Get started
+
+Paste this command to download the environment manifest, start all four
+services, and read the `INV-4812` billing incident from each one. You do not
+need to clone Fabricate.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages/msg-0001"; \
+      curl -sS -H "Authorization: Bearer $FAB_INBOX_TOKEN" \
+      "$FAB_INBOX_URL/conversations/101"; \
+      curl -sS -H "Authorization: Bearer $FAB_BOARD_TOKEN" \
+      "$FAB_BOARD_URL/tasks/task-double-charge"; \
+      curl -sS -H "Authorization: Bearer $FAB_CRM_TOKEN" \
+      "$FAB_CRM_URL/crm/v3/objects/deals/301"'
+```
+
+Fabricate injects a URL and token per service name: `FAB_SUPPORT_MAIL_*`,
+`FAB_INBOX_*`, `FAB_BOARD_*`, and `FAB_CRM_*`. Add `--proxy` to keep each
+provider's normal hostname; see the integration pages for proxy hosts and
+response shapes.

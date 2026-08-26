@@ -7,7 +7,8 @@ selected scenarios.
 ## Naming
 
 - Use a reader-friendly environment name for the page title and sidebar label.
-  The current `acme-gmail` manifest is displayed as **Acme's Gmail**.
+  `acme-support-desk` is displayed as **Acme Support Desk**; `acme-gmail` is
+  **Acme's Gmail**.
 - State the machine-readable manifest identifier separately in backticks when a
   reader needs it. Do not turn display names into new manifest filenames or
   `metadata.name` values.

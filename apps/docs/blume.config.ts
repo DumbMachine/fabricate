@@ -117,6 +117,14 @@ export default defineConfig({
             collapsed: false,
             items: [
               {
+                label: "Acme Support Desk",
+                href: "/resources/environments/acme-support-desk",
+              },
+              {
+                label: "Acme Billing Ops",
+                href: "/resources/environments/acme-billing-ops",
+              },
+              {
                 label: "Acme's Gmail",
                 href: "/resources/environments/acme-gmail",
               },

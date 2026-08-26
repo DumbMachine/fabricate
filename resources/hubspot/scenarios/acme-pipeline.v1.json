@@ -27,6 +27,28 @@
         },
         "createdAt": "2026-01-10T09:00:00Z",
         "updatedAt": "2026-08-01T00:00:00Z"
+      },
+      {
+        "id": "103",
+        "properties": {
+          "email": "mei.chen@contoso.example",
+          "firstname": "Mei",
+          "lastname": "Chen",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-26T09:12:00Z",
+        "updatedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "104",
+        "properties": {
+          "email": "priya@fernworks.example",
+          "firstname": "Priya",
+          "lastname": "Nair",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-25T11:00:00Z",
+        "updatedAt": "2026-08-25T11:00:00Z"
       }
     ],
     "companies": [
@@ -47,6 +69,24 @@
         },
         "createdAt": "2026-08-18T14:00:00Z",
         "updatedAt": "2026-08-18T14:00:00Z"
+      },
+      {
+        "id": "203",
+        "properties": {
+          "domain": "contoso.example",
+          "name": "Contoso"
+        },
+        "createdAt": "2026-08-26T09:12:00Z",
+        "updatedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "204",
+        "properties": {
+          "domain": "fernworks.example",
+          "name": "Fernworks"
+        },
+        "createdAt": "2026-08-25T11:00:00Z",
+        "updatedAt": "2026-08-25T11:00:00Z"
       }
     ],
     "deals": [
@@ -56,6 +96,8 @@
           "amount": "12400",
           "dealname": "Northwind checkout expansion",
           "dealstage": "appointmentscheduled",
+          "description": "Checkout expansion for Northwind Traders. Duplicate INV-4812 charge ($1,240) is still open.",
+          "invoice": "INV-4812",
           "pipeline": "default"
         },
         "createdAt": "2026-08-18T15:00:00Z",

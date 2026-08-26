@@ -1,0 +1,57 @@
+---
+title: "Acme Billing Ops"
+description: A disposable Acme billing workflow spanning Gmail, Intercom, and HubSpot around invoice INV-4812.
+---
+
+Acme Billing Ops is a ready-to-run environment for testing software that
+reconciles customer billing mail with chat and CRM. Every run starts from the
+same Northwind invoice dispute and is removed when the wrapped command exits.
+
+Its manifest identifier is `acme-billing-ops`.
+
+## Included integrations
+
+- <img src="https://logos.composio.dev/api/gmail" alt="" width="20" height="20" /> **[Gmail](/resources/integrations/gmail)** — service name: `support-mail`; scenario: `gmail.acme-corp.v1`.
+- <img src="https://logos.composio.dev/api/intercom" alt="" width="20" height="20" /> **[Intercom](/resources/integrations/intercom)** — service name: `inbox`; scenario: `intercom.acme-inbox.v1`.
+- <img src="https://logos.composio.dev/api/hubspot" alt="" width="20" height="20" /> **[HubSpot](/resources/integrations/hubspot)** — service name: `crm`; scenario: `hubspot.acme-pipeline.v1`.
+
+## Scenario data
+
+This environment is a billing slice of the same Acme world as
+[Acme Support Desk](/resources/environments/acme-support-desk). The join key is
+invoice `INV-4812`: Dana Whitfield at Northwind was charged twice for $1,240.
+
+| Join key | Gmail | Intercom | HubSpot |
+| --- | --- | --- | --- |
+| `INV-4812` | thread `thr-double-charge` | open conversation `101` | deal `301` (`invoice`: `INV-4812`, amount `12400`) |
+| `dana@northwind.example` | From on both billing messages | contact `contact-dana` | contact `101`, company Northwind Traders |
+
+The inbox still contains the rest of Acme's support mail, and CRM still has the
+Contoso SSO ticket. Those records are context, not the billing job. Closing the
+Northwind deal or refunding Dana without reading both the mail thread and the
+open Intercom conversation is the kind of incomplete write this fixture is meant
+to catch.
+
+For the engineering board that tracks the same invoice, use
+[Acme Support Desk](/resources/environments/acme-support-desk).
+
+## Get started
+
+Paste this command to download the environment manifest, start the three
+services, and read `INV-4812` from mail, chat, and CRM. You do not need to clone
+Fabricate.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-billing-ops.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages/msg-0001"; \
+      curl -sS -H "Authorization: Bearer $FAB_INBOX_TOKEN" \
+      "$FAB_INBOX_URL/conversations/101"; \
+      curl -sS -H "Authorization: Bearer $FAB_CRM_TOKEN" \
+      "$FAB_CRM_URL/crm/v3/objects/deals/301"'
+```
+
+Fabricate injects `FAB_SUPPORT_MAIL_*`, `FAB_INBOX_*`, and `FAB_CRM_*`. Add
+`--proxy` to keep each provider's normal hostname; see the integration pages
+for proxy hosts and response shapes.

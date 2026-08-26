@@ -21,7 +21,7 @@ jobs:
           filters: |
             gmail:
               - 'resources/gmail/**'
-              - 'environments/acme-gmail.yaml'
+              - 'environments/**'
               - 'environment/**'
               - 'engine/http/**'
               - 'httpresource/**'
@@ -33,7 +33,7 @@ jobs:
               - '.github/workflows/ci.yml'
             asana:
               - 'resources/asana/**'
-              - 'environments/acme-asana.yaml'
+              - 'environments/**'
               - 'environment/**'
               - 'engine/http/**'
               - 'httpresource/**'
@@ -45,7 +45,7 @@ jobs:
               - '.github/workflows/ci.yml'
             hubspot:
               - 'resources/hubspot/**'
-              - 'environments/acme-hubspot.yaml'
+              - 'environments/**'
               - 'environment/**'
               - 'engine/http/**'
               - 'httpresource/**'
@@ -57,7 +57,7 @@ jobs:
               - '.github/workflows/ci.yml'
             intercom:
               - 'resources/intercom/**'
-              - 'environments/acme-intercom.yaml'
+              - 'environments/**'
               - 'environment/**'
               - 'engine/http/**'
               - 'httpresource/**'

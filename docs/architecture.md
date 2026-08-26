@@ -29,12 +29,14 @@ The packages have narrow ownership:
 - `requestlog/` stores redacted request/response JSONL outside ephemeral state.
 
 Gmail is the first reference resource. `gmail.acme-corp.v1` contains twelve
-handcrafted messages. The environment at `environments/acme-gmail.yaml` routes
-normal Gmail and Google OAuth hosts to local handlers, allowing an unmodified
-official Google API client to run inside the wrapper.
+handcrafted messages. Single-service manifests such as
+`environments/acme-gmail.yaml` start one provider. Composed manifests such as
+`environments/acme-support-desk.yaml` start Gmail, Intercom, Asana, and HubSpot
+together with shared Acme incident data, and route each provider's normal hosts
+to the local handlers.
 
 ```bash
-fab run --environment ./environments/acme-gmail.yaml --proxy -- <command>
+fab run --environment ./environments/acme-support-desk.yaml --proxy -- <command>
 ```
 
 The current supervisor is foreground-only. It deletes live state on shutdown

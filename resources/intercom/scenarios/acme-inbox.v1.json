@@ -63,7 +63,7 @@
         "conversationId": "101",
         "authorType": "user",
         "authorId": "contact-dana",
-        "body": "We were billed twice for $1,240. Both charges have settled. Need a refund today.",
+        "body": "We were billed twice for INV-4812 ($1,240). Both charges have settled. Need a refund today.",
         "createdAt": 1756132800
       },
       {
@@ -71,7 +71,7 @@
         "conversationId": "102",
         "authorType": "user",
         "authorId": "contact-contoso",
-        "body": "Employees loop between Okta and the Acme callback. Existing sessions still work.",
+        "body": "Employees loop between Okta and the Acme callback. Existing sessions still work. Org slug: contoso-eu.",
         "createdAt": 1756194720
       }
     ]

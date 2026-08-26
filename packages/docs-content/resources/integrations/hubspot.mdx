@@ -16,7 +16,7 @@ the included Acme HubSpot environment.
 | Scenario | What it gives you |
 | --- | --- |
 | `hubspot.minimal.v1` | Empty CRM objects for a clean test. |
-| `hubspot.acme-pipeline.v1` | Dana at Northwind, a stalled checkout deal, and an open SSO ticket. |
+| `hubspot.acme-pipeline.v1` | Dana at Northwind, a stalled `INV-4812` deal, Contoso SSO, and Fernworks. |
 
 ## Integration options
 
@@ -70,6 +70,30 @@ The response is the Acme CRM contact list:
         "lifecyclestage": "customer"
       },
       "updatedAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-08-26T09:12:00Z",
+      "id": "103",
+      "properties": {
+        "email": "mei.chen@contoso.example",
+        "firstname": "Mei",
+        "lastname": "Chen",
+        "lifecyclestage": "customer"
+      },
+      "updatedAt": "2026-08-26T09:12:00Z"
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-08-25T11:00:00Z",
+      "id": "104",
+      "properties": {
+        "email": "priya@fernworks.example",
+        "firstname": "Priya",
+        "lastname": "Nair",
+        "lifecyclestage": "customer"
+      },
+      "updatedAt": "2026-08-25T11:00:00Z"
     }
   ]
 }

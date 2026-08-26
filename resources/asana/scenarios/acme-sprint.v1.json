@@ -157,6 +157,14 @@
         "createdBy": "user-val",
         "createdAt": "2026-08-25T16:40:00Z",
         "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-sso-1",
+        "taskGid": "task-sso",
+        "text": "Mei Chen at Contoso (mei.chen@contoso.example) emailed support. That is a different person from Mei Chen on this workspace.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-26T09:20:00Z",
+        "resourceSubtype": "comment_added"
       }
     ]
   }

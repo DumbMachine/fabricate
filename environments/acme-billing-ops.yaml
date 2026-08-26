@@ -1,0 +1,18 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-billing-ops
+
+services:
+  support-mail:
+    resource: gmail
+    scenario: gmail.acme-corp.v1
+  inbox:
+    resource: intercom
+    scenario: intercom.acme-inbox.v1
+  crm:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1
+
+proxy:
+  enabled: true
