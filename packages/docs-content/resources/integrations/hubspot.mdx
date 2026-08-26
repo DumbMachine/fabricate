@@ -90,8 +90,9 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.hubapi.com` locally. Object-type aliases such as
 `/crm/v3/objects/deals` are accepted in addition to HubSpot's `/crm/v3/objects/0-3`
-deal path. Other hosts fail closed unless the manifest lists them in
-`proxy.passthrough`.
+deal path. Other hosts are forwarded unchanged, so a larger application can
+keep unrelated network traffic working. Set `proxy.unknown_hosts: reject` for
+an isolated, fail-closed conformance test.
 
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.

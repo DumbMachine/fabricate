@@ -29,7 +29,8 @@ process-scoped transparent HTTPS proxy, injects connection and trust variables
 into the child command, and always tears the environment down afterward.
 
 Provider SDKs can keep their production hostnames with --proxy. Unknown proxy
-destinations fail closed and the generated CA is never installed globally.`,
+destinations tunnel unchanged unless the environment opts into strict
+rejection; the generated CA is never installed globally.`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: runEnvironmentCommand,
 }

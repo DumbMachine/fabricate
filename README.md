@@ -41,8 +41,9 @@ PORT=14820 fab-dev run \
 
 Fabricate starts isolated baseline/live SQLite databases, a strict generated
 Gmail server, a CONNECT/TLS proxy with a per-run CA, and a synthetic Google
-OAuth token endpoint. Unknown remote hosts fail closed unless the environment
-explicitly lists them under `proxy.passthrough`.
+OAuth token endpoint. Other remote hosts are forwarded unchanged, so a larger
+application can keep unrelated network traffic working. Set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
 
 Every run prints a durable, redacted JSONL request-log path. Find it later with:
 

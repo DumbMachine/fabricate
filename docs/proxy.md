@@ -29,9 +29,10 @@ only `/gmail/` on `www.googleapis.com`. Google OAuth token refresh is handled by
 a local synthetic token route so the wrapped application does not need working
 Google credentials.
 
-Unknown hosts fail closed. An environment may name exact bare hostnames under
-`proxy.passthrough` for unrelated live dependencies. Passthrough is never
-inferred and cannot override a route claimed by a Fabricate resource.
+Unknown hosts are tunneled unchanged to their normal destination by default.
+This lets one provider be fabricated inside a full application without
+interfering with unrelated networked subprocesses. A route claimed by a
+Fabricate resource always takes precedence over forwarding.
 
 ```yaml
 apiVersion: fabricate.dev/v1alpha1
@@ -43,10 +44,23 @@ services:
     resource: gmail
     scenario: gmail.acme-corp.v1
 proxy:
-  enabled: true
+  unknown_hosts: reject
   passthrough:
     - api.openai.com
 ```
+
+Use strict mode for isolated provider conformance tests. It denies every
+unmapped destination except exact bare hostnames listed under
+`proxy.passthrough`:
+
+```yaml
+proxy:
+  unknown_hosts: reject
+```
+
+Strict mode prevents accidental live provider egress from the wrapped process
+tree. `passthrough` remains useful when a conformance test has a small, known
+secondary dependency.
 
 ## Compatibility limits
 

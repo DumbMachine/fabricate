@@ -31,9 +31,10 @@ type ServiceSpec struct {
 }
 
 type ProxySpec struct {
-	Enabled     bool              `yaml:"enabled,omitempty"`
-	Hosts       map[string]string `yaml:"hosts,omitempty"`
-	Passthrough []string          `yaml:"passthrough,omitempty"`
+	Enabled      bool              `yaml:"enabled,omitempty"`
+	Hosts        map[string]string `yaml:"hosts,omitempty"`
+	Passthrough  []string          `yaml:"passthrough,omitempty"`
+	UnknownHosts string            `yaml:"unknown_hosts,omitempty"`
 }
 
 var namePattern = regexp.MustCompile(`^[a-z][a-z0-9-]{0,62}$`)
@@ -100,5 +101,12 @@ func (s Spec) Validate() error {
 			return fmt.Errorf("environment: proxy passthrough host %q must be a bare hostname", host)
 		}
 	}
+	if policy := strings.TrimSpace(s.Proxy.UnknownHosts); policy != "" && policy != "reject" && policy != "passthrough" {
+		return fmt.Errorf("environment: proxy unknown_hosts must be \"reject\" or \"passthrough\"")
+	}
 	return nil
+}
+
+func (s ProxySpec) RejectUnknownHosts() bool {
+	return strings.TrimSpace(s.UnknownHosts) == "reject"
 }

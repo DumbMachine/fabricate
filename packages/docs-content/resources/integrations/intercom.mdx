@@ -116,8 +116,8 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 ```
 
 Fabricate handles `api.intercom.io`, `api.eu.intercom.io`, and
-`api.au.intercom.io` locally. Other hosts fail closed unless the manifest
-lists them in `proxy.passthrough`.
+`api.au.intercom.io` locally. Other hosts are forwarded unchanged; set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
 
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.

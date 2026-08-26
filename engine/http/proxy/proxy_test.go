@@ -25,7 +25,7 @@ func TestProxyInterceptsGmailAndInjectsSyntheticToken(t *testing.T) {
 	}))
 	defer backend.Close()
 
-	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: backend.URL, Token: "synthetic"}}, nil)
+	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: backend.URL, Token: "synthetic"}}, nil, Options{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func TestProxyMintsTokenUsedByService(t *testing.T) {
 	p, err := Start(t.TempDir(), []Route{
 		{Host: "oauth2.googleapis.com", PathPrefix: "/token", Token: "synthetic", OAuthToken: true},
 		{Host: "gmail.googleapis.com", Target: backend.URL, Token: "synthetic"},
-	}, nil)
+	}, nil, Options{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,8 +82,8 @@ func TestProxyMintsTokenUsedByService(t *testing.T) {
 	}
 }
 
-func TestProxyRejectsUnknownHost(t *testing.T) {
-	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: "http://127.0.0.1:1", Token: "synthetic"}}, nil)
+func TestProxyRejectsUnknownHostInStrictMode(t *testing.T) {
+	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: "http://127.0.0.1:1", Token: "synthetic"}}, nil, Options{RejectUnknown: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -100,7 +100,7 @@ func TestProxyAllowsExplicitPassthroughHost(t *testing.T) {
 		_, _ = io.WriteString(w, "live-but-explicit")
 	}))
 	defer server.Close()
-	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: "http://127.0.0.1:1", Token: "synthetic"}}, nil, "127.0.0.1")
+	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: "http://127.0.0.1:1", Token: "synthetic"}}, nil, Options{Passthrough: []string{"127.0.0.1"}, RejectUnknown: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -116,6 +116,30 @@ func TestProxyAllowsExplicitPassthroughHost(t *testing.T) {
 	body, _ := io.ReadAll(response.Body)
 	response.Body.Close()
 	if string(body) != "live-but-explicit" {
+		t.Fatalf("body = %q", body)
+	}
+}
+
+func TestProxyPassesThroughUnmappedHostByDefault(t *testing.T) {
+	server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = io.WriteString(w, "live-through-default")
+	}))
+	defer server.Close()
+	p, err := Start(t.TempDir(), []Route{{Host: "gmail.googleapis.com", Target: "http://127.0.0.1:1", Token: "synthetic"}}, nil, Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = p.Close(context.Background()) })
+	proxyURL, _ := url.Parse(p.URL)
+	transport := server.Client().Transport.(*http.Transport).Clone()
+	transport.Proxy = http.ProxyURL(proxyURL)
+	response, err := (&http.Client{Transport: transport}).Get(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, _ := io.ReadAll(response.Body)
+	response.Body.Close()
+	if string(body) != "live-through-default" {
 		t.Fatalf("body = %q", body)
 	}
 }

@@ -89,8 +89,8 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
       "https://app.asana.com/api/1.0/projects/proj-checkout/tasks"'
 ```
 
-Fabricate handles `app.asana.com` locally. Other hosts fail closed unless the
-manifest lists them in `proxy.passthrough`.
+Fabricate handles `app.asana.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
 
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
