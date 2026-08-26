@@ -1,0 +1,38 @@
+---
+title: Shopify (planned)
+description: A Shopify Admin API resource is deferred until Shopify publishes a maintained official OpenAPI artifact.
+sidebar:
+  icon: https://logos.composio.dev/api/shopify
+---
+
+> **Planned, not available yet.** This page records why Fabricate does not
+> ship a Shopify resource. It does not describe a runnable environment.
+
+Shopify does not publish a maintained official OpenAPI description of its
+Admin API. Admin REST is also legacy in favor of GraphQL. Fabricate will not
+import an unverified community REST specification or invent one.
+
+That deferral is recorded in `specs/README.md` with the other catalog
+inputs. Gmail, Asana, HubSpot, and Intercom are compiled from official
+OpenAPI documents stored next to each resource; Shopify is not in that set.
+
+## What a first surface would need
+
+A later Shopify resource should start from an official contract Shopify
+maintains, not a reconstructed REST subset. The useful first slice for
+agent workflows is still shop and order context:
+
+- Shop identity and the current sales channel.
+- Products, variants, and inventory that explain what a customer bought.
+- Orders, fulfillments, and refunds tied to a support or billing incident.
+
+## Deliberately outside a first surface
+
+- Storefront APIs, checkout, and payment capture.
+- Theme, asset, and App Bridge surfaces.
+- Webhook delivery, Shopify Flow, and Plus-only admin features.
+- A hand-written stand-in for Admin REST now that GraphQL is the supported
+  Admin API.
+
+Until Shopify publishes a maintained official OpenAPI artifact that can be
+stored in full next to the resource, this integration stays planned.
