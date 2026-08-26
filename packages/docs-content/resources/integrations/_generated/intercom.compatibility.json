@@ -1,0 +1,44 @@
+{
+  "api": "Intercom API 2.16",
+  "environment": {
+    "label": "Acme Intercom",
+    "manifest": "environments/acme-intercom.yaml",
+    "messages": 3
+  },
+  "integration": "intercom",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read inbox",
+    "write": "Reply to billing conversation",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8.5.0",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-26T15:05:12.324Z",
+  "testedCommit": "0a00f68581c1375559c37e7d07804e197e67a021"
+}
