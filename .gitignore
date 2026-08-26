@@ -9,6 +9,11 @@ state.json
 # Documentation app outputs
 apps/docs/.blume/
 apps/docs/dist/
+apps/site/dist/
+
+# Landing app outputs
+apps/landing/.astro/
+apps/landing/dist/
 
 # JavaScript dependencies
 node_modules/

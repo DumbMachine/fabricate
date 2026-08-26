@@ -5,6 +5,11 @@
   "scripts": {
     "docs:dev": "pnpm --filter @fabricate/docs dev",
     "docs:build": "pnpm --filter @fabricate/docs build",
-    "docs:check": "pnpm --filter @fabricate/docs check"
+    "docs:check": "pnpm --filter @fabricate/docs check",
+    "landing:dev": "pnpm --filter @fabricate/landing dev",
+    "landing:build": "pnpm --filter @fabricate/landing build",
+    "landing:check": "pnpm --filter @fabricate/landing check",
+    "site:build": "pnpm landing:build && pnpm --filter @fabricate/docs build && node apps/site/scripts/stage.mjs",
+    "site:deploy": "pnpm site:build && pnpm --filter @fabricate/site run deploy"
   }
 }

@@ -1,0 +1,8 @@
+---
+const { compact = false } = Astro.props;
+---
+
+<a class="brand" href="/" aria-label="Fabricate home">
+  <img class="brand-mark" src="/fabricate-mark.svg" width="32" height="32" alt="" />
+  {!compact && <span>fabricate</span>}
+</a>

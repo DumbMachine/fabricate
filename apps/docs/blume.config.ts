@@ -102,6 +102,8 @@ export default defineConfig({
     llmsTxt: true,
   },
   deployment: {
+    base: "/docs",
     output: "static",
+    site: "https://fabricate.dmach.in",
   },
 });

@@ -1,0 +1,22 @@
+---
+import Logo from "./Logo.astro";
+
+const { docsHref = "/docs", consultHref } = Astro.props;
+---
+
+<header class="site-header" data-header>
+  <div class="header-shell">
+    <Logo />
+    <nav class="header-actions" aria-label="Primary navigation">
+      <a class="docs-link" href={docsHref}>Docs</a>
+      <a class="consult-link" href={consultHref} target="_blank" rel="noreferrer">Book a shop consult</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const setHeaderState = () => header?.classList.toggle("is-floating", window.scrollY > 20);
+  setHeaderState();
+  window.addEventListener("scroll", setHeaderState, { passive: true });
+</script>
