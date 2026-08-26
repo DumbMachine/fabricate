@@ -1,4 +1,4 @@
-# Adding an HTTP API resource
+# Adding a compiled provider HTTP API resource
 
 Provider APIs are compiled resources in the root Go module. Gmail under
 `resources/gmail` is the reference layout.

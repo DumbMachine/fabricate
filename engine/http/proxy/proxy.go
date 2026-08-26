@@ -331,7 +331,7 @@ func (p *Proxy) roundTrip(request *http.Request, route *compiledRoute) (*http.Re
 	out.Host = route.Host
 	out.Header = request.Header.Clone()
 	stripForwardingHeaders(out.Header)
-	// Never forward a production credential into even a local mock. The
+	// Never forward a production credential into a local provider API. The
 	// resource only receives the per-environment synthetic token.
 	out.Header.Set("Authorization", "Bearer "+route.Token)
 	return p.transport.RoundTrip(out)
