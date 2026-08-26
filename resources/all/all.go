@@ -9,10 +9,11 @@ import (
 	"github.com/dumbmachine/fabricate/resources/asana"
 	"github.com/dumbmachine/fabricate/resources/gmail"
 	"github.com/dumbmachine/fabricate/resources/hubspot"
+	"github.com/dumbmachine/fabricate/resources/intercom"
 )
 
 func Registry() *httpresource.Registry {
-	registry, err := httpresource.NewRegistry(asana.NewResource(), gmail.NewResource(), hubspot.NewResource())
+	registry, err := httpresource.NewRegistry(asana.NewResource(), gmail.NewResource(), hubspot.NewResource(), intercom.NewResource())
 	if err != nil {
 		panic(fmt.Sprintf("official HTTP resource registry: %v", err))
 	}

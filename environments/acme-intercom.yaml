@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-intercom
+
+services:
+  intercom:
+    resource: intercom
+    scenario: intercom.acme-inbox.v1

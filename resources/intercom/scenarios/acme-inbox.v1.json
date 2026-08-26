@@ -1,0 +1,79 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "intercom.acme-inbox.v1",
+  "$resource": "intercom",
+  "$resourceVersion": "2.16",
+  "state": {
+    "currentAdminId": "admin-val",
+    "admins": [
+      {
+        "id": "admin-val",
+        "name": "Val Ortega",
+        "email": "val@acme.example"
+      }
+    ],
+    "contacts": [
+      {
+        "id": "contact-contoso",
+        "name": "Contoso IT",
+        "email": "it@contoso.example",
+        "role": "user",
+        "createdAt": 1756194720,
+        "updatedAt": 1756194720
+      },
+      {
+        "id": "contact-dana",
+        "name": "Dana Whitfield",
+        "email": "dana@northwind.example",
+        "role": "user",
+        "createdAt": 1755525600,
+        "updatedAt": 1756132800
+      }
+    ],
+    "conversations": [
+      {
+        "id": "101",
+        "title": "Charged twice for INV-4812",
+        "state": "open",
+        "contactId": "contact-dana",
+        "createdAt": 1755525600,
+        "updatedAt": 1756132800
+      },
+      {
+        "id": "102",
+        "title": "SAML login loop affecting Contoso",
+        "state": "open",
+        "contactId": "contact-contoso",
+        "createdAt": 1756194720,
+        "updatedAt": 1756194720
+      },
+      {
+        "id": "103",
+        "title": "Webhook signing key rotation",
+        "state": "closed",
+        "contactId": "contact-dana",
+        "createdAt": 1754812800,
+        "updatedAt": 1755167400
+      }
+    ],
+    "parts": [
+      {
+        "id": "part-billing-1",
+        "conversationId": "101",
+        "authorType": "user",
+        "authorId": "contact-dana",
+        "body": "We were billed twice for $1,240. Both charges have settled. Need a refund today.",
+        "createdAt": 1756132800
+      },
+      {
+        "id": "part-sso-1",
+        "conversationId": "102",
+        "authorType": "user",
+        "authorId": "contact-contoso",
+        "body": "Employees loop between Okta and the Acme callback. Existing sessions still work.",
+        "createdAt": 1756194720
+      }
+    ]
+  }
+}
