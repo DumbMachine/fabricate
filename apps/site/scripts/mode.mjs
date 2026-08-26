@@ -1,4 +1,4 @@
-import { cp, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, readdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
@@ -54,12 +54,26 @@ const prepareDevelopmentDocs = async () => {
   if (mode !== "development") return undefined;
 
   const source = resolve(repositoryRoot, "packages", "docs-content");
-  const output = resolve(appRoot, ".fabricate-mode", "docs-content");
-  await rm(output, { force: true, recursive: true });
-  await cp(source, output, { recursive: true });
+  const modeRoot = resolve(appRoot, ".fabricate-mode");
+  const contentDirectory = resolve(modeRoot, "docs-content");
+  const developmentAppRoot = resolve(modeRoot, "app");
+  await rm(modeRoot, { force: true, recursive: true });
+  await cp(source, contentDirectory, { recursive: true });
+  const developmentPublic = resolve(developmentAppRoot, "public");
+  await mkdir(developmentPublic, { recursive: true });
+  await writeFile(
+    resolve(developmentAppRoot, "blume.config.ts"),
+    'export { default } from "../../blume.config.ts";\n',
+  );
+  // Serve the checked-in assets directly. The generated development project
+  // only selects the violet icon; it never creates or overwrites an asset.
+  for (const entry of await readdir(resolve(appRoot, "public"), { withFileTypes: true })) {
+    const sourcePath = resolve(appRoot, "public", entry.name === "icon.svg" ? "icon-dev.svg" : entry.name);
+    await symlink(sourcePath, resolve(developmentPublic, entry.name), entry.isDirectory() ? "dir" : "file");
+  }
 
   const replaceCommands = async (directory) => {
-    for (const entry of await (await import("node:fs/promises")).readdir(directory, { withFileTypes: true })) {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
       const path = resolve(directory, entry.name);
       if (entry.isDirectory()) await replaceCommands(path);
       else if (/\.mdx?$/.test(entry.name)) {
@@ -68,30 +82,25 @@ const prepareDevelopmentDocs = async () => {
       }
     }
   };
-  await replaceCommands(output);
-  return output;
-};
-
-const withDocsIcon = async (work) => {
-  const icon = resolve(appRoot, "public", "icon.svg");
-  const original = await readFile(icon);
-  try {
-    if (mode === "development") {
-      await writeFile(icon, await readFile(resolve(appRoot, "public", "icon-dev.svg")));
-    }
-    await work();
-  } finally {
-    await writeFile(icon, original);
-  }
+  await replaceCommands(contentDirectory);
+  return { contentDirectory, developmentAppRoot };
 };
 
 if (app === "landing") {
   const portArgs = task === "dev" && !args.includes("--port") ? ["--port", new URL(landingOrigin).port || "4321"] : [];
   await run("pnpm", ["exec", "astro", task, ...portArgs, ...args]);
 } else {
-  const contentDirectory = await prepareDevelopmentDocs();
-  if (contentDirectory) env.FABRICATE_DOCS_CONTENT_DIR = contentDirectory;
+  const developmentDocs = await prepareDevelopmentDocs();
+  if (developmentDocs) env.FABRICATE_DOCS_CONTENT_DIR = developmentDocs.contentDirectory;
   const portArgs = task === "dev" && !args.includes("--port") ? ["--port", new URL(docsOrigin).port || "4322"] : [];
   const checkArgs = task === "check" && !args.includes("--isolated") ? ["--isolated"] : [];
-  await withDocsIcon(() => run("pnpm", ["exec", "blume", task, ...(contentDirectory && task === "dev" ? ["--content-dir", contentDirectory] : []), ...portArgs, ...checkArgs, ...args]));
+  const blumeArgs = ["exec", "blume", task, ...(developmentDocs && task === "dev" ? ["--content-dir", developmentDocs.contentDirectory] : []), ...portArgs, ...checkArgs, ...args];
+  if (task === "dev") {
+    await run("pnpm", blumeArgs, { cwd: developmentDocs.developmentAppRoot });
+  } else {
+    await run("pnpm", blumeArgs);
+    if (mode === "development" && task === "build") {
+      await copyFile(resolve(appRoot, "public", "icon-dev.svg"), resolve(appRoot, "dist", "icon.svg"));
+    }
+  }
 }
