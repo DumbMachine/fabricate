@@ -5,8 +5,38 @@
   "$resource": "sendgrid",
   "$resourceVersion": "v3",
   "state": {
-    "batches": [],
+    "batches": [
+      {
+        "id": "batch_inv2207",
+        "status": "generated",
+        "created_at": "2026-08-25T11:00:00Z"
+      }
+    ],
     "messages": [
+      {
+        "id": "msg_helix",
+        "from": {
+          "email": "marketing@acme.example"
+        },
+        "personalizations": [
+          {
+            "to": [
+              {
+                "email": "noah@helixbio.example"
+              }
+            ]
+          }
+        ],
+        "subject": "Helix Bio trial — workspace ready",
+        "content": [
+          {
+            "type": "text/plain",
+            "value": "Hi Noah, your Helix Bio evaluation workspace is live. Log in to invite your team and start the 14-day trial."
+          }
+        ],
+        "status": "delivered",
+        "created_at": "2026-08-21T10:30:00Z"
+      },
       {
         "id": "msg_inv4812",
         "from": {
@@ -30,6 +60,54 @@
         ],
         "status": "delivered",
         "created_at": "2026-08-18T14:00:00Z"
+      },
+      {
+        "id": "msg_rita",
+        "from": {
+          "email": "marketing@acme.example"
+        },
+        "personalizations": [
+          {
+            "to": [
+              {
+                "email": "rita@contoso.example"
+              }
+            ]
+          }
+        ],
+        "subject": "Procurement teams: streamline vendor onboarding",
+        "content": [
+          {
+            "type": "text/plain",
+            "value": "Hi Rita, Contoso procurement leads are cutting vendor setup time with Acme's approval workflows. Reply if you'd like a short walkthrough."
+          }
+        ],
+        "status": "processed",
+        "created_at": "2026-08-26T15:45:00Z"
+      },
+      {
+        "id": "msg_theo",
+        "from": {
+          "email": "billing@acme.example"
+        },
+        "personalizations": [
+          {
+            "to": [
+              {
+                "email": "theo@orbiter.example"
+              }
+            ]
+          }
+        ],
+        "subject": "Orbiter usage statement — August 2026",
+        "content": [
+          {
+            "type": "text/plain",
+            "value": "Theo, your Orbiter workspace usage statement for August is attached. Contact billing@acme.example with any questions."
+          }
+        ],
+        "status": "delivered",
+        "created_at": "2026-08-23T09:00:00Z"
       }
     ]
   }
