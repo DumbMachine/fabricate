@@ -14,6 +14,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/intercom"
 	"github.com/dumbmachine/fabricate/resources/mailchimp"
 	"github.com/dumbmachine/fabricate/resources/mailgun"
+	"github.com/dumbmachine/fabricate/resources/neon"
 	"github.com/dumbmachine/fabricate/resources/pipedrive"
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
@@ -29,6 +30,7 @@ func Registry() *httpresource.Registry {
 		intercom.NewResource(),
 		mailchimp.NewResource(),
 		mailgun.NewResource(),
+		neon.NewResource(),
 		pipedrive.NewResource(),
 		resend.NewResource(),
 		sendgrid.NewResource(),

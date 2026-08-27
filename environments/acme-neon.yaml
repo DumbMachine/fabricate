@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-neon
+
+services:
+  neon:
+    resource: neon
+    scenario: neon.acme-projects.v1

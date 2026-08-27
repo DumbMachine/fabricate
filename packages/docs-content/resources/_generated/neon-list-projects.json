@@ -1,0 +1,79 @@
+{
+  "id": "neon-list-projects",
+  "title": "List seeded projects",
+  "environment": {
+    "label": "Acme Neon",
+    "manifest": "environments/acme-neon.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://console.neon.tech/api/v2/projects",
+  "output": {
+    "projects": [
+      {
+        "created_at": "2026-08-20T10:00:00Z",
+        "id": "acme-analytics",
+        "name": "acme-analytics",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-08-01T09:00:00Z",
+        "id": "acme-prod",
+        "name": "acme-prod",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-08-10T09:00:00Z",
+        "id": "acme-staging",
+        "name": "acme-staging",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      }
+    ]
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:e889aa9fbb87eec80cb2fa0815fd233977f2f81bcc1edf0cbe082c1f77ab554a",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-neon.yaml",
+        "digest": "sha256:c30349f706774fb3ef3ad8f9c3ccfc15aadddda0ef9eb8d2ca99bcf3a9ded390"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/neon-list-projects.json",
+        "digest": "sha256:52379050a403c85cc4c2455acaccdff4e93010a112a31374cd494bb417b65d6d"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/neon",
+        "digest": "sha256:9b544c87358cfc15655d22d65296a24da4dd4f2acd7c1301d69823f573e7acf4"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}

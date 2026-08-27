@@ -1,0 +1,67 @@
+---
+title: Neon
+description: A reproducible Neon project API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/neon
+---
+
+import compatibility from "../_generated/neon.compatibility.json";
+import example from "../_generated/neon-list-projects.json";
+
+Fabricate ships a Neon v1 resource with a strict local API and a
+synthetic bearer token. It covers project list, get, and create in the included
+Acme Neon environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `neon.minimal.v1` | Empty Neon state for a clean test. |
+| `neon.acme-projects.v1` | Acme prod, staging, and analytics Postgres projects. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep Neon’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_NEON_TOKEN" "$FAB_NEON_URL/api/v2/projects"'
+```
+
+The service is named `neon` in the example manifest, so the variables are
+`FAB_NEON_URL` and `FAB_NEON_TOKEN`.
+
+The response is the Acme project list:
+
+<CommandOutput example={example} showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Neon URLs. This one-paste check
+calls Neon's production hostname; the proxy supplies the local token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://console.neon.tech/api/v2/projects
+```
+
+Fabricate handles `console.neon.tech` locally. Other hosts are forwarded unchanged.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Neon check ran against the Acme Neon
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />
