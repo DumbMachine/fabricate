@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `acme-prod`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `acme-warehouse`) {
+		t.Fatalf("haystack missing acme-warehouse: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"id":`) < 10 {
+		t.Fatalf("project haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/api/v2/projects/acme-prod", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `acme-prod`) {
