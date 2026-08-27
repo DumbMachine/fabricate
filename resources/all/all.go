@@ -9,6 +9,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/asana"
 	"github.com/dumbmachine/fabricate/resources/attio"
 	"github.com/dumbmachine/fabricate/resources/close"
+	"github.com/dumbmachine/fabricate/resources/exa"
 	"github.com/dumbmachine/fabricate/resources/gmail"
 	"github.com/dumbmachine/fabricate/resources/hubspot"
 	"github.com/dumbmachine/fabricate/resources/intercom"
@@ -24,6 +25,7 @@ func Registry() *httpresource.Registry {
 		asana.NewResource(),
 		attio.NewResource(),
 		close.NewResource(),
+		exa.NewResource(),
 		gmail.NewResource(),
 		hubspot.NewResource(),
 		intercom.NewResource(),

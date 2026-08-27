@@ -1,0 +1,29 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "exa.acme-tasks.v1",
+  "$resource": "exa",
+  "$resourceVersion": "v1",
+  "state": {
+    "tasks": [
+      {
+        "id": "task_billing",
+        "instructions": "Summarize public coverage of invoice INV-4812 disputes",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_checkout",
+        "instructions": "What caused the checkout reliability incident?",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_sso",
+        "instructions": "Find write-ups of Contoso SSO login loops",
+        "status": "running",
+        "model": "exa-research"
+      }
+    ]
+  }
+}

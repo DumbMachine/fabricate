@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "exa.minimal.v1",
+  "$resource": "exa",
+  "$resourceVersion": "v1",
+  "state": {
+    "tasks": []
+  }
+}

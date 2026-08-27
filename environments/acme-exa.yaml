@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-exa
+
+services:
+  exa:
+    resource: exa
+    scenario: exa.acme-tasks.v1
