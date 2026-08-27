@@ -12,10 +12,46 @@ Its manifest identifier is `acme-support-desk`.
 
 ## Included integrations
 
-- <img src="https://logos.composio.dev/api/gmail" alt="" width="20" height="20" /> **[Gmail](/resources/integrations/gmail)** — service name: `support-mail`; scenario: `gmail.acme-corp.v1`.
-- <img src="https://logos.composio.dev/api/intercom" alt="" width="20" height="20" /> **[Intercom](/resources/integrations/intercom)** — service name: `inbox`; scenario: `intercom.acme-inbox.v1`.
-- <img src="https://logos.composio.dev/api/asana" alt="" width="20" height="20" /> **[Asana](/resources/integrations/asana)** — service name: `board`; scenario: `asana.acme-sprint.v1`.
-- <img src="https://logos.composio.dev/api/hubspot" alt="" width="20" height="20" /> **[HubSpot](/resources/integrations/hubspot)** — service name: `crm`; scenario: `hubspot.acme-pipeline.v1`.
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with 12 messages, labels, and threads.",
+      data: "Threads for INV-4812, Contoso SSO, Fernworks CSV, refunds, webhooks, and key rotation.",
+    },
+    {
+      resource: "intercom",
+      label: "Intercom",
+      href: "/resources/integrations/intercom",
+      service: "inbox",
+      scenario: "intercom.acme-inbox.v1",
+      summary: "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+      data: "Open conversations 101 (INV-4812) and 102 (Contoso SSO), with Dana and Contoso contacts.",
+    },
+    {
+      resource: "asana",
+      label: "Asana",
+      href: "/resources/integrations/asana",
+      service: "board",
+      scenario: "asana.acme-sprint.v1",
+      summary: "A Checkout reliability project with five tasks, sections, and comments.",
+      data: "Incomplete INV-4812 refund, unassigned Contoso SSO task, and a blocked Fernworks CSV export.",
+    },
+    {
+      resource: "hubspot",
+      label: "HubSpot",
+      href: "/resources/integrations/hubspot",
+      service: "crm",
+      scenario: "hubspot.acme-pipeline.v1",
+      summary: "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+      data: "Deal 301 still open on INV-4812, ticket 401 for Contoso SSO, and shared contacts and companies.",
+    },
+  ]}
+/>
 
 ## Scenario data
 
@@ -47,19 +83,17 @@ services, and read the `INV-4812` billing incident from each one. You do not
 need to clone Fabricate.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml | \
-  fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages/msg-0001"; \
-      curl -sS -H "Authorization: Bearer $FAB_INBOX_TOKEN" \
-      "$FAB_INBOX_URL/conversations/101"; \
-      curl -sS -H "Authorization: Bearer $FAB_BOARD_TOKEN" \
-      "$FAB_BOARD_URL/tasks/task-double-charge"; \
-      curl -sS -H "Authorization: Bearer $FAB_CRM_TOKEN" \
-      "$FAB_CRM_URL/crm/v3/objects/deals/301"'
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml \
+  | fab run --environment /dev/stdin --proxy -- sh -c '
+      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001
+      echo
+      curl -sS https://api.intercom.io/conversations/101
+      echo
+      curl -sS https://app.asana.com/api/1.0/tasks/task-double-charge
+      echo
+      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301
+    '
 ```
 
-Fabricate injects a URL and token per service name: `FAB_SUPPORT_MAIL_*`,
-`FAB_INBOX_*`, `FAB_BOARD_*`, and `FAB_CRM_*`. Add `--proxy` to keep each
-provider's normal hostname; see the integration pages for proxy hosts and
-response shapes.
+`--proxy` keeps each provider’s normal hostname. See the integration pages for
+response shapes and the direct-URL option.

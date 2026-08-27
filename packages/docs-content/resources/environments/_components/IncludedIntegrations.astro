@@ -1,0 +1,221 @@
+---
+interface IncludedService {
+  data: string;
+  href: string;
+  label: string;
+  resource: string;
+  scenario: string;
+  service: string;
+  summary: string;
+}
+
+const {services} = Astro.props as {services: IncludedService[]};
+const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
+const logo = (resource: string, theme?: "dark") =>
+  `https://logos.composio.dev/api/${resource}${theme === "dark" ? "?theme=dark" : ""}`;
+const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBase}${href.startsWith("/") ? href : `/${href}`}`);
+---
+
+<section class="included not-prose" aria-label="Included integrations">
+  <header>
+    <p class="count">{services.length} {services.length === 1 ? "service" : "services"}</p>
+    <ul class="icons">
+      {services.map((entry) => (
+        <li>
+          <a href={toDocsHref(entry.href)} title={entry.label}>
+            <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt={entry.label} />
+            <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </header>
+
+  <table>
+    <caption>Services in this environment</caption>
+    <thead>
+      <tr>
+        <th scope="col">Service</th>
+        <th scope="col">Scenario</th>
+      </tr>
+    </thead>
+    <tbody>
+      {services.map((entry) => (
+        <tr>
+          <th scope="row">
+            <a class="service" href={toDocsHref(entry.href)}>
+              <span class="icon">
+                <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt="" />
+                <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
+              </span>
+              <span class="service-copy">
+                <span class="service-label">{entry.label}</span>
+                <span class="service-name">{entry.service}</span>
+              </span>
+            </a>
+          </th>
+          <td>
+            <p class="scenario-id" title="Select to copy">{entry.scenario}</p>
+            <p class="summary">{entry.summary}</p>
+            <p class="data">{entry.data}</p>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+
+<style>
+  .included {
+    background: var(--fabricate-surface-raised);
+    border: 1px solid var(--fabricate-border);
+    border-radius: var(--fabricate-radius-lg);
+    margin: 1.8rem 0 2.4rem;
+    padding: 1.15rem;
+  }
+  header {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .count {
+    color: var(--fabricate-text-muted);
+    font: 600 .68rem/1 var(--fabricate-font-mono);
+    letter-spacing: .08em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .icons {
+    display: flex;
+    gap: .4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .icons li {
+    margin: 0;
+    padding: 0;
+  }
+  .icons a,
+  .icon {
+    align-items: center;
+    background: var(--fabricate-canvas);
+    border: 1px solid var(--fabricate-border);
+    border-radius: 4px;
+    display: flex;
+    flex: none;
+    height: 1.35rem;
+    justify-content: center;
+    width: 1.35rem;
+  }
+  .icons a {
+    text-decoration: none;
+  }
+  .icons img,
+  .service img {
+    height: 16px;
+    margin: 0;
+    max-width: none;
+    object-fit: contain;
+    width: 16px;
+  }
+  .logo-light { display: block; }
+  .logo-dark { display: none; }
+  :global(:root[data-theme="dark"]) .logo-light { display: none; }
+  :global(:root[data-theme="dark"]) .logo-dark { display: block; }
+  table {
+    border-collapse: collapse;
+    color: var(--fabricate-text);
+    font-size: .85rem;
+    margin: 0;
+    width: 100%;
+  }
+  caption {
+    caption-side: top;
+    font: 600 .84rem/1.2 var(--fabricate-font-sans);
+    padding: 0 0 .7rem;
+    text-align: left;
+  }
+  th, td {
+    border-bottom: 1px solid var(--fabricate-border);
+    padding: .8rem .25rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  tbody tr:last-child th,
+  tbody tr:last-child td { border-bottom: 0; }
+  thead th {
+    color: var(--fabricate-text-muted);
+    font: 600 .68rem/1 var(--fabricate-font-mono);
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  tbody th {
+    font-weight: 500;
+    padding-right: 1.25rem;
+    white-space: nowrap;
+    width: 1%;
+  }
+  .service {
+    align-items: center;
+    color: inherit;
+    display: flex;
+    gap: .7rem;
+    text-decoration: none;
+  }
+  .service img {
+    height: 16px;
+    width: 16px;
+  }
+  .service-copy {
+    display: flex;
+    flex-direction: column;
+    gap: .12rem;
+  }
+  .service-label {
+    color: var(--fabricate-text);
+    font: 600 .95rem/1.2 var(--fabricate-font-sans);
+  }
+  .service-name,
+  .scenario-id,
+  .summary,
+  .data {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  .service-name {
+    color: var(--fabricate-text-muted);
+    font: 400 .72rem/1.25 var(--fabricate-font-sans);
+  }
+  .scenario-id {
+    color: var(--fabricate-text-secondary);
+    cursor: text;
+    display: block;
+    font: 500 .84rem/1.4 var(--fabricate-font-mono);
+    margin: 0 0 .55rem;
+    overflow-wrap: anywhere;
+    user-select: all;
+    width: 100%;
+    -webkit-user-select: all;
+  }
+  .summary {
+    color: var(--fabricate-text);
+    font: 500 .9rem/1.4 var(--fabricate-font-sans);
+    margin: 0;
+  }
+  .data {
+    color: var(--fabricate-text-muted);
+    font: 400 .82rem/1.45 var(--fabricate-font-sans);
+    margin: .22rem 0 0;
+  }
+  @media (max-width: 32rem) {
+    header { align-items: flex-start; }
+    tbody th { white-space: normal; width: auto; }
+    th, td { padding-inline: .15rem; }
+  }
+</style>

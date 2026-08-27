@@ -11,7 +11,19 @@ Its manifest identifier is `acme-gmail`.
 
 ## Included integrations
 
-- <img src="https://logos.composio.dev/api/gmail" alt="" width="20" height="20" /> **[Gmail](/resources/integrations/gmail)** — service name: `support-mail`; scenario: `gmail.acme-corp.v1`.
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with 12 messages, labels, and threads.",
+      data: "Billing, SSO, refund, CSV export, webhook, and key-rotation threads, including INV-4812.",
+    },
+  ]}
+/>
 
 ## Scenario data
 
@@ -33,12 +45,10 @@ Paste this command to download the environment manifest, start the Gmail
 service, and list the seeded messages. You do not need to clone Fabricate.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml \
+  | fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages
 ```
 
-Fabricate injects `FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN` into the
-wrapped process. See [Gmail](/resources/integrations/gmail) for the response,
-direct-URL integration, and transparent-proxy setup.
+`--proxy` keeps Gmail’s normal hostname. See [Gmail](/resources/integrations/gmail)
+for the response, direct-URL integration, and proxy setup.

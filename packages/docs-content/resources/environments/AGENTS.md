@@ -15,12 +15,35 @@ selected scenarios.
 
 ## Page contents
 
-- List every included integration with its correct icon, service name, and
-  scenario.
+- List every included integration with the registered MDX primitive. Do not
+  build a bespoke icon list on individual pages:
+
+```mdx
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "One-liner for the selected scenario.",
+      data: "One-liner for the seeded records.",
+    },
+  ]}
+/>
+```
+
+The component shows a row of resource icons, then a table of each service
+with a scenario one-liner and a following line about the data. Keep `resource`,
+`service`, and `scenario` aligned with the manifest.
 - Explain the scenario's data and why it is useful for an application, agent,
   or test workflow.
 - Include a one-paste startup command that reads the canonical raw manifest
-  through `fab run --environment /dev/stdin`; readers must not need to clone
+  through `fab run --environment /dev/stdin --proxy`. The primary example
+  should call each service on its normal production hostname, with one `curl`
+  per line so the requests stay distinct. Do not include Authorization
+  headers; the proxy supplies the local token. Readers must not need to clone
   Fabricate first.
 - Keep claims scoped to services actually present in the manifest. Link to the
   integration page for API coverage, response examples, and proxy details.

@@ -11,9 +11,37 @@ Its manifest identifier is `acme-billing-ops`.
 
 ## Included integrations
 
-- <img src="https://logos.composio.dev/api/gmail" alt="" width="20" height="20" /> **[Gmail](/resources/integrations/gmail)** — service name: `support-mail`; scenario: `gmail.acme-corp.v1`.
-- <img src="https://logos.composio.dev/api/intercom" alt="" width="20" height="20" /> **[Intercom](/resources/integrations/intercom)** — service name: `inbox`; scenario: `intercom.acme-inbox.v1`.
-- <img src="https://logos.composio.dev/api/hubspot" alt="" width="20" height="20" /> **[HubSpot](/resources/integrations/hubspot)** — service name: `crm`; scenario: `hubspot.acme-pipeline.v1`.
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with 12 messages, labels, and threads.",
+      data: "Dana's INV-4812 double-charge thread sits next to SSO, refund, and key-rotation mail.",
+    },
+    {
+      resource: "intercom",
+      label: "Intercom",
+      href: "/resources/integrations/intercom",
+      service: "inbox",
+      scenario: "intercom.acme-inbox.v1",
+      summary: "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+      data: "Open conversation 101 is the INV-4812 dispute; conversation 102 is Contoso SSO context.",
+    },
+    {
+      resource: "hubspot",
+      label: "HubSpot",
+      href: "/resources/integrations/hubspot",
+      service: "crm",
+      scenario: "hubspot.acme-pipeline.v1",
+      summary: "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+      data: "Deal 301 still open on INV-4812 for $1,240, with Dana as contact 101 at Northwind Traders.",
+    },
+  ]}
+/>
 
 ## Scenario data
 
@@ -42,16 +70,15 @@ services, and read `INV-4812` from mail, chat, and CRM. You do not need to clone
 Fabricate.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-billing-ops.yaml | \
-  fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages/msg-0001"; \
-      curl -sS -H "Authorization: Bearer $FAB_INBOX_TOKEN" \
-      "$FAB_INBOX_URL/conversations/101"; \
-      curl -sS -H "Authorization: Bearer $FAB_CRM_TOKEN" \
-      "$FAB_CRM_URL/crm/v3/objects/deals/301"'
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-billing-ops.yaml \
+  | fab run --environment /dev/stdin --proxy -- sh -c '
+      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001
+      echo
+      curl -sS https://api.intercom.io/conversations/101
+      echo
+      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301
+    '
 ```
 
-Fabricate injects `FAB_SUPPORT_MAIL_*`, `FAB_INBOX_*`, and `FAB_CRM_*`. Add
-`--proxy` to keep each provider's normal hostname; see the integration pages
-for proxy hosts and response shapes.
+`--proxy` keeps each provider’s normal hostname. See the integration pages for
+response shapes and the direct-URL option.
