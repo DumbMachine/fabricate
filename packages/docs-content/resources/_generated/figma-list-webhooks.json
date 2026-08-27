@@ -8,6 +8,73 @@
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.figma.com/v2/teams/team_acme/webhooks",
   "output": [
     {
+      "description": "Custom hostname pending screens. Owen Brooks.",
+      "endpoint": "https://adatum.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_adatum",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://admin.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_admin",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/archive",
+      "event_type": "FILE_DELETE",
+      "id": "wh_archive",
+      "status": "PAUSED",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "INV-4812 receipt screens. Dana Whitfield / Northwind.",
+      "endpoint": "https://billing.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_billing",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/blog",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_blog",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/brand",
+      "event_type": "LIBRARY_PUBLISH",
+      "id": "wh_brand",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "API key overlap settings. Sofia Marin.",
+      "endpoint": "https://brightpath.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_brightpath",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/careers",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_careers",
+      "status": "PAUSED",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "Patched checkout pay-step screens.",
+      "endpoint": "https://checkout.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_checkout",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
       "endpoint": "https://acme.example/hooks/comments",
       "event_type": "FILE_COMMENT",
       "id": "wh_comments",
@@ -15,9 +82,76 @@
       "team_id": "team_acme"
     },
     {
+      "description": "Fernworks CSV export mocks. Priya Nair.",
+      "endpoint": "https://acme.example/hooks/analytics",
+      "event_type": "FILE_COMMENT",
+      "id": "wh_csv",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://dev.acme.example/hooks/figma",
+      "event_type": "FILE_COMMENT",
+      "id": "wh_dev",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://docs.acme.example/hooks/figma",
+      "event_type": "FILE_COMMENT",
+      "id": "wh_docs",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://eu.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_eu",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "SCIM audit export UI. req_7Q4K2.",
+      "endpoint": "https://fabrikam.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_fabrikam",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "Checkout reliability UI file updates.",
       "endpoint": "https://acme.example/hooks/files",
       "event_type": "FILE_UPDATE",
       "id": "wh_files",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/icons",
+      "event_type": "LIBRARY_PUBLISH",
+      "id": "wh_icons",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/illustrations",
+      "event_type": "LIBRARY_PUBLISH",
+      "id": "wh_illustrations",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "LakeTech asked for delivery retries. Ben Okafor.",
+      "endpoint": "https://hooks.acme.example/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_laketech",
+      "status": "PAUSED",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/legal",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_legal",
       "status": "ACTIVE",
       "team_id": "team_acme"
     },
@@ -27,11 +161,62 @@
       "id": "wh_library",
       "status": "ACTIVE",
       "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/mobile",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_mobile",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/nps",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_nps",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/onboarding",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_onboarding",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/playground",
+      "event_type": "FILE_COMMENT",
+      "id": "wh_playground",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "Contoso SSO login screens. contoso-eu.",
+      "endpoint": "https://auth.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_sso",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://status.acme.example/hooks/figma",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_status",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "description": "30-day refund pause screens. Marco Silva.",
+      "endpoint": "https://tinyshop.acme.example/hooks/figma",
+      "event_type": "FILE_COMMENT",
+      "id": "wh_tinyshop",
+      "status": "PAUSED",
+      "team_id": "team_acme"
     }
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:a5263133b1ffdd99e779ec954c3cb7b056b14521a525fc9dd57f872767a79816",
+    "digest": "sha256:12bb23a9b5dc3c31014e49e7084c7fa0967043e195630ee8f1182e23240f23e7",
     "roots": [
       {
         "path": "cli/run.go",
@@ -47,7 +232,7 @@
       },
       {
         "path": "environments/acme-figma.yaml",
-        "digest": "sha256:ee5c42edc8e51f16d65acf165b40e6e4b5f0deeedf0a972da8aa2dab3285dcd8"
+        "digest": "sha256:dc5a652d3b010a156da9712b44277627beb62cc28c515b07ecfa44773503b682"
       },
       {
         "path": "httpresource",
@@ -62,8 +247,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
         "path": "resources/figma",
-        "digest": "sha256:b3c4367c652d2fceac68ad5ed0f6f0a1c13810d46eb8effb107d3d9c8d41d8a2"
+        "digest": "sha256:3fc7f5677499bf899d853de1ff3a66f89bcf91856e3c79de18a26a01f432f3ab"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
       },
       {
         "path": "scenario",
