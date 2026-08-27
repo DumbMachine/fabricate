@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-vercel
+
+services:
+  vercel:
+    resource: vercel
+    scenario: vercel.acme-projects.v1

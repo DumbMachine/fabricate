@@ -1,0 +1,35 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "vercel.acme-projects.v1",
+  "$resource": "vercel",
+  "$resourceVersion": "v1",
+  "state": {
+    "projects": [
+      {
+        "id": "prj_acme_api",
+        "name": "acme-api",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "createdAt": 1755770400000,
+        "updatedAt": 1756192800000
+      },
+      {
+        "id": "prj_acme_docs",
+        "name": "acme-docs",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "createdAt": 1755856800000,
+        "updatedAt": 1756192800000
+      },
+      {
+        "id": "prj_acme_web",
+        "name": "acme-web",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "createdAt": 1755684000000,
+        "updatedAt": 1756192800000
+      }
+    ]
+  }
+}

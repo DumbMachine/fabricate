@@ -1,0 +1,67 @@
+---
+title: Vercel
+description: A reproducible Vercel project API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/vercel
+---
+
+import compatibility from "../_generated/vercel.compatibility.json";
+import example from "../_generated/vercel-list-projects.json";
+
+Fabricate ships a Vercel v1 resource with a strict local API and a
+synthetic bearer token. It covers project list, get, and create in the included
+Acme Vercel environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `vercel.minimal.v1` | Empty Vercel state for a clean test. |
+| `vercel.acme-projects.v1` | Acme web, API, and docs projects on `team_acme`. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep Vercel’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_VERCEL_TOKEN" "$FAB_VERCEL_URL/v10/projects"'
+```
+
+The service is named `vercel` in the example manifest, so the variables are
+`FAB_VERCEL_URL` and `FAB_VERCEL_TOKEN`.
+
+The response is the Acme project list:
+
+<CommandOutput example={example} showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Vercel URLs. This one-paste check
+calls Vercel's production hostname; the proxy supplies the local token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://api.vercel.com/v10/projects
+```
+
+Fabricate handles `api.vercel.com` locally. Other hosts are forwarded unchanged.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Vercel check ran against the Acme Vercel
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />

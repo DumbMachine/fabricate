@@ -1,0 +1,84 @@
+{
+  "id": "vercel-list-projects",
+  "title": "List seeded projects",
+  "environment": {
+    "label": "Acme Vercel",
+    "manifest": "environments/acme-vercel.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.vercel.com/v10/projects",
+  "output": {
+    "pagination": {
+      "count": 3,
+      "next": null,
+      "prev": null
+    },
+    "projects": [
+      {
+        "accountId": "team_acme",
+        "createdAt": 1755770400000,
+        "framework": "nextjs",
+        "id": "prj_acme_api",
+        "name": "acme-api",
+        "updatedAt": 1756192800000
+      },
+      {
+        "accountId": "team_acme",
+        "createdAt": 1755856800000,
+        "framework": "nextjs",
+        "id": "prj_acme_docs",
+        "name": "acme-docs",
+        "updatedAt": 1756192800000
+      },
+      {
+        "accountId": "team_acme",
+        "createdAt": 1755684000000,
+        "framework": "nextjs",
+        "id": "prj_acme_web",
+        "name": "acme-web",
+        "updatedAt": 1756192800000
+      }
+    ]
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:46ccf62665b44e510a8f90c58bf7e2b470cfa69f9e609b59204953305ed3f177",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-vercel.yaml",
+        "digest": "sha256:41c0443775ada3a481489352403ffc543495e27c05ab6cab7d862a031a7363ba"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/vercel-list-projects.json",
+        "digest": "sha256:293eb9248faab9400e0e4c2af7e014a71b158a6d5fc97f06057d99a16dc0e333"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/vercel",
+        "digest": "sha256:8f1df690254540fa05ef7d187891af880680cc6819a301796fdd9552636d17ea"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
