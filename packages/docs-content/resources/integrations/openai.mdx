@@ -8,9 +8,7 @@ sidebar:
 import compatibility from "../_generated/openai.compatibility.json";
 import example from "../_generated/openai-list-responses.json";
 
-Fabricate ships a OpenAI v1 resource with a strict local API and a
-synthetic bearer token. It covers Responses API list, get, and create in the included
-Acme OpenAI environment.
+Fabricate ships a OpenAI v1 resource with a local API driven by the official OpenAI OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme OpenAI environment seeds the walkthrough scenario.
 
 ## Scenarios
 
@@ -34,7 +32,7 @@ example manifest directly, so you do not need to clone this repository.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OPENAI_TOKEN" "$FAB_OPENAI_URL/v1/responses"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OPENAI_TOKEN" "$FAB_OPENAI_URL/v1/responses/resp_checkout"'
 ```
 
 The service is named `openai` in the example manifest, so the variables are
@@ -52,7 +50,7 @@ calls OpenAI's production hostname; the proxy supplies the local token.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
   fab run --environment /dev/stdin --proxy -- \
-    curl -sS https://api.openai.com/v1/responses
+    curl -sS https://api.openai.com/v1/responses/resp_checkout
 ```
 
 Fabricate handles `api.openai.com` locally. Other hosts are forwarded unchanged.

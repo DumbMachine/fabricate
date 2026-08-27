@@ -32,7 +32,7 @@ read_json() {
   curl "${curl_opts[@]}" -H "Authorization: Bearer $token" -H "Content-Type: application/json" "$@"
 }
 
-listed=$(read_json "$base/v1/responses")
+listed=$(read_json "$base/v1/responses/resp_checkout")
 echo "$listed" | jq -e '.. | strings | select(. == "Explain the checkout reliability incident")' >/dev/null
 
 got=$(read_json "$base/v1/responses/resp_checkout")
