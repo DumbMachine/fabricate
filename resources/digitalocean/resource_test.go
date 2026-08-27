@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `acme-web`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `acme-search`) {
+		t.Fatalf("haystack missing acme-search: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"id":`) < 15 {
+		t.Fatalf("droplet haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/v2/droplets/droplet_web", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `acme-web`) {

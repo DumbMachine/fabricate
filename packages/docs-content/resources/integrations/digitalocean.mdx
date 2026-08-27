@@ -8,14 +8,14 @@ sidebar:
 import compatibility from "../_generated/digitalocean.compatibility.json";
 import example from "../_generated/digitalocean-list-droplets.json";
 
-Fabricate ships a DigitalOcean v1 resource with a local API driven by the official DigitalOcean OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme DigitalOcean environment seeds the walkthrough scenario.
+Fabricate ships a DigitalOcean v1 resource with a local API driven by the official DigitalOcean OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme DigitalOcean environment seeds a SaaS-sized droplet/volume catalog plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
 
 ## Scenarios
 
 | Scenario | What it gives you |
 | --- | --- |
 | `digitalocean.minimal.v1` | Empty DigitalOcean state for a clean test. |
-| `digitalocean.acme-droplets.v1` | Acme web, API, and worker droplets in nyc1. |
+| `digitalocean.acme-droplets.v1` | Acme compute estate: droplets, volumes, SSH keys, and domains. Needles: `acme-web` checkout reliability, Contoso SSO API, INV-4812 billing, fernworks analytics, Adatum DNS, LakeTech hooks. |
 
 ## Integration options
 

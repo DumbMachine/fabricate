@@ -5,27 +5,507 @@
   "$resource": "digitalocean",
   "$resourceVersion": "v1",
   "state": {
+    "domains": [
+      {
+        "id": "dom_acme",
+        "name": "acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dom_adatum",
+        "name": "adatum.acme.example",
+        "ttl": 120
+      },
+      {
+        "id": "dom_auth",
+        "name": "auth.acme.example",
+        "ttl": 60
+      },
+      {
+        "id": "dom_billing",
+        "name": "billing.acme.example",
+        "ttl": 3600
+      },
+      {
+        "id": "dom_checkout",
+        "name": "checkout.acme.example",
+        "ttl": 60
+      },
+      {
+        "id": "dom_dev",
+        "name": "dev.acme.example",
+        "ttl": 60
+      },
+      {
+        "id": "dom_eu",
+        "name": "eu.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dom_hooks",
+        "name": "hooks.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dom_internal",
+        "name": "internal.acme.example",
+        "ttl": 3600
+      },
+      {
+        "id": "dom_status",
+        "name": "status.acme.example",
+        "ttl": 60
+      }
+    ],
     "droplets": [
+      {
+        "id": "droplet_analytics",
+        "name": "acme-analytics",
+        "region": "nyc3",
+        "status": "active",
+        "size": "s-4vcpu-8gb",
+        "tags": [
+          "fernworks-csv"
+        ]
+      },
       {
         "id": "droplet_api",
         "name": "acme-api",
         "region": "nyc1",
         "status": "active",
+        "size": "s-2vcpu-2gb",
+        "tags": [
+          "api",
+          "contoso-sso"
+        ]
+      },
+      {
+        "id": "droplet_auth",
+        "name": "acme-auth",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb",
+        "tags": [
+          "contoso-sso"
+        ]
+      },
+      {
+        "id": "droplet_backup",
+        "name": "acme-backup",
+        "region": "nyc3",
+        "status": "off",
+        "size": "s-1vcpu-1gb"
+      },
+      {
+        "id": "droplet_bastion",
+        "name": "acme-bastion",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-1vcpu-1gb"
+      },
+      {
+        "id": "droplet_billing",
+        "name": "acme-billing",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb",
+        "tags": [
+          "inv-4812"
+        ]
+      },
+      {
+        "id": "droplet_checkout",
+        "name": "acme-checkout",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb",
+        "tags": [
+          "checkout-reliability"
+        ]
+      },
+      {
+        "id": "droplet_ci",
+        "name": "acme-ci",
+        "region": "nyc3",
+        "status": "active",
+        "size": "s-2vcpu-4gb"
+      },
+      {
+        "id": "droplet_dns",
+        "name": "acme-dns",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-1vcpu-1gb",
+        "tags": [
+          "adatum"
+        ]
+      },
+      {
+        "id": "droplet_eu",
+        "name": "acme-eu",
+        "region": "ams3",
+        "status": "active",
+        "size": "s-2vcpu-2gb",
+        "tags": [
+          "contoso-eu"
+        ]
+      },
+      {
+        "id": "droplet_hooks",
+        "name": "acme-hooks",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-1vcpu-1gb",
+        "tags": [
+          "laketech"
+        ]
+      },
+      {
+        "id": "droplet_keys",
+        "name": "acme-keys",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-1vcpu-1gb",
+        "tags": [
+          "brightpath"
+        ]
+      },
+      {
+        "id": "droplet_logs",
+        "name": "acme-logs",
+        "region": "nyc3",
+        "status": "active",
+        "size": "s-2vcpu-4gb"
+      },
+      {
+        "id": "droplet_metrics",
+        "name": "acme-metrics",
+        "region": "nyc3",
+        "status": "active",
         "size": "s-2vcpu-2gb"
+      },
+      {
+        "id": "droplet_ml",
+        "name": "acme-ml",
+        "region": "sfo3",
+        "status": "active",
+        "size": "s-4vcpu-8gb"
+      },
+      {
+        "id": "droplet_nat",
+        "name": "acme-nat",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-1vcpu-1gb"
+      },
+      {
+        "id": "droplet_queue",
+        "name": "acme-queue",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb"
+      },
+      {
+        "id": "droplet_redis",
+        "name": "acme-redis",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb"
+      },
+      {
+        "id": "droplet_sandbox",
+        "name": "acme-sandbox",
+        "region": "nyc1",
+        "status": "off",
+        "size": "s-1vcpu-1gb"
+      },
+      {
+        "id": "droplet_scim",
+        "name": "acme-scim",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb",
+        "tags": [
+          "fabrikam"
+        ]
+      },
+      {
+        "id": "droplet_search",
+        "name": "acme-search",
+        "region": "nyc3",
+        "status": "active",
+        "size": "s-4vcpu-8gb"
+      },
+      {
+        "id": "droplet_staging",
+        "name": "acme-staging",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb"
+      },
+      {
+        "id": "droplet_status",
+        "name": "acme-status",
+        "region": "nyc3",
+        "status": "active",
+        "size": "s-1vcpu-1gb"
+      },
+      {
+        "id": "droplet_tinyshop",
+        "name": "tinyshop-archive",
+        "region": "nyc3",
+        "status": "off",
+        "size": "s-1vcpu-1gb",
+        "tags": [
+          "tinyshop"
+        ]
       },
       {
         "id": "droplet_web",
         "name": "acme-web",
         "region": "nyc1",
         "status": "active",
-        "size": "s-1vcpu-1gb"
+        "size": "s-1vcpu-1gb",
+        "tags": [
+          "web",
+          "checkout-reliability"
+        ]
       },
       {
         "id": "droplet_worker",
         "name": "acme-worker",
         "region": "nyc1",
         "status": "off",
-        "size": "s-1vcpu-1gb"
+        "size": "s-1vcpu-1gb",
+        "tags": [
+          "webhooks"
+        ]
+      }
+    ],
+    "keys": [
+      {
+        "id": "key_breakglass",
+        "name": "breakglass",
+        "fingerprint": "b4:dd:00:d1:e5:00:00:01"
+      },
+      {
+        "id": "key_brightpath",
+        "name": "brightpath-overlap",
+        "fingerprint": "ab:cd:ef:01:23:45:67:89"
+      },
+      {
+        "id": "key_ci",
+        "name": "github-actions",
+        "fingerprint": "de:ad:be:ef:00:00:00:01"
+      },
+      {
+        "id": "key_deploy",
+        "name": "deploy-prod",
+        "fingerprint": "c0:ff:ee:00:11:22:33:44"
+      },
+      {
+        "id": "key_eu",
+        "name": "eu-residency",
+        "fingerprint": "e1:00:c0:de:00:00:00:02"
+      },
+      {
+        "id": "key_harper",
+        "name": "harper-liu",
+        "fingerprint": "11:22:33:44:55:66:77:88"
+      },
+      {
+        "id": "key_laketech",
+        "name": "laketech-hooks",
+        "fingerprint": "fe:dc:ba:98:76:54:32:10"
+      },
+      {
+        "id": "key_val",
+        "name": "val-ortega",
+        "fingerprint": "aa:bb:cc:dd:ee:ff:00:11"
+      }
+    ],
+    "volumes": [
+      {
+        "id": "vol_droplet_analytics",
+        "name": "acme-analytics-data",
+        "droplet_id": "droplet_analytics",
+        "size_gigabytes": 500,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_api",
+        "name": "acme-api-data",
+        "droplet_id": "droplet_api",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_auth",
+        "name": "acme-auth-data",
+        "droplet_id": "droplet_auth",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_backup",
+        "name": "acme-backup-data",
+        "droplet_id": "droplet_backup",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_bastion",
+        "name": "acme-bastion-data",
+        "droplet_id": "droplet_bastion",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_billing",
+        "name": "acme-billing-data",
+        "droplet_id": "droplet_billing",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_checkout",
+        "name": "acme-checkout-data",
+        "droplet_id": "droplet_checkout",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_ci",
+        "name": "acme-ci-data",
+        "droplet_id": "droplet_ci",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_dns",
+        "name": "acme-dns-data",
+        "droplet_id": "droplet_dns",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_eu",
+        "name": "acme-eu-data",
+        "droplet_id": "droplet_eu",
+        "size_gigabytes": 50,
+        "region": "ams3"
+      },
+      {
+        "id": "vol_droplet_hooks",
+        "name": "acme-hooks-data",
+        "droplet_id": "droplet_hooks",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_keys",
+        "name": "acme-keys-data",
+        "droplet_id": "droplet_keys",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_logs",
+        "name": "acme-logs-data",
+        "droplet_id": "droplet_logs",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_metrics",
+        "name": "acme-metrics-data",
+        "droplet_id": "droplet_metrics",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_ml",
+        "name": "acme-ml-data",
+        "droplet_id": "droplet_ml",
+        "size_gigabytes": 50,
+        "region": "sfo3"
+      },
+      {
+        "id": "vol_droplet_nat",
+        "name": "acme-nat-data",
+        "droplet_id": "droplet_nat",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_queue",
+        "name": "acme-queue-data",
+        "droplet_id": "droplet_queue",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_redis",
+        "name": "acme-redis-data",
+        "droplet_id": "droplet_redis",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_sandbox",
+        "name": "acme-sandbox-data",
+        "droplet_id": "droplet_sandbox",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_scim",
+        "name": "acme-scim-data",
+        "droplet_id": "droplet_scim",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_search",
+        "name": "acme-search-data",
+        "droplet_id": "droplet_search",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_staging",
+        "name": "acme-staging-data",
+        "droplet_id": "droplet_staging",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_status",
+        "name": "acme-status-data",
+        "droplet_id": "droplet_status",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_tinyshop",
+        "name": "tinyshop-archive-data",
+        "droplet_id": "droplet_tinyshop",
+        "size_gigabytes": 50,
+        "region": "nyc3"
+      },
+      {
+        "id": "vol_droplet_web",
+        "name": "acme-web-data",
+        "droplet_id": "droplet_web",
+        "size_gigabytes": 50,
+        "region": "nyc1"
+      },
+      {
+        "id": "vol_droplet_worker",
+        "name": "acme-worker-data",
+        "droplet_id": "droplet_worker",
+        "size_gigabytes": 50,
+        "region": "nyc1"
       }
     ]
   }
