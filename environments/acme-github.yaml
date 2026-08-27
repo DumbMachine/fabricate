@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-github
+
+services:
+  github:
+    resource: github
+    scenario: github.acme-issues.v1

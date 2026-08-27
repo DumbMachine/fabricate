@@ -1,0 +1,32 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "github.acme-issues.v1",
+  "$resource": "github",
+  "$resourceVersion": "v1",
+  "state": {
+    "issues": [
+      {
+        "id": "1",
+        "number": "1",
+        "title": "Checkout reliability",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/1"
+      },
+      {
+        "id": "2",
+        "number": "2",
+        "title": "Contoso SSO login loop",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/2"
+      },
+      {
+        "id": "3",
+        "number": "3",
+        "title": "INV-4812 receipt mismatch",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/3"
+      }
+    ]
+  }
+}
