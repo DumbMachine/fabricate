@@ -55,7 +55,7 @@ proxy: {enabled: true}
 	}
 	body, _ := io.ReadAll(response.Body)
 	response.Body.Close()
-	if response.StatusCode != http.StatusOK || !strings.Contains(string(body), `"messagesTotal":12`) {
+	if response.StatusCode != http.StatusOK || !strings.Contains(string(body), `"messagesTotal":28`) {
 		t.Fatalf("profile = %d %s", response.StatusCode, body)
 	}
 	logPath := runtime.Requests.Path()
@@ -69,7 +69,7 @@ proxy: {enabled: true}
 	if err != nil {
 		t.Fatalf("request log was not retained: %v", err)
 	}
-	if !strings.Contains(string(logBody), `"messagesTotal":12`) || strings.Contains(string(logBody), runtime.Services["support-mail"].Token) {
+	if !strings.Contains(string(logBody), `"messagesTotal":28`) || strings.Contains(string(logBody), runtime.Services["support-mail"].Token) {
 		t.Fatalf("request log missing payload or leaked token: %s", logBody)
 	}
 }

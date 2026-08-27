@@ -7,6 +7,30 @@
   "state": {
     "leads": [
       {
+        "id": "lead_adatum",
+        "name": "Adatum",
+        "display_name": "Adatum",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_adatum/",
+        "html_url": "https://app.close.com/lead/lead_adatum/",
+        "date_created": "2026-08-24T09:00:00Z",
+        "date_updated": "2026-08-26T11:30:00Z",
+        "created_by": "user_val"
+      },
+      {
+        "id": "lead_brightpath",
+        "name": "Brightpath",
+        "display_name": "Brightpath",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_brightpath/",
+        "html_url": "https://app.close.com/lead/lead_brightpath/",
+        "date_created": "2026-08-23T14:00:00Z",
+        "date_updated": "2026-08-24T16:00:00Z",
+        "created_by": "user_val"
+      },
+      {
         "id": "lead_contoso",
         "name": "Contoso",
         "display_name": "Contoso",
@@ -16,6 +40,18 @@
         "html_url": "https://app.close.com/lead/lead_contoso/",
         "date_created": "2026-08-26T09:12:00Z",
         "date_updated": "2026-08-26T09:12:00Z",
+        "created_by": "user_val"
+      },
+      {
+        "id": "lead_fabrikam",
+        "name": "Fabrikam",
+        "display_name": "Fabrikam",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_fabrikam/",
+        "html_url": "https://app.close.com/lead/lead_fabrikam/",
+        "date_created": "2026-08-22T11:30:00Z",
+        "date_updated": "2026-08-25T10:00:00Z",
         "created_by": "user_val"
       },
       {
@@ -31,6 +67,30 @@
         "created_by": "user_val"
       },
       {
+        "id": "lead_helix",
+        "name": "Helix Bio",
+        "display_name": "Helix Bio",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_helix/",
+        "html_url": "https://app.close.com/lead/lead_helix/",
+        "date_created": "2026-08-26T10:00:00Z",
+        "date_updated": "2026-08-26T10:00:00Z",
+        "created_by": "user_xharper"
+      },
+      {
+        "id": "lead_laketech",
+        "name": "LakeTech",
+        "display_name": "LakeTech",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_laketech/",
+        "html_url": "https://app.close.com/lead/lead_laketech/",
+        "date_created": "2026-08-20T15:30:00Z",
+        "date_updated": "2026-08-22T09:45:00Z",
+        "created_by": "user_val"
+      },
+      {
         "id": "lead_northwind",
         "name": "Northwind Traders",
         "display_name": "Northwind Traders",
@@ -42,6 +102,18 @@
         "date_updated": "2026-08-25T16:40:00Z",
         "created_by": "user_val",
         "invoice": "INV-4812"
+      },
+      {
+        "id": "lead_tinyshop",
+        "name": "TinyShop",
+        "display_name": "TinyShop",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_tinyshop/",
+        "html_url": "https://app.close.com/lead/lead_tinyshop/",
+        "date_created": "2026-08-14T08:00:00Z",
+        "date_updated": "2026-08-21T13:20:00Z",
+        "created_by": "user_val"
       }
     ],
     "contacts": [
@@ -60,6 +132,62 @@
         "date_updated": "2026-08-25T16:40:00Z"
       },
       {
+        "id": "cont_jules",
+        "lead_id": "lead_northwind",
+        "name": "Jules Okonkwo",
+        "title": "Operations",
+        "emails": [
+          {
+            "type": "office",
+            "email": "jules@northwind.example"
+          }
+        ],
+        "date_created": "2026-08-19T10:15:00Z",
+        "date_updated": "2026-08-19T10:15:00Z"
+      },
+      {
+        "id": "cont_laketech",
+        "lead_id": "lead_laketech",
+        "name": "Ben Okafor",
+        "title": "Engineering",
+        "emails": [
+          {
+            "type": "office",
+            "email": "ben.okafor@laketech.io"
+          }
+        ],
+        "date_created": "2026-08-20T15:30:00Z",
+        "date_updated": "2026-08-22T09:45:00Z"
+      },
+      {
+        "id": "cont_leila",
+        "lead_id": "lead_fabrikam",
+        "name": "Leila Haddad",
+        "title": "Security",
+        "emails": [
+          {
+            "type": "office",
+            "email": "leila@fabrikam.example"
+          }
+        ],
+        "date_created": "2026-08-22T11:30:00Z",
+        "date_updated": "2026-08-25T10:00:00Z"
+      },
+      {
+        "id": "cont_marco",
+        "lead_id": "lead_tinyshop",
+        "name": "Marco Silva",
+        "title": "Founder",
+        "emails": [
+          {
+            "type": "office",
+            "email": "marco@tinyshop.example"
+          }
+        ],
+        "date_created": "2026-08-14T08:00:00Z",
+        "date_updated": "2026-08-21T13:20:00Z"
+      },
+      {
         "id": "cont_mei",
         "lead_id": "lead_contoso",
         "name": "Mei Chen",
@@ -73,6 +201,34 @@
         "date_updated": "2026-08-26T09:12:00Z"
       },
       {
+        "id": "cont_noah",
+        "lead_id": "lead_helix",
+        "name": "Noah Patel",
+        "title": "Sales",
+        "emails": [
+          {
+            "type": "office",
+            "email": "noah@helixbio.example"
+          }
+        ],
+        "date_created": "2026-08-26T10:00:00Z",
+        "date_updated": "2026-08-26T10:00:00Z"
+      },
+      {
+        "id": "cont_owen",
+        "lead_id": "lead_adatum",
+        "name": "Owen Brooks",
+        "title": "IT",
+        "emails": [
+          {
+            "type": "office",
+            "email": "owen@adatum.example"
+          }
+        ],
+        "date_created": "2026-08-24T09:00:00Z",
+        "date_updated": "2026-08-26T11:30:00Z"
+      },
+      {
         "id": "cont_priya",
         "lead_id": "lead_fernworks",
         "name": "Priya Nair",
@@ -84,6 +240,20 @@
         ],
         "date_created": "2026-08-25T11:00:00Z",
         "date_updated": "2026-08-25T11:00:00Z"
+      },
+      {
+        "id": "cont_sofia",
+        "lead_id": "lead_brightpath",
+        "name": "Sofia Marin",
+        "title": "Platform",
+        "emails": [
+          {
+            "type": "office",
+            "email": "sofia@brightpath.example"
+          }
+        ],
+        "date_created": "2026-08-23T14:00:00Z",
+        "date_updated": "2026-08-24T16:00:00Z"
       },
       {
         "id": "cont_val",
@@ -102,6 +272,46 @@
     ],
     "opportunities": [
       {
+        "id": "oppo_brightpath",
+        "lead_id": "lead_brightpath",
+        "contact_id": "cont_sofia",
+        "note": "API key rotation support package",
+        "value": 2100,
+        "value_period": "one_time",
+        "status_id": "stat_won",
+        "status_label": "Won",
+        "status_type": "won",
+        "date_created": "2026-08-23T14:00:00Z",
+        "date_updated": "2026-08-24T16:00:00Z",
+        "date_won": "2026-08-24T00:00:00Z"
+      },
+      {
+        "id": "oppo_helix",
+        "lead_id": "lead_helix",
+        "contact_id": "cont_noah",
+        "note": "Helix Bio sales trial",
+        "value": 4200,
+        "value_period": "one_time",
+        "status_id": "stat_open",
+        "status_label": "Active",
+        "status_type": "active",
+        "date_created": "2026-08-26T10:00:00Z",
+        "date_updated": "2026-08-26T10:00:00Z"
+      },
+      {
+        "id": "oppo_inv2207",
+        "lead_id": "lead_fernworks",
+        "contact_id": "cont_priya",
+        "note": "INV-2207",
+        "value": 8900,
+        "value_period": "one_time",
+        "status_id": "stat_open",
+        "status_label": "Active",
+        "status_type": "active",
+        "date_created": "2026-08-25T11:00:00Z",
+        "date_updated": "2026-08-25T11:00:00Z"
+      },
+      {
         "id": "oppo_inv4812",
         "lead_id": "lead_northwind",
         "contact_id": "cont_dana",
@@ -113,6 +323,20 @@
         "status_type": "active",
         "date_created": "2026-08-18T14:00:00Z",
         "date_updated": "2026-08-25T16:40:00Z"
+      },
+      {
+        "id": "oppo_tinyshop",
+        "lead_id": "lead_tinyshop",
+        "contact_id": "cont_marco",
+        "note": "Annual Pro subscription",
+        "value": 960,
+        "value_period": "one_time",
+        "status_id": "stat_won",
+        "status_label": "Won",
+        "status_type": "won",
+        "date_created": "2026-08-14T08:00:00Z",
+        "date_updated": "2026-08-21T13:20:00Z",
+        "date_won": "2026-08-14T00:00:00Z"
       }
     ],
     "users": [
@@ -121,6 +345,12 @@
         "email": "val@acme.example",
         "first_name": "Val",
         "last_name": "Ortega"
+      },
+      {
+        "id": "user_xharper",
+        "email": "harper@acme.example",
+        "first_name": "Harper",
+        "last_name": "Liu"
       }
     ]
   }

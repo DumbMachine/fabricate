@@ -126,8 +126,8 @@ func TestAcmeScenarioValidatesAndRoundTrips(t *testing.T) {
 	if err := json.Unmarshal(dumped.State, &state); err != nil {
 		t.Fatal(err)
 	}
-	if len(state.Conversations) != 3 {
-		t.Fatalf("conversations = %d, want 3", len(state.Conversations))
+	if len(state.Conversations) != 7 {
+		t.Fatalf("conversations = %d, want 7", len(state.Conversations))
 	}
 }
 

@@ -126,8 +126,8 @@ func TestAcmeScenarioValidatesAndRoundTrips(t *testing.T) {
 	if err := json.Unmarshal(dumped.State, &state); err != nil {
 		t.Fatal(err)
 	}
-	if len(state.Tasks) != 5 {
-		t.Fatalf("Acme scenario contains %d tasks, want 5", len(state.Tasks))
+	if len(state.Tasks) != 10 {
+		t.Fatalf("Acme scenario contains %d tasks, want 10", len(state.Tasks))
 	}
 }
 

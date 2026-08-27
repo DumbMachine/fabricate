@@ -39,7 +39,7 @@ echo "$me" | jq -e '.data.gid == "user-val"' >/dev/null
 echo "$me" | jq -e '.data.email == "val@acme.example"' >/dev/null
 
 tasks_before=$(read_json "$base/projects/proj-checkout/tasks")
-echo "$tasks_before" | jq -e '.data | length == 5' >/dev/null
+echo "$tasks_before" | jq -e '.data | length == 8' >/dev/null
 echo "$tasks_before" | jq -e '[.data[].gid] | index("task-double-charge")' >/dev/null
 
 completed=$(read_json -X PUT "$base/tasks/task-double-charge" -d '{"data":{"completed":true}}')
@@ -57,7 +57,7 @@ test -n "$created_gid"
 
 tasks_after=$(read_json "$base/projects/proj-checkout/tasks")
 echo "$tasks_after" | jq -e --arg gid "$created_gid" '[.data[].gid] | index($gid)' >/dev/null
-echo "$tasks_after" | jq -e '.data | length == 6' >/dev/null
+echo "$tasks_after" | jq -e '.data | length == 9' >/dev/null
 
 python3 - "$mode" <<'PY'
 import json, os, sys
@@ -65,8 +65,8 @@ from datetime import datetime, timezone
 
 mode = sys.argv[1]
 mode_report = {
-    "messagesAfter": 6,
-    "messagesBefore": 5,
+    "messagesAfter": 9,
+    "messagesBefore": 8,
     "operations": {"read": "passed", "write": "passed", "persistence": "passed"},
     "status": "passed",
 }
@@ -77,7 +77,7 @@ if path:
         "environment": {
             "label": "Acme Asana",
             "manifest": "environments/acme-asana.yaml",
-            "messages": 5,
+            "messages": 8,
         },
         "integration": "asana",
         "modes": {},

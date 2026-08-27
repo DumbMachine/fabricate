@@ -11,11 +11,74 @@
         "name": "Acme customers",
         "date_created": "2026-01-10T09:00:00+00:00",
         "stats": {
+          "member_count": 8
+        }
+      },
+      {
+        "id": "acme-prospects",
+        "name": "Acme prospects",
+        "date_created": "2026-06-15T10:00:00+00:00",
+        "stats": {
           "member_count": 4
         }
       }
     ],
     "members": [
+      {
+        "id": "04acbe8cd9c6ffb20cfedfa2d24d51f2",
+        "list_id": "acme-customers",
+        "email_address": "sofia@brightpath.example",
+        "unique_email_id": "04acbe8cd9",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Sofia",
+          "LNAME": "Marin"
+        }
+      },
+      {
+        "id": "0e083fda383f9fefa961adf473006652",
+        "list_id": "acme-customers",
+        "email_address": "leila@fabrikam.example",
+        "unique_email_id": "0e083fda38",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Leila",
+          "LNAME": "Haddad"
+        }
+      },
+      {
+        "id": "230382b0bf2e5eaada12c247e66b5f92",
+        "list_id": "acme-customers",
+        "email_address": "marco@tinyshop.example",
+        "unique_email_id": "230382b0bf",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Marco",
+          "LNAME": "Silva"
+        }
+      },
+      {
+        "id": "2ae7420af9ceb9761c8f3b63b095a03d",
+        "list_id": "acme-prospects",
+        "email_address": "rita@contoso.example",
+        "unique_email_id": "2ae7420af9",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Rita",
+          "LNAME": "Gomez"
+        }
+      },
+      {
+        "id": "66ed10976505850a0329cae0704d131a",
+        "list_id": "acme-customers",
+        "email_address": "jules@northwind.example",
+        "unique_email_id": "66ed109765",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Jules",
+          "LNAME": "Okonkwo"
+        }
+      },
       {
         "id": "68d8ffc6a61a19a854307b9ba3ef78be",
         "list_id": "acme-customers",
@@ -28,6 +91,17 @@
         }
       },
       {
+        "id": "71a77302df54aea86152406b2ca43ad2",
+        "list_id": "acme-prospects",
+        "email_address": "amina@qitaf.example",
+        "unique_email_id": "71a77302df",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Amina",
+          "LNAME": "Farouk"
+        }
+      },
+      {
         "id": "d8a07e426ad3b72bf94e88b27be51676",
         "list_id": "acme-customers",
         "email_address": "priya@fernworks.example",
@@ -36,6 +110,28 @@
         "merge_fields": {
           "FNAME": "Priya",
           "LNAME": "Nair"
+        }
+      },
+      {
+        "id": "e3912582f0b078c316574b36e42ac878",
+        "list_id": "acme-prospects",
+        "email_address": "noah@helixbio.example",
+        "unique_email_id": "e3912582f0",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Noah",
+          "LNAME": "Patel"
+        }
+      },
+      {
+        "id": "ec66d9f039480a60915e9189e3c939ef",
+        "list_id": "acme-prospects",
+        "email_address": "tom.h@oldco.example",
+        "unique_email_id": "ec66d9f039",
+        "status": "unsubscribed",
+        "merge_fields": {
+          "FNAME": "Tom",
+          "LNAME": "Harris"
         }
       },
       {
@@ -74,6 +170,35 @@
           "subject_line": "INV-4812 billing follow-up",
           "from_name": "Acme Billing",
           "reply_to": "billing@acme.example"
+        }
+      },
+      {
+        "id": "campaign_prospects",
+        "type": "regular",
+        "status": "save",
+        "create_time": "2026-08-22T11:00:00+00:00",
+        "recipients": {
+          "list_id": "acme-prospects"
+        },
+        "settings": {
+          "subject_line": "See how teams like Helix Bio evaluate Acme",
+          "from_name": "Acme Marketing",
+          "reply_to": "marketing@acme.example"
+        }
+      },
+      {
+        "id": "campaign_sso_postmortem",
+        "type": "regular",
+        "status": "sent",
+        "create_time": "2026-08-19T09:30:00+00:00",
+        "send_time": "2026-08-19T10:00:00+00:00",
+        "recipients": {
+          "list_id": "acme-customers"
+        },
+        "settings": {
+          "subject_line": "What we learned from the contoso-eu SAML rollout",
+          "from_name": "Acme Product",
+          "reply_to": "support@acme.example"
         }
       }
     ]

@@ -34,8 +34,8 @@ func TestPrepareAndResetRestoreBaseline(t *testing.T) {
 	if err := state.DB().QueryRow("SELECT COUNT(*) FROM messages").Scan(&count); err != nil {
 		t.Fatal(err)
 	}
-	if count != 11 {
-		t.Fatalf("mutated count = %d, want 11", count)
+	if count != 27 {
+		t.Fatalf("mutated count = %d, want 27", count)
 	}
 	db, err := state.Reset(context.Background())
 	if err != nil {
@@ -44,8 +44,8 @@ func TestPrepareAndResetRestoreBaseline(t *testing.T) {
 	if err := db.QueryRow("SELECT COUNT(*) FROM messages").Scan(&count); err != nil {
 		t.Fatal(err)
 	}
-	if count != 12 {
-		t.Fatalf("reset count = %d, want 12", count)
+	if count != 28 {
+		t.Fatalf("reset count = %d, want 28", count)
 	}
 	dumped, err := resource.Scenarios().Dump(context.Background(), db, doc.Metadata())
 	if err != nil {
@@ -57,7 +57,7 @@ func TestPrepareAndResetRestoreBaseline(t *testing.T) {
 	if err := json.Unmarshal(dumped.State, &stateDoc); err != nil {
 		t.Fatal(err)
 	}
-	if len(stateDoc.Messages) != 12 {
+	if len(stateDoc.Messages) != 28 {
 		t.Fatalf("dumped reset state has %d messages", len(stateDoc.Messages))
 	}
 }

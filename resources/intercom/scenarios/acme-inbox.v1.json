@@ -8,12 +8,33 @@
     "currentAdminId": "admin-val",
     "admins": [
       {
+        "id": "admin-harper",
+        "name": "Harper Liu",
+        "email": "harper@acme.example"
+      },
+      {
         "id": "admin-val",
         "name": "Val Ortega",
         "email": "val@acme.example"
       }
     ],
     "contacts": [
+      {
+        "id": "contact-amina",
+        "name": "Amina Farouk",
+        "email": "amina@qitaf.example",
+        "role": "user",
+        "createdAt": 1755849600,
+        "updatedAt": 1755926400
+      },
+      {
+        "id": "contact-ben",
+        "name": "Ben Okafor",
+        "email": "ben@laketech.example",
+        "role": "user",
+        "createdAt": 1755763200,
+        "updatedAt": 1755849600
+      },
       {
         "id": "contact-contoso",
         "name": "Contoso IT",
@@ -29,6 +50,22 @@
         "role": "user",
         "createdAt": 1755525600,
         "updatedAt": 1756132800
+      },
+      {
+        "id": "contact-leila",
+        "name": "Leila Haddad",
+        "email": "leila@fabrikam.example",
+        "role": "user",
+        "createdAt": 1756012800,
+        "updatedAt": 1756099200
+      },
+      {
+        "id": "contact-sofia",
+        "name": "Sofia Marin",
+        "email": "sofia@brightpath.example",
+        "role": "user",
+        "createdAt": 1754899200,
+        "updatedAt": 1755244800
       }
     ],
     "conversations": [
@@ -55,9 +92,57 @@
         "contactId": "contact-dana",
         "createdAt": 1754812800,
         "updatedAt": 1755167400
+      },
+      {
+        "id": "104",
+        "title": "Audit log missing SCIM group changes",
+        "state": "open",
+        "contactId": "contact-leila",
+        "createdAt": 1756012800,
+        "updatedAt": 1756099200
+      },
+      {
+        "id": "105",
+        "title": "Question about invoice INV-9021",
+        "state": "open",
+        "contactId": "contact-amina",
+        "createdAt": 1755849600,
+        "updatedAt": 1755926400
+      },
+      {
+        "id": "106",
+        "title": "Webhook retry and delivery log",
+        "state": "snoozed",
+        "contactId": "contact-ben",
+        "createdAt": 1755763200,
+        "updatedAt": 1755936000
+      },
+      {
+        "id": "107",
+        "title": "API key rotation without downtime",
+        "state": "closed",
+        "contactId": "contact-sofia",
+        "createdAt": 1754899200,
+        "updatedAt": 1755244800
       }
     ],
     "parts": [
+      {
+        "id": "part-amina-1",
+        "conversationId": "105",
+        "authorType": "user",
+        "authorId": "contact-amina",
+        "body": "Our finance team received invoice INV-9021 for $3,450 but we have no matching purchase order on file. Can you confirm what it covers and resend the PDF?",
+        "createdAt": 1755849600
+      },
+      {
+        "id": "part-ben-1",
+        "conversationId": "106",
+        "authorType": "user",
+        "authorId": "contact-ben",
+        "body": "Could failed webhook deliveries retry with exponential backoff? We currently poll the API to recover from brief receiver outages. A delivery log with replay would also help.",
+        "createdAt": 1755763200
+      },
       {
         "id": "part-billing-1",
         "conversationId": "101",
@@ -65,6 +150,22 @@
         "authorId": "contact-dana",
         "body": "We were billed twice for INV-4812 ($1,240). Both charges have settled. Need a refund today.",
         "createdAt": 1756132800
+      },
+      {
+        "id": "part-leila-1",
+        "conversationId": "104",
+        "authorType": "user",
+        "authorId": "contact-leila",
+        "body": "Our audit export includes user provisioning but not SCIM group membership changes made yesterday. Are those events recorded under a different action name? Request ID from one change: req_7Q4K2.",
+        "createdAt": 1756012800
+      },
+      {
+        "id": "part-sofia-1",
+        "conversationId": "107",
+        "authorType": "user",
+        "authorId": "contact-sofia",
+        "body": "Our security review is next week. Can two API keys overlap while we deploy the replacement, or does creating a new key revoke the current one immediately?",
+        "createdAt": 1754899200
       },
       {
         "id": "part-sso-1",

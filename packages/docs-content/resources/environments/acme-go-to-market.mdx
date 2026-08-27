@@ -56,9 +56,12 @@ sends mail or marks a campaign sent.
 | `dana@northwind.example` | people record | delivered receipt | subscribed list member |
 | Contoso SSO / Mei Chen | people + Contoso company | email `email_sso` | subscribed list member |
 | Fernworks / Priya Nair | people + Fernworks company | — | subscribed list member |
+| `jules@northwind.example` | people record | — | customers list member |
+| `rita@contoso.example` | — | nurture email `email_rita` | prospects list member |
 
-The Northwind deal is still open while billing mail already went out. A safe
-agent task should read Attio and Resend before it sends the Mailchimp campaign.
+The Northwind deal is still open while billing mail already went out. Jules is
+in CRM and Mailchimp but has no transactional mail. Rita is marketing-only.
+A safe agent task should read Attio and Resend before it sends the Mailchimp campaign.
 
 ## Get started
 

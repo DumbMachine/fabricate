@@ -16,6 +16,21 @@
     ],
     "events": [
       {
+        "id": "event_bounce_gone",
+        "event": "bounced",
+        "recipient": "gone@northwind.example",
+        "domain": "mg.acme.example",
+        "timestamp": 1755676800,
+        "message": {
+          "headers": {
+            "from": "billing@acme.example",
+            "to": "gone@northwind.example",
+            "subject": "Northwind account statement for August",
+            "message-id": "<bounce-gone@mg.acme.example>"
+          }
+        }
+      },
+      {
         "id": "event_inv4812",
         "event": "delivered",
         "recipient": "dana@northwind.example",
@@ -29,9 +44,63 @@
             "message-id": "<inv4812@mg.acme.example>"
           }
         }
+      },
+      {
+        "id": "event_keys",
+        "event": "delivered",
+        "recipient": "sofia@brightpath.example",
+        "domain": "mg.acme.example",
+        "timestamp": 1755244800,
+        "message": {
+          "headers": {
+            "from": "security@acme.example",
+            "to": "sofia@brightpath.example",
+            "subject": "API key rotation reminder",
+            "message-id": "<keys@mg.acme.example>"
+          }
+        }
+      },
+      {
+        "id": "event_sso",
+        "event": "delivered",
+        "recipient": "mei.chen@contoso.example",
+        "domain": "mg.acme.example",
+        "timestamp": 1756195920,
+        "message": {
+          "headers": {
+            "from": "security@acme.example",
+            "to": "mei.chen@contoso.example",
+            "subject": "Contoso SSO follow-up",
+            "message-id": "<sso@mg.acme.example>"
+          }
+        }
+      },
+      {
+        "id": "event_theo",
+        "event": "delivered",
+        "recipient": "theo@orbiter.example",
+        "domain": "mg.acme.example",
+        "timestamp": 1755936000,
+        "message": {
+          "headers": {
+            "from": "notifications@acme.example",
+            "to": "theo@orbiter.example",
+            "subject": "Orbiter webhook delivery summary",
+            "message-id": "<theo@mg.acme.example>"
+          }
+        }
       }
     ],
     "messages": [
+      {
+        "id": "<bounce-gone@mg.acme.example>",
+        "domain": "mg.acme.example",
+        "from": "billing@acme.example",
+        "to": "gone@northwind.example",
+        "subject": "Northwind account statement for August",
+        "text": "Your August account statement is ready. This address may be outdated — please contact billing if you still need copies.",
+        "created_at": "2026-08-20T02:00:00Z"
+      },
       {
         "id": "<inv4812@mg.acme.example>",
         "domain": "mg.acme.example",
@@ -40,6 +109,33 @@
         "subject": "INV-4812 receipt",
         "text": "Invoice INV-4812 for $1,240",
         "created_at": "2026-08-18T14:00:00Z"
+      },
+      {
+        "id": "<keys@mg.acme.example>",
+        "domain": "mg.acme.example",
+        "from": "security@acme.example",
+        "to": "sofia@brightpath.example",
+        "subject": "API key rotation reminder",
+        "text": "Brightpath can run two API keys in parallel while you deploy the replacement. Create the new key, roll it out, then revoke the old one.",
+        "created_at": "2026-08-15T08:00:00Z"
+      },
+      {
+        "id": "<sso@mg.acme.example>",
+        "domain": "mg.acme.example",
+        "from": "security@acme.example",
+        "to": "mei.chen@contoso.example",
+        "subject": "Contoso SSO follow-up",
+        "text": "We deployed a callback fix for org slug contoso-eu. Please retry SAML sign-in and reply if the Okta loop persists.",
+        "created_at": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "<theo@mg.acme.example>",
+        "domain": "mg.acme.example",
+        "from": "notifications@acme.example",
+        "to": "theo@orbiter.example",
+        "subject": "Orbiter webhook delivery summary",
+        "text": "Orbiter production webhooks: 412 delivered, 3 failed in the last 24 hours. Failed events are available for replay in the dashboard.",
+        "created_at": "2026-08-23T02:00:00Z"
       }
     ]
   }

@@ -10,6 +10,8 @@
       {"id": "Label_billing", "name": "Billing", "type": "user"},
       {"id": "Label_bug", "name": "Product bug", "type": "user"},
       {"id": "Label_enterprise", "name": "Enterprise", "type": "user"},
+      {"id": "Label_onboarding", "name": "Onboarding", "type": "user"},
+      {"id": "Label_partnership", "name": "Partnership", "type": "user"},
       {"id": "Label_security", "name": "Security", "type": "user"}
     ],
     "messages": [
@@ -132,6 +134,166 @@
         "body": "Your mailbox will be suspended today. Confirm your password at the linked portal to retain access.",
         "labelIds": ["SPAM", "TRASH"],
         "internalDate": 1787544000000
+      },
+      {
+        "id": "msg-0013",
+        "threadId": "thr-sso-outage",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Mei Chen <mei.chen@contoso.example>",
+        "subject": "Re: Urgent: SAML login loop affecting 380 users",
+        "body": "Hi Mei,\n\nWe reproduced the redirect loop for org contoso-eu and rolled a callback fix to your shard. Please have one user retry a fresh login in a private window and reply with the approximate timestamp if the loop persists.\n\nRegards,\nVal Ortega\nAcme Support",
+        "labelIds": ["SENT", "Label_enterprise"],
+        "internalDate": 1787650800000
+      },
+      {
+        "id": "msg-0014",
+        "threadId": "thr-sso-outage",
+        "from": "Mei Chen <mei.chen@contoso.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: Urgent: SAML login loop affecting 380 users",
+        "body": "Thanks Val. A test user still loops at 14:22 UTC after clearing cookies. Existing sessions remain fine. Can you confirm whether contoso-eu is on the patched callback host?",
+        "labelIds": ["INBOX", "IMPORTANT", "Label_enterprise"],
+        "internalDate": 1787662200000
+      },
+      {
+        "id": "msg-0015",
+        "threadId": "thr-csv-export",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Priya Nair <priya@fernworks.example>",
+        "subject": "Re: CSV export downloads an empty file",
+        "body": "Hi Priya,\n\nWe traced the empty export to a regression in the fernworks-prod analytics pipeline. Engineering is preparing a hotfix and will update this thread when exports include rows again.\n\nRegards,\nAcme Support",
+        "labelIds": ["SENT", "Label_bug"],
+        "internalDate": 1787673600000
+      },
+      {
+        "id": "msg-0016",
+        "threadId": "thr-csv-export",
+        "from": "Priya Nair <priya@fernworks.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: CSV export downloads an empty file",
+        "body": "Appreciate the update. I retried Export CSV at 16:05 UTC in fernworks-prod and the file is still zero bytes. Our board report is due tomorrow morning.",
+        "labelIds": ["INBOX", "Label_bug"],
+        "internalDate": 1787685000000
+      },
+      {
+        "id": "msg-0017",
+        "threadId": "thr-refund",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Marco Silva <marco@tinyshop.example>",
+        "subject": "Re: Cancel annual Pro plan under 30-day guarantee",
+        "body": "Hi Marco,\n\nWe approved the annual Pro cancellation under the 30-day guarantee. The refund to billing@tinyshop.example is processing and should appear within five business days. Your workspace access stays active until the refund settles.\n\nRegards,\nAcme Billing",
+        "labelIds": ["SENT", "Label_billing"],
+        "internalDate": 1787696400000
+      },
+      {
+        "id": "msg-0018",
+        "threadId": "thr-api-key-rotation",
+        "from": "Sofia Marin <sofia@brightpath.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: How can we rotate API keys without downtime?",
+        "body": "Confirming the overlap approach worked. We created a second key, deployed it overnight, and revoked the original this morning with no failed requests.",
+        "labelIds": ["INBOX", "Label_security"],
+        "internalDate": 1787707800000
+      },
+      {
+        "id": "msg-0019",
+        "threadId": "thr-adatum-followup",
+        "from": "Owen Brooks <owen@adatum.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: Domain verification TXT record still pending",
+        "body": "Following up on acme-domain-verification=adatum-7f31. Public resolvers show the TXT record, but the admin console still lists adatum.example as Pending after 36 hours. Can you trigger a manual recheck?",
+        "labelIds": ["INBOX", "Label_enterprise"],
+        "internalDate": 1787719200000
+      },
+      {
+        "id": "msg-0020",
+        "threadId": "thr-adatum-followup",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Owen Brooks <owen@adatum.example>",
+        "subject": "Re: Domain verification TXT record still pending",
+        "body": "Hi Owen,\n\nWe queued a manual DNS recheck for adatum.example and cleared the stale verification cache on our side. The admin page should flip to Verified within the next hour if the TXT record still resolves publicly.\n\nRegards,\nAcme Support",
+        "labelIds": ["SENT", "Label_enterprise"],
+        "internalDate": 1787723400000
+      },
+      {
+        "id": "msg-0021",
+        "threadId": "thr-adatum-followup",
+        "from": "Owen Brooks <owen@adatum.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: Domain verification TXT record still pending",
+        "body": "Recheck worked — adatum.example now shows Verified. Thanks for clearing the cache.",
+        "labelIds": ["INBOX", "Label_enterprise"],
+        "internalDate": 1787727600000
+      },
+      {
+        "id": "msg-0022",
+        "threadId": "thr-scim-followup",
+        "from": "Leila Haddad <leila@fabrikam.example>",
+        "to": "Acme Support <support@acme.example>",
+        "subject": "Re: Audit log missing SCIM group changes",
+        "body": "Quick follow-up on req_7Q4K2. Our compliance export still omits SCIM group membership changes from yesterday afternoon. Do those events appear under scim.group_membership_updated rather than user.provisioned?",
+        "labelIds": ["INBOX", "Label_enterprise", "Label_security"],
+        "internalDate": 1787731800000
+      },
+      {
+        "id": "msg-0023",
+        "threadId": "thr-scim-followup",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Leila Haddad <leila@fabrikam.example>",
+        "subject": "Re: Audit log missing SCIM group changes",
+        "body": "Hi Leila,\n\nGroup membership changes are logged as scim.group_membership_updated. Filters that only include user.provisioned will miss them. I attached the export field list our docs recommend for SCIM audits.\n\nRegards,\nAcme Support",
+        "labelIds": ["SENT", "Label_enterprise", "Label_security"],
+        "internalDate": 1787736000000
+      },
+      {
+        "id": "msg-0024",
+        "threadId": "thr-internal-standup",
+        "from": "Harper Liu <harper@acme.example>",
+        "to": "Val Ortega <val@acme.example>",
+        "subject": "Support standup — onboarding queue",
+        "body": "Morning Val — for standup: Contoso SAML is still red, Fernworks CSV is blocking a customer board report, and Fabrikam wants SCIM audit wording clarified. Anything you want escalated before the partnership sync?",
+        "labelIds": ["INBOX", "Label_onboarding", "Label_partnership"],
+        "internalDate": 1787740200000
+      },
+      {
+        "id": "msg-0025",
+        "threadId": "thr-internal-standup",
+        "from": "Val Ortega <val@acme.example>",
+        "to": "Harper Liu <harper@acme.example>",
+        "subject": "Re: Support standup — onboarding queue",
+        "body": "Thanks Harper. Keep Contoso on the callback patch watch, push CSV hotfix status to Priya before noon, and I will join the partnership sync with Fabrikam notes after DNS rechecks finish.",
+        "labelIds": ["SENT", "Label_onboarding", "Label_partnership"],
+        "internalDate": 1787744400000
+      },
+      {
+        "id": "msg-0026",
+        "threadId": "thr-vendor-digest",
+        "from": "SaaS Weekly <newsletter@saasweekly.example>",
+        "to": "support@acme.example",
+        "subject": "August digest: observability benchmarks",
+        "body": "This week's SaaS Weekly covers observability benchmarks and incident retrospectives from three anonymous vendors. No account changes — unsubscribe anytime.",
+        "labelIds": ["INBOX"],
+        "internalDate": 1787748600000
+      },
+      {
+        "id": "msg-0027",
+        "threadId": "thr-sso-outage",
+        "from": "Acme Support <support@acme.example>",
+        "to": "Mei Chen <mei.chen@contoso.example>",
+        "subject": "Re: Urgent: SAML login loop affecting 380 users",
+        "body": "Hi Mei,\n\ncontoso-eu is now on the patched callback host as of 17:40 UTC. If any user still loops, capture the SAML trace ID from the error page and we will tail the shard logs live.\n\nRegards,\nVal Ortega\nAcme Support",
+        "labelIds": ["SENT", "Label_enterprise"],
+        "internalDate": 1787752800000
+      },
+      {
+        "id": "msg-0028",
+        "threadId": "thr-refund",
+        "from": "Marco Silva <marco@tinyshop.example>",
+        "to": "Acme Billing <support@acme.example>",
+        "subject": "Re: Cancel annual Pro plan under 30-day guarantee",
+        "body": "Received — we will watch for the refund on billing@tinyshop.example and confirm once it posts. Thanks for turning this around quickly.",
+        "labelIds": ["INBOX", "Label_billing"],
+        "internalDate": 1787757000000
       }
     ]
   }

@@ -126,8 +126,15 @@ func TestAcmeScenarioValidatesAndRoundTrips(t *testing.T) {
 	if err := json.Unmarshal(dumped.State, &state); err != nil {
 		t.Fatal(err)
 	}
-	if len(state.Deals) != 1 || state.Deals[0].Properties["dealstage"] != "appointmentscheduled" {
-		t.Fatalf("stalled deal missing: %+v", state.Deals)
+	var stalled *fixtureObject
+	for i := range state.Deals {
+		if state.Deals[i].ID == "301" {
+			stalled = &state.Deals[i]
+			break
+		}
+	}
+	if stalled == nil || stalled.Properties["dealstage"] != "appointmentscheduled" || stalled.Properties["invoice"] != "INV-4812" {
+		t.Fatalf("stalled INV-4812 deal missing: %+v", state.Deals)
 	}
 }
 
