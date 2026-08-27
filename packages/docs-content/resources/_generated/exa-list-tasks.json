@@ -6,31 +6,29 @@
     "manifest": "environments/acme-exa.yaml"
   },
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.exa.ai/research/v0/tasks",
-  "output": {
-    "data": [
-      {
-        "id": "task_billing",
-        "instructions": "Summarize public coverage of invoice INV-4812 disputes",
-        "model": "exa-research",
-        "status": "completed"
-      },
-      {
-        "id": "task_checkout",
-        "instructions": "What caused the checkout reliability incident?",
-        "model": "exa-research",
-        "status": "completed"
-      },
-      {
-        "id": "task_sso",
-        "instructions": "Find write-ups of Contoso SSO login loops",
-        "model": "exa-research",
-        "status": "running"
-      }
-    ]
-  },
+  "output": [
+    {
+      "id": "task_billing",
+      "instructions": "Summarize public coverage of invoice INV-4812 disputes",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_checkout",
+      "instructions": "What caused the checkout reliability incident?",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_sso",
+      "instructions": "Find write-ups of Contoso SSO login loops",
+      "model": "exa-research",
+      "status": "running"
+    }
+  ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:b1b7b2172830fedeb7349fae7f2c89fb7f752ea90938daa6664b5b07a0b50051",
+    "digest": "sha256:0efeadb489e9b7767899b36a253624e8b3ee25bb17de5624c87d46396d0b73ff",
     "roots": [
       {
         "path": "cli/run.go",
@@ -50,7 +48,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/exa-list-tasks.json",
@@ -62,7 +60,7 @@
       },
       {
         "path": "resources/exa",
-        "digest": "sha256:208c467467d815700af5160b3493e687884a7bd4e8ba9dc5bc61cbdf0e1fc191"
+        "digest": "sha256:64e66e18d555fe7d9e601108408cb78235cfc96745fa36d1867566abf2051143"
       },
       {
         "path": "scenario",
