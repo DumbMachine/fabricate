@@ -7,10 +7,17 @@
   "state": {
     "tasks": [
       {
+        "id": "task_adatum",
+        "instructions": "Domain verification TXT delays acme-domain-verification=adatum-7f31",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
         "id": "task_billing",
         "instructions": "Summarize public coverage of invoice INV-4812 disputes",
         "status": "completed",
-        "model": "exa-research"
+        "model": "exa-research",
+        "query": "Northwind Traders Dana Whitfield $1,240"
       },
       {
         "id": "task_checkout",
@@ -19,10 +26,227 @@
         "model": "exa-research"
       },
       {
+        "id": "task_csv",
+        "instructions": "Research empty CSV export incidents like fernworks-prod",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_01",
+        "instructions": "Competitor status page patterns",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_02",
+        "instructions": "EU data residency questionnaires",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_03",
+        "instructions": "Okta SAML clock skew",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_04",
+        "instructions": "CSV timezone column conventions",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_05",
+        "instructions": "NPS vs PMF surveys",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_06",
+        "instructions": "p95 checkout budgets",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_07",
+        "instructions": "Session replay PII masking",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_08",
+        "instructions": "Seat overage email copy",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_09",
+        "instructions": "Terraform drift detection",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_10",
+        "instructions": "Neon branch expiry norms",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_11",
+        "instructions": "Vercel preview auth",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_12",
+        "instructions": "Cloudflare custom hostname limits",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_13",
+        "instructions": "KV eviction behavior",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_14",
+        "instructions": "Worker subrequest caps",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_15",
+        "instructions": "Stripe tax ID collection",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_16",
+        "instructions": "DigitalOcean droplet disk alerts",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_17",
+        "instructions": "Sentry issue grouping",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_18",
+        "instructions": "Figma webhook 410 handling",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_19",
+        "instructions": "Val Town cron reliability",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_20",
+        "instructions": "GitHub CODEOWNERS patterns",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_21",
+        "instructions": "HubSpot deal stage hygiene",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_22",
+        "instructions": "Gmail support-label taxonomy",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_23",
+        "instructions": "Asana custom fields",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_24",
+        "instructions": "WAF false positives on /login",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_25",
+        "instructions": "SCIM group push storms",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_26",
+        "instructions": "API key last-used UX",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_27",
+        "instructions": "Public insight robots.txt",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_28",
+        "instructions": "Warehouse late-arriving facts",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_29",
+        "instructions": "BigQuery quota incidents",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_30",
+        "instructions": "Snowflake key-pair rotation",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_fill_31",
+        "instructions": "Breakpoint for heatmap sampling",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_hooks",
+        "instructions": "Best practices for webhook exponential backoff (LakeTech)",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_keys",
+        "instructions": "API key overlap during rotation BrightPath",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_refund",
+        "instructions": "SaaS 30-day guarantee refund timelines TinyShop",
+        "status": "completed",
+        "model": "exa-research"
+      },
+      {
+        "id": "task_scim",
+        "instructions": "SCIM audit logs missing group changes req_7Q4K2",
+        "status": "running",
+        "model": "exa-research"
+      },
+      {
         "id": "task_sso",
         "instructions": "Find write-ups of Contoso SSO login loops",
         "status": "running",
-        "model": "exa-research"
+        "model": "exa-research",
+        "query": "contoso-eu 380 users SAML"
       }
     ]
   }

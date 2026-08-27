@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `What caused the checkout reliability incident?`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `Competitor status page patterns`) {
+		t.Fatalf("haystack missing filler task: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"id":`) < 15 {
+		t.Fatalf("task haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/research/v0/tasks/task_checkout", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `What caused the checkout reliability incident?`) {
