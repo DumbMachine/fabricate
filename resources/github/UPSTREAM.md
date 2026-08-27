@@ -1,11 +1,13 @@
 # GitHub OpenAPI source
 
-Curated Fabricate contract: `openapi.yaml`.
+`openapi.json` is the unmodified official GitHub REST OpenAPI 3.0.3 document
+from `https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json` retrieved 2026-08-27.
 
-Official source (not vendored in git):
+- Source: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+- Declared version: `vendor`
+- SHA-256: `1d25fa69c37ecff6f515f592e1e178b6268adb09ec635177578f5c394ddef355`
 
-- URL: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
-- SHA-256: `retrieved 2026-08-27; curated subset of repository issues`
+The running server implements every operation in this document.
 
-The stored document is a curated OpenAPI 3.0.3 subset of the implemented
-operation IDs. oapi-codegen compiles a prepared copy of those operations.
+Git object, contents, tarball/zipball, source-import, and template-generate routes are omitted because they require a real git implementation.
+

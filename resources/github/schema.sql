@@ -1,4 +1,0 @@
-CREATE TABLE issues (
-  id TEXT PRIMARY KEY,
-  body TEXT NOT NULL
-);

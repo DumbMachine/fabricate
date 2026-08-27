@@ -11,21 +11,27 @@
         "number": "1",
         "title": "Checkout reliability",
         "state": "open",
-        "html_url": "https://github.com/acme/web/issues/1"
+        "html_url": "https://github.com/acme/web/issues/1",
+        "owner": "acme",
+        "repo": "web"
       },
       {
         "id": "2",
         "number": "2",
         "title": "Contoso SSO login loop",
         "state": "open",
-        "html_url": "https://github.com/acme/web/issues/2"
+        "html_url": "https://github.com/acme/web/issues/2",
+        "owner": "acme",
+        "repo": "web"
       },
       {
         "id": "3",
         "number": "3",
         "title": "INV-4812 receipt mismatch",
         "state": "closed",
-        "html_url": "https://github.com/acme/web/issues/3"
+        "html_url": "https://github.com/acme/web/issues/3",
+        "owner": "acme",
+        "repo": "web"
       }
     ]
   }
