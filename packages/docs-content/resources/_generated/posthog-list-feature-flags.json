@@ -36,7 +36,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:d8e12768ab5e7edca062bac62a88dec57b5e19fd73a6a9071c6bc68acccaca44",
+    "digest": "sha256:63ae15b840684abd1d5d823b6e62524a309fd82b69fcb64845b4affb2ffa7b52",
     "roots": [
       {
         "path": "cli/run.go",
@@ -56,7 +56,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/posthog-list-feature-flags.json",
@@ -68,7 +68,7 @@
       },
       {
         "path": "resources/posthog",
-        "digest": "sha256:ee71f5a0dd386ee7a19d78e2763a401ba7a29909356acc6b0b948825c3f853ff"
+        "digest": "sha256:19c137e4ad948bb9d5cf8d0b2f9bfe432706c69f9d3fbbd4a7ad92de8062c6fa"
       },
       {
         "path": "scenario",
