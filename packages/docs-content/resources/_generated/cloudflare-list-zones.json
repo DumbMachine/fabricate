@@ -39,7 +39,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:947a4e8b4d7ca7919e962b52d7e2fd8a6516802d498d84d8cb91ee20d6f8f89f",
+    "digest": "sha256:f90e1c060cf5c50c3a3a139257b7b71113fdd2d76852e3e22efcab252463c6d1",
     "roots": [
       {
         "path": "cli/run.go",
@@ -59,7 +59,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/cloudflare-list-zones.json",
@@ -71,7 +71,7 @@
       },
       {
         "path": "resources/cloudflare",
-        "digest": "sha256:904f4d7e8e33a0def42994629c083d83a06e07aeb3b13ce11ba097500af1acaf"
+        "digest": "sha256:8c2bbb5ae64ecea08c9aa2c90ccca72099619afba5d242c054c03e3f8ce9712f"
       },
       {
         "path": "scenario",
