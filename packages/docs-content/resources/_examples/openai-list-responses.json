@@ -5,10 +5,10 @@
   "environmentLabel": "Acme OpenAI",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/openai-list-responses.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.openai.com/v1/responses",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.openai.com/v1/responses/resp_checkout",
   "argv": [
     "curl",
     "-sS",
-    "https://api.openai.com/v1/responses"
+    "https://api.openai.com/v1/responses/resp_checkout"
   ]
 }

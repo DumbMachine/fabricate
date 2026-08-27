@@ -5,35 +5,17 @@
     "label": "Acme OpenAI",
     "manifest": "environments/acme-openai.yaml"
   },
-  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.openai.com/v1/responses",
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.openai.com/v1/responses/resp_checkout",
   "output": {
-    "data": [
-      {
-        "id": "resp_billing",
-        "input": "Draft a reminder for INV-4812",
-        "model": "gpt-4.1",
-        "object": "response",
-        "status": "completed"
-      },
-      {
-        "id": "resp_checkout",
-        "input": "Explain the checkout reliability incident",
-        "model": "gpt-4.1",
-        "object": "response",
-        "status": "completed"
-      },
-      {
-        "id": "resp_sso",
-        "input": "Summarize the Contoso SSO loop",
-        "model": "gpt-4.1",
-        "object": "response",
-        "status": "completed"
-      }
-    ]
+    "id": "resp_checkout",
+    "input": "Explain the checkout reliability incident",
+    "model": "gpt-4.1",
+    "object": "response",
+    "status": "completed"
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:c22f527ad4347bf453d7b7c6bbd4301ab76604f960d485ab24a08c6c3f40d916",
+    "digest": "sha256:f854b7202c1496d4aa3d650664d72fadec06f315c74fd0119bddc31693df138f",
     "roots": [
       {
         "path": "cli/run.go",
@@ -53,11 +35,11 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/openai-list-responses.json",
-        "digest": "sha256:9c41c1bef75b8e672bd506e6b9f97ef47b26f7bca9c35af87221f5ed5d416f95"
+        "digest": "sha256:75e67bfb1d6f16fbc13554d8c1e478b61626b3a4755f487bce04eb1097f418d0"
       },
       {
         "path": "requestlog",
@@ -65,7 +47,7 @@
       },
       {
         "path": "resources/openai",
-        "digest": "sha256:7d6068a5c56799e33aaac43cdebdd03fcd6213a0836796e6d71995aa74af13c6"
+        "digest": "sha256:2b09f2dfbcefc586f9e22d9cb45d3d396786c0da982090aca140a195b20d8744"
       },
       {
         "path": "scenario",
