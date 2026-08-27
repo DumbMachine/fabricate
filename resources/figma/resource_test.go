@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `https://acme.example/hooks/files`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `https://acme.example/hooks/blog`) {
+		t.Fatalf("haystack missing blog webhook: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"id":`) < 15 {
+		t.Fatalf("webhook haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/v2/webhooks/wh_files", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `https://acme.example/hooks/files`) {
