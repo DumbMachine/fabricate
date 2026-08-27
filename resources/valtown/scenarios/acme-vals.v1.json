@@ -7,9 +7,38 @@
   "state": {
     "vals": [
       {
+        "id": "val_alerts",
+        "name": "acme-pager",
+        "privacy": "private"
+      },
+      {
         "id": "val_billing",
         "name": "acme-billing",
+        "privacy": "private",
+        "description": "INV-4812 receipt helper for Northwind. Dana Whitfield."
+      },
+      {
+        "id": "val_checkout",
+        "name": "acme-checkout-canary",
+        "privacy": "private",
+        "description": "Checkout reliability canary."
+      },
+      {
+        "id": "val_cron",
+        "name": "acme-invoice-cron",
         "privacy": "private"
+      },
+      {
+        "id": "val_csv",
+        "name": "acme-csv-probe",
+        "privacy": "private",
+        "description": "fernworks-prod empty export probe. Priya Nair."
+      },
+      {
+        "id": "val_dns",
+        "name": "acme-dns-recheck",
+        "privacy": "unlisted",
+        "description": "Adatum TXT acme-domain-verification=adatum-7f31. Owen Brooks."
       },
       {
         "id": "val_docs",
@@ -17,9 +46,124 @@
         "privacy": "public"
       },
       {
+        "id": "val_eu",
+        "name": "acme-eu-router",
+        "privacy": "private"
+      },
+      {
+        "id": "val_exa",
+        "name": "acme-exa-quota",
+        "privacy": "private"
+      },
+      {
+        "id": "val_figma",
+        "name": "acme-figma-relay",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_flags",
+        "name": "acme-flag-mirror",
+        "privacy": "private"
+      },
+      {
+        "id": "val_github",
+        "name": "acme-github-webhooks",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_heatmap",
+        "name": "acme-heatmap-sample",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_keys",
+        "name": "acme-key-overlap",
+        "privacy": "private",
+        "description": "BrightPath second API key check. Sofia Marin."
+      },
+      {
+        "id": "val_legal",
+        "name": "acme-dpa-answers",
+        "privacy": "private"
+      },
+      {
+        "id": "val_neon",
+        "name": "acme-neon-branch-gc",
+        "privacy": "private"
+      },
+      {
+        "id": "val_nps",
+        "name": "acme-nps",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_og",
+        "name": "acme-og",
+        "privacy": "public"
+      },
+      {
+        "id": "val_preview",
+        "name": "acme-preview-auth",
+        "privacy": "private"
+      },
+      {
+        "id": "val_scim",
+        "name": "acme-scim-audit",
+        "privacy": "private",
+        "description": "Fabrikam group-change export. req_7Q4K2."
+      },
+      {
+        "id": "val_sentry",
+        "name": "acme-sentry-digest",
+        "privacy": "private"
+      },
+      {
+        "id": "val_slack",
+        "name": "acme-slack-alerts",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_sso",
+        "name": "acme-saml-debug",
+        "privacy": "private",
+        "description": "Contoso contoso-eu callback traces. Mei Chen, 380 users."
+      },
+      {
+        "id": "val_status",
+        "name": "acme-status-bot",
+        "privacy": "public"
+      },
+      {
+        "id": "val_stripe",
+        "name": "acme-stripe-events",
+        "privacy": "private"
+      },
+      {
+        "id": "val_teams",
+        "name": "acme-teams-alerts",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_tiny",
+        "name": "acme-tinyshop-refund",
+        "privacy": "private",
+        "description": "30-day guarantee helper. Marco Silva."
+      },
+      {
+        "id": "val_vercel",
+        "name": "acme-vercel-aliases",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_waf",
+        "name": "acme-waf-exceptions",
+        "privacy": "private"
+      },
+      {
         "id": "val_webhooks",
         "name": "acme-webhooks",
-        "privacy": "unlisted"
+        "privacy": "unlisted",
+        "description": "LakeTech delivery retries; hooks.acme.example. Ben Okafor."
       }
     ]
   }
