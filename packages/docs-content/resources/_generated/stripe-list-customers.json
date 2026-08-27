@@ -9,21 +9,339 @@
   "output": {
     "data": [
       {
+        "description": "Custom hostname pending TXT adatum-7f31.",
+        "email": "owen@adatum.example",
+        "id": "cus_adatum",
+        "name": "Adatum",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Caroline Johnson.",
+        "email": "caroline@aperture.example",
+        "id": "cus_aperture",
+        "name": "Aperture Science",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Nina Brooks.",
+        "email": "nina@atlascivic.example",
+        "id": "cus_atlas",
+        "name": "Atlas Civic",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Gordon Freeman.",
+        "email": "gordon@blackmesa.example",
+        "id": "cus_blackmesa",
+        "name": "Black Mesa",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner George Michael.",
+        "email": "george@bluth.example",
+        "id": "cus_bluth",
+        "name": "Bluth Company",
+        "object": "customer"
+      },
+      {
+        "description": "API key overlap. Sofia Marin.",
+        "email": "sofia@brightpath.example",
+        "id": "cus_brightpath",
+        "name": "BrightPath",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Reese Patel.",
+        "email": "reese@canyoninsurance.example",
+        "id": "cus_canyon",
+        "name": "Canyon Insurance",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Jules Okonkwo.",
+        "email": "jules@cobalthealth.example",
+        "id": "cus_cobalt",
+        "name": "Cobalt Health",
+        "object": "customer"
+      },
+      {
+        "description": "Enterprise SSO contoso-eu, 380 seats. Mei Chen.",
         "email": "ap@contoso.example",
         "id": "cus_contoso",
         "name": "Contoso",
         "object": "customer"
       },
       {
+        "description": "Account owner Miles Dyson.",
+        "email": "miles@cyberdyne.example",
+        "id": "cus_cyberdyne",
+        "name": "Cyberdyne Systems",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Skye Nguyen.",
+        "email": "skye@driftwoodmedia.example",
+        "id": "cus_driftwood",
+        "name": "Driftwood Media",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Pam Beesly.",
+        "email": "pam@dundermifflin.example",
+        "id": "cus_dunder",
+        "name": "Dunder Mifflin",
+        "object": "customer"
+      },
+      {
+        "description": "SCIM audit req_7Q4K2. Leila Haddad.",
+        "email": "leila@fabrikam.example",
+        "id": "cus_fabrikam",
+        "name": "Fabrikam",
+        "object": "customer"
+      },
+      {
+        "description": "fernworks-prod CSV export incident. Priya Nair.",
+        "email": "priya@fernworks.example",
+        "id": "cus_fernworks",
+        "name": "Fernworks",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Rita Cole.",
+        "email": "rita@globex.example",
+        "id": "cus_globex",
+        "name": "Globex",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Eli Cho.",
+        "email": "eli@harborbank.example",
+        "id": "cus_harbor",
+        "name": "Harbor Bank",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Noah Patel.",
         "email": "noah@helixbio.example",
         "id": "cus_helix",
         "name": "Helix Bio",
         "object": "customer"
       },
       {
+        "description": "Account owner Gavin Belson.",
+        "email": "gavin@hooli.example",
+        "id": "cus_hooli",
+        "name": "Hooli",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner John Hammond.",
+        "email": "john@ingen.example",
+        "id": "cus_ingen",
+        "name": "InGen",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Peter Gibbons.",
+        "email": "peter@initech.example",
+        "id": "cus_initech",
+        "name": "Initech",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Avery Shaw.",
+        "email": "avery@kilnstudio.example",
+        "id": "cus_kiln",
+        "name": "Kiln Studio",
+        "object": "customer"
+      },
+      {
+        "description": "Webhook retries. Ben Okafor.",
+        "email": "ben@laketech.example",
+        "id": "cus_laketech",
+        "name": "LakeTech",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Gustavo Fring.",
+        "email": "gus@lospollos.example",
+        "id": "cus_lospollos",
+        "name": "Los Pollos Hermanos",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Jordan Pike.",
+        "email": "jordan@lumenschools.example",
+        "id": "cus_lumen",
+        "name": "Lumen Schools",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Nina Sharp.",
+        "email": "nina@massivedynamic.example",
+        "id": "cus_massive",
+        "name": "Massive Dynamic",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Harper Diaz.",
+        "email": "harper@meadowsupply.example",
+        "id": "cus_meadow",
+        "name": "Meadow Supply",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Holly Gennaro.",
+        "email": "holly@nakatomi.example",
+        "id": "cus_nakatomi",
+        "name": "Nakatomi Trading",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Quinn Park.",
+        "email": "quinn@nimbusweather.example",
+        "id": "cus_nimbus",
+        "name": "Nimbus Weather",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Pat Yoon.",
+        "email": "pat@northstarlogistics.example",
+        "id": "cus_northstar",
+        "name": "Northstar Logistics",
+        "object": "customer"
+      },
+      {
+        "description": "INV-4812 double $1,240 charge. Dana Whitfield.",
         "email": "dana@northwind.example",
         "id": "cus_northwind",
         "name": "Northwind",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Theo Kane.",
+        "email": "theo@orbiter.example",
+        "id": "cus_orbiter",
+        "name": "Orbiter",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Drew Santos.",
+        "email": "drew@pebblepay.example",
+        "id": "cus_pebble",
+        "name": "Pebble Pay",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Richard Hendricks.",
+        "email": "richard@piedpiper.example",
+        "id": "cus_piedpiper",
+        "name": "Pied Piper",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Amina Sol.",
+        "email": "amina@pioneerfreight.example",
+        "id": "cus_pioneer",
+        "name": "Pioneer Freight",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Brennan Huff.",
+        "email": "brennan@prestigeworldwide.example",
+        "id": "cus_prestige",
+        "name": "Prestige Worldwide",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Sam Rivera.",
+        "email": "sam@quartzanalytics.example",
+        "id": "cus_quartz",
+        "name": "Quartz Analytics",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Laurie Bream.",
+        "email": "laurie@raviga.example",
+        "id": "cus_raviga",
+        "name": "Raviga Capital",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Chris Lang.",
+        "email": "chris@redwoodlabs.example",
+        "id": "cus_redwood",
+        "name": "Redwood Labs",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Casey Moon.",
+        "email": "casey@siennaretail.example",
+        "id": "cus_sienna",
+        "name": "Sienna Retail",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Green Reed.",
+        "email": "green@soylent.example",
+        "id": "cus_soylent",
+        "name": "Soylent Corp",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Peggy Olson.",
+        "email": "peggy@sterlingcooper.example",
+        "id": "cus_sterling",
+        "name": "Sterling Cooper",
+        "object": "customer"
+      },
+      {
+        "description": "Annual Pro 30-day guarantee refund, Marco Silva.",
+        "email": "billing@tinyshop.example",
+        "id": "cus_tinyshop",
+        "name": "TinyShop",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Eldon Tyrell.",
+        "email": "eldon@tyrell.example",
+        "id": "cus_tyrell",
+        "name": "Tyrell Corporation",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Chris Redfield.",
+        "email": "chris@umbrellalabs.example",
+        "id": "cus_umbrella",
+        "name": "Umbrella Labs",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Art Vandelay.",
+        "email": "art@vandelay.example",
+        "id": "cus_vandelay",
+        "name": "Vandelay Industries",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Riley Chen.",
+        "email": "riley@vectorrobotics.example",
+        "id": "cus_vector",
+        "name": "Vector Robotics",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Morgan Ellis.",
+        "email": "morgan@waypointtravel.example",
+        "id": "cus_waypoint",
+        "name": "Waypoint Travel",
+        "object": "customer"
+      },
+      {
+        "description": "Account owner Carter Burke.",
+        "email": "carter@weyland.example",
+        "id": "cus_weyland",
+        "name": "Weyland-Yutani",
         "object": "customer"
       }
     ],
@@ -33,7 +351,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:e1de0366bdd5b9cdc88e807258b16b628b1d43cd83f6f39ce424367ad22d8085",
+    "digest": "sha256:e04f9845a8086eb8220ec74819f4beddc76e04bd6973f929b008cfd9bf35a4ed",
     "roots": [
       {
         "path": "cli/run.go",
@@ -49,7 +367,7 @@
       },
       {
         "path": "environments/acme-stripe.yaml",
-        "digest": "sha256:ced42a28102fa55e21e59ccfd548067216a5b02e810b0dc625c490ec229d41b7"
+        "digest": "sha256:9705b48802f4fe85b334b140c9dad7d83f2464b0033f3a4550426c68bbd7898a"
       },
       {
         "path": "httpresource",
@@ -64,8 +382,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
         "path": "resources/stripe",
-        "digest": "sha256:0309403ee2a07a9f149f66b198fb0ea3f8a51a580675c0fb8de1e1328d890324"
+        "digest": "sha256:13cd3c84b0b79c3d0543aa3ff973453ad135a8d9e58b8ac3bf1f7a5fccbe84aa"
       },
       {
         "path": "scenario",
