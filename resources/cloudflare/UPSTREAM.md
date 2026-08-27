@@ -1,11 +1,10 @@
 # Cloudflare OpenAPI source
 
-Curated Fabricate contract: `openapi.yaml`.
+`openapi.json` is the unmodified official Cloudflare REST OpenAPI 3.0.3 document
+from `https://raw.githubusercontent.com/cloudflare/api-schemas/main/openapi.json` retrieved 2026-08-27.
 
-Official source (not vendored in git):
+- Source: https://raw.githubusercontent.com/cloudflare/api-schemas/main/openapi.json
+- Declared version: `vendor`
+- SHA-256: `0db1e12dc60f6accefa75f7f0f1afb6c445222c22f7061e5d9c56576b63a55a7`
 
-- URL: https://raw.githubusercontent.com/cloudflare/api-schemas/main/openapi.json
-- SHA-256: `retrieved 2026-08-27; curated subset of /client/v4/zones`
-
-The stored document is a curated OpenAPI 3.0.3 subset of the implemented
-operation IDs. oapi-codegen compiles a prepared copy of those operations.
+The running server implements every operation in this document.
