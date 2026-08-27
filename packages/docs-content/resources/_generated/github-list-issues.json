@@ -1,0 +1,74 @@
+{
+  "id": "github-list-issues",
+  "title": "List seeded issues",
+  "environment": {
+    "label": "Acme GitHub",
+    "manifest": "environments/acme-github.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.github.com/repos/acme/web/issues",
+  "output": [
+    {
+      "html_url": "https://github.com/acme/web/issues/1",
+      "id": "1",
+      "number": "1",
+      "state": "open",
+      "title": "Checkout reliability"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/2",
+      "id": "2",
+      "number": "2",
+      "state": "open",
+      "title": "Contoso SSO login loop"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/3",
+      "id": "3",
+      "number": "3",
+      "state": "closed",
+      "title": "INV-4812 receipt mismatch"
+    }
+  ],
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:7665d65c7b7953401d517d03511fe0cecc33113bf2ee34cd684398b63fbe72e0",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-github.yaml",
+        "digest": "sha256:8ea504d121bee2796e1134c88d019a7a148b1e571d85fd1bdc59ff4658b5b8b3"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/github-list-issues.json",
+        "digest": "sha256:16e29123a18c000e9729a21ccdeda118e88eb7d08247427f9bb76857ed354beb"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/github",
+        "digest": "sha256:a9bd1d688dc7c8e94e3484473ba6358106841e86517518999406162773ba5d77"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
