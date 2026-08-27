@@ -8,14 +8,14 @@ sidebar:
 import compatibility from "../_generated/vercel.compatibility.json";
 import example from "../_generated/vercel-list-projects.json";
 
-Fabricate ships a Vercel v1 resource with a local API driven by the official Vercel OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Vercel environment seeds the walkthrough scenario.
+Fabricate ships a Vercel v1 resource with a local API driven by the official Vercel OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Vercel environment seeds a SaaS-sized project, deployment, and domain catalog plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
 
 ## Scenarios
 
 | Scenario | What it gives you |
 | --- | --- |
 | `vercel.minimal.v1` | Empty Vercel state for a clean test. |
-| `vercel.acme-projects.v1` | Acme web, API, and docs projects on `team_acme`. |
+| `vercel.acme-projects.v1` | Acme frontend estate: projects, deployments, and domains on `team_acme`. Needles: `acme-web` checkout reliability, Contoso SSO / `acme-auth`, INV-4812 billing, fernworks export, Adatum DNS, LakeTech hooks. |
 
 ## Integration options
 
