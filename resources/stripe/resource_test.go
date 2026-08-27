@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `Northwind`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `Pied Piper`) {
+		t.Fatalf("haystack missing Pied Piper: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"id":`) < 20 {
+		t.Fatalf("customer haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/v1/customers/cus_northwind", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `Northwind`) {

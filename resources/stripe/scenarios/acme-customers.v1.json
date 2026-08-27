@@ -5,24 +5,1650 @@
   "$resource": "stripe",
   "$resourceVersion": "v1",
   "state": {
+    "charges": [
+      {
+        "id": "ch_4812a",
+        "object": "charge",
+        "customer": "cus_northwind",
+        "amount": 124000,
+        "currency": "usd",
+        "paid": true,
+        "description": "INV-4812 first capture"
+      },
+      {
+        "id": "ch_4812b",
+        "object": "charge",
+        "customer": "cus_northwind",
+        "amount": 124000,
+        "currency": "usd",
+        "paid": true,
+        "description": "INV-4812 duplicate capture August 18"
+      },
+      {
+        "id": "ch_std_000",
+        "object": "charge",
+        "customer": "cus_northwind",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_001",
+        "object": "charge",
+        "customer": "cus_contoso",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_002",
+        "object": "charge",
+        "customer": "cus_fernworks",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_003",
+        "object": "charge",
+        "customer": "cus_adatum",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_004",
+        "object": "charge",
+        "customer": "cus_laketech",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_005",
+        "object": "charge",
+        "customer": "cus_tinyshop",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_006",
+        "object": "charge",
+        "customer": "cus_brightpath",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_007",
+        "object": "charge",
+        "customer": "cus_fabrikam",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_008",
+        "object": "charge",
+        "customer": "cus_helix",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_009",
+        "object": "charge",
+        "customer": "cus_orbiter",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_010",
+        "object": "charge",
+        "customer": "cus_globex",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_011",
+        "object": "charge",
+        "customer": "cus_initech",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_012",
+        "object": "charge",
+        "customer": "cus_pioneer",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_013",
+        "object": "charge",
+        "customer": "cus_redwood",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_014",
+        "object": "charge",
+        "customer": "cus_cobalt",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_015",
+        "object": "charge",
+        "customer": "cus_meadow",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_016",
+        "object": "charge",
+        "customer": "cus_quartz",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_017",
+        "object": "charge",
+        "customer": "cus_atlas",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_018",
+        "object": "charge",
+        "customer": "cus_harbor",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_019",
+        "object": "charge",
+        "customer": "cus_kiln",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_020",
+        "object": "charge",
+        "customer": "cus_lumen",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_021",
+        "object": "charge",
+        "customer": "cus_sienna",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_022",
+        "object": "charge",
+        "customer": "cus_vector",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_023",
+        "object": "charge",
+        "customer": "cus_waypoint",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_024",
+        "object": "charge",
+        "customer": "cus_nimbus",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_025",
+        "object": "charge",
+        "customer": "cus_pebble",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_026",
+        "object": "charge",
+        "customer": "cus_canyon",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_027",
+        "object": "charge",
+        "customer": "cus_driftwood",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_028",
+        "object": "charge",
+        "customer": "cus_northstar",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_029",
+        "object": "charge",
+        "customer": "cus_umbrella",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_030",
+        "object": "charge",
+        "customer": "cus_soylent",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_031",
+        "object": "charge",
+        "customer": "cus_hooli",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_032",
+        "object": "charge",
+        "customer": "cus_massive",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_033",
+        "object": "charge",
+        "customer": "cus_aperture",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_034",
+        "object": "charge",
+        "customer": "cus_blackmesa",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_035",
+        "object": "charge",
+        "customer": "cus_cyberdyne",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_036",
+        "object": "charge",
+        "customer": "cus_tyrell",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_037",
+        "object": "charge",
+        "customer": "cus_weyland",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_038",
+        "object": "charge",
+        "customer": "cus_nakatomi",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_039",
+        "object": "charge",
+        "customer": "cus_ingen",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_040",
+        "object": "charge",
+        "customer": "cus_vandelay",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_041",
+        "object": "charge",
+        "customer": "cus_dunder",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_042",
+        "object": "charge",
+        "customer": "cus_bluth",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_043",
+        "object": "charge",
+        "customer": "cus_sterling",
+        "amount": 12900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_044",
+        "object": "charge",
+        "customer": "cus_piedpiper",
+        "amount": 13900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_045",
+        "object": "charge",
+        "customer": "cus_raviga",
+        "amount": 9900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_046",
+        "object": "charge",
+        "customer": "cus_prestige",
+        "amount": 10900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_std_047",
+        "object": "charge",
+        "customer": "cus_lospollos",
+        "amount": 11900,
+        "currency": "usd",
+        "paid": true
+      },
+      {
+        "id": "ch_tiny_refund",
+        "object": "charge",
+        "customer": "cus_tinyshop",
+        "amount": 118800,
+        "currency": "usd",
+        "paid": true,
+        "refunded": true,
+        "description": "Annual Pro refund Marco Silva"
+      }
+    ],
     "customers": [
+      {
+        "id": "cus_adatum",
+        "object": "customer",
+        "name": "Adatum",
+        "email": "owen@adatum.example",
+        "description": "Custom hostname pending TXT adatum-7f31."
+      },
+      {
+        "id": "cus_aperture",
+        "object": "customer",
+        "name": "Aperture Science",
+        "email": "caroline@aperture.example",
+        "description": "Account owner Caroline Johnson."
+      },
+      {
+        "id": "cus_atlas",
+        "object": "customer",
+        "name": "Atlas Civic",
+        "email": "nina@atlascivic.example",
+        "description": "Account owner Nina Brooks."
+      },
+      {
+        "id": "cus_blackmesa",
+        "object": "customer",
+        "name": "Black Mesa",
+        "email": "gordon@blackmesa.example",
+        "description": "Account owner Gordon Freeman."
+      },
+      {
+        "id": "cus_bluth",
+        "object": "customer",
+        "name": "Bluth Company",
+        "email": "george@bluth.example",
+        "description": "Account owner George Michael."
+      },
+      {
+        "id": "cus_brightpath",
+        "object": "customer",
+        "name": "BrightPath",
+        "email": "sofia@brightpath.example",
+        "description": "API key overlap. Sofia Marin."
+      },
+      {
+        "id": "cus_canyon",
+        "object": "customer",
+        "name": "Canyon Insurance",
+        "email": "reese@canyoninsurance.example",
+        "description": "Account owner Reese Patel."
+      },
+      {
+        "id": "cus_cobalt",
+        "object": "customer",
+        "name": "Cobalt Health",
+        "email": "jules@cobalthealth.example",
+        "description": "Account owner Jules Okonkwo."
+      },
       {
         "id": "cus_contoso",
         "object": "customer",
         "name": "Contoso",
-        "email": "ap@contoso.example"
+        "email": "ap@contoso.example",
+        "description": "Enterprise SSO contoso-eu, 380 seats. Mei Chen."
+      },
+      {
+        "id": "cus_cyberdyne",
+        "object": "customer",
+        "name": "Cyberdyne Systems",
+        "email": "miles@cyberdyne.example",
+        "description": "Account owner Miles Dyson."
+      },
+      {
+        "id": "cus_driftwood",
+        "object": "customer",
+        "name": "Driftwood Media",
+        "email": "skye@driftwoodmedia.example",
+        "description": "Account owner Skye Nguyen."
+      },
+      {
+        "id": "cus_dunder",
+        "object": "customer",
+        "name": "Dunder Mifflin",
+        "email": "pam@dundermifflin.example",
+        "description": "Account owner Pam Beesly."
+      },
+      {
+        "id": "cus_fabrikam",
+        "object": "customer",
+        "name": "Fabrikam",
+        "email": "leila@fabrikam.example",
+        "description": "SCIM audit req_7Q4K2. Leila Haddad."
+      },
+      {
+        "id": "cus_fernworks",
+        "object": "customer",
+        "name": "Fernworks",
+        "email": "priya@fernworks.example",
+        "description": "fernworks-prod CSV export incident. Priya Nair."
+      },
+      {
+        "id": "cus_globex",
+        "object": "customer",
+        "name": "Globex",
+        "email": "rita@globex.example",
+        "description": "Account owner Rita Cole."
+      },
+      {
+        "id": "cus_harbor",
+        "object": "customer",
+        "name": "Harbor Bank",
+        "email": "eli@harborbank.example",
+        "description": "Account owner Eli Cho."
       },
       {
         "id": "cus_helix",
         "object": "customer",
         "name": "Helix Bio",
-        "email": "noah@helixbio.example"
+        "email": "noah@helixbio.example",
+        "description": "Account owner Noah Patel."
+      },
+      {
+        "id": "cus_hooli",
+        "object": "customer",
+        "name": "Hooli",
+        "email": "gavin@hooli.example",
+        "description": "Account owner Gavin Belson."
+      },
+      {
+        "id": "cus_ingen",
+        "object": "customer",
+        "name": "InGen",
+        "email": "john@ingen.example",
+        "description": "Account owner John Hammond."
+      },
+      {
+        "id": "cus_initech",
+        "object": "customer",
+        "name": "Initech",
+        "email": "peter@initech.example",
+        "description": "Account owner Peter Gibbons."
+      },
+      {
+        "id": "cus_kiln",
+        "object": "customer",
+        "name": "Kiln Studio",
+        "email": "avery@kilnstudio.example",
+        "description": "Account owner Avery Shaw."
+      },
+      {
+        "id": "cus_laketech",
+        "object": "customer",
+        "name": "LakeTech",
+        "email": "ben@laketech.example",
+        "description": "Webhook retries. Ben Okafor."
+      },
+      {
+        "id": "cus_lospollos",
+        "object": "customer",
+        "name": "Los Pollos Hermanos",
+        "email": "gus@lospollos.example",
+        "description": "Account owner Gustavo Fring."
+      },
+      {
+        "id": "cus_lumen",
+        "object": "customer",
+        "name": "Lumen Schools",
+        "email": "jordan@lumenschools.example",
+        "description": "Account owner Jordan Pike."
+      },
+      {
+        "id": "cus_massive",
+        "object": "customer",
+        "name": "Massive Dynamic",
+        "email": "nina@massivedynamic.example",
+        "description": "Account owner Nina Sharp."
+      },
+      {
+        "id": "cus_meadow",
+        "object": "customer",
+        "name": "Meadow Supply",
+        "email": "harper@meadowsupply.example",
+        "description": "Account owner Harper Diaz."
+      },
+      {
+        "id": "cus_nakatomi",
+        "object": "customer",
+        "name": "Nakatomi Trading",
+        "email": "holly@nakatomi.example",
+        "description": "Account owner Holly Gennaro."
+      },
+      {
+        "id": "cus_nimbus",
+        "object": "customer",
+        "name": "Nimbus Weather",
+        "email": "quinn@nimbusweather.example",
+        "description": "Account owner Quinn Park."
+      },
+      {
+        "id": "cus_northstar",
+        "object": "customer",
+        "name": "Northstar Logistics",
+        "email": "pat@northstarlogistics.example",
+        "description": "Account owner Pat Yoon."
       },
       {
         "id": "cus_northwind",
         "object": "customer",
         "name": "Northwind",
-        "email": "dana@northwind.example"
+        "email": "dana@northwind.example",
+        "description": "INV-4812 double $1,240 charge. Dana Whitfield."
+      },
+      {
+        "id": "cus_orbiter",
+        "object": "customer",
+        "name": "Orbiter",
+        "email": "theo@orbiter.example",
+        "description": "Account owner Theo Kane."
+      },
+      {
+        "id": "cus_pebble",
+        "object": "customer",
+        "name": "Pebble Pay",
+        "email": "drew@pebblepay.example",
+        "description": "Account owner Drew Santos."
+      },
+      {
+        "id": "cus_piedpiper",
+        "object": "customer",
+        "name": "Pied Piper",
+        "email": "richard@piedpiper.example",
+        "description": "Account owner Richard Hendricks."
+      },
+      {
+        "id": "cus_pioneer",
+        "object": "customer",
+        "name": "Pioneer Freight",
+        "email": "amina@pioneerfreight.example",
+        "description": "Account owner Amina Sol."
+      },
+      {
+        "id": "cus_prestige",
+        "object": "customer",
+        "name": "Prestige Worldwide",
+        "email": "brennan@prestigeworldwide.example",
+        "description": "Account owner Brennan Huff."
+      },
+      {
+        "id": "cus_quartz",
+        "object": "customer",
+        "name": "Quartz Analytics",
+        "email": "sam@quartzanalytics.example",
+        "description": "Account owner Sam Rivera."
+      },
+      {
+        "id": "cus_raviga",
+        "object": "customer",
+        "name": "Raviga Capital",
+        "email": "laurie@raviga.example",
+        "description": "Account owner Laurie Bream."
+      },
+      {
+        "id": "cus_redwood",
+        "object": "customer",
+        "name": "Redwood Labs",
+        "email": "chris@redwoodlabs.example",
+        "description": "Account owner Chris Lang."
+      },
+      {
+        "id": "cus_sienna",
+        "object": "customer",
+        "name": "Sienna Retail",
+        "email": "casey@siennaretail.example",
+        "description": "Account owner Casey Moon."
+      },
+      {
+        "id": "cus_soylent",
+        "object": "customer",
+        "name": "Soylent Corp",
+        "email": "green@soylent.example",
+        "description": "Account owner Green Reed."
+      },
+      {
+        "id": "cus_sterling",
+        "object": "customer",
+        "name": "Sterling Cooper",
+        "email": "peggy@sterlingcooper.example",
+        "description": "Account owner Peggy Olson."
+      },
+      {
+        "id": "cus_tinyshop",
+        "object": "customer",
+        "name": "TinyShop",
+        "email": "billing@tinyshop.example",
+        "description": "Annual Pro 30-day guarantee refund, Marco Silva."
+      },
+      {
+        "id": "cus_tyrell",
+        "object": "customer",
+        "name": "Tyrell Corporation",
+        "email": "eldon@tyrell.example",
+        "description": "Account owner Eldon Tyrell."
+      },
+      {
+        "id": "cus_umbrella",
+        "object": "customer",
+        "name": "Umbrella Labs",
+        "email": "chris@umbrellalabs.example",
+        "description": "Account owner Chris Redfield."
+      },
+      {
+        "id": "cus_vandelay",
+        "object": "customer",
+        "name": "Vandelay Industries",
+        "email": "art@vandelay.example",
+        "description": "Account owner Art Vandelay."
+      },
+      {
+        "id": "cus_vector",
+        "object": "customer",
+        "name": "Vector Robotics",
+        "email": "riley@vectorrobotics.example",
+        "description": "Account owner Riley Chen."
+      },
+      {
+        "id": "cus_waypoint",
+        "object": "customer",
+        "name": "Waypoint Travel",
+        "email": "morgan@waypointtravel.example",
+        "description": "Account owner Morgan Ellis."
+      },
+      {
+        "id": "cus_weyland",
+        "object": "customer",
+        "name": "Weyland-Yutani",
+        "email": "carter@weyland.example",
+        "description": "Account owner Carter Burke."
+      }
+    ],
+    "invoices": [
+      {
+        "id": "in_4812",
+        "object": "invoice",
+        "customer": "cus_northwind",
+        "number": "INV-4812",
+        "amount_due": 124000,
+        "amount_paid": 248000,
+        "currency": "usd",
+        "status": "open",
+        "description": "Duplicate $1,240 charges on August 18. Dana Whitfield / Northwind."
+      },
+      {
+        "id": "in_4812b",
+        "object": "invoice",
+        "customer": "cus_northwind",
+        "number": "INV-4812-DUP",
+        "amount_due": 0,
+        "amount_paid": 124000,
+        "currency": "usd",
+        "status": "paid",
+        "description": "Duplicate capture to refund for INV-4812."
+      },
+      {
+        "id": "in_contoso_seats",
+        "object": "invoice",
+        "customer": "cus_contoso",
+        "number": "INV-3901",
+        "amount_due": 0,
+        "amount_paid": 4560000,
+        "currency": "usd",
+        "status": "paid",
+        "description": "380 Contoso SSO seats."
+      },
+      {
+        "id": "in_fabrikam_scim",
+        "object": "invoice",
+        "customer": "cus_fabrikam",
+        "number": "INV-4401",
+        "amount_due": 0,
+        "amount_paid": 240000,
+        "currency": "usd",
+        "status": "paid",
+        "description": "SCIM add-on. req_7Q4K2 open."
+      },
+      {
+        "id": "in_std_000",
+        "object": "invoice",
+        "customer": "cus_northwind",
+        "number": "INV-5000",
+        "amount_due": 0,
+        "amount_paid": 9900,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_001",
+        "object": "invoice",
+        "customer": "cus_contoso",
+        "number": "INV-5001",
+        "amount_due": 0,
+        "amount_paid": 10000,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_002",
+        "object": "invoice",
+        "customer": "cus_fernworks",
+        "number": "INV-5002",
+        "amount_due": 0,
+        "amount_paid": 10100,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_003",
+        "object": "invoice",
+        "customer": "cus_adatum",
+        "number": "INV-5003",
+        "amount_due": 0,
+        "amount_paid": 10200,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_004",
+        "object": "invoice",
+        "customer": "cus_laketech",
+        "number": "INV-5004",
+        "amount_due": 0,
+        "amount_paid": 10300,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_005",
+        "object": "invoice",
+        "customer": "cus_tinyshop",
+        "number": "INV-5005",
+        "amount_due": 0,
+        "amount_paid": 10400,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_006",
+        "object": "invoice",
+        "customer": "cus_brightpath",
+        "number": "INV-5006",
+        "amount_due": 0,
+        "amount_paid": 10500,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_007",
+        "object": "invoice",
+        "customer": "cus_fabrikam",
+        "number": "INV-5007",
+        "amount_due": 0,
+        "amount_paid": 10600,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_008",
+        "object": "invoice",
+        "customer": "cus_helix",
+        "number": "INV-5008",
+        "amount_due": 0,
+        "amount_paid": 10700,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_009",
+        "object": "invoice",
+        "customer": "cus_orbiter",
+        "number": "INV-5009",
+        "amount_due": 0,
+        "amount_paid": 10800,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_010",
+        "object": "invoice",
+        "customer": "cus_globex",
+        "number": "INV-5010",
+        "amount_due": 0,
+        "amount_paid": 10900,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_011",
+        "object": "invoice",
+        "customer": "cus_initech",
+        "number": "INV-5011",
+        "amount_due": 0,
+        "amount_paid": 11000,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_012",
+        "object": "invoice",
+        "customer": "cus_pioneer",
+        "number": "INV-5012",
+        "amount_due": 0,
+        "amount_paid": 11100,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_013",
+        "object": "invoice",
+        "customer": "cus_redwood",
+        "number": "INV-5013",
+        "amount_due": 0,
+        "amount_paid": 11200,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_014",
+        "object": "invoice",
+        "customer": "cus_cobalt",
+        "number": "INV-5014",
+        "amount_due": 0,
+        "amount_paid": 11300,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_015",
+        "object": "invoice",
+        "customer": "cus_meadow",
+        "number": "INV-5015",
+        "amount_due": 0,
+        "amount_paid": 11400,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_016",
+        "object": "invoice",
+        "customer": "cus_quartz",
+        "number": "INV-5016",
+        "amount_due": 0,
+        "amount_paid": 11500,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_017",
+        "object": "invoice",
+        "customer": "cus_atlas",
+        "number": "INV-5017",
+        "amount_due": 0,
+        "amount_paid": 11600,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_018",
+        "object": "invoice",
+        "customer": "cus_harbor",
+        "number": "INV-5018",
+        "amount_due": 0,
+        "amount_paid": 11700,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_019",
+        "object": "invoice",
+        "customer": "cus_kiln",
+        "number": "INV-5019",
+        "amount_due": 0,
+        "amount_paid": 11800,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_020",
+        "object": "invoice",
+        "customer": "cus_lumen",
+        "number": "INV-5020",
+        "amount_due": 0,
+        "amount_paid": 11900,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_021",
+        "object": "invoice",
+        "customer": "cus_sienna",
+        "number": "INV-5021",
+        "amount_due": 0,
+        "amount_paid": 12000,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_022",
+        "object": "invoice",
+        "customer": "cus_vector",
+        "number": "INV-5022",
+        "amount_due": 0,
+        "amount_paid": 12100,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_023",
+        "object": "invoice",
+        "customer": "cus_waypoint",
+        "number": "INV-5023",
+        "amount_due": 0,
+        "amount_paid": 12200,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_024",
+        "object": "invoice",
+        "customer": "cus_nimbus",
+        "number": "INV-5024",
+        "amount_due": 0,
+        "amount_paid": 12300,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_025",
+        "object": "invoice",
+        "customer": "cus_pebble",
+        "number": "INV-5025",
+        "amount_due": 0,
+        "amount_paid": 12400,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_026",
+        "object": "invoice",
+        "customer": "cus_canyon",
+        "number": "INV-5026",
+        "amount_due": 0,
+        "amount_paid": 12500,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_027",
+        "object": "invoice",
+        "customer": "cus_driftwood",
+        "number": "INV-5027",
+        "amount_due": 0,
+        "amount_paid": 12600,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_028",
+        "object": "invoice",
+        "customer": "cus_northstar",
+        "number": "INV-5028",
+        "amount_due": 0,
+        "amount_paid": 12700,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_029",
+        "object": "invoice",
+        "customer": "cus_umbrella",
+        "number": "INV-5029",
+        "amount_due": 0,
+        "amount_paid": 12800,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_030",
+        "object": "invoice",
+        "customer": "cus_soylent",
+        "number": "INV-5030",
+        "amount_due": 0,
+        "amount_paid": 12900,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_031",
+        "object": "invoice",
+        "customer": "cus_hooli",
+        "number": "INV-5031",
+        "amount_due": 0,
+        "amount_paid": 13000,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_032",
+        "object": "invoice",
+        "customer": "cus_massive",
+        "number": "INV-5032",
+        "amount_due": 0,
+        "amount_paid": 13100,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_033",
+        "object": "invoice",
+        "customer": "cus_aperture",
+        "number": "INV-5033",
+        "amount_due": 0,
+        "amount_paid": 13200,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_034",
+        "object": "invoice",
+        "customer": "cus_blackmesa",
+        "number": "INV-5034",
+        "amount_due": 0,
+        "amount_paid": 13300,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_035",
+        "object": "invoice",
+        "customer": "cus_cyberdyne",
+        "number": "INV-5035",
+        "amount_due": 0,
+        "amount_paid": 13400,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_036",
+        "object": "invoice",
+        "customer": "cus_tyrell",
+        "number": "INV-5036",
+        "amount_due": 0,
+        "amount_paid": 13500,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_037",
+        "object": "invoice",
+        "customer": "cus_weyland",
+        "number": "INV-5037",
+        "amount_due": 0,
+        "amount_paid": 13600,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_038",
+        "object": "invoice",
+        "customer": "cus_nakatomi",
+        "number": "INV-5038",
+        "amount_due": 0,
+        "amount_paid": 13700,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_039",
+        "object": "invoice",
+        "customer": "cus_ingen",
+        "number": "INV-5039",
+        "amount_due": 0,
+        "amount_paid": 13800,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_040",
+        "object": "invoice",
+        "customer": "cus_vandelay",
+        "number": "INV-5040",
+        "amount_due": 0,
+        "amount_paid": 13900,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_041",
+        "object": "invoice",
+        "customer": "cus_dunder",
+        "number": "INV-5041",
+        "amount_due": 0,
+        "amount_paid": 14000,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_042",
+        "object": "invoice",
+        "customer": "cus_bluth",
+        "number": "INV-5042",
+        "amount_due": 0,
+        "amount_paid": 14100,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_043",
+        "object": "invoice",
+        "customer": "cus_sterling",
+        "number": "INV-5043",
+        "amount_due": 0,
+        "amount_paid": 14200,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_044",
+        "object": "invoice",
+        "customer": "cus_piedpiper",
+        "number": "INV-5044",
+        "amount_due": 0,
+        "amount_paid": 14300,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_045",
+        "object": "invoice",
+        "customer": "cus_raviga",
+        "number": "INV-5045",
+        "amount_due": 0,
+        "amount_paid": 14400,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_046",
+        "object": "invoice",
+        "customer": "cus_prestige",
+        "number": "INV-5046",
+        "amount_due": 0,
+        "amount_paid": 14500,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_std_047",
+        "object": "invoice",
+        "customer": "cus_lospollos",
+        "number": "INV-5047",
+        "amount_due": 0,
+        "amount_paid": 14600,
+        "currency": "usd",
+        "status": "paid"
+      },
+      {
+        "id": "in_tiny_annual",
+        "object": "invoice",
+        "customer": "cus_tinyshop",
+        "number": "INV-2207",
+        "amount_due": 0,
+        "amount_paid": 118800,
+        "currency": "usd",
+        "status": "void",
+        "description": "Annual Pro refunded under 30-day guarantee."
+      }
+    ],
+    "products": [
+      {
+        "id": "prod_annual",
+        "object": "product",
+        "name": "Acme Pro Annual",
+        "active": true
+      },
+      {
+        "id": "prod_audit",
+        "object": "product",
+        "name": "Audit log add-on",
+        "active": true
+      },
+      {
+        "id": "prod_enterprise",
+        "object": "product",
+        "name": "Acme Enterprise",
+        "active": true
+      },
+      {
+        "id": "prod_eu",
+        "object": "product",
+        "name": "EU residency add-on",
+        "active": true
+      },
+      {
+        "id": "prod_pro",
+        "object": "product",
+        "name": "Acme Pro",
+        "active": true
+      },
+      {
+        "id": "prod_scim",
+        "object": "product",
+        "name": "SCIM add-on",
+        "active": true
+      },
+      {
+        "id": "prod_sso",
+        "object": "product",
+        "name": "SSO add-on",
+        "active": true
+      },
+      {
+        "id": "prod_support",
+        "object": "product",
+        "name": "Priority support",
+        "active": true
+      },
+      {
+        "id": "prod_usage",
+        "object": "product",
+        "name": "Usage overage",
+        "active": true
+      },
+      {
+        "id": "prod_webhooks",
+        "object": "product",
+        "name": "Advanced webhooks",
+        "active": true
+      }
+    ],
+    "subscriptions": [
+      {
+        "id": "sub_adatum",
+        "object": "subscription",
+        "customer": "cus_adatum",
+        "status": "active"
+      },
+      {
+        "id": "sub_aperture",
+        "object": "subscription",
+        "customer": "cus_aperture",
+        "status": "active"
+      },
+      {
+        "id": "sub_atlas",
+        "object": "subscription",
+        "customer": "cus_atlas",
+        "status": "active"
+      },
+      {
+        "id": "sub_blackmesa",
+        "object": "subscription",
+        "customer": "cus_blackmesa",
+        "status": "active"
+      },
+      {
+        "id": "sub_bluth",
+        "object": "subscription",
+        "customer": "cus_bluth",
+        "status": "active"
+      },
+      {
+        "id": "sub_brightpath",
+        "object": "subscription",
+        "customer": "cus_brightpath",
+        "status": "active"
+      },
+      {
+        "id": "sub_canyon",
+        "object": "subscription",
+        "customer": "cus_canyon",
+        "status": "active"
+      },
+      {
+        "id": "sub_cobalt",
+        "object": "subscription",
+        "customer": "cus_cobalt",
+        "status": "active"
+      },
+      {
+        "id": "sub_contoso",
+        "object": "subscription",
+        "customer": "cus_contoso",
+        "status": "active",
+        "description": "Enterprise + SSO 380 seats"
+      },
+      {
+        "id": "sub_cyberdyne",
+        "object": "subscription",
+        "customer": "cus_cyberdyne",
+        "status": "active"
+      },
+      {
+        "id": "sub_driftwood",
+        "object": "subscription",
+        "customer": "cus_driftwood",
+        "status": "active"
+      },
+      {
+        "id": "sub_dunder",
+        "object": "subscription",
+        "customer": "cus_dunder",
+        "status": "active"
+      },
+      {
+        "id": "sub_fabrikam",
+        "object": "subscription",
+        "customer": "cus_fabrikam",
+        "status": "active",
+        "description": "Enterprise + SCIM. req_7Q4K2"
+      },
+      {
+        "id": "sub_fernworks",
+        "object": "subscription",
+        "customer": "cus_fernworks",
+        "status": "active"
+      },
+      {
+        "id": "sub_globex",
+        "object": "subscription",
+        "customer": "cus_globex",
+        "status": "active"
+      },
+      {
+        "id": "sub_harbor",
+        "object": "subscription",
+        "customer": "cus_harbor",
+        "status": "active"
+      },
+      {
+        "id": "sub_helix",
+        "object": "subscription",
+        "customer": "cus_helix",
+        "status": "active"
+      },
+      {
+        "id": "sub_hooli",
+        "object": "subscription",
+        "customer": "cus_hooli",
+        "status": "active"
+      },
+      {
+        "id": "sub_ingen",
+        "object": "subscription",
+        "customer": "cus_ingen",
+        "status": "active"
+      },
+      {
+        "id": "sub_initech",
+        "object": "subscription",
+        "customer": "cus_initech",
+        "status": "active"
+      },
+      {
+        "id": "sub_kiln",
+        "object": "subscription",
+        "customer": "cus_kiln",
+        "status": "active"
+      },
+      {
+        "id": "sub_laketech",
+        "object": "subscription",
+        "customer": "cus_laketech",
+        "status": "past_due",
+        "description": "Webhook plan; retries open"
+      },
+      {
+        "id": "sub_lospollos",
+        "object": "subscription",
+        "customer": "cus_lospollos",
+        "status": "active"
+      },
+      {
+        "id": "sub_lumen",
+        "object": "subscription",
+        "customer": "cus_lumen",
+        "status": "active"
+      },
+      {
+        "id": "sub_massive",
+        "object": "subscription",
+        "customer": "cus_massive",
+        "status": "active"
+      },
+      {
+        "id": "sub_meadow",
+        "object": "subscription",
+        "customer": "cus_meadow",
+        "status": "active"
+      },
+      {
+        "id": "sub_nakatomi",
+        "object": "subscription",
+        "customer": "cus_nakatomi",
+        "status": "active"
+      },
+      {
+        "id": "sub_nimbus",
+        "object": "subscription",
+        "customer": "cus_nimbus",
+        "status": "active"
+      },
+      {
+        "id": "sub_northstar",
+        "object": "subscription",
+        "customer": "cus_northstar",
+        "status": "active"
+      },
+      {
+        "id": "sub_northwind",
+        "object": "subscription",
+        "customer": "cus_northwind",
+        "status": "active",
+        "description": "Northwind Pro; INV-4812 dispute open"
+      },
+      {
+        "id": "sub_orbiter",
+        "object": "subscription",
+        "customer": "cus_orbiter",
+        "status": "active"
+      },
+      {
+        "id": "sub_pebble",
+        "object": "subscription",
+        "customer": "cus_pebble",
+        "status": "active"
+      },
+      {
+        "id": "sub_piedpiper",
+        "object": "subscription",
+        "customer": "cus_piedpiper",
+        "status": "active"
+      },
+      {
+        "id": "sub_pioneer",
+        "object": "subscription",
+        "customer": "cus_pioneer",
+        "status": "active"
+      },
+      {
+        "id": "sub_prestige",
+        "object": "subscription",
+        "customer": "cus_prestige",
+        "status": "active"
+      },
+      {
+        "id": "sub_quartz",
+        "object": "subscription",
+        "customer": "cus_quartz",
+        "status": "active"
+      },
+      {
+        "id": "sub_raviga",
+        "object": "subscription",
+        "customer": "cus_raviga",
+        "status": "active"
+      },
+      {
+        "id": "sub_redwood",
+        "object": "subscription",
+        "customer": "cus_redwood",
+        "status": "active"
+      },
+      {
+        "id": "sub_sienna",
+        "object": "subscription",
+        "customer": "cus_sienna",
+        "status": "active"
+      },
+      {
+        "id": "sub_soylent",
+        "object": "subscription",
+        "customer": "cus_soylent",
+        "status": "active"
+      },
+      {
+        "id": "sub_sterling",
+        "object": "subscription",
+        "customer": "cus_sterling",
+        "status": "active"
+      },
+      {
+        "id": "sub_tinyshop",
+        "object": "subscription",
+        "customer": "cus_tinyshop",
+        "status": "canceled",
+        "description": "Canceled under 30-day guarantee"
+      },
+      {
+        "id": "sub_tyrell",
+        "object": "subscription",
+        "customer": "cus_tyrell",
+        "status": "active"
+      },
+      {
+        "id": "sub_umbrella",
+        "object": "subscription",
+        "customer": "cus_umbrella",
+        "status": "active"
+      },
+      {
+        "id": "sub_vandelay",
+        "object": "subscription",
+        "customer": "cus_vandelay",
+        "status": "active"
+      },
+      {
+        "id": "sub_vector",
+        "object": "subscription",
+        "customer": "cus_vector",
+        "status": "active"
+      },
+      {
+        "id": "sub_waypoint",
+        "object": "subscription",
+        "customer": "cus_waypoint",
+        "status": "active"
+      },
+      {
+        "id": "sub_weyland",
+        "object": "subscription",
+        "customer": "cus_weyland",
+        "status": "active"
       }
     ]
   }

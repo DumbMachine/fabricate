@@ -8,14 +8,14 @@ sidebar:
 import compatibility from "../_generated/stripe.compatibility.json";
 import example from "../_generated/stripe-list-customers.json";
 
-Fabricate ships a Stripe v1 resource with a local API driven by the official Stripe OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Stripe environment seeds the walkthrough scenario.
+Fabricate ships a Stripe v1 resource with a local API driven by the official Stripe OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Stripe environment seeds a SaaS-sized billing catalog (customers, invoices, charges, subscriptions) plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
 
 ## Scenarios
 
 | Scenario | What it gives you |
 | --- | --- |
 | `stripe.minimal.v1` | Empty Stripe state for a clean test. |
-| `stripe.acme-customers.v1` | Northwind, Contoso, and Helix Bio billing customers. |
+| `stripe.acme-customers.v1` | Acme billing ledger: customers, invoices, charges, subscriptions, products. Needles: Northwind `cus_northwind` / INV-4812 ($1,240 duplicate), Contoso 380 seats, TinyShop 30-day refund, Fabrikam SCIM. |
 
 ## Integration options
 
