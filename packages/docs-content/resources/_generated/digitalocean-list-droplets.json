@@ -8,30 +8,232 @@
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.digitalocean.com/v2/droplets",
   "output": [
     {
+      "id": "droplet_analytics",
+      "name": "acme-analytics",
+      "region": "nyc3",
+      "size": "s-4vcpu-8gb",
+      "status": "active",
+      "tags": [
+        "fernworks-csv"
+      ]
+    },
+    {
       "id": "droplet_api",
       "name": "acme-api",
       "region": "nyc1",
       "size": "s-2vcpu-2gb",
+      "status": "active",
+      "tags": [
+        "api",
+        "contoso-sso"
+      ]
+    },
+    {
+      "id": "droplet_auth",
+      "name": "acme-auth",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active",
+      "tags": [
+        "contoso-sso"
+      ]
+    },
+    {
+      "id": "droplet_backup",
+      "name": "acme-backup",
+      "region": "nyc3",
+      "size": "s-1vcpu-1gb",
+      "status": "off"
+    },
+    {
+      "id": "droplet_bastion",
+      "name": "acme-bastion",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
       "status": "active"
+    },
+    {
+      "id": "droplet_billing",
+      "name": "acme-billing",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active",
+      "tags": [
+        "inv-4812"
+      ]
+    },
+    {
+      "id": "droplet_checkout",
+      "name": "acme-checkout",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active",
+      "tags": [
+        "checkout-reliability"
+      ]
+    },
+    {
+      "id": "droplet_ci",
+      "name": "acme-ci",
+      "region": "nyc3",
+      "size": "s-2vcpu-4gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_dns",
+      "name": "acme-dns",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "active",
+      "tags": [
+        "adatum"
+      ]
+    },
+    {
+      "id": "droplet_eu",
+      "name": "acme-eu",
+      "region": "ams3",
+      "size": "s-2vcpu-2gb",
+      "status": "active",
+      "tags": [
+        "contoso-eu"
+      ]
+    },
+    {
+      "id": "droplet_hooks",
+      "name": "acme-hooks",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "active",
+      "tags": [
+        "laketech"
+      ]
+    },
+    {
+      "id": "droplet_keys",
+      "name": "acme-keys",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "active",
+      "tags": [
+        "brightpath"
+      ]
+    },
+    {
+      "id": "droplet_logs",
+      "name": "acme-logs",
+      "region": "nyc3",
+      "size": "s-2vcpu-4gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_metrics",
+      "name": "acme-metrics",
+      "region": "nyc3",
+      "size": "s-2vcpu-2gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_ml",
+      "name": "acme-ml",
+      "region": "sfo3",
+      "size": "s-4vcpu-8gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_nat",
+      "name": "acme-nat",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_queue",
+      "name": "acme-queue",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_redis",
+      "name": "acme-redis",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_sandbox",
+      "name": "acme-sandbox",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "off"
+    },
+    {
+      "id": "droplet_scim",
+      "name": "acme-scim",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active",
+      "tags": [
+        "fabrikam"
+      ]
+    },
+    {
+      "id": "droplet_search",
+      "name": "acme-search",
+      "region": "nyc3",
+      "size": "s-4vcpu-8gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_staging",
+      "name": "acme-staging",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_status",
+      "name": "acme-status",
+      "region": "nyc3",
+      "size": "s-1vcpu-1gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_tinyshop",
+      "name": "tinyshop-archive",
+      "region": "nyc3",
+      "size": "s-1vcpu-1gb",
+      "status": "off",
+      "tags": [
+        "tinyshop"
+      ]
     },
     {
       "id": "droplet_web",
       "name": "acme-web",
       "region": "nyc1",
       "size": "s-1vcpu-1gb",
-      "status": "active"
+      "status": "active",
+      "tags": [
+        "web",
+        "checkout-reliability"
+      ]
     },
     {
       "id": "droplet_worker",
       "name": "acme-worker",
       "region": "nyc1",
       "size": "s-1vcpu-1gb",
-      "status": "off"
+      "status": "off",
+      "tags": [
+        "webhooks"
+      ]
     }
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:293d4108cdb6b01d35e0766abdb87e137c8fe252a0c9ea5fcda3591b953aea31",
+    "digest": "sha256:2b66c6a86ae59ca8da85c3ede8189606298b32554ceda653b4c59f3f83e3360f",
     "roots": [
       {
         "path": "cli/run.go",
@@ -47,7 +249,7 @@
       },
       {
         "path": "environments/acme-digitalocean.yaml",
-        "digest": "sha256:955d8e8d020ee3ff8ca4b370fee235f4be8832bc5b4532de0fe3bd6aebc86746"
+        "digest": "sha256:b8b0ec568a1368632dd3c91c706aae074dcf7229ff74cd342d33ffa5151bcf79"
       },
       {
         "path": "httpresource",
@@ -62,8 +264,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
         "path": "resources/digitalocean",
-        "digest": "sha256:82459c9b3701444d95863cedaab1d7b15f19dd378647e0582a97c8db88bc8a72"
+        "digest": "sha256:7b330454dc5fef5b4f366c8f45ff2d01cd9d7017fa40dc88dff3ebf194dc95b0"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
       },
       {
         "path": "scenario",
