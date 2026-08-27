@@ -1,11 +1,10 @@
 # Stripe OpenAPI source
 
-Curated Fabricate contract: `openapi.yaml`.
+`openapi.json` is the unmodified official Stripe REST OpenAPI 3.0.0 document
+from `https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json` retrieved 2026-08-27.
 
-Official source (not vendored in git):
-
-- URL: https://github.com/stripe/openapi
+- Source: https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json
+- Declared version: `vendor`
 - SHA-256: `44dba30c9226fe6b3650a8860cfbafac46ce8d5d6cf37728a84ee59294974687`
 
-The stored document is a curated OpenAPI 3.0.3 subset of the implemented
-operation IDs. oapi-codegen compiles a prepared copy of those operations.
+The running server implements every operation in this document.
