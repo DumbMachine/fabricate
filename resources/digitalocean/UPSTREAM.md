@@ -1,11 +1,10 @@
 # DigitalOcean OpenAPI source
 
-Curated Fabricate contract: `openapi.yaml`.
+`openapi.yaml` is the unmodified official DigitalOcean REST OpenAPI 3.0.0 document
+from `https://api-engineering.nyc3.digitaloceanspaces.com/spec-ci/DigitalOcean-public.v2.yaml` retrieved 2026-08-27.
 
-Official source (not vendored in git):
+- Source: https://api-engineering.nyc3.digitaloceanspaces.com/spec-ci/DigitalOcean-public.v2.yaml
+- Declared version: `2.0`
+- SHA-256: `d3b0fd48d3920c390d9281936a9f6f7acd965884ec165ad04e1cb1fdcaf5debe`
 
-- URL: https://raw.githubusercontent.com/digitalocean/openapi/main/specification/DigitalOcean-public.v2.yaml
-- SHA-256: `retrieved 2026-08-27; curated subset of /v2/droplets`
-
-The stored document is a curated OpenAPI 3.0.3 subset of the implemented
-operation IDs. oapi-codegen compiles a prepared copy of those operations.
+The running server implements every operation in this document.
