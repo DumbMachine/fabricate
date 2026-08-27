@@ -28,7 +28,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:5a1a6cc9b9fa99abccaf6ef3fe6637762b5b107b6b4a49fe9b5881df93ee76ec",
+    "digest": "sha256:ab8172ed2438aa0c255ae67b4f911fe4d6147cdfc1a7c1aa02dcc18a695ec72c",
     "roots": [
       {
         "path": "cli/run.go",
@@ -48,7 +48,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/sentry-list-projects.json",
@@ -60,7 +60,7 @@
       },
       {
         "path": "resources/sentry",
-        "digest": "sha256:cde474cf5743784eaad825aca73f54e17977bd7a0fbf6097548fca52860e92ca"
+        "digest": "sha256:a2d09f12019bc4ddc732745504118526cbde6cb41275b7e11d4a3c7a960dffe5"
       },
       {
         "path": "scenario",
