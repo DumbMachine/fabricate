@@ -8,14 +8,14 @@ sidebar:
 import compatibility from "../_generated/cloudflare.compatibility.json";
 import example from "../_generated/cloudflare-list-zones.json";
 
-Fabricate ships a Cloudflare v1 resource with a local API driven by the official Cloudflare OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Cloudflare environment seeds the walkthrough scenario.
+Fabricate ships a Cloudflare v1 resource with a local API driven by the official Cloudflare OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Cloudflare environment seeds a SaaS-sized DNS catalog (product zones, customer custom hostnames, records, workers) plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
 
 ## Scenarios
 
 | Scenario | What it gives you |
 | --- | --- |
 | `cloudflare.minimal.v1` | Empty Cloudflare state for a clean test. |
-| `cloudflare.acme-zones.v1` | Acme DNS zones for acme.example, docs, and web. |
+| `cloudflare.acme-zones.v1` | Acme edge estate: product zones, customer custom hostnames, DNS records, workers, and KV. Needles: `acme.example`, checkout / `auth.acme.example` (Contoso SSO), INV-4812 billing, TXT `acme-domain-verification=adatum-7f31`, LakeTech `hooks.acme.example`. |
 
 ## Integration options
 

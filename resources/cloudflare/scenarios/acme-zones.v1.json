@@ -5,24 +5,2550 @@
   "$resource": "cloudflare",
   "$resourceVersion": "v1",
   "state": {
+    "accounts": [
+      {
+        "id": "acct_acme",
+        "name": "Acme",
+        "type": "standard"
+      },
+      {
+        "id": "acct_acme_eu",
+        "name": "Acme EU",
+        "type": "standard"
+      }
+    ],
+    "dns_records": [
+      {
+        "id": "dns_acme_apex",
+        "zone_id": "zone_acme",
+        "type": "A",
+        "name": "acme.example",
+        "content": "203.0.113.10",
+        "ttl": 300
+      },
+      {
+        "id": "dns_acme_www",
+        "zone_id": "zone_acme",
+        "type": "CNAME",
+        "name": "www",
+        "content": "acme-web.vercel-dns.com",
+        "ttl": 300
+      },
+      {
+        "id": "dns_adatum_txt",
+        "zone_id": "zone_acme",
+        "type": "TXT",
+        "name": "_acme-challenge.adatum",
+        "content": "acme-domain-verification=adatum-7f31",
+        "ttl": 120,
+        "comment": "Owen Brooks / Adatum domain verification"
+      },
+      {
+        "id": "dns_adatum_zone_txt",
+        "zone_id": "zone_adatum",
+        "type": "TXT",
+        "name": "@",
+        "content": "acme-domain-verification=adatum-7f31",
+        "ttl": 120,
+        "comment": "Pending Adatum custom hostname"
+      },
+      {
+        "id": "dns_auth_sso",
+        "zone_id": "zone_auth",
+        "type": "CNAME",
+        "name": "auth.acme.example",
+        "content": "acme-api.vercel-dns.com",
+        "ttl": 60,
+        "comment": "Contoso SSO contoso-eu SAML callback"
+      },
+      {
+        "id": "dns_billing_mx",
+        "zone_id": "zone_billing",
+        "type": "MX",
+        "name": "billing.acme.example",
+        "content": "mail.acme.example",
+        "priority": 10,
+        "ttl": 3600,
+        "comment": "INV-4812 receipts"
+      },
+      {
+        "id": "dns_checkout",
+        "zone_id": "zone_checkout",
+        "type": "CNAME",
+        "name": "checkout.acme.example",
+        "content": "acme-web.vercel-dns.com",
+        "ttl": 60,
+        "comment": "checkout reliability incident front door"
+      },
+      {
+        "id": "dns_fill_001",
+        "zone_id": "zone_acme",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.20",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_002",
+        "zone_id": "zone_acme",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_003",
+        "zone_id": "zone_acme",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_004",
+        "zone_id": "zone_docs",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.23",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_005",
+        "zone_id": "zone_docs",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_006",
+        "zone_id": "zone_docs",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_007",
+        "zone_id": "zone_web",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.26",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_008",
+        "zone_id": "zone_web",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_009",
+        "zone_id": "zone_web",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_010",
+        "zone_id": "zone_api",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.29",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_011",
+        "zone_id": "zone_api",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_012",
+        "zone_id": "zone_api",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_013",
+        "zone_id": "zone_status",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.32",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_014",
+        "zone_id": "zone_status",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_015",
+        "zone_id": "zone_status",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_016",
+        "zone_id": "zone_cdn",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.35",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_017",
+        "zone_id": "zone_cdn",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_018",
+        "zone_id": "zone_cdn",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_019",
+        "zone_id": "zone_staging",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.38",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_020",
+        "zone_id": "zone_staging",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_021",
+        "zone_id": "zone_staging",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_022",
+        "zone_id": "zone_sandbox",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.41",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_023",
+        "zone_id": "zone_sandbox",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_024",
+        "zone_id": "zone_sandbox",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_025",
+        "zone_id": "zone_auth",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.44",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_026",
+        "zone_id": "zone_auth",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_027",
+        "zone_id": "zone_auth",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_028",
+        "zone_id": "zone_checkout",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.47",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_029",
+        "zone_id": "zone_checkout",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_030",
+        "zone_id": "zone_checkout",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_031",
+        "zone_id": "zone_billing",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.50",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_032",
+        "zone_id": "zone_billing",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_033",
+        "zone_id": "zone_billing",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_034",
+        "zone_id": "zone_hooks",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.53",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_035",
+        "zone_id": "zone_hooks",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_036",
+        "zone_id": "zone_hooks",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_037",
+        "zone_id": "zone_eu",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.56",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_038",
+        "zone_id": "zone_eu",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_039",
+        "zone_id": "zone_eu",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_040",
+        "zone_id": "zone_preview",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.59",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_041",
+        "zone_id": "zone_preview",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_042",
+        "zone_id": "zone_preview",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_043",
+        "zone_id": "zone_shop",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.62",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_044",
+        "zone_id": "zone_shop",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_045",
+        "zone_id": "zone_shop",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_046",
+        "zone_id": "zone_images",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.65",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_047",
+        "zone_id": "zone_images",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_048",
+        "zone_id": "zone_images",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_049",
+        "zone_id": "zone_ws",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.68",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_050",
+        "zone_id": "zone_ws",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_051",
+        "zone_id": "zone_ws",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_052",
+        "zone_id": "zone_admin",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.71",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_053",
+        "zone_id": "zone_admin",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_054",
+        "zone_id": "zone_admin",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_055",
+        "zone_id": "zone_internal",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.74",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_056",
+        "zone_id": "zone_internal",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_057",
+        "zone_id": "zone_internal",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_058",
+        "zone_id": "zone_dev",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.77",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_059",
+        "zone_id": "zone_dev",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_060",
+        "zone_id": "zone_dev",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_061",
+        "zone_id": "zone_northwind",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.80",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_062",
+        "zone_id": "zone_northwind",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_063",
+        "zone_id": "zone_northwind",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_064",
+        "zone_id": "zone_contoso",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.83",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_065",
+        "zone_id": "zone_contoso",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_066",
+        "zone_id": "zone_contoso",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_067",
+        "zone_id": "zone_fernworks",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.86",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_068",
+        "zone_id": "zone_fernworks",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_069",
+        "zone_id": "zone_fernworks",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_070",
+        "zone_id": "zone_adatum",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.89",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_071",
+        "zone_id": "zone_adatum",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_072",
+        "zone_id": "zone_adatum",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_073",
+        "zone_id": "zone_laketech",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.92",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_074",
+        "zone_id": "zone_laketech",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_075",
+        "zone_id": "zone_laketech",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_076",
+        "zone_id": "zone_tinyshop",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.95",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_077",
+        "zone_id": "zone_tinyshop",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_078",
+        "zone_id": "zone_tinyshop",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_079",
+        "zone_id": "zone_brightpath",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.98",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_080",
+        "zone_id": "zone_brightpath",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_081",
+        "zone_id": "zone_brightpath",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_082",
+        "zone_id": "zone_fabrikam",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.101",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_083",
+        "zone_id": "zone_fabrikam",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_084",
+        "zone_id": "zone_fabrikam",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_085",
+        "zone_id": "zone_helix",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.104",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_086",
+        "zone_id": "zone_helix",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_087",
+        "zone_id": "zone_helix",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_088",
+        "zone_id": "zone_orbiter",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.107",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_089",
+        "zone_id": "zone_orbiter",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_090",
+        "zone_id": "zone_orbiter",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_091",
+        "zone_id": "zone_globex",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.110",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_092",
+        "zone_id": "zone_globex",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_093",
+        "zone_id": "zone_globex",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_094",
+        "zone_id": "zone_initech",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.113",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_095",
+        "zone_id": "zone_initech",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_096",
+        "zone_id": "zone_initech",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_097",
+        "zone_id": "zone_pioneer",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.116",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_098",
+        "zone_id": "zone_pioneer",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_099",
+        "zone_id": "zone_pioneer",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_100",
+        "zone_id": "zone_redwood",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.119",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_101",
+        "zone_id": "zone_redwood",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_102",
+        "zone_id": "zone_redwood",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_103",
+        "zone_id": "zone_cobalt",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.122",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_104",
+        "zone_id": "zone_cobalt",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_105",
+        "zone_id": "zone_cobalt",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_106",
+        "zone_id": "zone_meadow",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.125",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_107",
+        "zone_id": "zone_meadow",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_108",
+        "zone_id": "zone_meadow",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_109",
+        "zone_id": "zone_quartz",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.128",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_110",
+        "zone_id": "zone_quartz",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_111",
+        "zone_id": "zone_quartz",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_112",
+        "zone_id": "zone_atlas",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.131",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_113",
+        "zone_id": "zone_atlas",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_114",
+        "zone_id": "zone_atlas",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_115",
+        "zone_id": "zone_harbor",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.134",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_116",
+        "zone_id": "zone_harbor",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_117",
+        "zone_id": "zone_harbor",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_118",
+        "zone_id": "zone_kiln",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.137",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_119",
+        "zone_id": "zone_kiln",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_120",
+        "zone_id": "zone_kiln",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_121",
+        "zone_id": "zone_lumen",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.140",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_122",
+        "zone_id": "zone_lumen",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_123",
+        "zone_id": "zone_lumen",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_124",
+        "zone_id": "zone_sienna",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.143",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_125",
+        "zone_id": "zone_sienna",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_126",
+        "zone_id": "zone_sienna",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_127",
+        "zone_id": "zone_vector",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.146",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_128",
+        "zone_id": "zone_vector",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_129",
+        "zone_id": "zone_vector",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_130",
+        "zone_id": "zone_waypoint",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.149",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_131",
+        "zone_id": "zone_waypoint",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_132",
+        "zone_id": "zone_waypoint",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_133",
+        "zone_id": "zone_nimbus",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.152",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_134",
+        "zone_id": "zone_nimbus",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_135",
+        "zone_id": "zone_nimbus",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_136",
+        "zone_id": "zone_pebble",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.155",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_137",
+        "zone_id": "zone_pebble",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_138",
+        "zone_id": "zone_pebble",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_139",
+        "zone_id": "zone_canyon",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.158",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_140",
+        "zone_id": "zone_canyon",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_141",
+        "zone_id": "zone_canyon",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_142",
+        "zone_id": "zone_driftwood",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.161",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_143",
+        "zone_id": "zone_driftwood",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_144",
+        "zone_id": "zone_driftwood",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_145",
+        "zone_id": "zone_northstar",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.164",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_146",
+        "zone_id": "zone_northstar",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_147",
+        "zone_id": "zone_northstar",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_148",
+        "zone_id": "zone_umbrella",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.167",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_149",
+        "zone_id": "zone_umbrella",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_150",
+        "zone_id": "zone_umbrella",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_151",
+        "zone_id": "zone_soylent",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.170",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_152",
+        "zone_id": "zone_soylent",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_153",
+        "zone_id": "zone_soylent",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_154",
+        "zone_id": "zone_hooli",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.173",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_155",
+        "zone_id": "zone_hooli",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_156",
+        "zone_id": "zone_hooli",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_157",
+        "zone_id": "zone_massive",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.176",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_158",
+        "zone_id": "zone_massive",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_159",
+        "zone_id": "zone_massive",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_160",
+        "zone_id": "zone_aperture",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.179",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_161",
+        "zone_id": "zone_aperture",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_162",
+        "zone_id": "zone_aperture",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_163",
+        "zone_id": "zone_blackmesa",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.182",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_164",
+        "zone_id": "zone_blackmesa",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_165",
+        "zone_id": "zone_blackmesa",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_166",
+        "zone_id": "zone_cyberdyne",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.185",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_167",
+        "zone_id": "zone_cyberdyne",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_168",
+        "zone_id": "zone_cyberdyne",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_169",
+        "zone_id": "zone_tyrell",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.188",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_170",
+        "zone_id": "zone_tyrell",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_171",
+        "zone_id": "zone_tyrell",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_172",
+        "zone_id": "zone_weyland",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.191",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_173",
+        "zone_id": "zone_weyland",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_174",
+        "zone_id": "zone_weyland",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_175",
+        "zone_id": "zone_nakatomi",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.194",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_176",
+        "zone_id": "zone_nakatomi",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_177",
+        "zone_id": "zone_nakatomi",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_178",
+        "zone_id": "zone_ingen",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.197",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_179",
+        "zone_id": "zone_ingen",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_180",
+        "zone_id": "zone_ingen",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_181",
+        "zone_id": "zone_vandelay",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.200",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_182",
+        "zone_id": "zone_vandelay",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_183",
+        "zone_id": "zone_vandelay",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_184",
+        "zone_id": "zone_dunder",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.203",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_185",
+        "zone_id": "zone_dunder",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_186",
+        "zone_id": "zone_dunder",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_187",
+        "zone_id": "zone_bluth",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.206",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_188",
+        "zone_id": "zone_bluth",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_189",
+        "zone_id": "zone_bluth",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_190",
+        "zone_id": "zone_sterling",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.209",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_191",
+        "zone_id": "zone_sterling",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_192",
+        "zone_id": "zone_sterling",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_193",
+        "zone_id": "zone_piedpiper",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.212",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_194",
+        "zone_id": "zone_piedpiper",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_195",
+        "zone_id": "zone_piedpiper",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_196",
+        "zone_id": "zone_raviga",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.215",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_197",
+        "zone_id": "zone_raviga",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_198",
+        "zone_id": "zone_raviga",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_199",
+        "zone_id": "zone_prestige",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.218",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_200",
+        "zone_id": "zone_prestige",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_201",
+        "zone_id": "zone_prestige",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_202",
+        "zone_id": "zone_lospollos",
+        "type": "A",
+        "name": "origin",
+        "content": "203.0.113.21",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_203",
+        "zone_id": "zone_lospollos",
+        "type": "TXT",
+        "name": "_spf",
+        "content": "v=spf1 include:_spf.acme.example ~all",
+        "ttl": 300
+      },
+      {
+        "id": "dns_fill_204",
+        "zone_id": "zone_lospollos",
+        "type": "CNAME",
+        "name": "cdn",
+        "content": "cdn.acme.example",
+        "ttl": 300
+      },
+      {
+        "id": "dns_hooks",
+        "zone_id": "zone_hooks",
+        "type": "CNAME",
+        "name": "hooks.acme.example",
+        "content": "acme-webhooks.val.town",
+        "ttl": 300,
+        "comment": "LakeTech webhook retries"
+      },
+      {
+        "id": "dns_northwind",
+        "zone_id": "zone_northwind",
+        "type": "CNAME",
+        "name": "northwind.acme.example",
+        "content": "acme-web.vercel-dns.com",
+        "ttl": 300,
+        "comment": "Northwind billing portal INV-4812"
+      }
+    ],
+    "namespaces": [
+      {
+        "id": "kv_billing",
+        "title": "inv-4812-receipts",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_checkout",
+        "title": "checkout-reliability",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_csv",
+        "title": "fernworks-export",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_dns",
+        "title": "adatum-txt",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_eu",
+        "title": "eu-residency",
+        "account_id": "acct_acme_eu"
+      },
+      {
+        "id": "kv_flags",
+        "title": "edge-flags",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_images",
+        "title": "image-meta",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_keys",
+        "title": "brightpath-keys",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_scim",
+        "title": "fabrikam-scim",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_sessions",
+        "title": "edge-sessions",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_sso",
+        "title": "contoso-sso",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "kv_webhooks",
+        "title": "laketech-deliveries",
+        "account_id": "acct_acme"
+      }
+    ],
+    "scripts": [
+      {
+        "id": "api-cache",
+        "name": "api-cache",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "bot-fight",
+        "name": "bot-fight",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "checkout-canary",
+        "name": "checkout-canary",
+        "account_id": "acct_acme",
+        "description": "Checkout reliability canary on checkout.acme.example."
+      },
+      {
+        "id": "csv-probe",
+        "name": "csv-probe",
+        "account_id": "acct_acme",
+        "description": "fernworks-prod empty export probe."
+      },
+      {
+        "id": "dns-recheck",
+        "name": "dns-recheck",
+        "account_id": "acct_acme",
+        "description": "Adatum TXT acme-domain-verification=adatum-7f31."
+      },
+      {
+        "id": "eu-router",
+        "name": "eu-router",
+        "account_id": "acct_acme_eu"
+      },
+      {
+        "id": "image-resize",
+        "name": "image-resize",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "invoice-headers",
+        "name": "invoice-headers",
+        "account_id": "acct_acme",
+        "description": "INV-4812 receipt header rewrite."
+      },
+      {
+        "id": "key-overlap",
+        "name": "key-overlap",
+        "account_id": "acct_acme",
+        "description": "BrightPath second API key header allowlist."
+      },
+      {
+        "id": "nps-edge",
+        "name": "nps-edge",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "og-image",
+        "name": "og-image",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "preview-auth",
+        "name": "preview-auth",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "saml-debug",
+        "name": "saml-debug",
+        "account_id": "acct_acme",
+        "description": "Contoso contoso-eu callback traces at auth.acme.example."
+      },
+      {
+        "id": "scim-audit",
+        "name": "scim-audit",
+        "account_id": "acct_acme",
+        "description": "Fabrikam req_7Q4K2 group-change logger."
+      },
+      {
+        "id": "status-edge",
+        "name": "status-edge",
+        "account_id": "acct_acme"
+      },
+      {
+        "id": "webhook-retry",
+        "name": "webhook-retry",
+        "account_id": "acct_acme",
+        "description": "LakeTech exponential backoff. Ben Okafor."
+      }
+    ],
     "zones": [
       {
         "id": "zone_acme",
         "name": "acme.example",
         "status": "active",
-        "type": "full"
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Production apex. Checkout reliability and INV-4812 billing portal live here."
+      },
+      {
+        "id": "zone_adatum",
+        "name": "adatum.acme.example",
+        "status": "pending",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Adatum custom hostname pending TXT acme-domain-verification=adatum-7f31. Owen Brooks."
+      },
+      {
+        "id": "zone_admin",
+        "name": "admin.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_aperture",
+        "name": "aperture.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Aperture Science."
+      },
+      {
+        "id": "zone_api",
+        "name": "api.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_atlas",
+        "name": "atlas.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Atlas Civic."
+      },
+      {
+        "id": "zone_auth",
+        "name": "auth.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "SSO / SAML callback host for Contoso contoso-eu. Mei Chen, 380 users."
+      },
+      {
+        "id": "zone_billing",
+        "name": "billing.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Billing portal; Northwind INV-4812 receipts. Dana Whitfield."
+      },
+      {
+        "id": "zone_blackmesa",
+        "name": "blackmesa.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Black Mesa."
+      },
+      {
+        "id": "zone_bluth",
+        "name": "bluth.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Bluth Company."
+      },
+      {
+        "id": "zone_brightpath",
+        "name": "brightpath.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "BrightPath API hostname; overlapping keys."
+      },
+      {
+        "id": "zone_canyon",
+        "name": "canyon.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Canyon Insurance."
+      },
+      {
+        "id": "zone_cdn",
+        "name": "cdn.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_checkout",
+        "name": "checkout.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Checkout reliability patched host."
+      },
+      {
+        "id": "zone_cobalt",
+        "name": "cobalt.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Cobalt Health."
+      },
+      {
+        "id": "zone_contoso",
+        "name": "contoso.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Contoso custom hostname / SSO contoso-eu."
+      },
+      {
+        "id": "zone_cyberdyne",
+        "name": "cyberdyne.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Cyberdyne Systems."
+      },
+      {
+        "id": "zone_dev",
+        "name": "dev.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
       },
       {
         "id": "zone_docs",
         "name": "docs.acme.example",
         "status": "active",
-        "type": "full"
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_driftwood",
+        "name": "driftwood.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Driftwood Media."
+      },
+      {
+        "id": "zone_dunder",
+        "name": "dunder.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Dunder Mifflin."
+      },
+      {
+        "id": "zone_eu",
+        "name": "eu.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme_eu"
+        }
+      },
+      {
+        "id": "zone_fabrikam",
+        "name": "fabrikam.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Fabrikam SCIM / req_7Q4K2."
+      },
+      {
+        "id": "zone_fernworks",
+        "name": "fernworks.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Fernworks-prod custom hostname. Priya Nair CSV."
+      },
+      {
+        "id": "zone_globex",
+        "name": "globex.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Globex."
+      },
+      {
+        "id": "zone_harbor",
+        "name": "harbor.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Harbor Bank."
+      },
+      {
+        "id": "zone_helix",
+        "name": "helix.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Helix Bio."
+      },
+      {
+        "id": "zone_hooks",
+        "name": "hooks.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Customer webhooks; LakeTech retries. Ben Okafor."
+      },
+      {
+        "id": "zone_hooli",
+        "name": "hooli.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Hooli."
+      },
+      {
+        "id": "zone_images",
+        "name": "images.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_ingen",
+        "name": "ingen.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for InGen."
+      },
+      {
+        "id": "zone_initech",
+        "name": "initech.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Initech."
+      },
+      {
+        "id": "zone_internal",
+        "name": "internal.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_kiln",
+        "name": "kiln.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Kiln Studio."
+      },
+      {
+        "id": "zone_laketech",
+        "name": "laketech.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "LakeTech webhook publisher hostname."
+      },
+      {
+        "id": "zone_lospollos",
+        "name": "lospollos.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Los Pollos Hermanos."
+      },
+      {
+        "id": "zone_lumen",
+        "name": "lumen.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Lumen Schools."
+      },
+      {
+        "id": "zone_massive",
+        "name": "massive.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Massive Dynamic."
+      },
+      {
+        "id": "zone_meadow",
+        "name": "meadow.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Meadow Supply."
+      },
+      {
+        "id": "zone_nakatomi",
+        "name": "nakatomi.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Nakatomi Trading."
+      },
+      {
+        "id": "zone_nimbus",
+        "name": "nimbus.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Nimbus Weather."
+      },
+      {
+        "id": "zone_northstar",
+        "name": "northstar.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Northstar Logistics."
+      },
+      {
+        "id": "zone_northwind",
+        "name": "northwind.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Northwind Traders custom hostname. INV-4812."
+      },
+      {
+        "id": "zone_orbiter",
+        "name": "orbiter.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Orbiter."
+      },
+      {
+        "id": "zone_pebble",
+        "name": "pebble.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Pebble Pay."
+      },
+      {
+        "id": "zone_piedpiper",
+        "name": "piedpiper.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Pied Piper."
+      },
+      {
+        "id": "zone_pioneer",
+        "name": "pioneer.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Pioneer Freight."
+      },
+      {
+        "id": "zone_prestige",
+        "name": "prestige.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Prestige Worldwide."
+      },
+      {
+        "id": "zone_preview",
+        "name": "preview.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_quartz",
+        "name": "quartz.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Quartz Analytics."
+      },
+      {
+        "id": "zone_raviga",
+        "name": "raviga.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Raviga Capital."
+      },
+      {
+        "id": "zone_redwood",
+        "name": "redwood.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Redwood Labs."
+      },
+      {
+        "id": "zone_sandbox",
+        "name": "sandbox.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_shop",
+        "name": "shop.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_sienna",
+        "name": "sienna.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Sienna Retail."
+      },
+      {
+        "id": "zone_soylent",
+        "name": "soylent.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Soylent Corp."
+      },
+      {
+        "id": "zone_staging",
+        "name": "staging.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_status",
+        "name": "status.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
+      },
+      {
+        "id": "zone_sterling",
+        "name": "sterling.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Sterling Cooper."
+      },
+      {
+        "id": "zone_tinyshop",
+        "name": "tinyshop.acme.example",
+        "status": "moved",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "TinyShop workspace paused after 30-day refund."
+      },
+      {
+        "id": "zone_tyrell",
+        "name": "tyrell.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Tyrell Corporation."
+      },
+      {
+        "id": "zone_umbrella",
+        "name": "umbrella.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Umbrella Labs."
+      },
+      {
+        "id": "zone_vandelay",
+        "name": "vandelay.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Vandelay Industries."
+      },
+      {
+        "id": "zone_vector",
+        "name": "vector.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Vector Robotics."
+      },
+      {
+        "id": "zone_waypoint",
+        "name": "waypoint.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Waypoint Travel."
       },
       {
         "id": "zone_web",
         "name": "web.acme.example",
         "status": "active",
-        "type": "full"
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "acme-web front door; checkout reliability incident."
+      },
+      {
+        "id": "zone_weyland",
+        "name": "weyland.customers.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Weyland-Yutani."
+      },
+      {
+        "id": "zone_ws",
+        "name": "ws.acme.example",
+        "status": "active",
+        "type": "full",
+        "account": {
+          "id": "acct_acme"
+        }
       }
     ]
   }
