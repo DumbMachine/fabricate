@@ -57,6 +57,9 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.github.com` locally. Other hosts are forwarded unchanged.
 
+The first surface is repository issues only. It does not emulate Git smart HTTP,
+clone, fetch, push, pull-request merges, Actions, or file mutation.
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
