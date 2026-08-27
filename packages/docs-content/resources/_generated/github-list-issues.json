@@ -11,6 +11,8 @@
       "html_url": "https://github.com/acme/web/issues/1",
       "id": "1",
       "number": "1",
+      "owner": "acme",
+      "repo": "web",
       "state": "open",
       "title": "Checkout reliability"
     },
@@ -18,6 +20,8 @@
       "html_url": "https://github.com/acme/web/issues/2",
       "id": "2",
       "number": "2",
+      "owner": "acme",
+      "repo": "web",
       "state": "open",
       "title": "Contoso SSO login loop"
     },
@@ -25,13 +29,15 @@
       "html_url": "https://github.com/acme/web/issues/3",
       "id": "3",
       "number": "3",
+      "owner": "acme",
+      "repo": "web",
       "state": "closed",
       "title": "INV-4812 receipt mismatch"
     }
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:7665d65c7b7953401d517d03511fe0cecc33113bf2ee34cd684398b63fbe72e0",
+    "digest": "sha256:836b99e4ad1351c738c77393cd2fd326713d31029a94c4592b0c902d062672e4",
     "roots": [
       {
         "path": "cli/run.go",
@@ -51,7 +57,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/github-list-issues.json",
@@ -63,7 +69,7 @@
       },
       {
         "path": "resources/github",
-        "digest": "sha256:a9bd1d688dc7c8e94e3484473ba6358106841e86517518999406162773ba5d77"
+        "digest": "sha256:948e3f83dfe71cfbce1dd8dd9fc417c5cafa9b6070040a2226593907a68fcc69"
       },
       {
         "path": "scenario",
