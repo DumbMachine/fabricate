@@ -1,0 +1,14 @@
+{
+  "id": "valtown-list-vals",
+  "title": "List seeded vals",
+  "environment": "environments/acme-valtown.yaml",
+  "environmentLabel": "Acme Val Town",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/valtown-list-vals.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-valtown.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.val.town/v2/vals",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.val.town/v2/vals"
+  ]
+}

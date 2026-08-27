@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "vals"
+  ],
+  "properties": {
+    "vals": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

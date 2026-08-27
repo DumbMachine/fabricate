@@ -1,0 +1,26 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "valtown.acme-vals.v1",
+  "$resource": "valtown",
+  "$resourceVersion": "v1",
+  "state": {
+    "vals": [
+      {
+        "id": "val_billing",
+        "name": "acme-billing",
+        "privacy": "private"
+      },
+      {
+        "id": "val_docs",
+        "name": "acme-docs",
+        "privacy": "public"
+      },
+      {
+        "id": "val_webhooks",
+        "name": "acme-webhooks",
+        "privacy": "unlisted"
+      }
+    ]
+  }
+}

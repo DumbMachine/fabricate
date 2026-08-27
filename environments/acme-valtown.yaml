@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-valtown
+
+services:
+  valtown:
+    resource: valtown
+    scenario: valtown.acme-vals.v1
