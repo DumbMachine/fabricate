@@ -4,7 +4,22 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install install-dev test vet fmt check generate generate-check e2e gmail-sdk asana-curl hubspot-curl intercom-curl attio-curl pipedrive-curl close-curl resend-curl mailgun-curl sendgrid-curl mailchimp-curl verify clean start landing docs
+MAKE_TARGETS := build install install-dev test vet fmt check generate generate-check e2e conformance docs-examples verify clean start landing docs
+
+.PHONY: $(MAKE_TARGETS)
+
+# Extra goals are resource names: `make conformance gmail asana`,
+# `make docs-examples gmail`. Known targets are excluded so
+# `make docs-examples check` still runs `check`.
+RESOURCE_SELECTORS := $(filter-out $(MAKE_TARGETS),$(MAKECMDGOALS))
+
+ifneq ($(filter conformance docs-examples,$(MAKECMDGOALS)),)
+ifneq ($(RESOURCE_SELECTORS),)
+.PHONY: $(RESOURCE_SELECTORS)
+$(RESOURCE_SELECTORS):
+	@:
+endif
+endif
 
 # `make start` runs both public-site dev servers. Add `landing` or `docs` to
 # start just that app: `make start landing` or `make start docs`.
@@ -67,43 +82,30 @@ generate-check: generate
 e2e:
 	go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
-# Black-box Google APIs Node SDK conformance. The SDK is installed into a
-# disposable directory by the test script; it never enters this workspace.
-gmail-sdk:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-gmail-sdk-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-gmail-sdk.sh "$$tmp/fab"
+# Black-box official-client / curl conformance. Writes compatibility reports
+# into packages/docs-content/resources/_generated/. Default is every resource
+# with resources/<id>/conformance/{curl.sh and/or sdk.json}.
+# `make conformance gmail asana` limits to those resources.
+conformance:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-conformance-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; \
+	go build -o "$$tmp/fab" ./cmd/fab; \
+	go build -o "$$tmp/docsexamples" ./cmd/docsexamples; \
+	ids="$(RESOURCE_SELECTORS)"; \
+	if [ -z "$$ids" ]; then ids=$$(./scripts/test.sh --list); fi; \
+	if [ -z "$$ids" ]; then echo "conformance: no resources found" >&2; exit 1; fi; \
+	DOCSEXAMPLES_BIN="$$tmp/docsexamples" ./scripts/test.sh "$$tmp/fab" $$ids
 
-asana-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-asana-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-asana-curl.sh "$$tmp/fab"
+# Recapture dirty command snapshots against local environment manifests.
+# Default considers the full catalog and skips unchanged provenance.
+# `make docs-examples gmail asana` limits to those resources; unknown
+# names fail. Force every selected example: make docs-examples DOCS_EXAMPLES_FLAGS=--all
+docs-examples:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-docs-examples-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; \
+	go build -o "$$tmp/fab" ./cmd/fab; \
+	go build -o "$$tmp/docsexamples" ./cmd/docsexamples; \
+	"$$tmp/docsexamples" capture --repo "$(CURDIR)" --fab "$$tmp/fab" $(DOCS_EXAMPLES_FLAGS) $(foreach r,$(RESOURCE_SELECTORS),--resource $(r))
 
-hubspot-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-hubspot-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-hubspot-curl.sh "$$tmp/fab"
-
-intercom-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-intercom-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-intercom-curl.sh "$$tmp/fab"
-
-attio-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-attio-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-attio-curl.sh "$$tmp/fab"
-
-pipedrive-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-pipedrive-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-pipedrive-curl.sh "$$tmp/fab"
-
-close-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-close-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-close-curl.sh "$$tmp/fab"
-
-resend-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-resend-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-resend-curl.sh "$$tmp/fab"
-
-mailgun-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-mailgun-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-mailgun-curl.sh "$$tmp/fab"
-
-sendgrid-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-sendgrid-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-sendgrid-curl.sh "$$tmp/fab"
-
-mailchimp-curl:
-	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-mailchimp-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-mailchimp-curl.sh "$$tmp/fab"
-
-# HTTP-resource conformance belongs in root-module Go tests and each
-# resource's official-client proxy suite as it is brought back.
+# Unit tests plus container e2e. Resource clients are `make conformance`.
 verify: check e2e
 	@echo "verify: OK"
 

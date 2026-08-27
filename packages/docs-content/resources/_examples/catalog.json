@@ -1,0 +1,10 @@
+{
+  "sharedRoots": [
+    "cli/run.go",
+    "engine/http",
+    "environment",
+    "httpresource",
+    "requestlog",
+    "scenario"
+  ]
+}

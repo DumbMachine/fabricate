@@ -9,25 +9,21 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      gmail: ${{ steps.filter.outputs.gmail }}
-      asana: ${{ steps.filter.outputs.asana }}
-      hubspot: ${{ steps.filter.outputs.hubspot }}
-      intercom: ${{ steps.filter.outputs.intercom }}
-      attio: ${{ steps.filter.outputs.attio }}
-      pipedrive: ${{ steps.filter.outputs.pipedrive }}
-      close: ${{ steps.filter.outputs.close }}
-      resend: ${{ steps.filter.outputs.resend }}
-      mailgun: ${{ steps.filter.outputs.mailgun }}
-      sendgrid: ${{ steps.filter.outputs.sendgrid }}
-      mailchimp: ${{ steps.filter.outputs.mailchimp }}
+      docs_examples: ${{ steps.filter.outputs.docs_examples }}
+      resources: ${{ steps.matrix.outputs.resources }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - id: filter
         uses: dorny/paths-filter@v3
         with:
           filters: |
-            gmail:
-              - 'resources/gmail/**'
+            docs_examples:
+              - 'cmd/docsexamples/**'
+              - 'internal/docsexamples/**'
+              - 'packages/docs-content/resources/_examples/**'
+              - 'resources/**'
               - 'environments/**'
               - 'environment/**'
               - 'engine/http/**'
@@ -35,129 +31,18 @@ jobs:
               - 'requestlog/**'
               - 'scenario/**'
               - 'cli/run.go'
-              - 'scripts/test-gmail-sdk.sh'
               - 'Makefile'
               - '.github/workflows/ci.yml'
-            asana:
-              - 'resources/asana/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-asana-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            hubspot:
-              - 'resources/hubspot/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-hubspot-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            intercom:
-              - 'resources/intercom/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-intercom-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            attio:
-              - 'resources/attio/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-attio-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            pipedrive:
-              - 'resources/pipedrive/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-pipedrive-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            close:
-              - 'resources/close/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-close-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            resend:
-              - 'resources/resend/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-resend-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            mailgun:
-              - 'resources/mailgun/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-mailgun-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            sendgrid:
-              - 'resources/sendgrid/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-sendgrid-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
-            mailchimp:
-              - 'resources/mailchimp/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-mailchimp-curl.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
+      - id: matrix
+        name: Select changed conformance resources
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$base" ]; then
+            base="${{ github.event.before }}"
+          fi
+          ids=$(./scripts/test.sh --changed-since "$base")
+          json=$(printf '%s\n' "$ids" | python3 -c 'import json,sys; print(json.dumps([line.strip() for line in sys.stdin if line.strip()]))')
+          echo "resources=$json" >> "$GITHUB_OUTPUT"
 
   check:
     runs-on: ubuntu-latest
@@ -187,12 +72,14 @@ jobs:
       - name: end-to-end smoke (real containers)
         run: go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
-  gmail-sdk:
+  conformance:
     runs-on: ubuntu-latest
     needs: [check, changes]
-    if: needs.changes.outputs.gmail == 'true'
-    permissions:
-      contents: write
+    if: needs.changes.outputs.resources != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        resource: ${{ fromJSON(needs.changes.outputs.resources) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -201,244 +88,32 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Google APIs Node SDK conformance
-        run: make gmail-sdk
-      - name: Publish verified Gmail compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/gmail.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/gmail.compatibility.json
-          git commit -m "chore(compat): update Gmail verification"
-          git push
+      - name: Resource conformance
+        run: make conformance ${{ matrix.resource }}
+      - name: Compatibility snapshot is current
+        run: git diff --exit-code -- packages/docs-content/resources/_generated/${{ matrix.resource }}.compatibility.json
 
-  asana-curl:
+  docs-examples:
     runs-on: ubuntu-latest
     needs: [check, changes]
-    if: needs.changes.outputs.asana == 'true'
-    permissions:
-      contents: write
+    if: needs.changes.outputs.docs_examples == 'true'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: Asana HTTP API conformance
-        run: make asana-curl
-      - name: Publish verified Asana compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Capture dirty documented command output
         run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/asana.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/asana.compatibility.json
-          git commit -m "chore(compat): update Asana verification"
-          git push
-
-  hubspot-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.hubspot == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: HubSpot HTTP API conformance
-        run: make hubspot-curl
-      - name: Publish verified HubSpot compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/hubspot.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/hubspot.compatibility.json
-          git commit -m "chore(compat): update HubSpot verification"
-          git push
-
-  intercom-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.intercom == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Intercom HTTP API conformance
-        run: make intercom-curl
-      - name: Publish verified Intercom compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/intercom.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/intercom.compatibility.json
-          git commit -m "chore(compat): update Intercom verification"
-          git push
-
-  attio-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.attio == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Attio HTTP API conformance
-        run: make attio-curl
-      - name: Publish verified Attio compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/attio.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/attio.compatibility.json
-          git commit -m "chore(compat): update Attio verification"
-          git push
-
-  pipedrive-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.pipedrive == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Pipedrive HTTP API conformance
-        run: make pipedrive-curl
-      - name: Publish verified Pipedrive compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/pipedrive.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/pipedrive.compatibility.json
-          git commit -m "chore(compat): update Pipedrive verification"
-          git push
-
-  close-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.close == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Close HTTP API conformance
-        run: make close-curl
-      - name: Publish verified Close compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/close.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/close.compatibility.json
-          git commit -m "chore(compat): update Close verification"
-          git push
-
-  resend-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.resend == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Resend HTTP API conformance
-        run: make resend-curl
-      - name: Publish verified Resend compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/resend.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/resend.compatibility.json
-          git commit -m "chore(compat): update Resend verification"
-          git push
-
-  mailgun-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.mailgun == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Mailgun HTTP API conformance
-        run: make mailgun-curl
-      - name: Publish verified Mailgun compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/mailgun.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/mailgun.compatibility.json
-          git commit -m "chore(compat): update Mailgun verification"
-          git push
-
-  sendgrid-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.sendgrid == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: SendGrid HTTP API conformance
-        run: make sendgrid-curl
-      - name: Publish verified SendGrid compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/sendgrid.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/sendgrid.compatibility.json
-          git commit -m "chore(compat): update SendGrid verification"
-          git push
-
-  mailchimp-curl:
-    runs-on: ubuntu-latest
-    needs: [check, changes]
-    if: needs.changes.outputs.mailchimp == 'true'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-      - name: Mailchimp HTTP API conformance
-        run: make mailchimp-curl
-      - name: Publish verified Mailchimp compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/mailchimp.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/mailchimp.compatibility.json
-          git commit -m "chore(compat): update Mailchimp verification"
-          git push
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$base" ]; then
+            base="${{ github.event.before }}"
+          fi
+          if [ -z "$base" ] || [ "$(echo "$base" | tr -d '0')" = "" ]; then
+            make docs-examples DOCS_EXAMPLES_FLAGS=--all
+          else
+            make docs-examples DOCS_EXAMPLES_FLAGS="--since-ref $base"
+          fi
+      - name: Command snapshots are current
+        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json'

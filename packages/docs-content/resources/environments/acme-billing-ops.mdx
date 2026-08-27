@@ -3,6 +3,8 @@ title: "Acme Billing Ops"
 description: A disposable Acme billing workflow spanning Gmail, Intercom, and HubSpot around invoice INV-4812.
 ---
 
+import example from "../_generated/acme-billing-ops-inv-4812.json";
+
 Acme Billing Ops is a ready-to-run environment for testing software that
 reconciles customer billing mail with chat and CRM. Every run starts from the
 same Northwind invoice dispute and is removed when the wrapped command exits.
@@ -69,16 +71,8 @@ Paste this command to download the environment manifest, start the three
 services, and read `INV-4812` from mail, chat, and CRM. You do not need to clone
 Fabricate.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-billing-ops.yaml \
-  | fab run --environment /dev/stdin --proxy -- sh -c '
-      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001
-      echo
-      curl -sS https://api.intercom.io/conversations/101
-      echo
-      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301
-    '
-```
+<CommandOutput example={example} />
 
-`--proxy` keeps each provider’s normal hostname. See the integration pages for
-response shapes and the direct-URL option.
+`--proxy` keeps each provider’s normal hostname. See [Gmail](/resources/integrations/gmail),
+[Intercom](/resources/integrations/intercom), and [HubSpot](/resources/integrations/hubspot)
+for API coverage, response examples, and the direct-URL option.

@@ -42,9 +42,42 @@ with a scenario one-liner and a following line about the data. Keep `resource`,
 - Include a one-paste startup command that reads the canonical raw manifest
   through `fab run --environment /dev/stdin --proxy`. The primary example
   should call each service on its normal production hostname, with one `curl`
-  per line so the requests stay distinct. Do not include Authorization
-  headers; the proxy supplies the local token. Readers must not need to clone
-  Fabricate first.
+  per line so the requests stay distinct. Separate curl bodies with `echo`.
+  Do not include Authorization headers; the proxy supplies the local token.
+  Do not wrap the curls in `printf` JSON array syntax. Readers must not need
+  to clone Fabricate first.
+- Render that command and its captured response with the registered MDX
+  primitive. Do not hand-write JSON output on the page:
+
+```mdx
+import example from "../_generated/<id>.json";
+
+<CommandOutput example={example} />
+```
+
+  Add a spec next to the Gmail example at
+  `packages/docs-content/resources/_examples/<id>.json`. `catalog.json` is
+  shared invalidation roots only; every `*.json` in that directory except
+  `catalog.json` is a spec. Copy the Gmail spec’s fields:
+
+  - `id`: `{manifest}-{what}` for an environment page (`acme-support-desk-inv-4812`)
+    or `{resource}-{action}` for a single-service example (`gmail-list-messages`).
+  - `environment` / `environmentLabel` / `proxy` / `outputPath` under
+    `packages/docs-content/resources/_generated/`.
+  - `publishedCommand`: the GitHub-raw one-paste readers copy.
+  - `argv`: only the inner command after `fab run ... --`. For several curls
+    that is `["sh", "-c", "..."]`. Capture still runs the **local**
+    `environments/` file, not the GitHub URL.
+
+  `make docs-examples` recaptures dirty specs. Pass resource names to limit
+  the set (`make docs-examples gmail asana`) or
+  `DOCS_EXAMPLES_FLAGS='--id <id>'` for one spec. Unknown resource names fail.
+  Capture requires JSON stdout. Several curl bodies are stored as a JSON
+  array in `output`; a single curl stays an object. Do not hand-edit
+  `_generated/`. The docs site must import the snapshot; it must not start
+  environments at build time. Force recapture with
+  `make docs-examples DOCS_EXAMPLES_FLAGS=--all`. `make conformance` writes
+  `*.compatibility.json` and is a separate pipeline.
 - Keep claims scoped to services actually present in the manifest. Link to the
   integration page for API coverage, response examples, and proxy details.
 

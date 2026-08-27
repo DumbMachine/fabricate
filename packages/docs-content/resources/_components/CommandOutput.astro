@@ -1,0 +1,156 @@
+---
+interface CommandOutputExample {
+  command: string;
+  environment: {label: string; manifest: string};
+  id: string;
+  output: unknown;
+  title: string;
+}
+
+interface Props {
+  example: CommandOutputExample;
+  showCommand?: boolean;
+}
+
+const {example, showCommand = true} = Astro.props as Props;
+const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
+const command = example.command.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`);
+const pretty = JSON.stringify(example.output, null, 2);
+
+const highlightJSON = (value: string) => {
+  const escaped = value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+  return escaped.replace(
+    /("(?:\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+    (match) => {
+      let kind = "number";
+      if (match.startsWith('"')) {
+        kind = match.endsWith(":") ? "key" : "string";
+      } else if (match === "true" || match === "false") {
+        kind = "boolean";
+      } else if (match === "null") {
+        kind = "null";
+      }
+      return `<span class="${kind}">${match}</span>`;
+    },
+  );
+};
+
+const highlighted = highlightJSON(pretty);
+---
+
+<figure class="command-output not-prose" aria-label={example.title} data-command-output>
+  {showCommand && (
+    <div class="pane">
+      <header>
+        <p class="eyebrow">Command</p>
+        <button type="button" class="copy" data-copy="command">Copy</button>
+      </header>
+      <div class="code" tabindex="0"><code data-copy-source="command">{command}</code></div>
+    </div>
+  )}
+  <div class="pane">
+    <header>
+      <p class="eyebrow">Output</p>
+      <span class="meta">{example.environment.label}</span>
+    </header>
+    <div class="code output" tabindex="0"><code set:html={highlighted} /></div>
+  </div>
+</figure>
+
+<script>
+  const copiedLabel = "Copied";
+  const resetAfter = 1600;
+
+  const copyText = async (button: HTMLButtonElement) => {
+    const root = button.closest("[data-command-output]");
+    const source = root?.querySelector<HTMLElement>(`[data-copy-source="${button.dataset.copy}"]`);
+    if (!source) return;
+    await navigator.clipboard.writeText(source.innerText);
+    const previous = button.textContent;
+    button.textContent = copiedLabel;
+    window.setTimeout(() => {
+      button.textContent = previous;
+    }, resetAfter);
+  };
+
+  document.querySelectorAll<HTMLButtonElement>("[data-command-output] .copy").forEach((button) => {
+    if (button.dataset.bound === "true") return;
+    button.dataset.bound = "true";
+    button.addEventListener("click", () => {
+      void copyText(button);
+    });
+  });
+</script>
+
+<style>
+  .command-output {
+    background: var(--fabricate-surface-raised);
+    border: 1px solid var(--fabricate-border);
+    border-radius: var(--fabricate-radius-lg);
+    margin: 1.25rem 0 2.4rem;
+    overflow: hidden;
+  }
+  .pane + .pane {
+    border-top: 1px solid var(--fabricate-border);
+  }
+  header {
+    align-items: center;
+    display: flex;
+    gap: .75rem;
+    justify-content: space-between;
+    min-height: 2.5rem;
+    padding: .55rem .9rem;
+  }
+  .eyebrow {
+    color: var(--fabricate-text-muted);
+    font: 600 .68rem/1 var(--fabricate-font-mono);
+    letter-spacing: .08em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .meta {
+    color: var(--fabricate-text-muted);
+    font: 500 .72rem/1 var(--fabricate-font-mono);
+  }
+  .copy {
+    background: transparent;
+    border: 1px solid var(--fabricate-border);
+    border-radius: var(--fabricate-radius-sm);
+    color: var(--fabricate-text-secondary);
+    cursor: pointer;
+    font: 600 .68rem/1 var(--fabricate-font-mono);
+    letter-spacing: .06em;
+    padding: .28rem .5rem;
+    text-transform: uppercase;
+  }
+  .copy:hover,
+  .copy:focus-visible {
+    border-color: var(--fabricate-text-muted);
+    color: var(--fabricate-text);
+  }
+  .code {
+    background: var(--fabricate-code-background);
+    margin: 0;
+    max-height: var(--fabricate-code-content-max-height);
+    min-height: var(--fabricate-code-content-min-height);
+    overflow: auto;
+    padding: .85rem 1rem 1rem;
+  }
+  code {
+    color: var(--fabricate-text);
+    font: 500 .82rem/1.55 var(--fabricate-font-mono);
+    white-space: pre;
+  }
+  .output code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .output :global(.key) { color: var(--fabricate-text); }
+  .output :global(.string) { color: #33c482; }
+  .output :global(.number) { color: var(--fabricate-text-secondary); }
+  .output :global(.boolean),
+  .output :global(.null) { color: var(--fabricate-text-muted); }
+</style>

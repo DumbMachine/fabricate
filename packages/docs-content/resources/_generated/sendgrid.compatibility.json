@@ -36,7 +36,7 @@
   "verification": {
     "kind": "curl",
     "label": "HTTP client",
-    "client": "curl@8.5.0",
+    "client": "curl@8",
     "title": "HTTP API verification"
   },
   "testedAt": "2026-08-27T07:24:12.876Z",

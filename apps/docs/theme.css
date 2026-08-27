@@ -34,6 +34,7 @@
   --fabricate-font-brand: Teko, "Arial Narrow", Impact, sans-serif;
   --fabricate-font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas,
     monospace;
+  --fabricate-scrollbar-thumb: rgb(10 10 10 / 0.28);
 }
 
 :root[data-theme="dark"] {
@@ -46,6 +47,7 @@
   --fabricate-text-secondary: #dedede;
   --fabricate-text-muted: #6e6e6e;
   --fabricate-code-background: #1f1f1f;
+  --fabricate-scrollbar-thumb: rgb(240 240 240 / 0.28);
 }
 
 :root,
@@ -64,6 +66,23 @@
   --blume-font-body: var(--fabricate-font-sans);
   --blume-font-display: var(--fabricate-font-display);
   --blume-font-mono: var(--fabricate-font-mono);
+}
+
+/* Overlay-style scrollbars: thin, no reserved gutter, only while content
+   overflows. Pointer devices hide the thumb until the scroller is hovered. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fabricate-scrollbar-thumb) transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  * {
+    scrollbar-color: transparent transparent;
+  }
+
+  *:hover {
+    scrollbar-color: var(--fabricate-scrollbar-thumb) transparent;
+  }
 }
 
 /* Docs chrome: dense, quiet sections; one clear active row. */
@@ -160,7 +179,6 @@
   min-height: var(--fabricate-code-content-min-height);
   max-height: var(--fabricate-code-content-max-height);
   padding: 0 1rem 0.25rem;
-  scrollbar-gutter: stable;
 }
 
 /* The environment model is ordinary document markup so provider icons load

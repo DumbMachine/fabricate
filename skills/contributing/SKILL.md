@@ -21,5 +21,7 @@ transparent-proxy conformance. Never recreate `mockd`, `engine/httpmock`,
 provider Docker images, or service-specific CLI registries.
 
 Run `make check` and `make generate-check`. Run `make e2e` for container engine
-lifecycle changes and the relevant real official-client wrapper command for
-HTTP API changes.
+lifecycle changes and `make conformance <resource>` for HTTP API client
+coverage (writes `<id>.compatibility.json`). `make docs-examples` recaptures
+documented command snapshots. Both land under
+`packages/docs-content/resources/_generated/`.

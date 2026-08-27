@@ -1,0 +1,195 @@
+{
+  "id": "acme-go-to-market-inv-4812",
+  "title": "Read INV-4812 from each service",
+  "environment": {
+    "label": "Acme Go to Market",
+    "manifest": "environments/acme-go-to-market.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-go-to-market.yaml \\\n  | fab run --environment /dev/stdin --proxy -- sh -c '\n      curl -sS -H \"Content-Type: application/json\" -d \"{}\" https://api.attio.com/v2/objects/deals/records/query\n      echo\n      curl -sS https://api.resend.com/emails/email_inv4812\n      echo\n      curl -sS https://us1.api.mailchimp.com/3.0/campaigns/campaign_inv4812\n    '",
+  "output": [
+    {
+      "data": [
+        {
+          "created_at": "2026-08-18T14:00:00.000000000Z",
+          "id": {
+            "object_id": "33333333-3333-4333-8333-333333333333",
+            "record_id": "c1111111-1111-4111-8111-111111111111",
+            "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a"
+          },
+          "values": {
+            "invoice": [
+              {
+                "attribute_type": "text",
+                "value": "INV-4812"
+              }
+            ],
+            "name": [
+              {
+                "attribute_type": "text",
+                "value": "Northwind checkout expansion"
+              }
+            ],
+            "value": [
+              {
+                "attribute_type": "currency",
+                "currency_code": "USD",
+                "currency_value": 1240
+              }
+            ]
+          }
+        },
+        {
+          "created_at": "2026-08-25T11:00:00.000000000Z",
+          "id": {
+            "object_id": "33333333-3333-4333-8333-333333333333",
+            "record_id": "c2222222-2222-4222-8222-222222222222",
+            "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a"
+          },
+          "values": {
+            "invoice": [
+              {
+                "attribute_type": "text",
+                "value": "INV-2207"
+              }
+            ],
+            "name": [
+              {
+                "attribute_type": "text",
+                "value": "Fernworks platform expansion"
+              }
+            ],
+            "value": [
+              {
+                "attribute_type": "currency",
+                "currency_code": "USD",
+                "currency_value": 8900
+              }
+            ]
+          }
+        },
+        {
+          "created_at": "2026-08-26T10:00:00.000000000Z",
+          "id": {
+            "object_id": "33333333-3333-4333-8333-333333333333",
+            "record_id": "c3333333-3333-4333-8333-333333333333",
+            "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a"
+          },
+          "values": {
+            "name": [
+              {
+                "attribute_type": "text",
+                "value": "Helix Bio sales trial"
+              }
+            ],
+            "value": [
+              {
+                "attribute_type": "currency",
+                "currency_code": "USD",
+                "currency_value": 4200
+              }
+            ]
+          }
+        },
+        {
+          "created_at": "2026-08-23T14:00:00.000000000Z",
+          "id": {
+            "object_id": "33333333-3333-4333-8333-333333333333",
+            "record_id": "c4444444-4444-4444-8444-444444444444",
+            "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a"
+          },
+          "values": {
+            "name": [
+              {
+                "attribute_type": "text",
+                "value": "Brightpath API key rotation"
+              }
+            ],
+            "value": [
+              {
+                "attribute_type": "currency",
+                "currency_code": "USD",
+                "currency_value": 2100
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "created_at": "2026-08-18T14:00:00Z",
+      "from": "billing@acme.example",
+      "html": "\u003cp\u003eInvoice INV-4812 for $1,240\u003c/p\u003e",
+      "id": "email_inv4812",
+      "last_event": "delivered",
+      "object": "email",
+      "subject": "INV-4812 receipt",
+      "to": [
+        "dana@northwind.example"
+      ]
+    },
+    {
+      "create_time": "2026-08-18T14:00:00+00:00",
+      "id": "campaign_inv4812",
+      "recipients": {
+        "list_id": "acme-customers"
+      },
+      "settings": {
+        "from_name": "Acme Billing",
+        "reply_to": "billing@acme.example",
+        "subject_line": "INV-4812 billing follow-up"
+      },
+      "status": "save",
+      "type": "regular"
+    }
+  ],
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:c53861b9c1260bd734fa524d8bd8f10ca290fcc087f584c0e6b9d53926bbfc66",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-go-to-market.yaml",
+        "digest": "sha256:6d09dee56a607b0faa1ee421586d8e8a2eca0d32fae2a8d3181a12ac12d2ed83"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/acme-go-to-market-inv-4812.json",
+        "digest": "sha256:5a6c4739875d3f267d4f59e16dca81a3d23260999292b4b187d6a5742b8000e6"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/attio",
+        "digest": "sha256:1ec4a45e1b047f8a0e8c3e58e72401baa1b7ac443c147eb9edcddd61ee28c8d8"
+      },
+      {
+        "path": "resources/mailchimp",
+        "digest": "sha256:13b82653bfab9f94e954f65e3127b92a127a891aa89043a544a6d80254f8f3a4"
+      },
+      {
+        "path": "resources/resend",
+        "digest": "sha256:0e5c463f1735c108c4ba969af0f94339f98143ff1e470d472db5e7039a4ee134"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}

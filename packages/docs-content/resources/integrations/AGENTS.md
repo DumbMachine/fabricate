@@ -17,19 +17,45 @@ checking out Fabricate or creating an environment file by hand.
 - Keep secrets in Fabricate-injected environment variables. Never put a token,
   credential, or local path that a reader cannot have in a published command.
 
-## Expected results
+## Generated page artifacts
 
-- Show representative response output for a read-only request when it helps a
-  reader confirm that the integration works.
-- Keep output in a `json` code block, pretty-print it with two-space
-  indentation, and match the environment's actual data. Do not include
-  ephemeral URLs, generated paths, request-log locations, or tokens.
-- Shared documentation styling gives code content a readable minimum height and
-  a viewport-aware maximum height with scrolling. Do not add per-page height
-  rules unless an example has an exceptional, documented need.
-- Re-run a changed example against the referenced manifest and scenario before
-  publishing. Check direct-URL and proxy examples independently when both are
-  documented.
+Command output and compatibility tables are the same kind of evidence:
+committed JSON under `packages/docs-content/resources/_generated/`. The docs
+site only imports those files; it never starts environments.
+
+```mdx
+import example from "../_generated/<id>.json";
+import compatibility from "../_generated/<integration>.compatibility.json";
+
+<CommandOutput example={example} showCommand={false} />
+<IntegrationCompatibility compatibility={compatibility} />
+```
+
+Do not hand-write JSON or bespoke status UI on the page. Do not hand-edit
+files in `_generated/`. After the inputs change, recapture and commit the
+snapshots. CI fails if they drifted.
+
+- Command snapshots: specs live under
+  `packages/docs-content/resources/_examples/` with shared invalidation roots
+  in `catalog.json`. `make docs-examples` recaptures dirty examples across the
+  catalog; `make docs-examples gmail asana` limits to named resources and
+  fails if none match. Use `showCommand={false}` when the page already has a
+  copyable command block. Force selected examples with
+  `make docs-examples DOCS_EXAMPLES_FLAGS=--all`.
+- Compatibility reports: each resource owns `resources/<id>/conformance/` with
+  `curl.sh`, `sdk.json`, or both. `make conformance` runs every client that
+  exists and writes `<id>.compatibility.json`; `make conformance gmail asana`
+  limits to named resources. The page snapshot prefers the SDK report when
+  both clients ran. Timestamps are ignored when the payload is unchanged.
+  The test must fail when a declared client prerequisite is unavailable; a
+  skipped compatibility test is not a pass.
+
+Do not include ephemeral URLs, generated paths, request-log locations, or
+tokens in page examples. Shared documentation styling gives code content a
+readable minimum height and a viewport-aware maximum height with scrolling.
+Do not add per-page height rules unless an example has an exceptional,
+documented need. Check direct-URL and proxy examples independently when both
+are documented.
 
 ## Compatibility verification
 
@@ -38,34 +64,22 @@ verification` section. State that Fabricate works with any API client, then
 explain exactly which client the latest check used. Do not imply that the
 tested SDK is the only supported way to call the API.
 
-The section uses the registered MDX primitive and a generated report; do not
-build bespoke status UI on individual pages:
-
-```mdx
-import compatibility from "./_generated/<integration>.compatibility.json";
-
-<IntegrationCompatibility compatibility={compatibility} />
-```
-
 The report must identify the environment, test commit and time, verification
 client, direct/proxy modes where applicable, and the result of each operation.
-Keep it under `_generated/`, and update it only after a passing real-client
-test. Start every integration with `curl` verification. Add official-SDK
+Start every integration with `curl` verification. Add official-SDK
 verification only when the integration requirement specifically names an SDK.
 The report’s `verification` object supports two evidence kinds:
 
 - `curl`: direct HTTP read/write/read coverage that proves API behavior is
-  stateful.
+  stateful. Record the client as `curl@<major>` (not a patch version) so local
+  and CI machines do not churn the snapshot.
 - `official-sdk`: add this only when an SDK is named. It provides the same
   stateful coverage using the provider’s official SDK. When that SDK can use
   normal provider hosts, it must run in both direct base-URL and `fab run
   --proxy` modes; proxy mode proves an existing SDK integration can run without
   a provider base-URL change.
 
-Each resource owns its test client under `resources/<id>/conformance/`, plus a
-script or Make target that runs it through `fab run`. The test must fail when
-its client prerequisite is unavailable; a skipped compatibility test is not a
-pass. Add the resource and its shared runtime dependencies to CI path filters.
+Add the resource and its shared runtime dependencies to CI path filters.
 
 For a new integration, use this report shape as the starting point:
 
@@ -80,12 +94,3 @@ For a new integration, use this report shape as the starting point:
   "testedCommit": "abcdef0"
 }
 ```
-
-## Planned integrations
-
-- A planned integration page must say that it is not runnable yet in its first
-  visible content. Do not present a command, scenario, or capability as
-  available before its resource and environment exist.
-- For GitHub, keep the first contract to repository metadata and collaboration.
-  Do not imply support for Git smart HTTP, repository mutation, Actions,
-  releases, uploads, webhooks, or GraphQL.

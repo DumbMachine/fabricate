@@ -5,7 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/gmail
 ---
 
-import compatibility from "./_generated/gmail.compatibility.json";
+import compatibility from "../_generated/gmail.compatibility.json";
+import example from "../_generated/gmail-list-messages.json";
 
 Fabricate ships a Gmail v1 resource with a strict local API and synthetic OAuth
 token handling. It covers profile, labels, messages, threads, and sending mail
@@ -45,24 +46,7 @@ service `gmail`, they become `FAB_GMAIL_URL` and `FAB_GMAIL_TOKEN`.
 
 The response is the Acme support inbox:
 
-```json
-{
-  "messages": [
-    { "id": "msg-0003", "threadId": "thr-sso-outage" },
-    { "id": "msg-0002", "threadId": "thr-double-charge" },
-    { "id": "msg-0010", "threadId": "thr-audit-log" },
-    { "id": "msg-0004", "threadId": "thr-csv-export" },
-    { "id": "msg-0005", "threadId": "thr-refund" },
-    { "id": "msg-0006", "threadId": "thr-domain-verification" },
-    { "id": "msg-0001", "threadId": "thr-double-charge" },
-    { "id": "msg-0011", "threadId": "thr-maintenance" },
-    { "id": "msg-0007", "threadId": "thr-webhook-retries" },
-    { "id": "msg-0009", "threadId": "thr-api-key-rotation" },
-    { "id": "msg-0008", "threadId": "thr-api-key-rotation" }
-  ],
-  "resultSizeEstimate": 11
-}
-```
+<CommandOutput example={example} showCommand={false} />
 
 ### Start it through the proxy
 

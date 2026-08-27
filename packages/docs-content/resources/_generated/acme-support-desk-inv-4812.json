@@ -1,0 +1,176 @@
+{
+  "id": "acme-support-desk-inv-4812",
+  "title": "Read INV-4812 across services",
+  "environment": {
+    "label": "Acme Support Desk",
+    "manifest": "environments/acme-support-desk.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml \\\n  | fab run --environment /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://api.intercom.io/conversations/101\n      echo\n      curl -sS https://app.asana.com/api/1.0/tasks/task-double-charge\n      echo\n      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301\n    '",
+  "output": [
+    {
+      "historyId": "1",
+      "id": "msg-0001",
+      "internalDate": "1787469300000",
+      "labelIds": [
+        "INBOX",
+        "UNREAD",
+        "Label_billing"
+      ],
+      "payload": {
+        "body": {
+          "data": "SGkgQWNtZSB0ZWFtLAoKT3VyIGNhcmQgc2hvd3MgdHdvICQxLDI0MCBjaGFyZ2VzIGZvciBpbnZvaWNlIElOVi00ODEyIG9uIEF1Z3VzdCAxOC4gVGhlIGJpbGxpbmcgcGFnZSBvbmx5IHNob3dzIG9uZSBpbnZvaWNlLiBDb3VsZCB5b3UgcmVmdW5kIHRoZSBkdXBsaWNhdGUgYW5kIGNvbmZpcm0gd2hpY2ggY2hhcmdlIHdpbGwgcmVtYWluPwoKRGFuYSBXaGl0ZmllbGQKRmluYW5jZSwgTm9ydGh3aW5kIFRyYWRlcnM",
+          "size": 236
+        },
+        "headers": [
+          {
+            "name": "From",
+            "value": "Dana Whitfield \u003cdana@northwind.example\u003e"
+          },
+          {
+            "name": "To",
+            "value": "Acme Support \u003csupport@acme.example\u003e"
+          },
+          {
+            "name": "Subject",
+            "value": "Charged twice for August invoice INV-4812"
+          },
+          {
+            "name": "Date",
+            "value": "Sun, 23 Aug 2026 07:15:00 +0000"
+          }
+        ],
+        "mimeType": "text/plain"
+      },
+      "sizeEstimate": 236,
+      "snippet": "Hi Acme team, Our card shows two $1,240 charges for invoice INV-4812 on August 18. The billing page only shows one invoi…",
+      "threadId": "thr-double-charge"
+    },
+    {
+      "contacts": {
+        "contacts": [
+          {
+            "id": "contact-dana"
+          }
+        ],
+        "type": "contact.list"
+      },
+      "conversation_parts": {
+        "conversation_parts": [
+          {
+            "author": {
+              "id": "contact-dana",
+              "type": "user"
+            },
+            "body": "We were billed twice for INV-4812 ($1,240). Both charges have settled. Need a refund today.",
+            "created_at": 1756132800,
+            "id": "part-billing-1",
+            "part_type": "comment"
+          }
+        ],
+        "total_count": 1,
+        "type": "conversation_part.list"
+      },
+      "created_at": 1755525600,
+      "id": "101",
+      "open": true,
+      "state": "open",
+      "title": "Charged twice for INV-4812",
+      "updated_at": 1756132800
+    },
+    {
+      "data": {
+        "assignee": {
+          "gid": "user-mei",
+          "name": "Mei Chen",
+          "resource_type": "user"
+        },
+        "completed": false,
+        "created_at": "2026-08-18T14:15:00Z",
+        "gid": "task-double-charge",
+        "modified_at": "2026-08-25T16:40:00Z",
+        "name": "Refund duplicate charge on INV-4812",
+        "notes": "Northwind was billed twice for $1,240 on August 18. Finance needs a refund reference before books close.",
+        "projects": [
+          {
+            "gid": "proj-checkout",
+            "name": "Checkout reliability",
+            "resource_type": "project"
+          }
+        ],
+        "resource_type": "task",
+        "workspace": {
+          "gid": "ws-acme",
+          "resource_type": "workspace"
+        }
+      }
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-08-18T15:00:00Z",
+      "id": "301",
+      "properties": {
+        "amount": "12400",
+        "dealname": "Northwind checkout expansion",
+        "dealstage": "appointmentscheduled",
+        "description": "Checkout expansion for Northwind Traders. Duplicate INV-4812 charge ($1,240) is still open.",
+        "invoice": "INV-4812",
+        "pipeline": "default"
+      },
+      "updatedAt": "2026-08-25T16:40:00Z"
+    }
+  ],
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:56345bf6461e80998fedab25163fb3a988a4f5ec60eb1f19b95f5d815f41caae",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-support-desk.yaml",
+        "digest": "sha256:eff8ed228cf29bbbc409ad86b63d376dd187c6bca39a5c227c5c25ab98d24b9c"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/acme-support-desk-inv-4812.json",
+        "digest": "sha256:20f842e1f474f5bf88723e835a093c6c4ea85c10ce9693fff44bd46ffdbe7fb6"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
+        "path": "resources/intercom",
+        "digest": "sha256:e62c027a8c96d4fd82c881c2b71b66f73283cca9af040ed79dd7ad28d31d2ceb"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}

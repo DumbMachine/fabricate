@@ -1,0 +1,164 @@
+{
+  "id": "gmail-list-messages",
+  "title": "List seeded messages",
+  "environment": {
+    "label": "Acme's Gmail",
+    "manifest": "environments/acme-gmail.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
+  "output": {
+    "messages": [
+      {
+        "id": "msg-0028",
+        "threadId": "thr-refund"
+      },
+      {
+        "id": "msg-0027",
+        "threadId": "thr-sso-outage"
+      },
+      {
+        "id": "msg-0026",
+        "threadId": "thr-vendor-digest"
+      },
+      {
+        "id": "msg-0025",
+        "threadId": "thr-internal-standup"
+      },
+      {
+        "id": "msg-0024",
+        "threadId": "thr-internal-standup"
+      },
+      {
+        "id": "msg-0023",
+        "threadId": "thr-scim-followup"
+      },
+      {
+        "id": "msg-0022",
+        "threadId": "thr-scim-followup"
+      },
+      {
+        "id": "msg-0021",
+        "threadId": "thr-adatum-followup"
+      },
+      {
+        "id": "msg-0020",
+        "threadId": "thr-adatum-followup"
+      },
+      {
+        "id": "msg-0019",
+        "threadId": "thr-adatum-followup"
+      },
+      {
+        "id": "msg-0018",
+        "threadId": "thr-api-key-rotation"
+      },
+      {
+        "id": "msg-0017",
+        "threadId": "thr-refund"
+      },
+      {
+        "id": "msg-0016",
+        "threadId": "thr-csv-export"
+      },
+      {
+        "id": "msg-0015",
+        "threadId": "thr-csv-export"
+      },
+      {
+        "id": "msg-0014",
+        "threadId": "thr-sso-outage"
+      },
+      {
+        "id": "msg-0013",
+        "threadId": "thr-sso-outage"
+      },
+      {
+        "id": "msg-0003",
+        "threadId": "thr-sso-outage"
+      },
+      {
+        "id": "msg-0002",
+        "threadId": "thr-double-charge"
+      },
+      {
+        "id": "msg-0010",
+        "threadId": "thr-audit-log"
+      },
+      {
+        "id": "msg-0004",
+        "threadId": "thr-csv-export"
+      },
+      {
+        "id": "msg-0005",
+        "threadId": "thr-refund"
+      },
+      {
+        "id": "msg-0006",
+        "threadId": "thr-domain-verification"
+      },
+      {
+        "id": "msg-0001",
+        "threadId": "thr-double-charge"
+      },
+      {
+        "id": "msg-0011",
+        "threadId": "thr-maintenance"
+      },
+      {
+        "id": "msg-0007",
+        "threadId": "thr-webhook-retries"
+      },
+      {
+        "id": "msg-0009",
+        "threadId": "thr-api-key-rotation"
+      },
+      {
+        "id": "msg-0008",
+        "threadId": "thr-api-key-rotation"
+      }
+    ],
+    "resultSizeEstimate": 27
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:2b76bac5571d29e7b0359a27e9e8e923fa774793f4c2985b157ff0a0c36d2df5",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-gmail.yaml",
+        "digest": "sha256:221922c622873329fed5e56b32a19af1af0a3e336b4d031f15e12e0863dc3050"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/gmail-list-messages.json",
+        "digest": "sha256:e18bd1da882a9f9744724f3e67dbd2430d9357b433f06bc3d8e0082de0b4820c"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
