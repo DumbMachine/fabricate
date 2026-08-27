@@ -1,0 +1,14 @@
+{
+  "id": "posthog-list-feature-flags",
+  "title": "List seeded feature flags",
+  "environment": "environments/acme-posthog.yaml",
+  "environmentLabel": "Acme PostHog",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/posthog-list-feature-flags.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-posthog.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://us.posthog.com/api/projects/1/feature_flags/",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://us.posthog.com/api/projects/1/feature_flags/"
+  ]
+}

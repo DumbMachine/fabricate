@@ -1,0 +1,32 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "posthog.acme-flags.v1",
+  "$resource": "posthog",
+  "$resourceVersion": "v1",
+  "state": {
+    "flags": [
+      {
+        "id": "101",
+        "key": "checkout_reliability",
+        "name": "Checkout reliability",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "102",
+        "key": "contoso_sso",
+        "name": "Contoso SSO",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "103",
+        "key": "billing_csv",
+        "name": "Billing CSV export",
+        "active": false,
+        "project_id": "1"
+      }
+    ]
+  }
+}

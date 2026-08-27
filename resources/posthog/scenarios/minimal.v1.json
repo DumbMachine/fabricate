@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "posthog.minimal.v1",
+  "$resource": "posthog",
+  "$resourceVersion": "v1",
+  "state": {
+    "flags": []
+  }
+}

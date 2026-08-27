@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-posthog
+
+services:
+  posthog:
+    resource: posthog
+    scenario: posthog.acme-flags.v1

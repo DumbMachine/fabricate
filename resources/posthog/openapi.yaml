@@ -1,0 +1,115 @@
+openapi: "3.0.3"
+info:
+  title: PostHog API
+  version: "1.0.0"
+  description: Curated Fabricate subset of PostHog's official OpenAPI (https://us.posthog.com/api/schema/).
+servers:
+  - url: https://us.posthog.com
+security:
+  - bearerAuth: []
+paths:
+  /api/projects/{project_id}/feature_flags/:
+    get:
+      operationId: feature_flags_list
+      summary: List feature flags
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of feature flags
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+    post:
+      operationId: feature_flags_create
+      summary: Create a feature flag
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "201":
+          description: Created flag
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "200":
+          description: Created flag
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /api/projects/{project_id}/feature_flags/{id}/:
+    get:
+      operationId: feature_flags_retrieve
+      summary: Retrieve a feature flag
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Feature flag
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
