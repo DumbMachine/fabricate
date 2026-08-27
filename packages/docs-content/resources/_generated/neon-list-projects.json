@@ -10,6 +10,7 @@
     "projects": [
       {
         "created_at": "2026-08-20T10:00:00Z",
+        "description": "fernworks-prod CSV pipeline; empty exports. Priya Nair.",
         "id": "acme-analytics",
         "name": "acme-analytics",
         "pg_version": 16,
@@ -17,11 +18,105 @@
         "updated_at": "2026-08-26T12:00:00Z"
       },
       {
+        "created_at": "2026-07-01T09:00:00Z",
+        "description": "Northwind INV-4812 ledger. Dana Whitfield.",
+        "id": "acme-billing",
+        "name": "acme-billing",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-05-01T09:00:00Z",
+        "id": "acme-dev",
+        "name": "acme-dev",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-20T12:00:00Z"
+      },
+      {
+        "created_at": "2026-07-20T09:00:00Z",
+        "description": "Adatum TXT acme-domain-verification=adatum-7f31.",
+        "id": "acme-dns",
+        "name": "acme-dns",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-02-01T09:00:00Z",
+        "id": "acme-eu",
+        "name": "acme-eu",
+        "pg_version": 16,
+        "region_id": "aws-eu-central-1",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-05-12T09:00:00Z",
+        "description": "BrightPath overlapping API keys.",
+        "id": "acme-keys",
+        "name": "acme-keys",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-08-08T09:00:00Z",
+        "id": "acme-ml",
+        "name": "acme-ml",
+        "pg_version": 16,
+        "region_id": "aws-us-west-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-03-01T09:00:00Z",
+        "id": "acme-mobile",
+        "name": "acme-mobile",
+        "pg_version": 16,
+        "region_id": "aws-us-west-2",
+        "updated_at": "2026-08-18T12:00:00Z"
+      },
+      {
         "created_at": "2026-08-01T09:00:00Z",
+        "description": "Checkout and billing; INV-4812 rows. Checkout reliability incident.",
         "id": "acme-prod",
         "name": "acme-prod",
         "pg_version": 16,
         "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-08-05T09:00:00Z",
+        "id": "acme-replay",
+        "name": "acme-replay",
+        "pg_version": 16,
+        "region_id": "aws-us-west-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-01-15T09:00:00Z",
+        "id": "acme-sandbox",
+        "name": "acme-sandbox",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-10T12:00:00Z"
+      },
+      {
+        "created_at": "2026-06-01T09:00:00Z",
+        "description": "Fabrikam SCIM. req_7Q4K2.",
+        "id": "acme-scim",
+        "name": "acme-scim",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-06-12T09:00:00Z",
+        "description": "Contoso contoso-eu identities. Mei Chen, 380 users.",
+        "id": "acme-sso",
+        "name": "acme-sso",
+        "pg_version": 16,
+        "region_id": "aws-eu-central-1",
         "updated_at": "2026-08-26T12:00:00Z"
       },
       {
@@ -31,12 +126,38 @@
         "pg_version": 16,
         "region_id": "aws-us-east-2",
         "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-04-15T09:00:00Z",
+        "id": "acme-warehouse",
+        "name": "acme-warehouse",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-22T12:00:00Z"
+      },
+      {
+        "created_at": "2026-08-02T09:00:00Z",
+        "description": "LakeTech delivery log. Ben Okafor.",
+        "id": "acme-webhooks",
+        "name": "acme-webhooks",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "created_at": "2026-08-12T09:00:00Z",
+        "description": "TinyShop 30-day refund archive. Marco Silva.",
+        "id": "tinyshop-archive",
+        "name": "tinyshop-archive",
+        "pg_version": 16,
+        "region_id": "aws-us-east-2",
+        "updated_at": "2026-08-20T12:00:00Z"
       }
     ]
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:df3f1940010ae8af3eb4690f546e84e0e42d2fc5c56d9389b1a3169e4575d293",
+    "digest": "sha256:b1bdd8f449b6a0cfd2b4f2a05a962aa52fbbd93ff2cd185be8dff4e383fdcacf",
     "roots": [
       {
         "path": "cli/run.go",
@@ -52,7 +173,7 @@
       },
       {
         "path": "environments/acme-neon.yaml",
-        "digest": "sha256:c30349f706774fb3ef3ad8f9c3ccfc15aadddda0ef9eb8d2ca99bcf3a9ded390"
+        "digest": "sha256:07eb10c8eb49482a5132d3ea08e42894834c1a84a3b7cf282afd94a39d3a7170"
       },
       {
         "path": "httpresource",
@@ -67,8 +188,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
         "path": "resources/neon",
-        "digest": "sha256:1fa83115e1b9ce3291f792a7221eb64bfb40c0f8dfe50f490987949f9358b499"
+        "digest": "sha256:8f78a931d950c7c9204b0bb070c666174c9cf2b661dfc4f4d96190579dfa91f4"
       },
       {
         "path": "scenario",
