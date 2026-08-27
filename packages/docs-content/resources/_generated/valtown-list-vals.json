@@ -9,9 +9,38 @@
   "output": {
     "data": [
       {
+        "id": "val_alerts",
+        "name": "acme-pager",
+        "privacy": "private"
+      },
+      {
+        "description": "INV-4812 receipt helper for Northwind. Dana Whitfield.",
         "id": "val_billing",
         "name": "acme-billing",
         "privacy": "private"
+      },
+      {
+        "description": "Checkout reliability canary.",
+        "id": "val_checkout",
+        "name": "acme-checkout-canary",
+        "privacy": "private"
+      },
+      {
+        "id": "val_cron",
+        "name": "acme-invoice-cron",
+        "privacy": "private"
+      },
+      {
+        "description": "fernworks-prod empty export probe. Priya Nair.",
+        "id": "val_csv",
+        "name": "acme-csv-probe",
+        "privacy": "private"
+      },
+      {
+        "description": "Adatum TXT acme-domain-verification=adatum-7f31. Owen Brooks.",
+        "id": "val_dns",
+        "name": "acme-dns-recheck",
+        "privacy": "unlisted"
       },
       {
         "id": "val_docs",
@@ -19,6 +48,121 @@
         "privacy": "public"
       },
       {
+        "id": "val_eu",
+        "name": "acme-eu-router",
+        "privacy": "private"
+      },
+      {
+        "id": "val_exa",
+        "name": "acme-exa-quota",
+        "privacy": "private"
+      },
+      {
+        "id": "val_figma",
+        "name": "acme-figma-relay",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_flags",
+        "name": "acme-flag-mirror",
+        "privacy": "private"
+      },
+      {
+        "id": "val_github",
+        "name": "acme-github-webhooks",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_heatmap",
+        "name": "acme-heatmap-sample",
+        "privacy": "unlisted"
+      },
+      {
+        "description": "BrightPath second API key check. Sofia Marin.",
+        "id": "val_keys",
+        "name": "acme-key-overlap",
+        "privacy": "private"
+      },
+      {
+        "id": "val_legal",
+        "name": "acme-dpa-answers",
+        "privacy": "private"
+      },
+      {
+        "id": "val_neon",
+        "name": "acme-neon-branch-gc",
+        "privacy": "private"
+      },
+      {
+        "id": "val_nps",
+        "name": "acme-nps",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_og",
+        "name": "acme-og",
+        "privacy": "public"
+      },
+      {
+        "id": "val_preview",
+        "name": "acme-preview-auth",
+        "privacy": "private"
+      },
+      {
+        "description": "Fabrikam group-change export. req_7Q4K2.",
+        "id": "val_scim",
+        "name": "acme-scim-audit",
+        "privacy": "private"
+      },
+      {
+        "id": "val_sentry",
+        "name": "acme-sentry-digest",
+        "privacy": "private"
+      },
+      {
+        "id": "val_slack",
+        "name": "acme-slack-alerts",
+        "privacy": "unlisted"
+      },
+      {
+        "description": "Contoso contoso-eu callback traces. Mei Chen, 380 users.",
+        "id": "val_sso",
+        "name": "acme-saml-debug",
+        "privacy": "private"
+      },
+      {
+        "id": "val_status",
+        "name": "acme-status-bot",
+        "privacy": "public"
+      },
+      {
+        "id": "val_stripe",
+        "name": "acme-stripe-events",
+        "privacy": "private"
+      },
+      {
+        "id": "val_teams",
+        "name": "acme-teams-alerts",
+        "privacy": "unlisted"
+      },
+      {
+        "description": "30-day guarantee helper. Marco Silva.",
+        "id": "val_tiny",
+        "name": "acme-tinyshop-refund",
+        "privacy": "private"
+      },
+      {
+        "id": "val_vercel",
+        "name": "acme-vercel-aliases",
+        "privacy": "unlisted"
+      },
+      {
+        "id": "val_waf",
+        "name": "acme-waf-exceptions",
+        "privacy": "private"
+      },
+      {
+        "description": "LakeTech delivery retries; hooks.acme.example. Ben Okafor.",
         "id": "val_webhooks",
         "name": "acme-webhooks",
         "privacy": "unlisted"
@@ -30,7 +174,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:8b51c1330b5f96323020157b3cf54fbbe2e67e4871e4c227b326e30cbd7727e7",
+    "digest": "sha256:206b3d82d2a973e982e08cc4461cf5476695a083590a4813a46f7beaaea5afca",
     "roots": [
       {
         "path": "cli/run.go",
@@ -46,7 +190,7 @@
       },
       {
         "path": "environments/acme-valtown.yaml",
-        "digest": "sha256:5ad01158b16515ccf52effb1cc340ba1cfa55f67201f79a605d77930777e65a9"
+        "digest": "sha256:50e1f95c51f2289b0c61ebfd030ea3bedd2c318a606640740240206759c4a0b4"
       },
       {
         "path": "httpresource",
@@ -61,8 +205,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
         "path": "resources/valtown",
-        "digest": "sha256:ff23e5aa681a26000cbf64fc43e47e545c116daf32c66b55a838b050fba9aa52"
+        "digest": "sha256:9e266dae22641c54fe183e4bd04e2fbb3588e577ccf02cc9b10f76ec60e1ab1f"
       },
       {
         "path": "scenario",
