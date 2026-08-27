@@ -8,27 +8,128 @@
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://us.sentry.io/api/0/organizations/acme/projects/",
   "output": [
     {
+      "id": "acme-admin",
+      "name": "acme-admin",
+      "organization_id_or_slug": "acme",
+      "platform": "javascript",
+      "slug": "acme-admin"
+    },
+    {
+      "description": "fernworks-prod empty CSV.",
+      "id": "acme-analytics",
+      "name": "acme-analytics",
+      "organization_id_or_slug": "acme",
+      "platform": "python",
+      "slug": "acme-analytics"
+    },
+    {
+      "description": "SAML callback errors for Contoso SSO.",
       "id": "acme-api",
       "name": "acme-api",
+      "organization_id_or_slug": "acme",
       "platform": "go",
       "slug": "acme-api"
     },
     {
+      "description": "contoso-eu login loop.",
+      "id": "acme-auth",
+      "name": "acme-auth",
+      "organization_id_or_slug": "acme",
+      "platform": "go",
+      "slug": "acme-auth"
+    },
+    {
+      "description": "INV-4812 invoice renderer.",
+      "id": "acme-billing",
+      "name": "acme-billing",
+      "organization_id_or_slug": "acme",
+      "platform": "go",
+      "slug": "acme-billing"
+    },
+    {
+      "id": "acme-dns",
+      "name": "acme-dns",
+      "organization_id_or_slug": "acme",
+      "platform": "go",
+      "slug": "acme-dns"
+    },
+    {
       "id": "acme-docs",
       "name": "acme-docs",
+      "organization_id_or_slug": "acme",
       "platform": "javascript",
       "slug": "acme-docs"
     },
     {
+      "id": "acme-edge",
+      "name": "acme-edge",
+      "organization_id_or_slug": "acme",
+      "platform": "javascript",
+      "slug": "acme-edge"
+    },
+    {
+      "id": "acme-eu",
+      "name": "acme-eu",
+      "organization_id_or_slug": "acme",
+      "platform": "python",
+      "slug": "acme-eu"
+    },
+    {
+      "id": "acme-hooks",
+      "name": "acme-hooks",
+      "organization_id_or_slug": "acme",
+      "platform": "javascript",
+      "slug": "acme-hooks"
+    },
+    {
+      "id": "acme-ml",
+      "name": "acme-ml",
+      "organization_id_or_slug": "acme",
+      "platform": "python",
+      "slug": "acme-ml"
+    },
+    {
+      "id": "acme-mobile",
+      "name": "acme-mobile",
+      "organization_id_or_slug": "acme",
+      "platform": "react-native",
+      "slug": "acme-mobile"
+    },
+    {
+      "description": "Fabrikam req_7Q4K2.",
+      "id": "acme-scim",
+      "name": "acme-scim",
+      "organization_id_or_slug": "acme",
+      "platform": "go",
+      "slug": "acme-scim"
+    },
+    {
+      "id": "acme-status",
+      "name": "acme-status",
+      "organization_id_or_slug": "acme",
+      "platform": "javascript",
+      "slug": "acme-status"
+    },
+    {
+      "description": "Checkout reliability 5xx.",
       "id": "acme-web",
       "name": "acme-web",
+      "organization_id_or_slug": "acme",
       "platform": "python",
       "slug": "acme-web"
+    },
+    {
+      "description": "LakeTech webhook retries.",
+      "id": "acme-workers",
+      "name": "acme-workers",
+      "organization_id_or_slug": "acme",
+      "platform": "javascript",
+      "slug": "acme-workers"
     }
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:ab8172ed2438aa0c255ae67b4f911fe4d6147cdfc1a7c1aa02dcc18a695ec72c",
+    "digest": "sha256:bde03f872fa7120b466cde90d9e5eb38546f639f5ccb7e733c388a4999751a2b",
     "roots": [
       {
         "path": "cli/run.go",
@@ -44,7 +145,7 @@
       },
       {
         "path": "environments/acme-sentry.yaml",
-        "digest": "sha256:a2246b5f9943b6e70cfaa96f8b9c424ea4ca947aeeb124cd9c576c9b820a2108"
+        "digest": "sha256:f78d3f5b99b4a9349b95e99efeab88592e4b45112efe797614dd6fddc367c6a5"
       },
       {
         "path": "httpresource",
@@ -59,8 +160,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
         "path": "resources/sentry",
-        "digest": "sha256:a2d09f12019bc4ddc732745504118526cbde6cb41275b7e11d4a3c7a960dffe5"
+        "digest": "sha256:9f14797d1e5b17fab8ee264cf158c2da3a4d8d628cc2fe05112904a7c0d879ba"
       },
       {
         "path": "scenario",
