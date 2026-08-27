@@ -11,11 +11,12 @@
     "input": "Explain the checkout reliability incident",
     "model": "gpt-4.1",
     "object": "response",
+    "output": "acme-web pay step 5xx. Flag checkout_reliability. Sentry acme-web. GitHub acme/web#1.",
     "status": "completed"
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:f854b7202c1496d4aa3d650664d72fadec06f315c74fd0119bddc31693df138f",
+    "digest": "sha256:5eb674873168b57b5f50cde7d9059f0c38ed2c523cbb15c871e5d1d80a6e0247",
     "roots": [
       {
         "path": "cli/run.go",
@@ -31,7 +32,7 @@
       },
       {
         "path": "environments/acme-openai.yaml",
-        "digest": "sha256:20f0fdc81b755e7f224e9f8f6eafbe842c8de84033af748a3c3695745549f5da"
+        "digest": "sha256:e134610388154b250601bb3cbe9c7f4d5ef390929eaae22d5081e6f4fc4473a9"
       },
       {
         "path": "httpresource",
@@ -46,8 +47,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
         "path": "resources/openai",
-        "digest": "sha256:2b09f2dfbcefc586f9e22d9cb45d3d396786c0da982090aca140a195b20d8744"
+        "digest": "sha256:ad487d71d78b46e65df0825cdb1bfce1b60a4d4341befa66e357ddd8d3ef6d18"
       },
       {
         "path": "scenario",
