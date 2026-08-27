@@ -1,4 +1,0 @@
-CREATE TABLE webhooks (
-  id TEXT PRIMARY KEY,
-  body TEXT NOT NULL
-);

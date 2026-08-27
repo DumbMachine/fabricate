@@ -8,9 +8,7 @@ sidebar:
 import compatibility from "../_generated/figma.compatibility.json";
 import example from "../_generated/figma-list-webhooks.json";
 
-Fabricate ships a Figma v1 resource with a strict local API and a
-synthetic bearer token. It covers webhook list, get, and create in the included
-Acme Figma environment.
+Fabricate ships a Figma v1 resource with a local API driven by the official Figma OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Figma environment seeds the walkthrough scenario.
 
 ## Scenarios
 
@@ -34,7 +32,7 @@ example manifest directly, so you do not need to clone this repository.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_FIGMA_TOKEN" "$FAB_FIGMA_URL/v1/teams/team_acme/webhooks"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_FIGMA_TOKEN" "$FAB_FIGMA_URL/v2/teams/team_acme/webhooks"'
 ```
 
 The service is named `figma` in the example manifest, so the variables are
@@ -52,7 +50,7 @@ calls Figma's production hostname; the proxy supplies the local token.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
   fab run --environment /dev/stdin --proxy -- \
-    curl -sS https://api.figma.com/v1/teams/team_acme/webhooks
+    curl -sS https://api.figma.com/v2/teams/team_acme/webhooks
 ```
 
 Fabricate handles `api.figma.com` locally. Other hosts are forwarded unchanged.

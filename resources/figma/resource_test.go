@@ -3,6 +3,7 @@ package figma
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -14,7 +15,7 @@ import (
 	"time"
 
 	"github.com/dumbmachine/fabricate/httpresource"
-	"github.com/dumbmachine/fabricate/resources/figma/generated"
+	"github.com/dumbmachine/fabricate/httpresource/specserver"
 	"github.com/dumbmachine/fabricate/scenario"
 	_ "modernc.org/sqlite"
 )
@@ -67,7 +68,7 @@ func openTestDB(t *testing.T, doc scenario.Document) *sql.DB {
 	}
 	db.SetMaxOpenConns(1)
 	t.Cleanup(func() { _ = db.Close() })
-	codec := scenarioCodec{}
+	codec := NewResource().Scenarios()
 	if err := codec.Initialize(context.Background(), db); err != nil {
 		t.Fatal(err)
 	}
@@ -99,6 +100,8 @@ func request(t *testing.T, handler http.Handler, method, path, body, token strin
 	}
 	if token != "" {
 		req.Header.Set("Authorization", "Bearer "+token)
+		req.Header.Set("X-Api-Key", token)
+		req.Header.Set("X-Figma-Token", token)
 	}
 	recorder := httptest.NewRecorder()
 	handler.ServeHTTP(recorder, req)
@@ -107,7 +110,7 @@ func request(t *testing.T, handler http.Handler, method, path, body, token strin
 
 func TestAcmeScenarioValidatesAndRoundTrips(t *testing.T) {
 	doc := loadScenario(t, "acme-webhooks.v1.json")
-	codec := scenarioCodec{}
+	codec := NewResource().Scenarios()
 	if err := codec.Validate(context.Background(), doc); err != nil {
 		t.Fatal(err)
 	}
@@ -125,27 +128,13 @@ func TestAcmeScenarioValidatesAndRoundTrips(t *testing.T) {
 
 func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	resource := NewResource()
-	spec, err := generated.GetSwagger()
-	if err != nil {
-		t.Fatal(err)
-	}
-	seen := map[string]string{}
-	for path, item := range spec.Paths.Map() {
-		for method, operation := range item.Operations() {
-			if operation.OperationID == "" {
-				t.Fatalf("%s %s has no operationId", method, path)
-			}
-			if previous, exists := seen[operation.OperationID]; exists {
-				t.Fatalf("operationId %q is duplicated by %s and %s %s", operation.OperationID, previous, method, path)
-			}
-			seen[operation.OperationID] = method + " " + path
-		}
-	}
-	if len(seen) != 3 {
-		t.Fatalf("compiled operation count = %d, want 3", len(seen))
+	bound := resource.(*specserver.Bound)
+	compiled := bound.Compiled()
+	if compiled.Index.Len() < 20 {
+		t.Fatalf("compiled operation count = %d, want the full Figma catalog", compiled.Index.Len())
 	}
 	contract := resource.Contract()
-	if got, want := resource.Descriptor().OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
+	if got, want := resource.Descriptor().OpenAPIDigest, specserver.Digest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
 	}
 }
@@ -154,31 +143,56 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	db := openTestDB(t, loadScenario(t, "acme-webhooks.v1.json"))
 	handler := newTestHandler(t, db, &testIDs{})
 
-	unauthorized := request(t, handler, http.MethodGet, "/v1/teams/team_acme/webhooks", "", "")
+	unauthorized := request(t, handler, http.MethodGet, "/v2/teams/team_acme/webhooks", "", "")
 	if unauthorized.Code != http.StatusUnauthorized {
 		t.Fatalf("unauthorized = %d %s", unauthorized.Code, unauthorized.Body.String())
 	}
 
-	listed := request(t, handler, http.MethodGet, "/v1/teams/team_acme/webhooks", "", testToken)
-	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `"https://acme.example/hooks/files"`) {
+	listed := request(t, handler, http.MethodGet, "/v2/teams/team_acme/webhooks", "", testToken)
+	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `https://acme.example/hooks/files`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
 
-	got := request(t, handler, http.MethodGet, "/v1/webhooks/wh_files", "", testToken)
-	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `"https://acme.example/hooks/files"`) {
+	got := request(t, handler, http.MethodGet, "/v2/webhooks/wh_files", "", testToken)
+	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `https://acme.example/hooks/files`) {
 		t.Fatalf("get = %d %s", got.Code, got.Body.String())
 	}
 
-	created := request(t, handler, http.MethodPost, "/v1/webhooks", `{"event_type":"FILE_UPDATE","team_id":"team_acme","endpoint":"https://acme.example/hooks/figma"}`, testToken)
+	created := request(t, handler, http.MethodPost, "/v2/webhooks", `{"event_type":"FILE_UPDATE","team_id":"team_acme","endpoint":"https://acme.example/hooks/figma"}`, testToken)
 	if created.Code != http.StatusOK && created.Code != http.StatusCreated {
-		t.Fatalf("create status = %d %s", created.Code, created.Body.String())
-	}
-	if !strings.Contains(created.Body.String(), `"id":"figma.webhook-0001"`) {
 		t.Fatalf("create = %d %s", created.Code, created.Body.String())
 	}
-
-	persisted := request(t, handler, http.MethodGet, "/v1/webhooks/figma.webhook-0001", "", testToken)
-	if persisted.Code != http.StatusOK || !strings.Contains(persisted.Body.String(), `"https://acme.example/hooks/figma"`) {
+	if !strings.Contains(created.Body.String(), `https://acme.example/hooks/figma`) {
+		t.Fatalf("create body = %s", created.Body.String())
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(created.Body.Bytes(), &payload); err != nil {
+		t.Fatal(err)
+	}
+	id := specserver.NestedID(payload)
+	if id == "" {
+		t.Fatalf("create missing id: %s", created.Body.String())
+	}
+	persisted := request(t, handler, http.MethodGet, strings.ReplaceAll("/v2/webhooks/{id}", "{id}", id), "", testToken)
+	if persisted.Code != http.StatusOK || !strings.Contains(persisted.Body.String(), `https://acme.example/hooks/figma`) {
 		t.Fatalf("persisted create = %d %s", persisted.Code, persisted.Body.String())
 	}
+}
+
+func TestAllOperationsAreRouted(t *testing.T) {
+	entries, err := os.ReadDir("scenarios")
+	if err != nil {
+		t.Fatal(err)
+	}
+	minimal := "acme-webhooks.v1.json"
+	for _, entry := range entries {
+		if strings.Contains(entry.Name(), "minimal") {
+			minimal = entry.Name()
+			break
+		}
+	}
+	db := openTestDB(t, loadScenario(t, minimal))
+	handler := newTestHandler(t, db, &testIDs{})
+	bound := NewResource().(*specserver.Bound)
+	specserver.ExerciseAllOperations(t, handler, bound.Compiled(), testToken)
 }

@@ -32,17 +32,17 @@ read_json() {
   curl "${curl_opts[@]}" -H "Authorization: Bearer $token" -H "Content-Type: application/json" "$@"
 }
 
-listed=$(read_json "$base/v1/teams/team_acme/webhooks")
+listed=$(read_json "$base/v2/teams/team_acme/webhooks")
 echo "$listed" | jq -e '.. | strings | select(. == "https://acme.example/hooks/files")' >/dev/null
 
-got=$(read_json "$base/v1/webhooks/wh_files")
+got=$(read_json "$base/v2/webhooks/wh_files")
 echo "$got" | jq -e '.. | strings | select(. == "https://acme.example/hooks/files")' >/dev/null
 
-created=$(read_json -X POST "$base/v1/webhooks" -d '{"event_type":"FILE_UPDATE","team_id":"team_acme","endpoint":"https://acme.example/hooks/figma"}')
+created=$(read_json -X POST "$base/v2/webhooks" -d '{"event_type":"FILE_UPDATE","team_id":"team_acme","endpoint":"https://acme.example/hooks/figma"}')
 created_id=$(echo "$created" | jq -r '.id')
 test -n "$created_id" && test "$created_id" != "null"
 
-persisted=$(read_json "$base/v1/webhooks/$created_id")
+persisted=$(read_json "$base/v2/webhooks/$created_id")
 echo "$persisted" | jq -e '.. | strings | select(. == "https://acme.example/hooks/figma")' >/dev/null
 
 python3 - "$mode" <<'PY'

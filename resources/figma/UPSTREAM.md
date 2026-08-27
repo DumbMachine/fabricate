@@ -1,11 +1,10 @@
 # Figma OpenAPI source
 
-Curated Fabricate contract: `openapi.yaml`.
+`openapi.yaml` is the unmodified official Figma REST OpenAPI 3.1.0 document
+from `https://raw.githubusercontent.com/figma/rest-api-spec/refs/heads/main/openapi/openapi.yaml` retrieved 2026-08-27.
 
-Official source (not vendored in git):
+- Source: https://raw.githubusercontent.com/figma/rest-api-spec/refs/heads/main/openapi/openapi.yaml
+- Declared version: `vendor`
+- SHA-256: `d7ab5681d84cbf3398084e5182583b53ab73da21a3bc8b6cb0d8cf5409350a5c`
 
-- URL: https://raw.githubusercontent.com/figma/rest-api-spec/refs/heads/main/openapi/openapi.yaml
-- SHA-256: `retrieved 2026-08-27; curated subset of webhooks`
-
-The stored document is a curated OpenAPI 3.0.3 subset of the implemented
-operation IDs. oapi-codegen compiles a prepared copy of those operations.
+The running server implements every operation in this document.
