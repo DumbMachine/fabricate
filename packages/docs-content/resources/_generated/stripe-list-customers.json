@@ -29,11 +29,11 @@
     ],
     "has_more": false,
     "object": "list",
-    "url": "/v1/customers"
+    "url": ""
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:057291968ac68a9aadca4da5ee1a9ab63068c1d9fb7609c354068650e92862e2",
+    "digest": "sha256:e1de0366bdd5b9cdc88e807258b16b628b1d43cd83f6f39ce424367ad22d8085",
     "roots": [
       {
         "path": "cli/run.go",
@@ -53,7 +53,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/stripe-list-customers.json",
@@ -65,7 +65,7 @@
       },
       {
         "path": "resources/stripe",
-        "digest": "sha256:6a8c3c8fda44dbdcfc86f2e52372d6be07538cce5e28b50c46fdbf93411a735b"
+        "digest": "sha256:0309403ee2a07a9f149f66b198fb0ea3f8a51a580675c0fb8de1e1328d890324"
       },
       {
         "path": "scenario",
