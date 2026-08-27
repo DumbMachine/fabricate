@@ -36,7 +36,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:e889aa9fbb87eec80cb2fa0815fd233977f2f81bcc1edf0cbe082c1f77ab554a",
+    "digest": "sha256:df3f1940010ae8af3eb4690f546e84e0e42d2fc5c56d9389b1a3169e4575d293",
     "roots": [
       {
         "path": "cli/run.go",
@@ -56,7 +56,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/neon-list-projects.json",
@@ -68,7 +68,7 @@
       },
       {
         "path": "resources/neon",
-        "digest": "sha256:9b544c87358cfc15655d22d65296a24da4dd4f2acd7c1301d69823f573e7acf4"
+        "digest": "sha256:1fa83115e1b9ce3291f792a7221eb64bfb40c0f8dfe50f490987949f9358b499"
       },
       {
         "path": "scenario",
