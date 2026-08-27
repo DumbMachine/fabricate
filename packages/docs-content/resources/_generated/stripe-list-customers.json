@@ -1,0 +1,76 @@
+{
+  "id": "stripe-list-customers",
+  "title": "List seeded customers",
+  "environment": {
+    "label": "Acme Stripe",
+    "manifest": "environments/acme-stripe.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-stripe.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.stripe.com/v1/customers",
+  "output": {
+    "data": [
+      {
+        "email": "ap@contoso.example",
+        "id": "cus_contoso",
+        "name": "Contoso",
+        "object": "customer"
+      },
+      {
+        "email": "noah@helixbio.example",
+        "id": "cus_helix",
+        "name": "Helix Bio",
+        "object": "customer"
+      },
+      {
+        "email": "dana@northwind.example",
+        "id": "cus_northwind",
+        "name": "Northwind",
+        "object": "customer"
+      }
+    ],
+    "has_more": false,
+    "object": "list",
+    "url": "/v1/customers"
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:057291968ac68a9aadca4da5ee1a9ab63068c1d9fb7609c354068650e92862e2",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-stripe.yaml",
+        "digest": "sha256:ced42a28102fa55e21e59ccfd548067216a5b02e810b0dc625c490ec229d41b7"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/stripe-list-customers.json",
+        "digest": "sha256:340f7f2bee3656efe84ec6721754d5e01b0c72e88caaa22e0debd7bfd8e0d183"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/stripe",
+        "digest": "sha256:6a8c3c8fda44dbdcfc86f2e52372d6be07538cce5e28b50c46fdbf93411a735b"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}

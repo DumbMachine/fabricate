@@ -1,0 +1,44 @@
+{
+  "api": "Stripe API",
+  "environment": {
+    "label": "Acme Stripe",
+    "manifest": "environments/acme-stripe.yaml",
+    "messages": 3
+  },
+  "integration": "stripe",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List customers",
+    "write": "Create a customer",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T14:49:29.532Z",
+  "testedCommit": "363f594ed5de678ed7c3a0cd74d45ef9e4399d48"
+}
