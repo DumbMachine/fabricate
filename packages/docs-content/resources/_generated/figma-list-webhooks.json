@@ -1,0 +1,76 @@
+{
+  "id": "figma-list-webhooks",
+  "title": "List seeded webhooks",
+  "environment": {
+    "label": "Acme Figma",
+    "manifest": "environments/acme-figma.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.figma.com/v1/teams/team_acme/webhooks",
+  "output": {
+    "webhooks": [
+      {
+        "endpoint": "https://acme.example/hooks/comments",
+        "event_type": "FILE_COMMENT",
+        "id": "wh_comments",
+        "status": "ACTIVE",
+        "team_id": "team_acme"
+      },
+      {
+        "endpoint": "https://acme.example/hooks/files",
+        "event_type": "FILE_UPDATE",
+        "id": "wh_files",
+        "status": "ACTIVE",
+        "team_id": "team_acme"
+      },
+      {
+        "endpoint": "https://acme.example/hooks/library",
+        "event_type": "LIBRARY_PUBLISH",
+        "id": "wh_library",
+        "status": "ACTIVE",
+        "team_id": "team_acme"
+      }
+    ]
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:e519a75c4fb9528443295c01550aa6c9a1686766f13ff9bb7cb0bef3f6877556",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-figma.yaml",
+        "digest": "sha256:ee5c42edc8e51f16d65acf165b40e6e4b5f0deeedf0a972da8aa2dab3285dcd8"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/figma-list-webhooks.json",
+        "digest": "sha256:d1086c8cc63fff8a7be5dfc59063c4f67d596701ed0239b5b395d507e1a46ec6"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/figma",
+        "digest": "sha256:737e301c7434baecfde41178ee18fa0de497629cee4b280d89d05a9803e26776"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
