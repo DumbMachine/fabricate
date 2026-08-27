@@ -1,0 +1,4 @@
+CREATE TABLE droplets (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

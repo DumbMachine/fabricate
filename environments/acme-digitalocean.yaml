@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-digitalocean
+
+services:
+  digitalocean:
+    resource: digitalocean
+    scenario: digitalocean.acme-droplets.v1

@@ -1,0 +1,32 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "digitalocean.acme-droplets.v1",
+  "$resource": "digitalocean",
+  "$resourceVersion": "v1",
+  "state": {
+    "droplets": [
+      {
+        "id": "droplet_api",
+        "name": "acme-api",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-2vcpu-2gb"
+      },
+      {
+        "id": "droplet_web",
+        "name": "acme-web",
+        "region": "nyc1",
+        "status": "active",
+        "size": "s-1vcpu-1gb"
+      },
+      {
+        "id": "droplet_worker",
+        "name": "acme-worker",
+        "region": "nyc1",
+        "status": "off",
+        "size": "s-1vcpu-1gb"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "digitalocean.minimal.v1",
+  "$resource": "digitalocean",
+  "$resourceVersion": "v1",
+  "state": {
+    "droplets": []
+  }
+}
