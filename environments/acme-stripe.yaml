@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-stripe
+
+services:
+  stripe:
+    resource: stripe
+    scenario: stripe.acme-customers.v1

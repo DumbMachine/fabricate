@@ -1,0 +1,29 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "stripe.acme-customers.v1",
+  "$resource": "stripe",
+  "$resourceVersion": "v1",
+  "state": {
+    "customers": [
+      {
+        "id": "cus_contoso",
+        "object": "customer",
+        "name": "Contoso",
+        "email": "ap@contoso.example"
+      },
+      {
+        "id": "cus_helix",
+        "object": "customer",
+        "name": "Helix Bio",
+        "email": "noah@helixbio.example"
+      },
+      {
+        "id": "cus_northwind",
+        "object": "customer",
+        "name": "Northwind",
+        "email": "dana@northwind.example"
+      }
+    ]
+  }
+}
