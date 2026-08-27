@@ -1,0 +1,71 @@
+{
+  "id": "sentry-list-projects",
+  "title": "List seeded projects",
+  "environment": {
+    "label": "Acme Sentry",
+    "manifest": "environments/acme-sentry.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://us.sentry.io/api/0/organizations/acme/projects/",
+  "output": [
+    {
+      "id": "acme-api",
+      "name": "acme-api",
+      "platform": "go",
+      "slug": "acme-api"
+    },
+    {
+      "id": "acme-docs",
+      "name": "acme-docs",
+      "platform": "javascript",
+      "slug": "acme-docs"
+    },
+    {
+      "id": "acme-web",
+      "name": "acme-web",
+      "platform": "python",
+      "slug": "acme-web"
+    }
+  ],
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:5a1a6cc9b9fa99abccaf6ef3fe6637762b5b107b6b4a49fe9b5881df93ee76ec",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-sentry.yaml",
+        "digest": "sha256:a2246b5f9943b6e70cfaa96f8b9c424ea4ca947aeeb124cd9c576c9b820a2108"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/sentry-list-projects.json",
+        "digest": "sha256:e1e7838da1db41828d8e23518d30b6518be7bdd94e4f47c571aff9c6a3691d97"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/sentry",
+        "digest": "sha256:cde474cf5743784eaad825aca73f54e17977bd7a0fbf6097548fca52860e92ca"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
