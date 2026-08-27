@@ -3,13 +3,13 @@
   "environment": {
     "label": "Acme Asana",
     "manifest": "environments/acme-asana.yaml",
-    "messages": 5
+    "messages": 8
   },
   "integration": "asana",
   "modes": {
     "direct": {
-      "messagesAfter": 6,
-      "messagesBefore": 5,
+      "messagesAfter": 9,
+      "messagesBefore": 8,
       "operations": {
         "read": "passed",
         "write": "passed",
@@ -18,8 +18,8 @@
       "status": "passed"
     },
     "proxy": {
-      "messagesAfter": 6,
-      "messagesBefore": 5,
+      "messagesAfter": 9,
+      "messagesBefore": 8,
       "operations": {
         "read": "passed",
         "write": "passed",
@@ -39,6 +39,6 @@
     "client": "curl@8.5.0",
     "title": "HTTP API verification"
   },
-  "testedAt": "2026-08-26T14:34:24.137Z",
-  "testedCommit": "e0bf4dbc3dd216326b4f1ea806dea3847aebb927"
+  "testedAt": "2026-08-27T08:41:40.852Z",
+  "testedCommit": "d5411386c8f17181e5a5f9437346eb84e360ca2e"
 }
