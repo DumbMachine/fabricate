@@ -1,0 +1,73 @@
+{
+  "id": "exa-list-tasks",
+  "title": "List seeded research tasks",
+  "environment": {
+    "label": "Acme Exa",
+    "manifest": "environments/acme-exa.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.exa.ai/research/v0/tasks",
+  "output": {
+    "data": [
+      {
+        "id": "task_billing",
+        "instructions": "Summarize public coverage of invoice INV-4812 disputes",
+        "model": "exa-research",
+        "status": "completed"
+      },
+      {
+        "id": "task_checkout",
+        "instructions": "What caused the checkout reliability incident?",
+        "model": "exa-research",
+        "status": "completed"
+      },
+      {
+        "id": "task_sso",
+        "instructions": "Find write-ups of Contoso SSO login loops",
+        "model": "exa-research",
+        "status": "running"
+      }
+    ]
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:b1b7b2172830fedeb7349fae7f2c89fb7f752ea90938daa6664b5b07a0b50051",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-exa.yaml",
+        "digest": "sha256:d53491bc81008a162ead93054df50c0ac916cebdaf7a64b82e392c1a6c3b4672"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/exa-list-tasks.json",
+        "digest": "sha256:5fe62cf3581a9472bd99d0bc89cf506fae3515525439a3e37467b6fc38bdbe75"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/exa",
+        "digest": "sha256:208c467467d815700af5160b3493e687884a7bd4e8ba9dc5bc61cbdf0e1fc191"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
