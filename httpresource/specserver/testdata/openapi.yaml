@@ -1,0 +1,92 @@
+openapi: "3.0.3"
+info:
+  title: Example API
+  version: "1.0.0"
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /items:
+    get:
+      operationId: listItems
+      responses:
+        "200":
+          description: list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+    post:
+      operationId: createItem
+      responses:
+        "201":
+          description: created
+          content:
+            application/json:
+              schema:
+                type: object
+  /items/{id}:
+    get:
+      operationId: getItem
+      responses:
+        "200":
+          description: item
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      operationId: deleteItem
+      responses:
+        "204":
+          description: gone
+  /zones:
+    get:
+      operationId: listZones
+      responses:
+        "200":
+          description: zones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  result:
+                    type: array
+                    items:
+                      type: object
+    post:
+      operationId: createZone
+      responses:
+        "200":
+          description: zone
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  result:
+                    type: object
+  /zones/{zone_id}:
+    get:
+      operationId: getZone
+      responses:
+        "200":
+          description: zone
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  result:
+                    type: object

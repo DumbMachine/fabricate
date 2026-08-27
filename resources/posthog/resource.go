@@ -1,74 +1,21 @@
 package posthog
 
 import (
-	"context"
-	_ "embed"
-	"encoding/json"
-	"fmt"
+	"embed"
 
 	"github.com/dumbmachine/fabricate/httpresource"
-	"github.com/dumbmachine/fabricate/resources/posthog/generated"
-	"github.com/dumbmachine/fabricate/scenario"
+	"github.com/dumbmachine/fabricate/httpresource/specserver"
 )
 
-type Resource struct{}
+//go:embed openapi.yaml
+var openAPI []byte
 
-func NewResource() *Resource { return &Resource{} }
+//go:embed scenario.schema.json
+var scenarioSchema []byte
 
-func (*Resource) Descriptor() httpresource.Descriptor {
-	spec, err := generated.GetSwagger()
-	if err != nil {
-		panic(fmt.Sprintf("posthog: embedded OpenAPI: %v", err))
-	}
-	raw, err := json.Marshal(spec)
-	if err != nil {
-		panic(fmt.Sprintf("posthog: marshal embedded OpenAPI: %v", err))
-	}
-	return httpresource.Descriptor{
-		ID: "posthog", DisplayName: "PostHog", Version: "v1", OpenAPIVersion: "3.0.3",
-		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
-		ProviderHosts: []string{"us.posthog.com"},
-		SDK:           httpresource.SDKDescriptor{Package: "curl", Language: "http", DirectTest: true, ProxyTest: true},
-	}
+//go:embed scenarios/*.json
+var builtInScenarios embed.FS
+
+func NewResource() httpresource.Resource {
+	return specserver.NewBound("posthog", "PostHog", []string{"us.posthog.com"}, openAPI, scenarioSchema, builtInScenarios, nil)
 }
-
-func (*Resource) Contract() httpresource.Contract {
-	spec, err := generated.GetSwagger()
-	if err != nil {
-		panic(err)
-	}
-	raw, err := json.Marshal(spec)
-	if err != nil {
-		panic(err)
-	}
-	return httpresource.Contract{OpenAPIJSON: raw, ScenarioJSON: append([]byte(nil), scenarioSchema...)}
-}
-
-func (*Resource) Scenarios() httpresource.ScenarioCodec { return scenarioCodec{} }
-
-func (*Resource) Scenario(id string) (scenario.Document, error) {
-	entries, err := builtInScenarios.ReadDir("scenarios")
-	if err != nil {
-		return scenario.Document{}, fmt.Errorf("posthog: list embedded scenarios: %w", err)
-	}
-	for _, entry := range entries {
-		raw, err := builtInScenarios.ReadFile("scenarios/" + entry.Name())
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("posthog: read embedded scenario %s: %w", entry.Name(), err)
-		}
-		doc, err := scenario.Parse(raw)
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("posthog: parse embedded scenario %s: %w", entry.Name(), err)
-		}
-		if doc.ID == id {
-			return doc, nil
-		}
-	}
-	return scenario.Document{}, fmt.Errorf("posthog: unknown scenario %q", id)
-}
-
-func (*Resource) NewServer(ctx context.Context, dependencies httpresource.ServerDependencies) (httpresource.Server, error) {
-	return newServer(ctx, dependencies)
-}
-
-func httpresourceDigest(raw []byte) string { return scenarioDigest(raw) }

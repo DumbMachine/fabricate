@@ -5,6 +5,6 @@
   "$resource": "posthog",
   "$resourceVersion": "v1",
   "state": {
-    "flags": []
+    "feature_flags": []
   }
 }

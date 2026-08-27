@@ -8,9 +8,10 @@ sidebar:
 import compatibility from "../_generated/posthog.compatibility.json";
 import example from "../_generated/posthog-list-feature-flags.json";
 
-Fabricate ships a PostHog v1 resource with a strict local API and a
-synthetic bearer token. It covers feature-flag list, get, and create in the
-included Acme PostHog environment.
+Fabricate ships a PostHog v1 resource with a local API driven by the official
+PostHog OpenAPI document and a synthetic bearer token. Every operation in that
+document is implemented. The included Acme PostHog environment seeds feature
+flags for the checkout-reliability walkthrough.
 
 ## Scenarios
 

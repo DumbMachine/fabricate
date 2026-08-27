@@ -1,4 +1,0 @@
-CREATE TABLE flags (
-  id TEXT PRIMARY KEY,
-  body TEXT NOT NULL
-);

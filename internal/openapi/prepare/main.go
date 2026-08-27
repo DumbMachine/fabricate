@@ -27,7 +27,9 @@ func main() {
 	assignIDs := flag.Bool("assign-operation-ids", false, "fill missing operationId values from method+path")
 	openapiVersion := flag.String("openapi-version", "", "rewrite the openapi version (use 3.0.3 for OAS 3.1 vendor docs)")
 	var keepIDs stringList
+	var dropPaths stringList
 	flag.Var(&keepIDs, "keep-operation-ids", "drop operations whose operationId is not in this list; repeat as needed")
+	flag.Var(&dropPaths, "drop-path", "drop path templates that contain this substring; repeat as needed")
 	flag.Var(&ins, "in", "source OpenAPI file (YAML or JSON); repeat to merge")
 	flag.Parse()
 	if len(ins) == 0 || *out == "" {
@@ -55,6 +57,9 @@ func main() {
 	if len(keepIDs) > 0 {
 		keepOperations(merged, keepIDs)
 		delete(merged, "webhooks")
+	}
+	if len(dropPaths) > 0 {
+		dropMatchingPaths(merged, dropPaths)
 	}
 	_, isSwagger := merged["swagger"]
 	// Full OAS 3 catalogs (HubSpot, Asana, Intercom) already have parameter
@@ -199,6 +204,18 @@ func assignOperationIDs(doc map[string]any) {
 				continue
 			}
 			opMap["operationId"] = operationIDFrom(method, path)
+		}
+	}
+}
+
+func dropMatchingPaths(doc map[string]any, needles []string) {
+	paths, _ := doc["paths"].(map[string]any)
+	for path := range paths {
+		for _, needle := range needles {
+			if strings.Contains(path, needle) {
+				delete(paths, path)
+				break
+			}
 		}
 	}
 }
