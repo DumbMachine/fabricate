@@ -77,6 +77,27 @@ func TestAssignOperationIDs(t *testing.T) {
 	}
 }
 
+func TestDropMatchingPaths(t *testing.T) {
+	doc := map[string]any{
+		"paths": map[string]any{
+			"/repos/{owner}/{repo}/issues":          map[string]any{"get": map[string]any{"operationId": "issues"}},
+			"/repos/{owner}/{repo}/git/blobs":       map[string]any{"get": map[string]any{"operationId": "blobs"}},
+			"/repos/{owner}/{repo}/contents/{path}": map[string]any{"get": map[string]any{"operationId": "contents"}},
+		},
+	}
+	dropMatchingPaths(doc, []string{"/git/", "/contents"})
+	paths := doc["paths"].(map[string]any)
+	if _, ok := paths["/repos/{owner}/{repo}/issues"]; !ok {
+		t.Fatal("issues should be kept")
+	}
+	if _, ok := paths["/repos/{owner}/{repo}/git/blobs"]; ok {
+		t.Fatal("git blobs should be dropped")
+	}
+	if _, ok := paths["/repos/{owner}/{repo}/contents/{path}"]; ok {
+		t.Fatal("contents should be dropped")
+	}
+}
+
 func TestKeepOperations(t *testing.T) {
 	doc := map[string]any{
 		"paths": map[string]any{

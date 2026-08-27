@@ -1,11 +1,10 @@
-# Neon contract provenance
+# Neon OpenAPI source
 
-`openapi.yaml` is a curated Fabricate contract for Neon project list, get, and
-create. Operation inventory comes from Neon's official OpenAPI document at
-`https://neon.tech/api_spec/release/v2.json`, retrieved 2026-08-27 (SHA-256
-`545a747bad71c82333cb8ed36e3c1c424ee56f4cdcc093454cc0e5a425829373`). The stored
-document uses bounded object schemas so oapi-codegen can emit strict bindings.
+`openapi.json` is the unmodified official Neon REST OpenAPI 3.0.3 document
+from `https://neon.tech/api_spec/release/v2.json` retrieved 2026-08-27.
 
-oapi-codegen compiles the implemented operation IDs from this document.
-Undeclared Neon routes are not generated and therefore not advertised by the
-running server.
+- Source: https://neon.tech/api_spec/release/v2.json
+- Declared version: `v2`
+- SHA-256: `545a747bad71c82333cb8ed36e3c1c424ee56f4cdcc093454cc0e5a425829373`
+
+The running server implements every operation in this document.
