@@ -1,4 +1,0 @@
-CREATE TABLE vals (
-  id TEXT PRIMARY KEY,
-  body TEXT NOT NULL
-);
