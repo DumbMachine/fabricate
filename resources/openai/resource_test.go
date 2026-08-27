@@ -152,6 +152,9 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `Explain the checkout reliability incident`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `Sentry acme-web`) {
+		t.Fatalf("checkout response missing cross-service needle: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/v1/responses/resp_checkout", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `Explain the checkout reliability incident`) {
