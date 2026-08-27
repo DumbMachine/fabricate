@@ -6,34 +6,32 @@
     "manifest": "environments/acme-digitalocean.yaml"
   },
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.digitalocean.com/v2/droplets",
-  "output": {
-    "droplets": [
-      {
-        "id": "droplet_api",
-        "name": "acme-api",
-        "region": "nyc1",
-        "size": "s-2vcpu-2gb",
-        "status": "active"
-      },
-      {
-        "id": "droplet_web",
-        "name": "acme-web",
-        "region": "nyc1",
-        "size": "s-1vcpu-1gb",
-        "status": "active"
-      },
-      {
-        "id": "droplet_worker",
-        "name": "acme-worker",
-        "region": "nyc1",
-        "size": "s-1vcpu-1gb",
-        "status": "off"
-      }
-    ]
-  },
+  "output": [
+    {
+      "id": "droplet_api",
+      "name": "acme-api",
+      "region": "nyc1",
+      "size": "s-2vcpu-2gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_web",
+      "name": "acme-web",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "active"
+    },
+    {
+      "id": "droplet_worker",
+      "name": "acme-worker",
+      "region": "nyc1",
+      "size": "s-1vcpu-1gb",
+      "status": "off"
+    }
+  ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:8971fe638289acc7c10bf8a454ec5ad38831a4294b8ad498a925d3176b910794",
+    "digest": "sha256:293d4108cdb6b01d35e0766abdb87e137c8fe252a0c9ea5fcda3591b953aea31",
     "roots": [
       {
         "path": "cli/run.go",
@@ -53,7 +51,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/digitalocean-list-droplets.json",
@@ -65,7 +63,7 @@
       },
       {
         "path": "resources/digitalocean",
-        "digest": "sha256:609ef61aa39db07ebbb2a9a06e1e7667f3b34a9fe72a608aa9f08895459a12fe"
+        "digest": "sha256:82459c9b3701444d95863cedaab1d7b15f19dd378647e0582a97c8db88bc8a72"
       },
       {
         "path": "scenario",
