@@ -1,0 +1,14 @@
+{
+  "id": "figma-list-webhooks",
+  "title": "List seeded webhooks",
+  "environment": "environments/acme-figma.yaml",
+  "environmentLabel": "Acme Figma",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/figma-list-webhooks.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.figma.com/v1/teams/team_acme/webhooks",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.figma.com/v1/teams/team_acme/webhooks"
+  ]
+}

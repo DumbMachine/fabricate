@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-figma
+
+services:
+  figma:
+    resource: figma
+    scenario: figma.acme-webhooks.v1

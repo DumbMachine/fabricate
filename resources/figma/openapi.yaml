@@ -1,0 +1,105 @@
+openapi: "3.0.3"
+info:
+  title: Figma API
+  version: "1.0.0"
+  description: Curated Fabricate subset of Figma's official OpenAPI (https://raw.githubusercontent.com/figma/rest-api-spec/refs/heads/main/openapi/openapi.yaml).
+servers:
+  - url: https://api.figma.com
+security:
+  - bearerAuth: []
+paths:
+  /v1/teams/{team_id}/webhooks:
+    get:
+      operationId: getTeamWebhooks
+      summary: List team webhooks
+      parameters:
+        - name: team_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /v1/webhooks/{webhook_id}:
+    get:
+      operationId: getWebhook
+      summary: Get a webhook
+      parameters:
+        - name: webhook_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /v1/webhooks:
+    post:
+      operationId: postWebhook
+      summary: Create a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

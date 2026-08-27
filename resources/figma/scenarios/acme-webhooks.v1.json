@@ -1,0 +1,32 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "figma.acme-webhooks.v1",
+  "$resource": "figma",
+  "$resourceVersion": "v1",
+  "state": {
+    "webhooks": [
+      {
+        "id": "wh_comments",
+        "event_type": "FILE_COMMENT",
+        "team_id": "team_acme",
+        "endpoint": "https://acme.example/hooks/comments",
+        "status": "ACTIVE"
+      },
+      {
+        "id": "wh_files",
+        "event_type": "FILE_UPDATE",
+        "team_id": "team_acme",
+        "endpoint": "https://acme.example/hooks/files",
+        "status": "ACTIVE"
+      },
+      {
+        "id": "wh_library",
+        "event_type": "LIBRARY_PUBLISH",
+        "team_id": "team_acme",
+        "endpoint": "https://acme.example/hooks/library",
+        "status": "ACTIVE"
+      }
+    ]
+  }
+}

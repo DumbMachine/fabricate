@@ -1,0 +1,67 @@
+---
+title: Figma
+description: A reproducible Figma API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/figma
+---
+
+import compatibility from "../_generated/figma.compatibility.json";
+import example from "../_generated/figma-list-webhooks.json";
+
+Fabricate ships a Figma v1 resource with a strict local API and a
+synthetic bearer token. It covers webhook list, get, and create in the included
+Acme Figma environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `figma.minimal.v1` | Empty Figma state for a clean test. |
+| `figma.acme-webhooks.v1` | Team webhooks for file updates, comments, and library publishes. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep Figma’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_FIGMA_TOKEN" "$FAB_FIGMA_URL/v1/teams/team_acme/webhooks"'
+```
+
+The service is named `figma` in the example manifest, so the variables are
+`FAB_FIGMA_URL` and `FAB_FIGMA_TOKEN`.
+
+The response is the Acme webhook list:
+
+<CommandOutput example={example} showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Figma URLs. This one-paste check
+calls Figma's production hostname; the proxy supplies the local token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://api.figma.com/v1/teams/team_acme/webhooks
+```
+
+Fabricate handles `api.figma.com` locally. Other hosts are forwarded unchanged.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Figma check ran against the Acme Figma
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />

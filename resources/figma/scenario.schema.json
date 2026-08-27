@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "webhooks"
+  ],
+  "properties": {
+    "webhooks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}
