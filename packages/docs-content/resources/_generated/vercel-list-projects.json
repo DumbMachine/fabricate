@@ -9,11 +9,57 @@
   "output": [
     {
       "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_admin",
+      "name": "acme-admin"
+    },
+    {
+      "accountId": "team_acme",
       "createdAt": 1755770400000,
+      "description": "SAML callback host for Contoso SSO.",
       "framework": "nextjs",
       "id": "prj_acme_api",
       "name": "acme-api",
       "updatedAt": 1756192800000
+    },
+    {
+      "accountId": "team_acme",
+      "description": "auth.acme.example Contoso callback.",
+      "framework": "nextjs",
+      "id": "prj_acme_auth",
+      "name": "acme-auth"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "INV-4812 receipts and Northwind portal.",
+      "framework": "nextjs",
+      "id": "prj_acme_billing",
+      "name": "acme-billing"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_blog",
+      "name": "acme-blog"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_careers",
+      "name": "acme-careers"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_changelog",
+      "name": "acme-changelog"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "Patched checkout host.",
+      "framework": "nextjs",
+      "id": "prj_acme_checkout",
+      "name": "acme-checkout"
     },
     {
       "accountId": "team_acme",
@@ -25,16 +71,131 @@
     },
     {
       "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_edge",
+      "name": "acme-edge"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "LakeTech webhook ingress.",
+      "framework": "nextjs",
+      "id": "prj_acme_hooks",
+      "name": "acme-hooks"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_legal",
+      "name": "acme-legal"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_marketing",
+      "name": "acme-marketing"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_mobile",
+      "name": "acme-mobile-web"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_og",
+      "name": "acme-og-image"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_playground",
+      "name": "acme-playground"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_preview",
+      "name": "acme-preview"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_status",
+      "name": "acme-status"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_storybook",
+      "name": "acme-storybook"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_surveys",
+      "name": "acme-surveys"
+    },
+    {
+      "accountId": "team_acme",
       "createdAt": 1755684000000,
+      "description": "Checkout reliability incident surface.",
       "framework": "nextjs",
       "id": "prj_acme_web",
       "name": "acme-web",
       "updatedAt": 1756192800000
+    },
+    {
+      "accountId": "team_acme",
+      "description": "TXT acme-domain-verification=adatum-7f31.",
+      "framework": "nextjs",
+      "id": "prj_adatum_dns",
+      "name": "adatum-dns-check"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_brightpath_keys",
+      "name": "brightpath-keys"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "contoso-eu SAML preview.",
+      "framework": "nextjs",
+      "id": "prj_contoso_sso",
+      "name": "contoso-sso-preview"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "req_7Q4K2 audit export.",
+      "framework": "nextjs",
+      "id": "prj_fabrikam_scim",
+      "name": "fabrikam-scim"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "Priya Nair CSV export debug app.",
+      "framework": "nextjs",
+      "id": "prj_fernworks_export",
+      "name": "fernworks-export"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "Northwind billing portal for INV-4812.",
+      "framework": "nextjs",
+      "id": "prj_northwind_portal",
+      "name": "northwind-portal"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_tinyshop_pause",
+      "name": "tinyshop-pause"
     }
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:61b5070478b340d98c376adca763a6ded2484ef4bf1bfd1eaf1cbb1fd529b5f5",
+    "digest": "sha256:cf0d7997ec52f86f01a8da63a822a87c89c12e989f4fe19128ab8d99a942a97b",
     "roots": [
       {
         "path": "cli/run.go",
@@ -50,7 +211,7 @@
       },
       {
         "path": "environments/acme-vercel.yaml",
-        "digest": "sha256:41c0443775ada3a481489352403ffc543495e27c05ab6cab7d862a031a7363ba"
+        "digest": "sha256:fef5ca48aa0ea3e978f66a59a8c3c640624ab01f449f378e49355798a94ef817"
       },
       {
         "path": "httpresource",
@@ -65,8 +226,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+      },
+      {
         "path": "resources/vercel",
-        "digest": "sha256:e73f3f885807841e9ac6d7c3677fcce3ed02240f920276364e5022993d6e6c44"
+        "digest": "sha256:5b57b30d6bfabe439f02bfa413ae864cf25e6e780fcf645549bc77f6652c034b"
       },
       {
         "path": "scenario",
