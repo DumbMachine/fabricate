@@ -1,0 +1,32 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "openai.acme-responses.v1",
+  "$resource": "openai",
+  "$resourceVersion": "v1",
+  "state": {
+    "responses": [
+      {
+        "id": "resp_billing",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft a reminder for INV-4812"
+      },
+      {
+        "id": "resp_checkout",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Explain the checkout reliability incident"
+      },
+      {
+        "id": "resp_sso",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Summarize the Contoso SSO loop"
+      }
+    ]
+  }
+}

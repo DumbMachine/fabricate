@@ -1,0 +1,67 @@
+---
+title: OpenAI
+description: A reproducible OpenAI API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/openai
+---
+
+import compatibility from "../_generated/openai.compatibility.json";
+import example from "../_generated/openai-list-responses.json";
+
+Fabricate ships a OpenAI v1 resource with a strict local API and a
+synthetic bearer token. It covers Responses API list, get, and create in the included
+Acme OpenAI environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `openai.minimal.v1` | Empty OpenAI state for a clean test. |
+| `openai.acme-responses.v1` | Seeded Responses API jobs for checkout, SSO, and billing prompts. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep OpenAI’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OPENAI_TOKEN" "$FAB_OPENAI_URL/v1/responses"'
+```
+
+The service is named `openai` in the example manifest, so the variables are
+`FAB_OPENAI_URL` and `FAB_OPENAI_TOKEN`.
+
+The response is the Acme response list:
+
+<CommandOutput example={example} showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal OpenAI URLs. This one-paste check
+calls OpenAI's production hostname; the proxy supplies the local token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://api.openai.com/v1/responses
+```
+
+Fabricate handles `api.openai.com` locally. Other hosts are forwarded unchanged.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest OpenAI check ran against the Acme OpenAI
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />

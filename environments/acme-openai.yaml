@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-openai
+
+services:
+  openai:
+    resource: openai
+    scenario: openai.acme-responses.v1
