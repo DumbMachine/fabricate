@@ -1,0 +1,70 @@
+{
+  "id": "valtown-list-vals",
+  "title": "List seeded vals",
+  "environment": {
+    "label": "Acme Val Town",
+    "manifest": "environments/acme-valtown.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-valtown.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.val.town/v2/vals",
+  "output": {
+    "data": [
+      {
+        "id": "val_billing",
+        "name": "acme-billing",
+        "privacy": "private"
+      },
+      {
+        "id": "val_docs",
+        "name": "acme-docs",
+        "privacy": "public"
+      },
+      {
+        "id": "val_webhooks",
+        "name": "acme-webhooks",
+        "privacy": "unlisted"
+      }
+    ]
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:78e104a8cd556925bbd32046d1f87ade494c17d6408d04056d43be66fbca00ad",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-valtown.yaml",
+        "digest": "sha256:5ad01158b16515ccf52effb1cc340ba1cfa55f67201f79a605d77930777e65a9"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/valtown-list-vals.json",
+        "digest": "sha256:f6bda1f7775d5bc6b3d6fb77bbf43d8e736731929c4930dc61d52e40a9a2bc5b"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/valtown",
+        "digest": "sha256:9d322f6623e08f05fd3c50caddcd5dd8073d4d44f930d2445d288ad719a1e3d5"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
