@@ -65,6 +65,81 @@
           }
         ],
         "add_time": "2026-08-25T11:00:00"
+      },
+      {
+        "id": 105,
+        "name": "Jules Okonkwo",
+        "first_name": "Jules",
+        "last_name": "Okonkwo",
+        "org_id": 202,
+        "emails": [
+          {
+            "value": "jules@northwind.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-19T10:15:00"
+      },
+      {
+        "id": 106,
+        "name": "Leila Haddad",
+        "first_name": "Leila",
+        "last_name": "Haddad",
+        "org_id": 205,
+        "emails": [
+          {
+            "value": "leila@fabrikam.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-22T11:30:00"
+      },
+      {
+        "id": 107,
+        "name": "Sofia Marin",
+        "first_name": "Sofia",
+        "last_name": "Marin",
+        "org_id": 206,
+        "emails": [
+          {
+            "value": "sofia@brightpath.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-23T14:00:00"
+      },
+      {
+        "id": 108,
+        "name": "Owen Brooks",
+        "first_name": "Owen",
+        "last_name": "Brooks",
+        "org_id": 207,
+        "emails": [
+          {
+            "value": "owen@adatum.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-24T09:00:00"
+      },
+      {
+        "id": 109,
+        "name": "Noah Patel",
+        "first_name": "Noah",
+        "last_name": "Patel",
+        "org_id": 208,
+        "emails": [
+          {
+            "value": "noah@helixbio.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-26T10:00:00"
       }
     ],
     "organizations": [
@@ -87,6 +162,26 @@
         "id": 204,
         "name": "Fernworks",
         "add_time": "2026-08-25T11:00:00"
+      },
+      {
+        "id": 205,
+        "name": "Fabrikam",
+        "add_time": "2026-08-22T11:30:00"
+      },
+      {
+        "id": 206,
+        "name": "Brightpath",
+        "add_time": "2026-08-23T14:00:00"
+      },
+      {
+        "id": 207,
+        "name": "Adatum",
+        "add_time": "2026-08-24T09:00:00"
+      },
+      {
+        "id": 208,
+        "name": "Helix Bio",
+        "add_time": "2026-08-26T10:00:00"
       }
     ],
     "deals": [
@@ -100,6 +195,37 @@
         "person_id": 101,
         "invoice": "INV-4812",
         "add_time": "2026-08-18T14:00:00"
+      },
+      {
+        "id": 302,
+        "title": "Fernworks platform expansion",
+        "value": 8900,
+        "currency": "USD",
+        "status": "open",
+        "org_id": 204,
+        "person_id": 104,
+        "invoice": "INV-2207",
+        "add_time": "2026-08-25T11:00:00"
+      },
+      {
+        "id": 303,
+        "title": "Helix Bio sales trial",
+        "value": 4200,
+        "currency": "USD",
+        "status": "open",
+        "org_id": 208,
+        "person_id": 109,
+        "add_time": "2026-08-26T10:00:00"
+      },
+      {
+        "id": 304,
+        "title": "Brightpath API key rotation",
+        "value": 2100,
+        "currency": "USD",
+        "status": "won",
+        "org_id": 206,
+        "person_id": 107,
+        "add_time": "2026-08-23T14:00:00"
       }
     ]
   }
