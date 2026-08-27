@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `Checkout reliability`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `Bump next to 15.5`) {
+		t.Fatalf("haystack missing filler issue: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"title":`) < 20 {
+		t.Fatalf("issue haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/repos/acme/web/issues/1", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `Checkout reliability`) {
