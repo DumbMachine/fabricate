@@ -5,35 +5,33 @@
     "label": "Acme Figma",
     "manifest": "environments/acme-figma.yaml"
   },
-  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.figma.com/v1/teams/team_acme/webhooks",
-  "output": {
-    "webhooks": [
-      {
-        "endpoint": "https://acme.example/hooks/comments",
-        "event_type": "FILE_COMMENT",
-        "id": "wh_comments",
-        "status": "ACTIVE",
-        "team_id": "team_acme"
-      },
-      {
-        "endpoint": "https://acme.example/hooks/files",
-        "event_type": "FILE_UPDATE",
-        "id": "wh_files",
-        "status": "ACTIVE",
-        "team_id": "team_acme"
-      },
-      {
-        "endpoint": "https://acme.example/hooks/library",
-        "event_type": "LIBRARY_PUBLISH",
-        "id": "wh_library",
-        "status": "ACTIVE",
-        "team_id": "team_acme"
-      }
-    ]
-  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.figma.com/v2/teams/team_acme/webhooks",
+  "output": [
+    {
+      "endpoint": "https://acme.example/hooks/comments",
+      "event_type": "FILE_COMMENT",
+      "id": "wh_comments",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/files",
+      "event_type": "FILE_UPDATE",
+      "id": "wh_files",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    },
+    {
+      "endpoint": "https://acme.example/hooks/library",
+      "event_type": "LIBRARY_PUBLISH",
+      "id": "wh_library",
+      "status": "ACTIVE",
+      "team_id": "team_acme"
+    }
+  ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:e519a75c4fb9528443295c01550aa6c9a1686766f13ff9bb7cb0bef3f6877556",
+    "digest": "sha256:a5263133b1ffdd99e779ec954c3cb7b056b14521a525fc9dd57f872767a79816",
     "roots": [
       {
         "path": "cli/run.go",
@@ -53,11 +51,11 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/figma-list-webhooks.json",
-        "digest": "sha256:d1086c8cc63fff8a7be5dfc59063c4f67d596701ed0239b5b395d507e1a46ec6"
+        "digest": "sha256:d7aef500e0f1b5fb215616aa8fed5bd331a9d32441a6a1bb181314df7c57cd01"
       },
       {
         "path": "requestlog",
@@ -65,7 +63,7 @@
       },
       {
         "path": "resources/figma",
-        "digest": "sha256:737e301c7434baecfde41178ee18fa0de497629cee4b280d89d05a9803e26776"
+        "digest": "sha256:b3c4367c652d2fceac68ad5ed0f6f0a1c13810d46eb8effb107d3d9c8d41d8a2"
       },
       {
         "path": "scenario",
