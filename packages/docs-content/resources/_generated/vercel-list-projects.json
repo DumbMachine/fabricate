@@ -6,42 +6,35 @@
     "manifest": "environments/acme-vercel.yaml"
   },
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.vercel.com/v10/projects",
-  "output": {
-    "pagination": {
-      "count": 3,
-      "next": null,
-      "prev": null
+  "output": [
+    {
+      "accountId": "team_acme",
+      "createdAt": 1755770400000,
+      "framework": "nextjs",
+      "id": "prj_acme_api",
+      "name": "acme-api",
+      "updatedAt": 1756192800000
     },
-    "projects": [
-      {
-        "accountId": "team_acme",
-        "createdAt": 1755770400000,
-        "framework": "nextjs",
-        "id": "prj_acme_api",
-        "name": "acme-api",
-        "updatedAt": 1756192800000
-      },
-      {
-        "accountId": "team_acme",
-        "createdAt": 1755856800000,
-        "framework": "nextjs",
-        "id": "prj_acme_docs",
-        "name": "acme-docs",
-        "updatedAt": 1756192800000
-      },
-      {
-        "accountId": "team_acme",
-        "createdAt": 1755684000000,
-        "framework": "nextjs",
-        "id": "prj_acme_web",
-        "name": "acme-web",
-        "updatedAt": 1756192800000
-      }
-    ]
-  },
+    {
+      "accountId": "team_acme",
+      "createdAt": 1755856800000,
+      "framework": "nextjs",
+      "id": "prj_acme_docs",
+      "name": "acme-docs",
+      "updatedAt": 1756192800000
+    },
+    {
+      "accountId": "team_acme",
+      "createdAt": 1755684000000,
+      "framework": "nextjs",
+      "id": "prj_acme_web",
+      "name": "acme-web",
+      "updatedAt": 1756192800000
+    }
+  ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:46ccf62665b44e510a8f90c58bf7e2b470cfa69f9e609b59204953305ed3f177",
+    "digest": "sha256:61b5070478b340d98c376adca763a6ded2484ef4bf1bfd1eaf1cbb1fd529b5f5",
     "roots": [
       {
         "path": "cli/run.go",
@@ -61,7 +54,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/vercel-list-projects.json",
@@ -73,7 +66,7 @@
       },
       {
         "path": "resources/vercel",
-        "digest": "sha256:8f1df690254540fa05ef7d187891af880680cc6819a301796fdd9552636d17ea"
+        "digest": "sha256:e73f3f885807841e9ac6d7c3677fcce3ed02240f920276364e5022993d6e6c44"
       },
       {
         "path": "scenario",
