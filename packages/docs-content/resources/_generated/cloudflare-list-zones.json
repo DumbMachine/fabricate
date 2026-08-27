@@ -1,0 +1,82 @@
+{
+  "id": "cloudflare-list-zones",
+  "title": "List seeded zones",
+  "environment": {
+    "label": "Acme Cloudflare",
+    "manifest": "environments/acme-cloudflare.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.cloudflare.com/client/v4/zones",
+  "output": {
+    "errors": [],
+    "messages": [],
+    "result": [
+      {
+        "id": "zone_acme",
+        "name": "acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "id": "zone_docs",
+        "name": "docs.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "id": "zone_web",
+        "name": "web.acme.example",
+        "status": "active",
+        "type": "full"
+      }
+    ],
+    "result_info": {
+      "count": 3,
+      "page": 1,
+      "per_page": 50,
+      "total_count": 3
+    },
+    "success": true
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:947a4e8b4d7ca7919e962b52d7e2fd8a6516802d498d84d8cb91ee20d6f8f89f",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+      },
+      {
+        "path": "environments/acme-cloudflare.yaml",
+        "digest": "sha256:20cfbe03ee2106e9c1cc3bfcf3c4af9fdfed38330a930bb116385748ac8eebda"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/cloudflare-list-zones.json",
+        "digest": "sha256:56fba1b663fb4ccd5bd599c0a433a59e0dfc6d73f6490ff0dbedb685200066a7"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/cloudflare",
+        "digest": "sha256:904f4d7e8e33a0def42994629c083d83a06e07aeb3b13ce11ba097500af1acaf"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+      }
+    ]
+  }
+}
