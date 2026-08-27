@@ -6,7 +6,28 @@
     "messages": 6
   },
   "integration": "mailchimp",
-  "modes": {},
+  "modes": {
+    "direct": {
+      "messagesAfter": 7,
+      "messagesBefore": 6,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 7,
+      "messagesBefore": 6,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
   "operationLabels": {
     "read": "Read audience",
     "write": "Send the INV-4812 campaign",
@@ -15,9 +36,9 @@
   "verification": {
     "kind": "curl",
     "label": "HTTP client",
-    "client": "curl",
+    "client": "curl@8.5.0",
     "title": "HTTP API verification"
   },
-  "testedAt": "2026-08-27T00:00:00Z",
-  "testedCommit": "unknown"
+  "testedAt": "2026-08-27T07:24:15.465Z",
+  "testedCommit": "1a333a153ae794651d5f46f7880eeb47479b3b75"
 }
