@@ -41,6 +41,132 @@ func TestStripCodegenIncompatibilities(t *testing.T) {
 	}
 }
 
+func TestNormalizeNullableTypes(t *testing.T) {
+	doc := map[string]any{
+		"type": []any{"string", "null"},
+		"properties": map[string]any{
+			"active_until": map[string]any{"type": []any{"string", "null"}},
+		},
+	}
+	normalizeNullableTypes(doc)
+	if doc["type"] != "string" || doc["nullable"] != true {
+		t.Fatalf("root = %#v", doc)
+	}
+	prop := doc["properties"].(map[string]any)["active_until"].(map[string]any)
+	if prop["type"] != "string" || prop["nullable"] != true {
+		t.Fatalf("prop = %#v", prop)
+	}
+}
+
+func TestAssignOperationIDs(t *testing.T) {
+	doc := map[string]any{
+		"paths": map[string]any{
+			"/v2/objects/{object}/records": map[string]any{
+				"get":  map[string]any{"summary": "Get"},
+				"post": map[string]any{"operationId": "createRecord"},
+			},
+		},
+	}
+	assignOperationIDs(doc)
+	ops := doc["paths"].(map[string]any)["/v2/objects/{object}/records"].(map[string]any)
+	if ops["get"].(map[string]any)["operationId"] != "get_v2_objects_object_records" {
+		t.Fatalf("assigned id = %v", ops["get"].(map[string]any)["operationId"])
+	}
+	if ops["post"].(map[string]any)["operationId"] != "createRecord" {
+		t.Fatal("existing operationId should be kept")
+	}
+}
+
+func TestKeepOperations(t *testing.T) {
+	doc := map[string]any{
+		"paths": map[string]any{
+			"/emails": map[string]any{
+				"get":  map[string]any{"operationId": "emails/list"},
+				"post": map[string]any{"operationId": "emails/send"},
+			},
+			"/webhooks": map[string]any{
+				"post": map[string]any{"operationId": "webhook"},
+			},
+		},
+	}
+	keepOperations(doc, []string{"emails/send", "emails/list"})
+	paths := doc["paths"].(map[string]any)
+	if _, ok := paths["/webhooks"]; ok {
+		t.Fatal("unwanted path should be dropped")
+	}
+	emails := paths["/emails"].(map[string]any)
+	if emails["get"].(map[string]any)["operationId"] != "emails/list" {
+		t.Fatal("kept get")
+	}
+	if emails["post"].(map[string]any)["operationId"] != "emails/send" {
+		t.Fatal("kept post")
+	}
+}
+
+func TestFillEmptyJSONResponses(t *testing.T) {
+	doc := map[string]any{
+		"paths": map[string]any{
+			"/me/": map[string]any{
+				"get": map[string]any{
+					"responses": map[string]any{
+						"200": map[string]any{
+							"content": map[string]any{
+								"application/json": map[string]any{"example": map[string]any{"id": "1"}},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	fillEmptyJSONResponses(doc)
+	schema := doc["paths"].(map[string]any)["/me/"].(map[string]any)["get"].(map[string]any)["responses"].(map[string]any)["200"].(map[string]any)["content"].(map[string]any)["application/json"].(map[string]any)["schema"].(map[string]any)
+	if schema["type"] != "object" {
+		t.Fatalf("schema = %#v", schema)
+	}
+}
+
+func TestEnsureParameterSchemas(t *testing.T) {
+	doc := map[string]any{
+		"parameters": []any{
+			map[string]any{"name": "id", "in": "path", "type": "string"},
+			map[string]any{"name": "q", "in": "query"},
+		},
+		"properties": map[string]any{
+			"in": map[string]any{"type": "string", "description": "JSON pointer into the body"},
+		},
+	}
+	ensureParameterSchemas(doc)
+	pathParam := doc["parameters"].([]any)[0].(map[string]any)
+	schema, _ := pathParam["schema"].(map[string]any)
+	if schema["type"] != "string" {
+		t.Fatalf("swagger-style path param schema = %#v", pathParam["schema"])
+	}
+	queryParam := doc["parameters"].([]any)[1].(map[string]any)
+	schema, _ = queryParam["schema"].(map[string]any)
+	if schema["type"] != "string" {
+		t.Fatalf("missing schema default = %#v", queryParam["schema"])
+	}
+	prop := doc["properties"].(map[string]any)["in"].(map[string]any)
+	if _, ok := prop["schema"]; ok {
+		t.Fatalf("schema property named in must not be treated as a parameter: %#v", prop)
+	}
+}
+
+func TestDropSwaggerBodyParameters(t *testing.T) {
+	doc := map[string]any{
+		"parameters": []any{
+			map[string]any{"in": "path", "name": "id"},
+			map[string]any{"in": "body", "name": "body"},
+		},
+	}
+	dropSwaggerBodyParameters(doc)
+	params := doc["parameters"].([]any)
+	if len(params) != 1 || params[0].(map[string]any)["in"] != "path" {
+		t.Fatalf("params = %#v", params)
+	}
+}
+
 func TestStripExamples(t *testing.T) {
 	doc := map[string]any{"schema": map[string]any{"type": "object", "example": "not-an-object"}}
 	stripCodegenIncompatibilities(doc, true)

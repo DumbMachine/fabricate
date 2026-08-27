@@ -1,0 +1,23 @@
+{
+  "api": "Pipedrive REST v2",
+  "environment": {
+    "label": "Acme Pipedrive",
+    "manifest": "environments/acme-pipedrive.yaml",
+    "messages": 9
+  },
+  "integration": "pipedrive",
+  "modes": {},
+  "operationLabels": {
+    "read": "Read pipeline",
+    "write": "Win the INV-4812 deal",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T00:00:00Z",
+  "testedCommit": "unknown"
+}

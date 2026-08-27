@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-mailgun
+
+services:
+  mailgun:
+    resource: mailgun
+    scenario: mailgun.acme-outbox.v1

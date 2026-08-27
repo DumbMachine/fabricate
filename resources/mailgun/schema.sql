@@ -1,0 +1,14 @@
+CREATE TABLE domains (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE events (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE messages (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

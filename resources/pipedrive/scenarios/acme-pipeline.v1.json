@@ -1,0 +1,106 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "pipedrive.acme-pipeline.v1",
+  "$resource": "pipedrive",
+  "$resourceVersion": "v2",
+  "state": {
+    "persons": [
+      {
+        "id": 101,
+        "name": "Dana Whitfield",
+        "first_name": "Dana",
+        "last_name": "Whitfield",
+        "org_id": 202,
+        "emails": [
+          {
+            "value": "dana@northwind.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-18T14:00:00"
+      },
+      {
+        "id": 102,
+        "name": "Val Ortega",
+        "first_name": "Val",
+        "last_name": "Ortega",
+        "org_id": 201,
+        "emails": [
+          {
+            "value": "val@acme.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-01-10T09:00:00"
+      },
+      {
+        "id": 103,
+        "name": "Mei Chen",
+        "first_name": "Mei",
+        "last_name": "Chen",
+        "org_id": 203,
+        "emails": [
+          {
+            "value": "mei.chen@contoso.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-26T09:12:00"
+      },
+      {
+        "id": 104,
+        "name": "Priya Nair",
+        "first_name": "Priya",
+        "last_name": "Nair",
+        "org_id": 204,
+        "emails": [
+          {
+            "value": "priya@fernworks.example",
+            "primary": true,
+            "label": "work"
+          }
+        ],
+        "add_time": "2026-08-25T11:00:00"
+      }
+    ],
+    "organizations": [
+      {
+        "id": 201,
+        "name": "Acme",
+        "add_time": "2026-01-10T09:00:00"
+      },
+      {
+        "id": 202,
+        "name": "Northwind Traders",
+        "add_time": "2026-08-18T14:00:00"
+      },
+      {
+        "id": 203,
+        "name": "Contoso",
+        "add_time": "2026-08-26T09:12:00"
+      },
+      {
+        "id": 204,
+        "name": "Fernworks",
+        "add_time": "2026-08-25T11:00:00"
+      }
+    ],
+    "deals": [
+      {
+        "id": 301,
+        "title": "Northwind checkout expansion",
+        "value": 1240,
+        "currency": "USD",
+        "status": "open",
+        "org_id": 202,
+        "person_id": 101,
+        "invoice": "INV-4812",
+        "add_time": "2026-08-18T14:00:00"
+      }
+    ]
+  }
+}

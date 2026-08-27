@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-mailchimp
+
+services:
+  mailchimp:
+    resource: mailchimp
+    scenario: mailchimp.acme-audience.v1

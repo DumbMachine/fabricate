@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/attio/scenario-v1.json",
+  "title": "Fabricate Attio scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["objects", "records", "workspaceMembers"],
+  "properties": {
+    "objects": {"type": "array", "items": {"type": "object"}},
+    "records": {"type": "array", "items": {"type": "object"}},
+    "workspaceMembers": {"type": "array", "items": {"type": "object"}}
+  }
+}

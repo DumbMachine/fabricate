@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-close
+
+services:
+  close:
+    resource: close
+    scenario: close.acme-pipeline.v1

@@ -1,0 +1,12 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "mailchimp.minimal.v1",
+  "$resource": "mailchimp",
+  "$resourceVersion": "3.0",
+  "state": {
+    "lists": [],
+    "members": [],
+    "campaigns": []
+  }
+}

@@ -1,0 +1,80 @@
+---
+title: "Acme Go to Market"
+description: A disposable Acme growth world spanning Attio, Resend, and Mailchimp, with the same people and INV-4812 join keys.
+---
+
+Acme Go to Market is a ready-to-run environment for testing software that
+moves a customer from CRM through transactional mail and a marketing audience.
+Every run starts from the same Acme Corp world and is removed when the wrapped
+command exits.
+
+Its manifest identifier is `acme-go-to-market`.
+
+## Included integrations
+
+<IncludedIntegrations
+  services={[
+    {
+      resource: "attio",
+      label: "Attio",
+      href: "/resources/integrations/attio",
+      service: "crm",
+      scenario: "attio.acme-workspace.v1",
+      summary: "People, companies, and a stalled INV-4812 deal in Attio.",
+      data: "Dana at Northwind, Val at Acme, Mei at Contoso, Priya at Fernworks.",
+    },
+    {
+      resource: "resend",
+      label: "Resend",
+      href: "/resources/integrations/resend",
+      service: "transactional",
+      scenario: "resend.acme-outbox.v1",
+      summary: "Sent INV-4812 and Contoso SSO mail from acme.example.",
+      data: "Delivered receipt to dana@northwind.example and SSO follow-up to Mei Chen.",
+    },
+    {
+      resource: "mailchimp",
+      label: "Mailchimp",
+      href: "/resources/integrations/mailchimp",
+      service: "audience",
+      scenario: "mailchimp.acme-audience.v1",
+      summary: "The Acme customers list plus a saved INV-4812 campaign.",
+      data: "Dana, Val, Mei, and Priya are subscribed; campaign_inv4812 is still saved.",
+    },
+  ]}
+/>
+
+## Scenario data
+
+The three scenarios describe one company. Shared people and INV-4812 appear in
+more than one service so an application has to corroborate records before it
+sends mail or marks a campaign sent.
+
+| Join key | Attio | Resend | Mailchimp |
+| --- | --- | --- | --- |
+| Invoice `INV-4812` / $1,240 | deal record `c1111111-1111-4111-8111-111111111111` | email `email_inv4812` to Dana | saved campaign `campaign_inv4812` |
+| `dana@northwind.example` | people record | delivered receipt | subscribed list member |
+| Contoso SSO / Mei Chen | people + Contoso company | email `email_sso` | subscribed list member |
+| Fernworks / Priya Nair | people + Fernworks company | — | subscribed list member |
+
+The Northwind deal is still open while billing mail already went out. A safe
+agent task should read Attio and Resend before it sends the Mailchimp campaign.
+
+## Get started
+
+Paste this command to download the environment manifest, start the three
+services, and read INV-4812 from each one. You do not need to clone Fabricate.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-go-to-market.yaml \
+  | fab run --environment /dev/stdin --proxy -- sh -c '
+      curl -sS -H "Content-Type: application/json" -d "{}" https://api.attio.com/v2/objects/deals/records/query
+      echo
+      curl -sS https://api.resend.com/emails/email_inv4812
+      echo
+      curl -sS https://us1.api.mailchimp.com/3.0/campaigns/campaign_inv4812
+    '
+```
+
+`--proxy` keeps each provider’s normal hostname. See the integration pages for
+response shapes and the direct-URL option.

@@ -1,0 +1,36 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "sendgrid.acme-outbox.v1",
+  "$resource": "sendgrid",
+  "$resourceVersion": "v3",
+  "state": {
+    "batches": [],
+    "messages": [
+      {
+        "id": "msg_inv4812",
+        "from": {
+          "email": "billing@acme.example"
+        },
+        "personalizations": [
+          {
+            "to": [
+              {
+                "email": "dana@northwind.example"
+              }
+            ]
+          }
+        ],
+        "subject": "INV-4812 receipt",
+        "content": [
+          {
+            "type": "text/plain",
+            "value": "Invoice INV-4812 for $1,240"
+          }
+        ],
+        "status": "delivered",
+        "created_at": "2026-08-18T14:00:00Z"
+      }
+    ]
+  }
+}

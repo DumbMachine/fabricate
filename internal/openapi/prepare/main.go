@@ -24,6 +24,10 @@ func main() {
 	var ins stringList
 	out := flag.String("out", "", "prepared JSON path for oapi-codegen")
 	stripExamples := flag.Bool("strip-examples", false, "drop example keys that vendor documents often leave invalid")
+	assignIDs := flag.Bool("assign-operation-ids", false, "fill missing operationId values from method+path")
+	openapiVersion := flag.String("openapi-version", "", "rewrite the openapi version (use 3.0.3 for OAS 3.1 vendor docs)")
+	var keepIDs stringList
+	flag.Var(&keepIDs, "keep-operation-ids", "drop operations whose operationId is not in this list; repeat as needed")
 	flag.Var(&ins, "in", "source OpenAPI file (YAML or JSON); repeat to merge")
 	flag.Parse()
 	if len(ins) == 0 || *out == "" {
@@ -41,6 +45,31 @@ func main() {
 		os.Exit(1)
 	}
 	merged = typed
+	if *openapiVersion != "" {
+		merged["openapi"] = *openapiVersion
+		normalizeNullableTypes(merged)
+	}
+	if *assignIDs {
+		assignOperationIDs(merged)
+	}
+	if len(keepIDs) > 0 {
+		keepOperations(merged, keepIDs)
+		delete(merged, "webhooks")
+	}
+	_, isSwagger := merged["swagger"]
+	// Full OAS 3 catalogs (HubSpot, Asana, Intercom) already have parameter
+	// schemas. Walking every map looking for {"in": ...} mutates unrelated
+	// schema properties and churns generated bindings. Only the subsetted
+	// vendor docs and Swagger 2 catalogs need this repair.
+	if len(keepIDs) > 0 || isSwagger {
+		ensureParameterSchemas(merged)
+	}
+	if len(keepIDs) > 0 {
+		fillEmptyJSONResponses(merged)
+	}
+	if isSwagger {
+		dropSwaggerBodyParameters(merged)
+	}
 	stripCodegenIncompatibilities(merged, *stripExamples)
 	encoded, err := json.Marshal(merged)
 	if err != nil {
@@ -146,6 +175,238 @@ func jsonable(value any) any {
 		return out
 	default:
 		return value
+	}
+}
+
+func assignOperationIDs(doc map[string]any) {
+	paths, _ := doc["paths"].(map[string]any)
+	for path, item := range paths {
+		ops, ok := item.(map[string]any)
+		if !ok {
+			continue
+		}
+		for method, op := range ops {
+			switch strings.ToLower(method) {
+			case "get", "post", "put", "patch", "delete", "head", "options":
+			default:
+				continue
+			}
+			opMap, ok := op.(map[string]any)
+			if !ok {
+				continue
+			}
+			if id, _ := opMap["operationId"].(string); strings.TrimSpace(id) != "" {
+				continue
+			}
+			opMap["operationId"] = operationIDFrom(method, path)
+		}
+	}
+}
+
+func keepOperations(doc map[string]any, ids []string) {
+	wanted := map[string]struct{}{}
+	for _, id := range ids {
+		wanted[id] = struct{}{}
+	}
+	paths, _ := doc["paths"].(map[string]any)
+	for path, item := range paths {
+		ops, ok := item.(map[string]any)
+		if !ok {
+			continue
+		}
+		for method, op := range ops {
+			if !isHTTPMethod(method) {
+				continue
+			}
+			opMap, ok := op.(map[string]any)
+			if !ok {
+				delete(ops, method)
+				continue
+			}
+			id, _ := opMap["operationId"].(string)
+			if _, keep := wanted[id]; !keep {
+				delete(ops, method)
+			}
+		}
+		if !pathHasOperation(ops) {
+			delete(paths, path)
+		}
+	}
+}
+
+func isHTTPMethod(method string) bool {
+	switch strings.ToLower(method) {
+	case "get", "post", "put", "patch", "delete", "head", "options":
+		return true
+	default:
+		return false
+	}
+}
+
+func pathHasOperation(ops map[string]any) bool {
+	for method := range ops {
+		if isHTTPMethod(method) {
+			return true
+		}
+	}
+	return false
+}
+
+func fillEmptyJSONResponses(doc map[string]any) {
+	paths, _ := doc["paths"].(map[string]any)
+	for _, item := range paths {
+		ops, ok := item.(map[string]any)
+		if !ok {
+			continue
+		}
+		for method, op := range ops {
+			if !isHTTPMethod(method) {
+				continue
+			}
+			opMap, ok := op.(map[string]any)
+			if !ok {
+				continue
+			}
+			responses, _ := opMap["responses"].(map[string]any)
+			for _, resp := range responses {
+				respMap, ok := resp.(map[string]any)
+				if !ok {
+					continue
+				}
+				content, _ := respMap["content"].(map[string]any)
+				jsonContent, _ := content["application/json"].(map[string]any)
+				if jsonContent == nil {
+					continue
+				}
+				schema, _ := jsonContent["schema"].(map[string]any)
+				if len(schema) == 0 {
+					jsonContent["schema"] = map[string]any{"type": "object", "additionalProperties": true}
+				}
+			}
+		}
+	}
+}
+
+func dropSwaggerBodyParameters(value any) {
+	switch typed := value.(type) {
+	case map[string]any:
+		if params, ok := typed["parameters"].([]any); ok {
+			filtered := make([]any, 0, len(params))
+			for _, param := range params {
+				item, ok := param.(map[string]any)
+				if !ok {
+					filtered = append(filtered, param)
+					continue
+				}
+				in, _ := item["in"].(string)
+				if strings.ToLower(in) == "body" {
+					continue
+				}
+				filtered = append(filtered, param)
+			}
+			typed["parameters"] = filtered
+		}
+		for _, child := range typed {
+			dropSwaggerBodyParameters(child)
+		}
+	case []any:
+		for _, child := range typed {
+			dropSwaggerBodyParameters(child)
+		}
+	}
+}
+
+func operationIDFrom(method, path string) string {
+	var b strings.Builder
+	b.WriteString(strings.ToLower(method))
+	for _, r := range path {
+		switch {
+		case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9':
+			b.WriteRune(r)
+		default:
+			if b.Len() == 0 || b.String()[b.Len()-1] == '_' {
+				continue
+			}
+			b.WriteByte('_')
+		}
+	}
+	return strings.Trim(b.String(), "_")
+}
+
+func ensureParameterSchemas(value any) {
+	switch typed := value.(type) {
+	case map[string]any:
+		if name, ok := typed["name"].(string); ok && name != "" {
+			if in, ok := typed["in"].(string); ok && isParameterIn(in) {
+				if _, hasSchema := typed["schema"]; !hasSchema {
+					if _, hasContent := typed["content"]; !hasContent {
+						if _, hasType := typed["type"]; hasType {
+							schema := map[string]any{}
+							for _, key := range []string{"type", "format", "items", "enum", "default"} {
+								if child, ok := typed[key]; ok {
+									schema[key] = child
+								}
+							}
+							if len(schema) > 0 {
+								typed["schema"] = schema
+							}
+						} else {
+							typed["schema"] = map[string]any{"type": "string"}
+						}
+					}
+				}
+			}
+		}
+		for _, child := range typed {
+			ensureParameterSchemas(child)
+		}
+	case []any:
+		for _, child := range typed {
+			ensureParameterSchemas(child)
+		}
+	}
+}
+
+func isParameterIn(in string) bool {
+	switch strings.ToLower(in) {
+	case "query", "header", "path", "cookie", "body":
+		return true
+	default:
+		return false
+	}
+}
+
+func normalizeNullableTypes(value any) {
+	switch typed := value.(type) {
+	case map[string]any:
+		if types, ok := typed["type"].([]any); ok {
+			var nonNull string
+			null := false
+			for _, item := range types {
+				name, _ := item.(string)
+				if name == "null" {
+					null = true
+					continue
+				}
+				if nonNull == "" {
+					nonNull = name
+				} else {
+					nonNull = ""
+					break
+				}
+			}
+			if null && nonNull != "" {
+				typed["type"] = nonNull
+				typed["nullable"] = true
+			}
+		}
+		for _, child := range typed {
+			normalizeNullableTypes(child)
+		}
+	case []any:
+		for _, child := range typed {
+			normalizeNullableTypes(child)
+		}
 	}
 }
 

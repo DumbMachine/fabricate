@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "close.minimal.v1",
+  "$resource": "close",
+  "$resourceVersion": "v1",
+  "state": {
+    "leads": [],
+    "contacts": [],
+    "opportunities": [],
+    "users": []
+  }
+}

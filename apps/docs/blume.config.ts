@@ -100,6 +100,41 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/intercom",
               },
               {
+                label: "Attio",
+                href: "/resources/integrations/attio",
+                icon: "https://logos.composio.dev/api/attio",
+              },
+              {
+                label: "Pipedrive",
+                href: "/resources/integrations/pipedrive",
+                icon: "https://logos.composio.dev/api/pipedrive",
+              },
+              {
+                label: "Close",
+                href: "/resources/integrations/close",
+                icon: "https://logos.composio.dev/api/close",
+              },
+              {
+                label: "Resend",
+                href: "/resources/integrations/resend",
+                icon: "https://logos.composio.dev/api/resend",
+              },
+              {
+                label: "Mailgun",
+                href: "/resources/integrations/mailgun",
+                icon: "https://logos.composio.dev/api/mailgun",
+              },
+              {
+                label: "SendGrid",
+                href: "/resources/integrations/sendgrid",
+                icon: "https://logos.composio.dev/api/sendgrid",
+              },
+              {
+                label: "Mailchimp",
+                href: "/resources/integrations/mailchimp",
+                icon: "https://logos.composio.dev/api/mailchimp",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
@@ -123,6 +158,10 @@ export default defineConfig({
               {
                 label: "Acme Billing Ops",
                 href: "/resources/environments/acme-billing-ops",
+              },
+              {
+                label: "Acme Go to Market",
+                href: "/resources/environments/acme-go-to-market",
               },
               {
                 label: "Acme's Gmail",

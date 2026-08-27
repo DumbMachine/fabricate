@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lists",
+    "members",
+    "campaigns"
+  ],
+  "properties": {
+    "lists": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "campaigns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

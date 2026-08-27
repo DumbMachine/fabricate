@@ -1,0 +1,23 @@
+{
+  "api": "Mailgun API",
+  "environment": {
+    "label": "Acme Mailgun",
+    "manifest": "environments/acme-mailgun.yaml",
+    "messages": 3
+  },
+  "integration": "mailgun",
+  "modes": {},
+  "operationLabels": {
+    "read": "Read domains and events",
+    "write": "Send a message",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T00:00:00Z",
+  "testedCommit": "unknown"
+}

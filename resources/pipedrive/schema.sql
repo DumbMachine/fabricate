@@ -1,0 +1,14 @@
+CREATE TABLE persons (
+  id INTEGER PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE organizations (
+  id INTEGER PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE deals (
+  id INTEGER PRIMARY KEY,
+  body TEXT NOT NULL
+);

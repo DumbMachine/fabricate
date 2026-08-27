@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-resend
+
+services:
+  resend:
+    resource: resend
+    scenario: resend.acme-outbox.v1

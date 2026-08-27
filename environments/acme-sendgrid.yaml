@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-sendgrid
+
+services:
+  sendgrid:
+    resource: sendgrid
+    scenario: sendgrid.acme-outbox.v1

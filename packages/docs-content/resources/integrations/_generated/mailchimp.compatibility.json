@@ -1,0 +1,23 @@
+{
+  "api": "Mailchimp Marketing 3.0",
+  "environment": {
+    "label": "Acme Mailchimp",
+    "manifest": "environments/acme-mailchimp.yaml",
+    "messages": 6
+  },
+  "integration": "mailchimp",
+  "modes": {},
+  "operationLabels": {
+    "read": "Read audience",
+    "write": "Send the INV-4812 campaign",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T00:00:00Z",
+  "testedCommit": "unknown"
+}

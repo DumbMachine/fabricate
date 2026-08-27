@@ -1,0 +1,127 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "close.acme-pipeline.v1",
+  "$resource": "close",
+  "$resourceVersion": "v1",
+  "state": {
+    "leads": [
+      {
+        "id": "lead_contoso",
+        "name": "Contoso",
+        "display_name": "Contoso",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_contoso/",
+        "html_url": "https://app.close.com/lead/lead_contoso/",
+        "date_created": "2026-08-26T09:12:00Z",
+        "date_updated": "2026-08-26T09:12:00Z",
+        "created_by": "user_val"
+      },
+      {
+        "id": "lead_fernworks",
+        "name": "Fernworks",
+        "display_name": "Fernworks",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_fernworks/",
+        "html_url": "https://app.close.com/lead/lead_fernworks/",
+        "date_created": "2026-08-25T11:00:00Z",
+        "date_updated": "2026-08-25T11:00:00Z",
+        "created_by": "user_val"
+      },
+      {
+        "id": "lead_northwind",
+        "name": "Northwind Traders",
+        "display_name": "Northwind Traders",
+        "status_id": "stat_open",
+        "status_label": "Potential",
+        "url": "https://app.close.com/lead/lead_northwind/",
+        "html_url": "https://app.close.com/lead/lead_northwind/",
+        "date_created": "2026-08-18T14:00:00Z",
+        "date_updated": "2026-08-25T16:40:00Z",
+        "created_by": "user_val",
+        "invoice": "INV-4812"
+      }
+    ],
+    "contacts": [
+      {
+        "id": "cont_dana",
+        "lead_id": "lead_northwind",
+        "name": "Dana Whitfield",
+        "title": "Finance",
+        "emails": [
+          {
+            "type": "office",
+            "email": "dana@northwind.example"
+          }
+        ],
+        "date_created": "2026-08-18T14:00:00Z",
+        "date_updated": "2026-08-25T16:40:00Z"
+      },
+      {
+        "id": "cont_mei",
+        "lead_id": "lead_contoso",
+        "name": "Mei Chen",
+        "emails": [
+          {
+            "type": "office",
+            "email": "mei.chen@contoso.example"
+          }
+        ],
+        "date_created": "2026-08-26T09:12:00Z",
+        "date_updated": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "cont_priya",
+        "lead_id": "lead_fernworks",
+        "name": "Priya Nair",
+        "emails": [
+          {
+            "type": "office",
+            "email": "priya@fernworks.example"
+          }
+        ],
+        "date_created": "2026-08-25T11:00:00Z",
+        "date_updated": "2026-08-25T11:00:00Z"
+      },
+      {
+        "id": "cont_val",
+        "lead_id": "lead_northwind",
+        "name": "Val Ortega",
+        "title": "Support",
+        "emails": [
+          {
+            "type": "office",
+            "email": "val@acme.example"
+          }
+        ],
+        "date_created": "2026-01-10T09:00:00Z",
+        "date_updated": "2026-01-10T09:00:00Z"
+      }
+    ],
+    "opportunities": [
+      {
+        "id": "oppo_inv4812",
+        "lead_id": "lead_northwind",
+        "contact_id": "cont_dana",
+        "note": "INV-4812",
+        "value": 1240,
+        "value_period": "one_time",
+        "status_id": "stat_open",
+        "status_label": "Active",
+        "status_type": "active",
+        "date_created": "2026-08-18T14:00:00Z",
+        "date_updated": "2026-08-25T16:40:00Z"
+      }
+    ],
+    "users": [
+      {
+        "id": "user_val",
+        "email": "val@acme.example",
+        "first_name": "Val",
+        "last_name": "Ortega"
+      }
+    ]
+  }
+}

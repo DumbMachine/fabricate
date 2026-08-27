@@ -1,0 +1,12 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "attio.minimal.v1",
+  "$resource": "attio",
+  "$resourceVersion": "v2",
+  "state": {
+    "objects": [],
+    "records": [],
+    "workspaceMembers": []
+  }
+}

@@ -1,0 +1,19 @@
+CREATE TABLE leads (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE contacts (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE opportunities (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

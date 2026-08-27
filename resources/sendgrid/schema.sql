@@ -1,0 +1,9 @@
+CREATE TABLE batches (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE messages (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

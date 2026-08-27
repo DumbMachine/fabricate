@@ -1,0 +1,46 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "mailgun.acme-outbox.v1",
+  "$resource": "mailgun",
+  "$resourceVersion": "v3",
+  "state": {
+    "domains": [
+      {
+        "id": "mg.acme.example",
+        "name": "mg.acme.example",
+        "state": "active",
+        "type": "custom",
+        "created_at": "2026-01-10T09:00:00Z"
+      }
+    ],
+    "events": [
+      {
+        "id": "event_inv4812",
+        "event": "delivered",
+        "recipient": "dana@northwind.example",
+        "domain": "mg.acme.example",
+        "timestamp": 1755525600,
+        "message": {
+          "headers": {
+            "from": "billing@acme.example",
+            "to": "dana@northwind.example",
+            "subject": "INV-4812 receipt",
+            "message-id": "<inv4812@mg.acme.example>"
+          }
+        }
+      }
+    ],
+    "messages": [
+      {
+        "id": "<inv4812@mg.acme.example>",
+        "domain": "mg.acme.example",
+        "from": "billing@acme.example",
+        "to": "dana@northwind.example",
+        "subject": "INV-4812 receipt",
+        "text": "Invoice INV-4812 for $1,240",
+        "created_at": "2026-08-18T14:00:00Z"
+      }
+    ]
+  }
+}

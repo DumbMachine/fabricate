@@ -4,13 +4,19 @@ import "testing"
 
 func TestRegistryContainsOfficialResources(t *testing.T) {
 	registry := Registry()
-	for _, id := range []string{"asana", "gmail", "hubspot", "intercom"} {
+	want := []string{"asana", "attio", "close", "gmail", "hubspot", "intercom", "mailchimp", "mailgun", "pipedrive", "resend", "sendgrid"}
+	for _, id := range want {
 		if _, ok := registry.Get(id); !ok {
 			t.Fatalf("%s is not registered", id)
 		}
 	}
 	descriptors := registry.Descriptors()
-	if len(descriptors) != 4 || descriptors[0].ID != "asana" || descriptors[1].ID != "gmail" || descriptors[2].ID != "hubspot" || descriptors[3].ID != "intercom" {
-		t.Fatalf("descriptors = %+v", descriptors)
+	if len(descriptors) != len(want) {
+		t.Fatalf("descriptor count = %d, want %d (%+v)", len(descriptors), len(want), descriptors)
+	}
+	for i, id := range want {
+		if descriptors[i].ID != id {
+			t.Fatalf("descriptors[%d] = %s, want %s", i, descriptors[i].ID, id)
+		}
 	}
 }

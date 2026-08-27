@@ -1,0 +1,62 @@
+---
+title: Mailgun
+description: A reproducible Mailgun API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/mailgun
+---
+
+import compatibility from "./_generated/mailgun.compatibility.json";
+
+Fabricate ships a Mailgun v3 resource with a strict local API and a
+synthetic bearer token. It covers domains, events, and sending in the included Acme Mailgun
+environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `mailgun.minimal.v1` | Empty Mailgun state for a clean test. |
+| `mailgun.acme-outbox.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep Mailgun’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-mailgun.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_MAILGUN_TOKEN" "$FAB_MAILGUN_URL/v4/domains"'
+```
+
+The service is named `mailgun` in the example manifest, so the variables are
+`FAB_MAILGUN_URL` and `FAB_MAILGUN_TOKEN`.
+
+### Start it through the proxy
+
+Use this when your app uses the normal Mailgun URLs. This one-paste check
+calls Mailgun's production hostname; the proxy supplies the local token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-mailgun.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://api.mailgun.net/v4/domains
+```
+
+Fabricate handles `api.mailgun.net` locally. Other hosts are forwarded unchanged.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Mailgun check ran against the Acme Mailgun
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />

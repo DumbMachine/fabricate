@@ -1,0 +1,23 @@
+{
+  "api": "Resend API",
+  "environment": {
+    "label": "Acme Resend",
+    "manifest": "environments/acme-resend.yaml",
+    "messages": 3
+  },
+  "integration": "resend",
+  "modes": {},
+  "operationLabels": {
+    "read": "Read outbox",
+    "write": "Send an email",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T00:00:00Z",
+  "testedCommit": "unknown"
+}

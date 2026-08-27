@@ -1,0 +1,23 @@
+{
+  "api": "Attio REST v2",
+  "environment": {
+    "label": "Acme Attio",
+    "manifest": "environments/acme-attio.yaml",
+    "messages": 9
+  },
+  "integration": "attio",
+  "modes": {},
+  "operationLabels": {
+    "read": "Read workspace",
+    "write": "Update the INV-4812 deal",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T00:00:00Z",
+  "testedCommit": "unknown"
+}

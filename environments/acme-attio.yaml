@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-attio
+
+services:
+  attio:
+    resource: attio
+    scenario: attio.acme-workspace.v1

@@ -4,7 +4,7 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-.PHONY: build install install-dev test vet fmt check generate generate-check e2e gmail-sdk asana-curl hubspot-curl intercom-curl verify clean start landing docs
+.PHONY: build install install-dev test vet fmt check generate generate-check e2e gmail-sdk asana-curl hubspot-curl intercom-curl attio-curl pipedrive-curl close-curl resend-curl mailgun-curl sendgrid-curl mailchimp-curl verify clean start landing docs
 
 # `make start` runs both public-site dev servers. Add `landing` or `docs` to
 # start just that app: `make start landing` or `make start docs`.
@@ -80,6 +80,27 @@ hubspot-curl:
 
 intercom-curl:
 	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-intercom-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-intercom-curl.sh "$$tmp/fab"
+
+attio-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-attio-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-attio-curl.sh "$$tmp/fab"
+
+pipedrive-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-pipedrive-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-pipedrive-curl.sh "$$tmp/fab"
+
+close-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-close-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-close-curl.sh "$$tmp/fab"
+
+resend-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-resend-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-resend-curl.sh "$$tmp/fab"
+
+mailgun-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-mailgun-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-mailgun-curl.sh "$$tmp/fab"
+
+sendgrid-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-sendgrid-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-sendgrid-curl.sh "$$tmp/fab"
+
+mailchimp-curl:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-mailchimp-curl-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; go build -o "$$tmp/fab" ./cmd/fab; ./scripts/test-mailchimp-curl.sh "$$tmp/fab"
 
 # HTTP-resource conformance belongs in root-module Go tests and each
 # resource's official-client proxy suite as it is brought back.

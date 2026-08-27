@@ -1,0 +1,62 @@
+---
+title: Pipedrive
+description: A reproducible Pipedrive REST v2 API for local application testing.
+sidebar:
+  icon: https://logos.composio.dev/api/pipedrive
+---
+
+import compatibility from "./_generated/pipedrive.compatibility.json";
+
+Fabricate ships a Pipedrive v2 resource with a strict local API and a
+synthetic bearer token. It covers persons, organizations, and deals in the included Acme Pipedrive
+environment.
+
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `pipedrive.minimal.v1` | Empty Pipedrive state for a clean test. |
+| `pipedrive.acme-pipeline.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
+
+## Integration options
+
+| Option | Supported | Use it when |
+| --- | --- | --- |
+| Direct base URL | Yes | Your client can use a local URL or root URL. |
+| Transparent proxy | Yes | Your client must keep Pipedrive’s normal hostnames. |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-pipedrive.yaml | \
+  fab run --environment /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_PIPEDRIVE_TOKEN" "$FAB_PIPEDRIVE_URL/api/v2/persons"'
+```
+
+The service is named `pipedrive` in the example manifest, so the variables are
+`FAB_PIPEDRIVE_URL` and `FAB_PIPEDRIVE_TOKEN`.
+
+### Start it through the proxy
+
+Use this when your app uses the normal Pipedrive URLs. This one-paste check
+calls Pipedrive's production hostname; the proxy supplies the local token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-pipedrive.yaml | \
+  fab run --environment /dev/stdin --proxy -- \
+    curl -sS https://api.pipedrive.com/api/v2/persons
+```
+
+Fabricate handles `api.pipedrive.com` locally. Other hosts are forwarded unchanged.
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Pipedrive check ran against the Acme Pipedrive
+environment with curl:
+
+<IntegrationCompatibility compatibility={compatibility} />

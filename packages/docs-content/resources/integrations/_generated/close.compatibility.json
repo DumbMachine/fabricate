@@ -1,0 +1,23 @@
+{
+  "api": "Close CRM v1",
+  "environment": {
+    "label": "Acme Close",
+    "manifest": "environments/acme-close.yaml",
+    "messages": 9
+  },
+  "integration": "close",
+  "modes": {},
+  "operationLabels": {
+    "read": "Read leads",
+    "write": "Win the INV-4812 opportunity",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T00:00:00Z",
+  "testedCommit": "unknown"
+}

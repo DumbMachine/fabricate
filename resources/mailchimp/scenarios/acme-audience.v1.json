@@ -1,0 +1,81 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "mailchimp.acme-audience.v1",
+  "$resource": "mailchimp",
+  "$resourceVersion": "3.0",
+  "state": {
+    "lists": [
+      {
+        "id": "acme-customers",
+        "name": "Acme customers",
+        "date_created": "2026-01-10T09:00:00+00:00",
+        "stats": {
+          "member_count": 4
+        }
+      }
+    ],
+    "members": [
+      {
+        "id": "68d8ffc6a61a19a854307b9ba3ef78be",
+        "list_id": "acme-customers",
+        "email_address": "dana@northwind.example",
+        "unique_email_id": "68d8ffc6a6",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Dana",
+          "LNAME": "Whitfield"
+        }
+      },
+      {
+        "id": "d8a07e426ad3b72bf94e88b27be51676",
+        "list_id": "acme-customers",
+        "email_address": "priya@fernworks.example",
+        "unique_email_id": "d8a07e426a",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Priya",
+          "LNAME": "Nair"
+        }
+      },
+      {
+        "id": "fab7b49dce9f336753fa976e09741d4a",
+        "list_id": "acme-customers",
+        "email_address": "val@acme.example",
+        "unique_email_id": "fab7b49dce",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Val",
+          "LNAME": "Ortega"
+        }
+      },
+      {
+        "id": "fdd61d46de6bf47d46148ce49f168ce3",
+        "list_id": "acme-customers",
+        "email_address": "mei.chen@contoso.example",
+        "unique_email_id": "fdd61d46de",
+        "status": "subscribed",
+        "merge_fields": {
+          "FNAME": "Mei",
+          "LNAME": "Chen"
+        }
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "campaign_inv4812",
+        "type": "regular",
+        "status": "save",
+        "create_time": "2026-08-18T14:00:00+00:00",
+        "recipients": {
+          "list_id": "acme-customers"
+        },
+        "settings": {
+          "subject_line": "INV-4812 billing follow-up",
+          "from_name": "Acme Billing",
+          "reply_to": "billing@acme.example"
+        }
+      }
+    ]
+  }
+}
