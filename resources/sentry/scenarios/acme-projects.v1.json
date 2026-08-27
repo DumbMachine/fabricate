@@ -5,24 +5,480 @@
   "$resource": "sentry",
   "$resourceVersion": "v1",
   "state": {
+    "issues": [
+      {
+        "id": "se_checkout",
+        "title": "Checkout reliability: pay step 5xx",
+        "project": "acme-web",
+        "culprit": "checkout.charge",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_csv",
+        "title": "Fernworks CSV export zero bytes",
+        "project": "acme-analytics",
+        "culprit": "export.csv",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_dns",
+        "title": "Adatum domain verification timeout",
+        "project": "acme-dns",
+        "culprit": "dns.verify",
+        "status": "resolved"
+      },
+      {
+        "id": "se_fill_01",
+        "title": "Noisy breadcrumb (acme-docs)",
+        "project": "acme-docs",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_02",
+        "title": "Unhandled rejection (acme-web)",
+        "project": "acme-web",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_03",
+        "title": "Timeout talking to Neon (acme-billing)",
+        "project": "acme-billing",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_04",
+        "title": "Vercel preview 401 (acme-analytics)",
+        "project": "acme-analytics",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_05",
+        "title": "Stripe webhook signature (acme-mobile)",
+        "project": "acme-mobile",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_06",
+        "title": "Gmail sync 429 (acme-workers)",
+        "project": "acme-workers",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_07",
+        "title": "Asana custom field (acme-auth)",
+        "project": "acme-auth",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_08",
+        "title": "HubSpot deal lock (acme-admin)",
+        "project": "acme-admin",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_09",
+        "title": "KV eviction (acme-edge)",
+        "project": "acme-edge",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_10",
+        "title": "Worker subrequest (acme-hooks)",
+        "project": "acme-hooks",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_11",
+        "title": "WAF challenge on login (acme-scim)",
+        "project": "acme-scim",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_12",
+        "title": "OG image 500 (acme-dns)",
+        "project": "acme-dns",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_13",
+        "title": "Mobile empty invoice (acme-status)",
+        "project": "acme-status",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_14",
+        "title": "Replay mask miss (acme-eu)",
+        "project": "acme-eu",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_15",
+        "title": "CSV timezone (acme-ml)",
+        "project": "acme-ml",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_16",
+        "title": "SSO clock skew (acme-api)",
+        "project": "acme-api",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_17",
+        "title": "SCIM retry storm (acme-docs)",
+        "project": "acme-docs",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_18",
+        "title": "Webhook backoff (acme-web)",
+        "project": "acme-web",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_19",
+        "title": "Invoice PDF font (acme-billing)",
+        "project": "acme-billing",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_20",
+        "title": "NPS survey 400 (acme-analytics)",
+        "project": "acme-analytics",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_21",
+        "title": "Command palette NPE (acme-mobile)",
+        "project": "acme-mobile",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_22",
+        "title": "Dark mode contrast (acme-workers)",
+        "project": "acme-workers",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_23",
+        "title": "EU router 503 (acme-auth)",
+        "project": "acme-auth",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_24",
+        "title": "Status page 404 (acme-admin)",
+        "project": "acme-admin",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_25",
+        "title": "Edge cache poison (acme-edge)",
+        "project": "acme-edge",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_26",
+        "title": "Read replica lag (acme-hooks)",
+        "project": "acme-hooks",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_27",
+        "title": "Pool wait timeout (acme-scim)",
+        "project": "acme-scim",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_28",
+        "title": "Flag eval panic (acme-dns)",
+        "project": "acme-dns",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_29",
+        "title": "Cohort backfill OOM (acme-status)",
+        "project": "acme-status",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_30",
+        "title": "Warehouse late data (acme-eu)",
+        "project": "acme-eu",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_31",
+        "title": "BigQuery quota (acme-ml)",
+        "project": "acme-ml",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_32",
+        "title": "Snowflake auth (acme-api)",
+        "project": "acme-api",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_33",
+        "title": "Segment 401 (acme-docs)",
+        "project": "acme-docs",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_34",
+        "title": "CDP webhook (acme-web)",
+        "project": "acme-web",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_35",
+        "title": "Heatmap sample (acme-billing)",
+        "project": "acme-billing",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_36",
+        "title": "Toolbar z-index (acme-analytics)",
+        "project": "acme-analytics",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_37",
+        "title": "Android consent (acme-mobile)",
+        "project": "acme-mobile",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_38",
+        "title": "iOS consent (acme-workers)",
+        "project": "acme-workers",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_fill_39",
+        "title": "Slack 429 (acme-auth)",
+        "project": "acme-auth",
+        "status": "ignored"
+      },
+      {
+        "id": "se_fill_40",
+        "title": "Teams 403 (acme-admin)",
+        "project": "acme-admin",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_hook",
+        "title": "Webhook delivery 410 for LakeTech",
+        "project": "acme-workers",
+        "culprit": "webhooks.deliver",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_inv",
+        "title": "INV-4812 duplicate capture",
+        "project": "acme-billing",
+        "culprit": "stripe.charge",
+        "status": "resolved"
+      },
+      {
+        "id": "se_keys",
+        "title": "BrightPath overlapping API keys",
+        "project": "acme-api",
+        "culprit": "keys.rotate",
+        "status": "resolved"
+      },
+      {
+        "id": "se_scim",
+        "title": "Fabrikam SCIM group change missing req_7Q4K2",
+        "project": "acme-scim",
+        "culprit": "scim.groups",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_sso",
+        "title": "Contoso SSO login loop at auth.acme.example",
+        "project": "acme-auth",
+        "culprit": "saml.callback",
+        "status": "unresolved"
+      },
+      {
+        "id": "se_tiny",
+        "title": "TinyShop refund already voided",
+        "project": "acme-billing",
+        "culprit": "stripe.refund",
+        "status": "resolved"
+      }
+    ],
     "projects": [
+      {
+        "id": "acme-admin",
+        "slug": "acme-admin",
+        "name": "acme-admin",
+        "platform": "javascript",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-analytics",
+        "slug": "acme-analytics",
+        "name": "acme-analytics",
+        "platform": "python",
+        "organization_id_or_slug": "acme",
+        "description": "fernworks-prod empty CSV."
+      },
       {
         "id": "acme-api",
         "slug": "acme-api",
         "name": "acme-api",
-        "platform": "go"
+        "platform": "go",
+        "organization_id_or_slug": "acme",
+        "description": "SAML callback errors for Contoso SSO."
+      },
+      {
+        "id": "acme-auth",
+        "slug": "acme-auth",
+        "name": "acme-auth",
+        "platform": "go",
+        "organization_id_or_slug": "acme",
+        "description": "contoso-eu login loop."
+      },
+      {
+        "id": "acme-billing",
+        "slug": "acme-billing",
+        "name": "acme-billing",
+        "platform": "go",
+        "organization_id_or_slug": "acme",
+        "description": "INV-4812 invoice renderer."
+      },
+      {
+        "id": "acme-dns",
+        "slug": "acme-dns",
+        "name": "acme-dns",
+        "platform": "go",
+        "organization_id_or_slug": "acme"
       },
       {
         "id": "acme-docs",
         "slug": "acme-docs",
         "name": "acme-docs",
-        "platform": "javascript"
+        "platform": "javascript",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-edge",
+        "slug": "acme-edge",
+        "name": "acme-edge",
+        "platform": "javascript",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-eu",
+        "slug": "acme-eu",
+        "name": "acme-eu",
+        "platform": "python",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-hooks",
+        "slug": "acme-hooks",
+        "name": "acme-hooks",
+        "platform": "javascript",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-ml",
+        "slug": "acme-ml",
+        "name": "acme-ml",
+        "platform": "python",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-mobile",
+        "slug": "acme-mobile",
+        "name": "acme-mobile",
+        "platform": "react-native",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "acme-scim",
+        "slug": "acme-scim",
+        "name": "acme-scim",
+        "platform": "go",
+        "organization_id_or_slug": "acme",
+        "description": "Fabrikam req_7Q4K2."
+      },
+      {
+        "id": "acme-status",
+        "slug": "acme-status",
+        "name": "acme-status",
+        "platform": "javascript",
+        "organization_id_or_slug": "acme"
       },
       {
         "id": "acme-web",
         "slug": "acme-web",
         "name": "acme-web",
-        "platform": "python"
+        "platform": "python",
+        "organization_id_or_slug": "acme",
+        "description": "Checkout reliability 5xx."
+      },
+      {
+        "id": "acme-workers",
+        "slug": "acme-workers",
+        "name": "acme-workers",
+        "platform": "javascript",
+        "organization_id_or_slug": "acme",
+        "description": "LakeTech webhook retries."
+      }
+    ],
+    "teams": [
+      {
+        "id": "team_billing",
+        "slug": "billing",
+        "name": "Billing",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_data",
+        "slug": "data",
+        "name": "Data",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_mobile",
+        "slug": "mobile",
+        "name": "Mobile",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_platform",
+        "slug": "platform",
+        "name": "Platform",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_sre",
+        "slug": "sre",
+        "name": "SRE",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_sso",
+        "slug": "sso",
+        "name": "Enterprise SSO",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_support",
+        "slug": "support",
+        "name": "Support",
+        "organization_id_or_slug": "acme"
+      },
+      {
+        "id": "team_web",
+        "slug": "web",
+        "name": "Web",
+        "organization_id_or_slug": "acme"
       }
     ]
   }
