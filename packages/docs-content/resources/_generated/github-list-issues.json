@@ -8,6 +8,7 @@
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.github.com/repos/acme/web/issues",
   "output": [
     {
+      "body": "Pay step 5xx on acme-web. Correlates with PostHog checkout_reliability, Sentry acme-web, Vercel acme-web, OpenAI resp_checkout.",
       "html_url": "https://github.com/acme/web/issues/1",
       "id": "1",
       "number": "1",
@@ -17,6 +18,97 @@
       "title": "Checkout reliability"
     },
     {
+      "html_url": "https://github.com/acme/web/issues/10",
+      "id": "10",
+      "number": "10",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Bump next to 15.5"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/11",
+      "id": "11",
+      "number": "11",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Docs typo on SSO page"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/12",
+      "id": "12",
+      "number": "12",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Flaky checkout e2e"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/13",
+      "id": "13",
+      "number": "13",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Add EU residency note"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/14",
+      "id": "14",
+      "number": "14",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Terraform drift in staging"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/15",
+      "id": "15",
+      "number": "15",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Mobile crash on empty invoice list"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/16",
+      "id": "16",
+      "number": "16",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Rate limit 429 burst"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/17",
+      "id": "17",
+      "number": "17",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Stale CDN cache on status page"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/18",
+      "id": "18",
+      "number": "18",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Missing span on SAML callback"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/19",
+      "id": "19",
+      "number": "19",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Log redaction for tokens"
+    },
+    {
+      "body": "Mei Chen / 380 users / org slug contoso-eu looping at auth.acme.example SAML callback.",
       "html_url": "https://github.com/acme/web/issues/2",
       "id": "2",
       "number": "2",
@@ -26,6 +118,97 @@
       "title": "Contoso SSO login loop"
     },
     {
+      "html_url": "https://github.com/acme/web/issues/20",
+      "id": "20",
+      "number": "20",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Neon branch reset runbook"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/21",
+      "id": "21",
+      "number": "21",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Vercel preview auth bypass"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/22",
+      "id": "22",
+      "number": "22",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Droplet disk 80%"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/23",
+      "id": "23",
+      "number": "23",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Worker timeout 30s"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/24",
+      "id": "24",
+      "number": "24",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Invoice PDF font subset"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/25",
+      "id": "25",
+      "number": "25",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "NPS survey copy"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/26",
+      "id": "26",
+      "number": "26",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Dark mode contrast"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/27",
+      "id": "27",
+      "number": "27",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Onboarding empty state"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/28",
+      "id": "28",
+      "number": "28",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "SCIM retry storm"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/29",
+      "id": "29",
+      "number": "29",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Okta clock skew"
+    },
+    {
+      "body": "Dana Whitfield, Northwind Traders charged twice $1,240 for invoice INV-4812. Stripe cus_northwind.",
       "html_url": "https://github.com/acme/web/issues/3",
       "id": "3",
       "number": "3",
@@ -33,11 +216,263 @@
       "repo": "web",
       "state": "closed",
       "title": "INV-4812 receipt mismatch"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/30",
+      "id": "30",
+      "number": "30",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Webhook signature test"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/31",
+      "id": "31",
+      "number": "31",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "CSV timezone columns"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/32",
+      "id": "32",
+      "number": "32",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Seat overage email"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/33",
+      "id": "33",
+      "number": "33",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Maintenance banner Aug 29"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/34",
+      "id": "34",
+      "number": "34",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "p95 checkout regression"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/35",
+      "id": "35",
+      "number": "35",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Replay masking PII"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/36",
+      "id": "36",
+      "number": "36",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Android capture consent"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/37",
+      "id": "37",
+      "number": "37",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "iOS capture consent"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/38",
+      "id": "38",
+      "number": "38",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Dashboard share links"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/39",
+      "id": "39",
+      "number": "39",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Cohort backfill"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/40",
+      "id": "40",
+      "number": "40",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Feature flag payload size"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/41",
+      "id": "41",
+      "number": "41",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Holdout assignment"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/42",
+      "id": "42",
+      "number": "42",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Slack alert mute"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/43",
+      "id": "43",
+      "number": "43",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Teams alert mute"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/44",
+      "id": "44",
+      "number": "44",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Edge cache key collision"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/45",
+      "id": "45",
+      "number": "45",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "OG image font load"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/46",
+      "id": "46",
+      "number": "46",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Storybook a11y"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/47",
+      "id": "47",
+      "number": "47",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "SDK retry jitter"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/48",
+      "id": "48",
+      "number": "48",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Go SDK context cancel"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/49",
+      "id": "49",
+      "number": "49",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "K8s PDB for billing"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/50",
+      "id": "50",
+      "number": "50",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Status page incident template"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/51",
+      "id": "51",
+      "number": "51",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "Figma webhook 410"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/52",
+      "id": "52",
+      "number": "52",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Val Town cron drift"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/53",
+      "id": "53",
+      "number": "53",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Exa research quota"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/54",
+      "id": "54",
+      "number": "54",
+      "owner": "acme",
+      "repo": "web",
+      "state": "closed",
+      "title": "OpenAI response store TTL"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/55",
+      "id": "55",
+      "number": "55",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Stripe tax ID missing"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/64",
+      "id": "64",
+      "number": "64",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Preview deployment password"
+    },
+    {
+      "html_url": "https://github.com/acme/web/issues/80",
+      "id": "80",
+      "number": "80",
+      "owner": "acme",
+      "repo": "web",
+      "state": "open",
+      "title": "Error autogroup noise"
     }
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:836b99e4ad1351c738c77393cd2fd326713d31029a94c4592b0c902d062672e4",
+    "digest": "sha256:78705ed1ca65716175726fcd7f9ce461921a6a875708f3920da8364155da3929",
     "roots": [
       {
         "path": "cli/run.go",
@@ -53,7 +488,7 @@
       },
       {
         "path": "environments/acme-github.yaml",
-        "digest": "sha256:8ea504d121bee2796e1134c88d019a7a148b1e571d85fd1bdc59ff4658b5b8b3"
+        "digest": "sha256:727f11645c5b4a1ac711b8358d5b3a87cf81c5a5bb7eb300d04024ab5a79e448"
       },
       {
         "path": "httpresource",
@@ -68,8 +503,20 @@
         "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
       },
       {
+        "path": "resources/asana",
+        "digest": "sha256:b3e72b21a56217d6f3603cf2a33eb405f3240cccca14009601db832318f22dcc"
+      },
+      {
         "path": "resources/github",
-        "digest": "sha256:948e3f83dfe71cfbce1dd8dd9fc417c5cafa9b6070040a2226593907a68fcc69"
+        "digest": "sha256:780e92b0fb23a67de548e1db6e44fe4ddee4b1fc38b0cd6e5d647bdd908e9a9d"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:bd9c8b2c17c7cb6ec974f46a7235f96ef42759dcb53fbc6f20603cc392932884"
       },
       {
         "path": "scenario",
