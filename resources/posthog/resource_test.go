@@ -152,6 +152,12 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `checkout_reliability`) {
 		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
 	}
+	if !strings.Contains(listed.Body.String(), `"key":"new_nav_ia"`) {
+		t.Fatalf("haystack missing new_nav_ia: %s", listed.Body.String())
+	}
+	if strings.Count(listed.Body.String(), `"key":`) < 40 {
+		t.Fatalf("feature-flag haystack too small: %s", listed.Body.String())
+	}
 
 	got := request(t, handler, http.MethodGet, "/api/projects/1/feature_flags/101/", "", testToken)
 	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `checkout_reliability`) {
