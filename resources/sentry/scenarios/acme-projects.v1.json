@@ -1,0 +1,29 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "sentry.acme-projects.v1",
+  "$resource": "sentry",
+  "$resourceVersion": "v1",
+  "state": {
+    "projects": [
+      {
+        "id": "acme-api",
+        "slug": "acme-api",
+        "name": "acme-api",
+        "platform": "go"
+      },
+      {
+        "id": "acme-docs",
+        "slug": "acme-docs",
+        "name": "acme-docs",
+        "platform": "javascript"
+      },
+      {
+        "id": "acme-web",
+        "slug": "acme-web",
+        "name": "acme-web",
+        "platform": "python"
+      }
+    ]
+  }
+}

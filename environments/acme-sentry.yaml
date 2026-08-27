@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-sentry
+
+services:
+  sentry:
+    resource: sentry
+    scenario: sentry.acme-projects.v1
