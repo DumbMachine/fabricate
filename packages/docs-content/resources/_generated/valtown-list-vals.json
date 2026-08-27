@@ -23,11 +23,14 @@
         "name": "acme-webhooks",
         "privacy": "unlisted"
       }
-    ]
+    ],
+    "has_more": false,
+    "object": "list",
+    "url": ""
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:78e104a8cd556925bbd32046d1f87ade494c17d6408d04056d43be66fbca00ad",
+    "digest": "sha256:8b51c1330b5f96323020157b3cf54fbbe2e67e4871e4c227b326e30cbd7727e7",
     "roots": [
       {
         "path": "cli/run.go",
@@ -47,7 +50,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/valtown-list-vals.json",
@@ -59,7 +62,7 @@
       },
       {
         "path": "resources/valtown",
-        "digest": "sha256:9d322f6623e08f05fd3c50caddcd5dd8073d4d44f930d2445d288ad719a1e3d5"
+        "digest": "sha256:ff23e5aa681a26000cbf64fc43e47e545c116daf32c66b55a838b050fba9aa52"
       },
       {
         "path": "scenario",
