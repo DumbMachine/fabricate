@@ -7,6 +7,18 @@
   "state": {
     "emails": [
       {
+        "id": "email_helix",
+        "object": "email",
+        "from": "sales@acme.example",
+        "to": [
+          "noah@helixbio.example"
+        ],
+        "subject": "Your Helix Bio trial workspace is ready",
+        "html": "<p>Hi Noah, your 14-day Acme Pro trial for Helix Bio is live. Log in to connect your first integration and invite your team.</p>",
+        "created_at": "2026-08-20T10:30:00Z",
+        "last_event": "delivered"
+      },
+      {
         "id": "email_inv4812",
         "object": "email",
         "from": "billing@acme.example",
@@ -19,6 +31,66 @@
         "last_event": "delivered"
       },
       {
+        "id": "email_invite_harper",
+        "object": "email",
+        "from": "admin@acme.example",
+        "to": [
+          "harper@acme.example"
+        ],
+        "subject": "Welcome to Acme CSM tools",
+        "html": "<p>Hi Harper, your Close and Asana seats are provisioned. Use this link to finish setup and join the customer success workspace.</p>",
+        "created_at": "2026-08-25T15:30:00Z",
+        "last_event": "delivered"
+      },
+      {
+        "id": "email_keys",
+        "object": "email",
+        "from": "security@acme.example",
+        "to": [
+          "sofia@brightpath.example"
+        ],
+        "subject": "Webhook signing key rotation for Brightpath",
+        "html": "<p>Hi Sofia, your new webhook signing key is active. Update the secret in brightpath-prod before 2026-09-01 to avoid delivery failures.</p>",
+        "created_at": "2026-08-21T11:00:00Z",
+        "last_event": "delivered"
+      },
+      {
+        "id": "email_qitaf",
+        "object": "email",
+        "from": "billing@acme.example",
+        "to": [
+          "amina@qitaf.example"
+        ],
+        "subject": "Payment reminder for INV-9021",
+        "html": "<p>Hi Amina, invoice INV-9021 for Qitaf Labs is due on 2026-09-05. Reply if you need a copy of the PDF or want to update billing contacts.</p>",
+        "created_at": "2026-08-25T09:00:00Z",
+        "last_event": "delivered"
+      },
+      {
+        "id": "email_rita",
+        "object": "email",
+        "from": "marketing@acme.example",
+        "to": [
+          "rita@contoso.example"
+        ],
+        "subject": "Procurement teams are cutting SaaS spend — here's how Acme helps",
+        "html": "<p>Hi Rita, Contoso procurement leaders are consolidating vendors this quarter. See how Acme customers reduced duplicate tooling costs without slowing rollouts.</p>",
+        "created_at": "2026-08-23T14:00:00Z",
+        "last_event": "sent"
+      },
+      {
+        "id": "email_scim",
+        "object": "email",
+        "from": "security@acme.example",
+        "to": [
+          "leila@fabrikam.example"
+        ],
+        "subject": "SCIM provisioning audit log export",
+        "html": "<p>Hi Leila, the Fabrikam SCIM audit log for the past 30 days is attached. Three deprovisions on 2026-08-17 did not revoke active sessions — review rows 41–43.</p>",
+        "created_at": "2026-08-22T08:45:00Z",
+        "last_event": "delivered"
+      },
+      {
         "id": "email_sso",
         "object": "email",
         "from": "security@acme.example",
@@ -28,6 +100,18 @@
         "subject": "Contoso SSO follow-up",
         "html": "<p>contoso-eu SSO</p>",
         "created_at": "2026-08-26T09:12:00Z",
+        "last_event": "delivered"
+      },
+      {
+        "id": "email_theo",
+        "object": "email",
+        "from": "billing@acme.example",
+        "to": [
+          "theo@orbiter.example"
+        ],
+        "subject": "Orbiter usage statement for August 2026",
+        "html": "<p>Hi Theo, your Orbiter workspace used 184,220 API calls this month. No action is required — this is a transactional usage summary for your records.</p>",
+        "created_at": "2026-08-24T16:20:00Z",
         "last_event": "delivered"
       }
     ],
