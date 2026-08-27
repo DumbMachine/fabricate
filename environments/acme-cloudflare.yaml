@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-cloudflare
+
+services:
+  cloudflare:
+    resource: cloudflare
+    scenario: cloudflare.acme-zones.v1

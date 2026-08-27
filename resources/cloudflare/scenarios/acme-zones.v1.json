@@ -1,0 +1,29 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "cloudflare.acme-zones.v1",
+  "$resource": "cloudflare",
+  "$resourceVersion": "v1",
+  "state": {
+    "zones": [
+      {
+        "id": "zone_acme",
+        "name": "acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "id": "zone_docs",
+        "name": "docs.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "id": "zone_web",
+        "name": "web.acme.example",
+        "status": "active",
+        "type": "full"
+      }
+    ]
+  }
+}
