@@ -1,0 +1,72 @@
+{
+  "integration": "pipedrive",
+  "api": "Pipedrive v2",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/deals",
+      "operationId": "GetDeals",
+      "summary": "Get all deals"
+    },
+    {
+      "method": "POST",
+      "path": "/deals",
+      "operationId": "AddDeal",
+      "summary": "Add a new deal"
+    },
+    {
+      "method": "GET",
+      "path": "/deals/{id}",
+      "operationId": "GetDeal",
+      "summary": "Get details of a deal"
+    },
+    {
+      "method": "PATCH",
+      "path": "/deals/{id}",
+      "operationId": "UpdateDeal",
+      "summary": "Update a deal"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations",
+      "operationId": "GetOrganizations",
+      "summary": "Get all organizations"
+    },
+    {
+      "method": "POST",
+      "path": "/organizations",
+      "operationId": "AddOrganization",
+      "summary": "Add a new organization"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{id}",
+      "operationId": "GetOrganization",
+      "summary": "Get details of a organization"
+    },
+    {
+      "method": "GET",
+      "path": "/persons",
+      "operationId": "GetPersons",
+      "summary": "Get all persons"
+    },
+    {
+      "method": "POST",
+      "path": "/persons",
+      "operationId": "AddPerson",
+      "summary": "Add a new person"
+    },
+    {
+      "method": "GET",
+      "path": "/persons/{id}",
+      "operationId": "GetPerson",
+      "summary": "Get details of a person"
+    },
+    {
+      "method": "PATCH",
+      "path": "/persons/{id}",
+      "operationId": "UpdatePerson",
+      "summary": "Update a person"
+    }
+  ]
+}

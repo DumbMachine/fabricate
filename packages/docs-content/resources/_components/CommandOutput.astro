@@ -1,21 +1,19 @@
 ---
-interface CommandOutputExample {
-  command: string;
-  environment: {label: string; manifest: string};
-  id: string;
-  output: unknown;
-  title: string;
-}
+import SnapshotUnavailable from "./SnapshotUnavailable.astro";
+import {loadCommandExample} from "./generated";
 
 interface Props {
-  example: CommandOutputExample;
+  example?: unknown;
+  id?: string;
   showCommand?: boolean;
 }
 
-const {example, showCommand = true} = Astro.props as Props;
+const {example: provided, id, showCommand = true} = Astro.props as Props;
+const example = loadCommandExample(id, provided);
 const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
-const command = example.command.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`);
-const pretty = JSON.stringify(example.output, null, 2);
+const command = example
+  ? example.command.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`)
+  : "";
 
 const highlightJSON = (value: string) => {
   const escaped = value
@@ -38,27 +36,35 @@ const highlightJSON = (value: string) => {
   );
 };
 
-const highlighted = highlightJSON(pretty);
+const highlighted = example ? highlightJSON(JSON.stringify(example.output, null, 2)) : "";
 ---
 
-<figure class="command-output not-prose" aria-label={example.title} data-command-output>
-  {showCommand && (
+{!example ? (
+  <SnapshotUnavailable
+    eyebrow="Command"
+    title="Command output"
+    hint="This command snapshot is missing or invalid. Recapture it with make docs-examples and commit the JSON under resources/_generated/."
+  />
+) : (
+  <figure class="command-output not-prose" aria-label={example.title} data-command-output>
+    {showCommand && (
+      <div class="pane">
+        <header>
+          <p class="eyebrow">Command</p>
+          <button type="button" class="copy" data-copy="command">Copy</button>
+        </header>
+        <div class="code" tabindex="0"><code data-copy-source="command">{command}</code></div>
+      </div>
+    )}
     <div class="pane">
       <header>
-        <p class="eyebrow">Command</p>
-        <button type="button" class="copy" data-copy="command">Copy</button>
+        <p class="eyebrow">Output</p>
+        <span class="meta">{example.environment.label}</span>
       </header>
-      <div class="code" tabindex="0"><code data-copy-source="command">{command}</code></div>
+      <div class="code output" tabindex="0"><code set:html={highlighted} /></div>
     </div>
-  )}
-  <div class="pane">
-    <header>
-      <p class="eyebrow">Output</p>
-      <span class="meta">{example.environment.label}</span>
-    </header>
-    <div class="code output" tabindex="0"><code set:html={highlighted} /></div>
-  </div>
-</figure>
+  </figure>
+)}
 
 <script>
   const copiedLabel = "Copied";
