@@ -16,6 +16,7 @@ func TestDigestRootIgnoresTestsConformanceAndMarkdown(t *testing.T) {
 	writeFile(t, filepath.Join(dir, "keep.go"), "package gmail\n")
 	writeFile(t, filepath.Join(dir, "keep_test.go"), "package gmail\n")
 	writeFile(t, filepath.Join(dir, "README.md"), "# gmail\n")
+	writeFile(t, filepath.Join(dir, "openapi.prepared.json"), "{}\n")
 	writeFile(t, filepath.Join(dir, "conformance", "client.mjs"), "export {}\n")
 	writeFile(t, filepath.Join(dir, "testdata", "fixture.json"), "{}\n")
 
@@ -25,6 +26,7 @@ func TestDigestRootIgnoresTestsConformanceAndMarkdown(t *testing.T) {
 	}
 	writeFile(t, filepath.Join(dir, "keep_test.go"), "package gmail\nfunc TestX(t *testing.T) {}\n")
 	writeFile(t, filepath.Join(dir, "conformance", "client.mjs"), "changed\n")
+	writeFile(t, filepath.Join(dir, "openapi.prepared.json"), `{"changed":true}`+"\n")
 	second, err := digestRoot(dir, ".")
 	if err != nil {
 		t.Fatal(err)
@@ -476,7 +478,7 @@ func writeExampleRepo(t *testing.T) string {
   "environmentLabel": "Acme's Gmail",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/gmail-list-messages.json",
-  "publishedCommand": "curl -fsSL example | fab run --environment /dev/stdin --proxy -- curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
+  "publishedCommand": "curl -fsSL example | fab run /dev/stdin --proxy -- curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
   "argv": ["curl", "-sS", "https://gmail.googleapis.com/gmail/v1/users/me/messages"]
 }
 `)

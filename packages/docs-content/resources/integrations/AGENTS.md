@@ -7,7 +7,7 @@ checking out Fabricate or creating an environment file by hand.
 
 - Every command block must be usable as a single paste in a POSIX shell.
 - When an example needs a repository manifest, fetch its canonical raw GitHub
-  file and pipe it to `fab run --environment /dev/stdin`; `fab run` accepts a
+  file and pipe it to `fab run /dev/stdin`; `fab run` accepts a
   file path, not an environment URL.
 - Use `curl -fsSL` for manifest downloads and `curl -sS` for request examples
   so successful output stays readable while failures remain visible.
@@ -26,7 +26,8 @@ Implemented integration pages use this order:
    “A reproducible … API” or “Fabricate ships …”.
 2. `## Integration`: properties (API version, auth, `ProviderHosts`, direct
    URL, transparent proxy), then start commands.
-3. `## Scenarios`
+3. `## Scenarios` — `<ResourceScenarios resource="<id>" />`. Optional
+   `descriptions` add qualitative copy; counts come from the generated catalog.
 4. `## Compatibility verification`
 5. `## Supported operations`
 
@@ -35,13 +36,14 @@ entity list or integration table for them.
 
 ## Generated page artifacts
 
-Command output, operation catalogs, and compatibility tables are the same
-kind of evidence: committed JSON under
+Command output, operation catalogs, scenario counts, and compatibility tables
+are the same kind of evidence: committed JSON under
 `packages/docs-content/resources/_generated/`. The docs site reads those
 files at build time; it never starts environments.
 
 ```mdx
 <CommandOutput id="<example-id>" showCommand={false} />
+<ResourceScenarios resource="<integration>" />
 <IntegrationCompatibility resource="<integration>" />
 <SupportedOperations resource="<integration>" />
 ```
@@ -61,8 +63,12 @@ recapture and commit the snapshots. CI fails if they drifted.
   `make docs-examples DOCS_EXAMPLES_FLAGS=--all`.
 - Operations catalogs: `make docs-operations` walks the official resource
   registry and writes `<id>.operations.json` from each compiled OpenAPI
-  contract. `make docs-operations gmail asana` limits to named resources.
-  Empty path stubs are omitted. Do not list operations by hand.
+  contract, plus `<id>.scenarios.json` from catalog scenario state (top-level
+  array counts, and Gmail's default-list size when spam or trash is present).
+  `make docs-operations gmail asana` limits to named resources.
+  Empty path stubs are omitted. Do not list operations or scenario counts by
+  hand. Render `<SupportedOperations resource="<id>" />` and
+  `<ResourceScenarios resource="<id>" />`.
 - Compatibility reports: each resource owns `resources/<id>/conformance/` with
   `curl.sh`, `sdk.json`, or both. `make conformance` runs every client that
   exists and writes `<id>.compatibility.json`; `make conformance gmail asana`

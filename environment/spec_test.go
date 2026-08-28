@@ -11,14 +11,25 @@ services:
   support-mail:
     resource: gmail
     scenario: gmail.acme-corp.v1
-proxy:
-  enabled: true
 `))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !spec.Proxy.Enabled || spec.Services["support-mail"].Scenario != "gmail.acme-corp.v1" {
+	if spec.Services["support-mail"].Scenario != "gmail.acme-corp.v1" {
 		t.Fatalf("unexpected spec: %#v", spec)
+	}
+}
+
+func TestParseEnvironmentRejectsProxyEnabled(t *testing.T) {
+	_, err := Parse([]byte(`apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata: {name: acme-gmail}
+services:
+  mail: {resource: gmail, scenario: gmail.acme-corp.v1}
+proxy: {enabled: true}
+`))
+	if err == nil {
+		t.Fatal("expected proxy.enabled to be rejected; proxy activation belongs to --proxy")
 	}
 }
 

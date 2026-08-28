@@ -5,7 +5,7 @@
   "environmentLabel": "Acme Support Desk",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/acme-support-desk-inv-4812.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml \\\n  | fab run --environment /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://api.intercom.io/conversations/101\n      echo\n      curl -sS https://app.asana.com/api/1.0/tasks/task-double-charge\n      echo\n      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301\n    '",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://api.intercom.io/conversations/101\n      echo\n      curl -sS https://app.asana.com/api/1.0/tasks/task-double-charge\n      echo\n      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301\n    '",
   "argv": [
     "sh",
     "-c",

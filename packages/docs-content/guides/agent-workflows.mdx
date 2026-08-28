@@ -1,0 +1,130 @@
+---
+title: Agent and workflow QA
+description: Run a worker against known provider state without connecting real customer accounts.
+---
+
+Fabricate gives an agent or workflow disposable provider APIs with known state.
+It runs beside your worker; it is not a hosted connector, agent runtime, or
+replacement for your evaluation harness.
+
+## Wrap the worker
+
+For local development and CI, let Fabricate own the worker process:
+
+```bash
+fab run acme-support-desk -- ./bin/eval-worker
+```
+
+Fabricate starts every service, injects each service URL and synthetic token
+into the worker, and removes the environment when the worker exits. For
+example, the `support-mail` service is available through
+`FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`.
+
+Use `--proxy` when the worker must keep normal provider hostnames:
+
+```bash
+fab run acme-support-desk --proxy -- ./bin/eval-worker
+```
+
+Do not configure `$FAB_*_TOKEN` on those provider hostnames. The proxy
+replaces `Authorization` on routed hosts. The worker must honor standard HTTP
+proxy and CA environment variables. Model APIs and other unknown hosts continue
+to their real destinations by default. Set `proxy.unknown_hosts: reject` in a
+custom environment only when the whole run should be isolated.
+
+## Wrap a local agent
+
+The same wrap works for a local agent. Pass it after `--`; it keeps the
+provider's normal hostname while Fabricate authenticates those requests and
+serves the seeded inbox:
+
+```bash
+fab run acme-gmail --proxy -- opencode web
+```
+
+The agent must honor the injected HTTP proxy and CA variables, the same as a
+wrapped worker. After the session, `fab logs acme-gmail --cat` shows the
+redacted Gmail calls.
+
+<figure class="docs-screenshot">
+  <img
+    src="/docs/opencode-gmail-proxy.png"
+    alt="OpenCode fetching the latest message from the seeded Acme Gmail inbox through Fabricate's proxy"
+    width="1147"
+    height="1324"
+  />
+</figure>
+
+## Power your own agents
+
+The same environment can sit under a product's own agent, not only a wrapped
+CLI. [Krucible](https://krucible.app) uses Fabricate so its agent talks to
+Gmail the way a customer would, against a known inbox instead of a live
+account.
+
+<figure class="docs-screenshot">
+  <img
+    src="/docs/krucible-agent-gmail.png"
+    alt="Krucible listing the latest three Acme Gmail threads by sender and subject"
+    width="971"
+    height="1317"
+  />
+</figure>
+
+## Run beside an existing worker
+
+If another runner owns the worker lifecycle, start Fabricate without a child
+command on the same machine:
+
+```bash
+fab run acme-gmail
+```
+
+Fabricate stays alive until interrupted and prints the values the runner must
+pass to its worker:
+
+```text
+fab: service support-mail (gmail) ready at http://127.0.0.1:62330
+fab: request log /Users/me/Library/Application Support/fab/logs/acme-gmail/.../requests.jsonl
+fab: FAB_ENVIRONMENT=acme-gmail
+fab: FAB_SUPPORT_MAIL_TOKEN=<ephemeral-token>
+fab: FAB_SUPPORT_MAIL_URL=http://127.0.0.1:62330
+fab: running until interrupted
+```
+
+Configure the worker's Gmail client with the printed URL plus `/gmail/v1` and
+use the printed token as its bearer token. Ports and tokens change on every
+run. The URLs bind to loopback, so a remote hosted agent or a worker in another
+network namespace cannot attach to them directly.
+
+Standalone `--proxy` mode also prints the proxy URL, intercepted hosts, CA
+path, and every proxy/CA variable. Pass those values into the worker if the
+runner launches it separately. Wrapping the worker is simpler because
+Fabricate performs that injection automatically.
+
+## Authentication boundary
+
+Fabricate issues synthetic bearer tokens for the disposable services. Direct
+URL clients must send them. Proxy mode overwrites `Authorization` on routed
+provider hosts, so those clients should not send `$FAB_*_TOKEN`. Fabricate does
+not use, exchange, or preserve a customer's production OAuth connection. The
+Gmail proxy implements one local token-refresh route: `POST
+https://oauth2.googleapis.com/token` with `grant_type=refresh_token` and a
+non-empty refresh token returns the synthetic access token. There is no
+authorization-code flow, customer token store, or refresh for other providers.
+
+A hosted platform can use Fabricate when it can run a local or CI worker next
+to the CLI and configure that worker's HTTP clients. A native SaaS connector
+that runs only in the platform's cloud cannot currently connect to a local
+Fabricate environment.
+
+## A useful agent evaluation
+
+Start with [Acme Support Desk](/resources/environments/acme-support-desk). Its
+Gmail, Intercom, Asana, and HubSpot services share customer and incident IDs.
+A worker can read the same case across providers, decide what to do, then make
+writes without touching real accounts.
+
+After the run, use `fab logs acme-support-desk --cat` to inspect the redacted
+request trace and score the worker's API behavior. Start a new run to restore
+the exact scenario baseline.

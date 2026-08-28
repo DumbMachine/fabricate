@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-asana.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_ASANA_TOKEN" \
       "$FAB_ASANA_URL/projects/proj-checkout/tasks"'
 ```
@@ -73,13 +73,14 @@ The response is the Acme checkout-reliability board:
 
 Use this when your app uses the normal Asana URLs and follows standard proxy
 and CA environment variables. This one-paste check calls Asana's normal
-production hostname; replace the final `sh -c ...` command with your app.
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_ASANA_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-asana.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_ASANA_TOKEN" \
-      "https://app.asana.com/api/1.0/projects/proj-checkout/tasks"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://app.asana.com/api/1.0/projects/proj-checkout/tasks
 ```
 
 Fabricate handles `app.asana.com` locally. Other hosts are forwarded unchanged;
@@ -90,10 +91,13 @@ settings. In that case, use the direct URL.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `asana.minimal.v1` | An empty Acme workspace for a clean test. |
-| `asana.acme-sprint.v1` | Checkout reliability plus onboarding: ten tasks, sections, and comments. |
+<ResourceScenarios
+  resource="asana"
+  descriptions={{
+    "asana.minimal.v1": "An empty Acme workspace for a clean test.",
+    "asana.acme-sprint.v1": "Checkout reliability plus onboarding, with tasks, sections, and comments.",
+  }}
+/>
 
 ## Compatibility verification
 

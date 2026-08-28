@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_OPENAI_TOKEN" \
       "$FAB_OPENAI_URL/v1/responses/resp_checkout"'
 ```
@@ -42,11 +42,11 @@ The response is the seeded checkout-reliability Responses job:
 ### Start it through the proxy
 
 Use this when your app uses the normal OpenAI URLs. This one-paste check
-calls OpenAI's production hostname; the proxy supplies the local token.
+calls OpenAI's production hostname. Omit `$FAB_OPENAI_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.openai.com/v1/responses/resp_checkout
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `api.openai.com` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `openai.minimal.v1` | Empty OpenAI state for a clean test. |
-| `openai.acme-responses.v1` | Seeded Responses jobs for every Acme investigation (checkout reliability, Contoso SSO, INV-4812, fernworks CSV, Adatum DNS, LakeTech, TinyShop, BrightPath, Fabrikam `req_7Q4K2`) plus unrelated drafting haystack. |
+<ResourceScenarios
+  resource="openai"
+  descriptions={{
+    "openai.minimal.v1": "Empty OpenAI state for a clean test.",
+    "openai.acme-responses.v1": "Seeded Responses jobs for every Acme investigation (checkout reliability, Contoso SSO, INV-4812, fernworks CSV, Adatum DNS, LakeTech, TinyShop, BrightPath, Fabrikam `req_7Q4K2`) plus unrelated drafting haystack.",
+  }}
+/>
 
 ## Compatibility verification
 

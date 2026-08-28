@@ -1,0 +1,23 @@
+{
+  "integration": "hubspot",
+  "scenarios": [
+    {
+      "id": "hubspot.acme-pipeline.v1",
+      "counts": {
+        "companies": 9,
+        "contacts": 10,
+        "deals": 5,
+        "tickets": 4
+      }
+    },
+    {
+      "id": "hubspot.minimal.v1",
+      "counts": {
+        "companies": 0,
+        "contacts": 0,
+        "deals": 0,
+        "tickets": 0
+      }
+    }
+  ]
+}
