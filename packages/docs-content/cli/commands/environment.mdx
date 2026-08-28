@@ -1,0 +1,55 @@
+---
+title: fab environment
+description: List, inspect, and validate environment definitions.
+---
+
+An environment defines one or more services. Official environments are
+embedded in `fab`; local YAML manifests work with `inspect`, `validate`, and
+`run`.
+
+## List environments
+
+```bash
+fab environment list
+```
+
+```text
+NAME               SERVICES  RESOURCES
+acme-gmail         1         gmail
+acme-go-to-market  3         attio,mailchimp,resend
+acme-support-desk  4         asana,gmail,hubspot,intercom
+```
+
+The full command prints every included environment.
+
+## Inspect an environment
+
+```bash
+fab environment inspect acme-gmail
+fab environment inspect ./environment.yaml --output json
+```
+
+```text
+FIELD        VALUE
+name         acme-gmail
+kind         Environment
+api version  fabricate.dev/v1alpha1
+
+NAME          RESOURCE  SCENARIO
+support-mail  gmail     gmail.acme-corp.v1
+```
+
+## Validate an environment
+
+Validation checks the manifest structure and every referenced resource and
+scenario without starting listeners:
+
+```bash
+fab environment validate ./environment.yaml
+```
+
+```text
+environment acme-gmail: valid
+```
+
+`fab env` and `fab environments` are aliases for `fab environment`.

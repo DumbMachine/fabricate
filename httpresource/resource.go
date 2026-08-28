@@ -14,22 +14,22 @@ import (
 )
 
 type Descriptor struct {
-	ID              string
-	DisplayName     string
-	Version         string
-	OpenAPIVersion  string
-	OpenAPIDigest   string
-	ScenarioVersion int
-	ProviderHosts   []string
-	SDK             SDKDescriptor
+	ID              string        `json:"id"`
+	DisplayName     string        `json:"display_name"`
+	Version         string        `json:"version"`
+	OpenAPIVersion  string        `json:"openapi_version"`
+	OpenAPIDigest   string        `json:"openapi_digest"`
+	ScenarioVersion int           `json:"scenario_version"`
+	ProviderHosts   []string      `json:"provider_hosts"`
+	SDK             SDKDescriptor `json:"sdk"`
 }
 
 type SDKDescriptor struct {
-	Package    string
-	Language   string
-	DirectTest bool
-	ProxyTest  bool
-	Exception  string
+	Package    string `json:"package,omitempty"`
+	Language   string `json:"language,omitempty"`
+	DirectTest bool   `json:"direct_test"`
+	ProxyTest  bool   `json:"proxy_test"`
+	Exception  string `json:"exception,omitempty"`
 }
 
 type Contract struct {

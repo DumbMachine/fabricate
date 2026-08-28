@@ -1,5 +1,87 @@
 ---
 title: fab run
+description: Run an environment or one service, standalone or around a command.
 ---
 
-TODO
+`fab run` starts local API services from reproducible scenarios. Proxying is
+off unless you pass `--proxy`.
+
+## Run an environment
+
+Official environments are included in the binary:
+
+```bash
+fab run acme-gmail
+```
+
+You can also use a local manifest:
+
+```bash
+fab run ./fabricate/environment.yaml
+```
+
+Without a command, Fabricate stays in the foreground until `Ctrl-C`. It prints
+the service URL, ephemeral token, request log, and the variable names another
+process needs:
+
+```text
+fab: service support-mail (gmail) ready at http://127.0.0.1:62330
+fab: request log /Users/me/Library/Application Support/fab/logs/acme-gmail/.../requests.jsonl
+fab: FAB_ENVIRONMENT=acme-gmail
+fab: FAB_SUPPORT_MAIL_TOKEN=<ephemeral-token>
+fab: FAB_SUPPORT_MAIL_URL=http://127.0.0.1:62330
+fab: running until interrupted
+```
+
+Ports, tokens, and log paths change on every run.
+
+## Wrap a command
+
+Put the child command after `--`:
+
+```bash
+fab run acme-gmail -- npm test
+```
+
+Fabricate injects the service variables into the child, returns its exit code,
+and tears down the environment afterward.
+
+## Run one service
+
+Pass the resource ID and choose its scenario:
+
+```bash
+fab run gmail --scenario gmail.minimal.v1
+fab run hubspot --scenario hubspot.acme-pipeline.v1 -- npm test
+```
+
+If `--scenario` is missing or unknown, Fabricate lists the valid choices:
+
+```text
+error: run: service "gmail" requires --scenario; choose one of: gmail.acme-corp.v1, gmail.minimal.v1
+```
+
+## Proxy provider hosts
+
+Use `--proxy` when a client must retain its normal production hostnames:
+
+```bash
+fab run acme-gmail --proxy
+```
+
+Proxy startup reports exactly which hosts Fabricate intercepts:
+
+```text
+fab: transparent proxy ready at http://127.0.0.1:62331 (CA /tmp/fab-acme-gmail/proxy/ca.pem)
+fab: proxying gmail.googleapis.com, oauth2.googleapis.com, www.googleapis.com
+```
+
+Fabricate prints the proxy variables `HTTP_PROXY`, `HTTPS_PROXY`, `http_proxy`,
+and `https_proxy`; the loopback exclusions `NO_PROXY` and `no_proxy`; and the
+generated CA through `SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`,
+`REQUESTS_CA_BUNDLE`, and `GIT_SSL_CAINFO`. Unknown hosts pass through unchanged
+by default. Set `proxy.unknown_hosts: reject` in the environment manifest for
+strict isolation.
+
+The old `--environment <manifest>` form remains temporarily available but is
+deprecated. Pass the environment name or path as the first argument instead.
