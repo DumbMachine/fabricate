@@ -11,7 +11,7 @@ exits.
 
 For example, run an email workflow against a seeded Gmail support inbox, let
 the workflow search, label, and send mail, and run it again from the exact same
-inbox. The shipped Gmail scenario has 12 handcrafted support messages, so a
+inbox. The shipped Gmail scenario has 28 handcrafted support messages, so a
 test can exercise realistic threads instead of a blank or generic fixture.
 
 ## What Fabricate is for
@@ -31,7 +31,7 @@ provider SDK. It provides the disposable systems those tools need to talk to.
 
 ## The model
 
-<div class="environment-model" role="img" aria-label="An environment contains services. Each service combines a provider resource and a scenario. The customer-renewal environment has Gmail, HubSpot, and Postgres services.">
+<div class="environment-model" role="img" aria-label="An environment contains services. Each service combines a provider resource and a scenario. The Acme Support Desk environment has Gmail, HubSpot, and Intercom services.">
   <section class="environment-model__environment">
     <p class="environment-model__kind">Environment</p>
     <h3>support-test</h3>
@@ -57,20 +57,20 @@ provider SDK. It provides the disposable systems those tools need to talk to.
 
   <section class="environment-model__environment">
     <p class="environment-model__kind">Environment</p>
-    <h3>customer-renewal</h3>
-    <p class="environment-model__description">The whole account state, reset together.</p>
+    <h3>acme-support-desk</h3>
+    <p class="environment-model__description">The whole support case, reset together.</p>
     <div class="environment-model__service-list">
       <div class="environment-model__service environment-model__service--compact">
         <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/gmail" width="20" height="20" alt="Gmail" />
-        <div><p class="environment-model__kind">Service · support-mail</p><h4>Gmail</h4><p>Acme support inbox · 12 seeded messages.</p></div>
+        <div><p class="environment-model__kind">Service · support-mail</p><h4>Gmail</h4><p>Acme support inbox · 28 seeded messages.</p></div>
       </div>
       <div class="environment-model__service environment-model__service--compact">
         <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/hubspot" width="20" height="20" alt="HubSpot" />
-        <div><p class="environment-model__kind">Service · customer-records</p><h4>HubSpot</h4><p>Acme account · renewal awaiting confirmation.</p></div>
+        <div><p class="environment-model__kind">Service · crm</p><h4>HubSpot</h4><p>Deal 301 · refund review for INV-4812.</p></div>
       </div>
       <div class="environment-model__service environment-model__service--compact">
-        <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/postgres" width="20" height="20" alt="Postgres" />
-        <div><p class="environment-model__kind">Service · billing-data</p><h4>Postgres</h4><p>Invoices and subscription rows for the same account.</p></div>
+        <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/intercom" width="20" height="20" alt="Intercom" />
+        <div><p class="environment-model__kind">Service · inbox</p><h4>Intercom</h4><p>Conversation 101 · the same customer and invoice.</p></div>
       </div>
     </div>
     <p class="environment-model__footer">fab run starts every service from known state</p>
@@ -98,8 +98,7 @@ the checked-in Gmail environment and lists its seeded inbox. No repository
 clone or environment file is required.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+fab run acme-gmail -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
       "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
 ```
@@ -117,17 +116,9 @@ Fabricate injects into the process.
 
 Use the **transparent proxy** when an SDK must keep its normal provider
 hostname. Add `--proxy` to `fab run`; Fabricate sets proxy and CA variables
-only for the wrapped process, routes the provider hosts declared by the
-environment to local services, and blocks everything else unless explicitly
-allowed.
-
-## Infrastructure is a separate path
-
-Provider APIs use `fab run` environments. For actual infrastructure such as a
-database or Redis, use a container profile with `fab create`. The two paths are
-deliberately separate: Fabricate is not pretending that a provider API is a
-Docker container, and it is not replacing a real database with a provider
-mock.
+only for the wrapped process and routes the provider hosts declared by the
+environment to local services. Other hosts pass through by default; strict
+environments can set `proxy.unknown_hosts: reject`.
 
 Continue with [Getting started](/getting-started) to install the CLI, or open
 the [Gmail integration](/resources/integrations/gmail) for the runnable API

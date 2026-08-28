@@ -25,7 +25,7 @@ example manifest directly, so you do not need to clone this repository.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sendgrid.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_SENDGRID_TOKEN" -X POST "$FAB_SENDGRID_URL/v3/mail/batch"'
 ```
 
@@ -39,7 +39,7 @@ calls SendGrid's production hostname; the proxy supplies the local token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sendgrid.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS -X POST https://api.sendgrid.com/v3/mail/batch
 ```
 

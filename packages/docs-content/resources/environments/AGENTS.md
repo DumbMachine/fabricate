@@ -40,7 +40,7 @@ with a scenario one-liner and a following line about the data. Keep `resource`,
 - Explain the scenario's data and why it is useful for an application, agent,
   or test workflow.
 - Include a one-paste startup command that reads the canonical raw manifest
-  through `fab run --environment /dev/stdin --proxy`. The primary example
+  through `fab run /dev/stdin --proxy`. The primary example
   should call each service on its normal production hostname, with one `curl`
   per line so the requests stay distinct. Separate curl bodies with `echo`.
   Do not include Authorization headers; the proxy supplies the local token.

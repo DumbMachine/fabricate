@@ -7,7 +7,7 @@ checking out Fabricate or creating an environment file by hand.
 
 - Every command block must be usable as a single paste in a POSIX shell.
 - When an example needs a repository manifest, fetch its canonical raw GitHub
-  file and pipe it to `fab run --environment /dev/stdin`; `fab run` accepts a
+  file and pipe it to `fab run /dev/stdin`; `fab run` accepts a
   file path, not an environment URL.
 - Use `curl -fsSL` for manifest downloads and `curl -sS` for request examples
   so successful output stays readable while failures remain visible.

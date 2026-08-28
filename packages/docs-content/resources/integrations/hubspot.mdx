@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_HUBSPOT_TOKEN" \
       "$FAB_HUBSPOT_URL/crm/v3/objects/contacts"'
 ```
@@ -100,9 +100,8 @@ production hostname; replace the final `sh -c ...` command with your app.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_HUBSPOT_TOKEN" \
-      "https://api.hubapi.com/crm/v3/objects/contacts"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.hubapi.com/crm/v3/objects/contacts
 ```
 
 Fabricate handles `api.hubapi.com` locally. Object-type aliases such as

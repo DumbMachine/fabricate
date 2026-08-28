@@ -25,7 +25,7 @@ example manifest directly, so you do not need to clone this repository.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-attio.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_ATTIO_TOKEN" "$FAB_ATTIO_URL/v2/objects"'
 ```
 
@@ -39,7 +39,7 @@ calls Attio's production hostname; the proxy supplies the local token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-attio.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS -H 'Content-Type: application/json' -d '{}' https://api.attio.com/v2/objects/people/records/query
 ```
 

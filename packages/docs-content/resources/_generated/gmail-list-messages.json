@@ -5,7 +5,7 @@
     "label": "Acme's Gmail",
     "manifest": "environments/acme-gmail.yaml"
   },
-  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
   "output": {
     "messages": [
       {
@@ -121,31 +121,31 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:5f893b1129d5f45f58b5438c38b4401132394510307a7b43f5f781308e58dba5",
+    "digest": "sha256:090ce46dcb5be33b68b55b51971c3cc803963557a294ddb514df1ca2602649ea",
     "roots": [
       {
         "path": "cli/run.go",
-        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+        "digest": "sha256:3e14b29e64afcaf8f26b5c03054f80c50506a5a0268e1607869abe989457991e"
       },
       {
         "path": "engine/http",
-        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
       },
       {
         "path": "environment",
-        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+        "digest": "sha256:88bd4645954970ba3a3219e4006a0f56653b7a2ece326be41ab01c55fc70e948"
       },
       {
         "path": "environments/acme-gmail.yaml",
-        "digest": "sha256:221922c622873329fed5e56b32a19af1af0a3e336b4d031f15e12e0863dc3050"
+        "digest": "sha256:120846fe3c878eec5bfbb3940e38fc98099a6530da9ebde86627e9c749257eef"
       },
       {
         "path": "httpresource",
-        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
+        "digest": "sha256:c1d489bd90014abce1655f66d9fed2d7acc4dafcfad8a2a1d76039bf446a209f"
       },
       {
         "path": "packages/docs-content/resources/_examples/gmail-list-messages.json",
-        "digest": "sha256:e18bd1da882a9f9744724f3e67dbd2430d9357b433f06bc3d8e0082de0b4820c"
+        "digest": "sha256:d71a9d70333efce6dca942f6f881a7409009179fce64d5fa0e0a769805c73459"
       },
       {
         "path": "requestlog",
@@ -153,11 +153,11 @@
       },
       {
         "path": "resources/gmail",
-        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+        "digest": "sha256:78c29fe837fb34d9db851d52ae40ab4475386696c04d98fbb6b25438e05899aa"
       },
       {
         "path": "scenario",
-        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+        "digest": "sha256:5e9d4f0cadf0109f4e52c0b0a5eeff49d0334c6ce0a77bc53feefdd310216263"
       }
     ]
   }

@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-asana.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_ASANA_TOKEN" \
       "$FAB_ASANA_URL/projects/proj-checkout/tasks"'
 ```
@@ -77,9 +77,8 @@ production hostname; replace the final `sh -c ...` command with your app.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-asana.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_ASANA_TOKEN" \
-      "https://app.asana.com/api/1.0/projects/proj-checkout/tasks"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://app.asana.com/api/1.0/projects/proj-checkout/tasks
 ```
 
 Fabricate handles `app.asana.com` locally. Other hosts are forwarded unchanged;

@@ -6,8 +6,6 @@ description: Install the CLI, check the catalog, and run the first local environ
 ## Prerequisites
 
 You need macOS or Linux on `amd64` or `arm64`, plus one of `curl` or `wget`.
-Docker is only needed when you create an infrastructure resource such as
-Postgres or Redis. It is not needed for the Gmail environment below.
 
 ## Install the CLI
 
@@ -28,13 +26,11 @@ fab --help
 
 ## Run an environment
 
-Run a command with the Acme Gmail environment available as local environment
-variables. This command fetches the canonical manifest, so you do not need to
-clone Fabricate:
+Run a command with the built-in Acme Gmail environment available as local
+environment variables:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+fab run acme-gmail -- \
   sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
   "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/profile"'
 ```
@@ -81,8 +77,7 @@ def profile():
 Run it with the local URL only for this process:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+fab run acme-gmail -- \
   sh -c 'GMAIL_API_BASE_URL="$FAB_SUPPORT_MAIL_URL/gmail/v1" uvicorn main:app'
 ```
 
@@ -91,8 +86,8 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 Use `--proxy` when your application already calls normal provider hosts and
 you do not want to add a Fabricate base-URL configuration. Fabricate injects a
 process-scoped HTTPS proxy and CA trust settings, then routes supported Gmail
-and Google OAuth traffic to the local environment. Other provider traffic fails
-closed unless the environment explicitly allows it.
+and Google OAuth traffic to the local environment. Other destinations pass
+through unchanged unless the environment sets `proxy.unknown_hosts: reject`.
 
 For an existing FastAPI app that uses `httpx`'s default environment-aware
 transport, keep the normal Gmail URL unchanged:
@@ -109,8 +104,7 @@ def profile():
 ```
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+fab run acme-gmail --proxy -- \
   uvicorn main:app
 ```
 
@@ -126,23 +120,9 @@ console.log(profile.data);
 ```
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+fab run acme-gmail --proxy -- \
   node app.mjs
 ```
 
 Your client must respect standard proxy and CA environment variables. Use the
 direct base URL when it pins certificates or bypasses proxy settings.
-
-## Try an infrastructure profile
-
-Use profiles for services that are meant to be actual containers, not provider
-API emulators:
-
-```bash
-fab profiles
-fab create postgres -p stripe-payments
-fab destroy --all
-```
-
-`fab create` prints the connection details. `fab destroy` tears them down.

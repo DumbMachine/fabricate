@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
       "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
 ```
@@ -48,9 +48,8 @@ production hostname; replace the final `sh -c ...` command with your app.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "https://gmail.googleapis.com/gmail/v1/users/me/messages"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages
 ```
 
 Fabricate handles `gmail.googleapis.com` and the Gmail path on

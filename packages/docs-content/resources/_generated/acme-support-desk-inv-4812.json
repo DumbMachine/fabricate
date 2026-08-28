@@ -5,7 +5,7 @@
     "label": "Acme Support Desk",
     "manifest": "environments/acme-support-desk.yaml"
   },
-  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml \\\n  | fab run --environment /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://api.intercom.io/conversations/101\n      echo\n      curl -sS https://app.asana.com/api/1.0/tasks/task-double-charge\n      echo\n      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301\n    '",
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-support-desk.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://api.intercom.io/conversations/101\n      echo\n      curl -sS https://app.asana.com/api/1.0/tasks/task-double-charge\n      echo\n      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301\n    '",
   "output": [
     {
       "historyId": "1",
@@ -121,31 +121,31 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:d4891a7ba559a4a39a7098501fb0e64cef827c5347796e74ffdd92c858a8de0e",
+    "digest": "sha256:53722de1f0eed7f698aa33abc82ab2e331c9835b5921bb3a64fb04728f7fe325",
     "roots": [
       {
         "path": "cli/run.go",
-        "digest": "sha256:1a771ba8d0d4a601ed6cad2f146c9f279ba03e592872699f71bdf5ebbc3d61a2"
+        "digest": "sha256:3e14b29e64afcaf8f26b5c03054f80c50506a5a0268e1607869abe989457991e"
       },
       {
         "path": "engine/http",
-        "digest": "sha256:60605a802f739818e8ba8ede1d7fced5b5c57d72ef9dd49cf9a7f3cd61622e3a"
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
       },
       {
         "path": "environment",
-        "digest": "sha256:4f9a6a74bb3d0c3a9f892095cd4c16694e093062717bd9904b9f7e867a1a5cba"
+        "digest": "sha256:88bd4645954970ba3a3219e4006a0f56653b7a2ece326be41ab01c55fc70e948"
       },
       {
         "path": "environments/acme-support-desk.yaml",
-        "digest": "sha256:eff8ed228cf29bbbc409ad86b63d376dd187c6bca39a5c227c5c25ab98d24b9c"
+        "digest": "sha256:f345ffb20403c03ce5a39f3e6cccb030cf2ecf6e03b77ede26e8b057f64ff75e"
       },
       {
         "path": "httpresource",
-        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
+        "digest": "sha256:c1d489bd90014abce1655f66d9fed2d7acc4dafcfad8a2a1d76039bf446a209f"
       },
       {
         "path": "packages/docs-content/resources/_examples/acme-support-desk-inv-4812.json",
-        "digest": "sha256:20f842e1f474f5bf88723e835a093c6c4ea85c10ce9693fff44bd46ffdbe7fb6"
+        "digest": "sha256:602481f7dfd602885fc898e5ca2cc9615c2cecca7788d6a1d29a64e4a0705f45"
       },
       {
         "path": "requestlog",
@@ -153,23 +153,23 @@
       },
       {
         "path": "resources/asana",
-        "digest": "sha256:12ac2cdfd6f25de157b7ed4ddfb1d64ebfb2c394cd75e470eca4e2277e6b29a1"
+        "digest": "sha256:4ea173b98bb61e55c7d578868b2938644ab5f9cdacbc77c9560db908f406556a"
       },
       {
         "path": "resources/gmail",
-        "digest": "sha256:8ba483bb5668c7ece18a38506d618aff43cc1b8c24845206931d0da80ea7f0df"
+        "digest": "sha256:78c29fe837fb34d9db851d52ae40ab4475386696c04d98fbb6b25438e05899aa"
       },
       {
         "path": "resources/hubspot",
-        "digest": "sha256:c21bfa3adef477fff9ae8b696c336830ef1bdafbfb21daaa922edcfb329c4da1"
+        "digest": "sha256:a42ea120f83029947acd640e6bb5401988f01a3e8e14d65b4224e99d34470985"
       },
       {
         "path": "resources/intercom",
-        "digest": "sha256:e62c027a8c96d4fd82c881c2b71b66f73283cca9af040ed79dd7ad28d31d2ceb"
+        "digest": "sha256:decc3873bfadb288d9003087283b95dbf00c24c65a7d7a865c192162aed38ecc"
       },
       {
         "path": "scenario",
-        "digest": "sha256:9e091232da9ceddb4f6662e2dc39e499a3236d3f22736e017e64f3c568fa78b8"
+        "digest": "sha256:5e9d4f0cadf0109f4e52c0b0a5eeff49d0334c6ce0a77bc53feefdd310216263"
       }
     ]
   }

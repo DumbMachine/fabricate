@@ -5,7 +5,7 @@
   "environmentLabel": "Acme Cloudflare",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/cloudflare-list-zones.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.cloudflare.com/client/v4/zones",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.cloudflare.com/client/v4/zones",
   "argv": [
     "curl",
     "-sS",

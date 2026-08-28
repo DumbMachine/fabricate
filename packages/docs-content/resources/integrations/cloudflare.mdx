@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_CLOUDFLARE_TOKEN" \
       "$FAB_CLOUDFLARE_URL/client/v4/zones"'
 ```
@@ -46,7 +46,7 @@ calls Cloudflare's production hostname; the proxy supplies the local token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.cloudflare.com/client/v4/zones
 ```
 

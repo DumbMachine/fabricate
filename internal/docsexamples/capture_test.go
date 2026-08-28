@@ -476,7 +476,7 @@ func writeExampleRepo(t *testing.T) string {
   "environmentLabel": "Acme's Gmail",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/gmail-list-messages.json",
-  "publishedCommand": "curl -fsSL example | fab run --environment /dev/stdin --proxy -- curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
+  "publishedCommand": "curl -fsSL example | fab run /dev/stdin --proxy -- curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
   "argv": ["curl", "-sS", "https://gmail.googleapis.com/gmail/v1/users/me/messages"]
 }
 `)

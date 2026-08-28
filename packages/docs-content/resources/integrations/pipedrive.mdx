@@ -25,7 +25,7 @@ example manifest directly, so you do not need to clone this repository.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-pipedrive.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_PIPEDRIVE_TOKEN" "$FAB_PIPEDRIVE_URL/api/v2/persons"'
 ```
 
@@ -39,7 +39,7 @@ calls Pipedrive's production hostname; the proxy supplies the local token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-pipedrive.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.pipedrive.com/api/v2/persons
 ```
 

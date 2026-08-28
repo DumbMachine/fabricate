@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-intercom.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_INTERCOM_TOKEN" \
       "$FAB_INTERCOM_URL/conversations"'
 ```
@@ -103,9 +103,8 @@ app.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-intercom.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_INTERCOM_TOKEN" \
-      "https://api.intercom.io/conversations"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.intercom.io/conversations
 ```
 
 Fabricate handles `api.intercom.io`, `api.eu.intercom.io`, and
