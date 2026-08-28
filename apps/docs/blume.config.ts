@@ -69,6 +69,7 @@ export default defineConfig({
         items: [
           { label: "Introduction", href: "/" },
           { label: "Getting Started", href: "/getting-started" },
+          { label: "Agent and workflow QA", href: "/guides/agent-workflows" },
         ],
       },
       {
