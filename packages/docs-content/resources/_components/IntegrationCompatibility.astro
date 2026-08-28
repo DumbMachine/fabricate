@@ -1,41 +1,42 @@
 ---
-type OperationStatus = "passed" | "failed" | "pending";
+import SnapshotUnavailable from "./SnapshotUnavailable.astro";
+import {loadCompatibility} from "./generated";
 
-interface ModeResult {
-  messagesAfter: number;
-  messagesBefore: number;
-  operations: Record<string, OperationStatus>;
-  status: OperationStatus;
+interface Props {
+  compatibility?: unknown;
+  resource?: string;
 }
 
-interface Compatibility {
-  api: string;
-  environment: { label: string; manifest: string; messages: number };
-  integration: string;
-  modes: Record<string, ModeResult>;
-  operationLabels: Record<string, string>;
-  testedAt: string;
-  testedCommit: string;
-  verification: {
-    client: string;
-    kind: "curl" | "official-sdk";
-    label: string;
-    title: string;
-  };
-}
-
-const {compatibility} = Astro.props as {compatibility: Compatibility};
-const modes = Object.entries(compatibility.modes);
+const {compatibility: provided, resource} = Astro.props as Props;
+const compatibility = loadCompatibility(resource, provided);
+const modes = compatibility ? Object.entries(compatibility.modes) : [];
 const verified = modes.length > 0 && modes.every(([, result]) => result.status === "passed");
-const operations = Object.entries(compatibility.operationLabels);
-const testedAt = new Intl.DateTimeFormat("en", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-}).format(new Date(compatibility.testedAt));
+const operations = compatibility ? Object.entries(compatibility.operationLabels) : [];
+const testedAt = (() => {
+  if (!compatibility) {
+    return "";
+  }
+  const date = new Date(compatibility.testedAt);
+  if (Number.isNaN(date.getTime())) {
+    return compatibility.testedAt;
+  }
+  return new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+})();
+const commit = compatibility?.testedCommit.slice(0, 7) ?? "";
 ---
 
-<section class="compatibility" aria-label={`${compatibility.integration} compatibility`}>
+{!compatibility ? (
+  <SnapshotUnavailable
+    eyebrow="Compatibility"
+    title="Compatibility verification"
+    hint="This compatibility report is missing or invalid. Recapture it with make conformance and commit the JSON under resources/_generated/."
+  />
+) : (
+<section class="compatibility not-prose" aria-label={`${compatibility.integration} compatibility`}>
   <header>
     <div>
       <p class="eyebrow">COMPATIBILITY</p>
@@ -46,7 +47,7 @@ const testedAt = new Intl.DateTimeFormat("en", {
   <dl class="facts">
     <div><dt>{compatibility.verification.label}</dt><dd>{compatibility.verification.client}</dd></div>
     <div><dt>Environment</dt><dd>{compatibility.environment.label} <span>· {compatibility.environment.messages} messages</span></dd></div>
-    <div><dt>Last verified</dt><dd>{testedAt} <code>{compatibility.testedCommit.slice(0, 7)}</code></dd></div>
+    <div><dt>Last verified</dt><dd>{testedAt} <code>{commit}</code></dd></div>
   </dl>
 
   <table>
@@ -56,12 +57,13 @@ const testedAt = new Intl.DateTimeFormat("en", {
       {operations.map(([key, label]) => (
         <tr>
           <th scope="row">{label}</th>
-          {modes.map(([, result]) => <td class:list={["operation-status", result.operations[key]]}>{result.operations[key]}</td>)}
+          {modes.map(([, result]) => <td class:list={["operation-status", result.operations[key]]}>{result.operations[key] ?? "pending"}</td>)}
         </tr>
       ))}
     </tbody>
   </table>
 </section>
+)}
 
 <style>
   .compatibility { background: var(--fabricate-surface-raised); border: 1px solid var(--fabricate-border); border-radius: var(--fabricate-radius-lg); margin: 1.8rem 0 2.4rem; padding: 1.15rem; }

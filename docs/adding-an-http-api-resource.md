@@ -27,6 +27,7 @@ and revision in `UPSTREAM.md`. Generate a strict server with the pinned tool:
 ```bash
 make generate
 make generate-check
+make docs-operations
 ```
 
 Implement `httpresource.Resource`:
@@ -38,7 +39,8 @@ Implement `httpresource.Resource`:
 - a generated strict server using only injected clock, IDs, secrets, and DB.
 
 Register the resource exactly once in `resources/all/all.go`. Do not add a CLI
-registry, engine, image, or environment-variable switch.
+registry, engine, image, or environment-variable switch. `make docs-operations`
+writes the compiled operation catalog that the integration page must import.
 
 ## Scenarios
 

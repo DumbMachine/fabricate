@@ -1,30 +1,22 @@
 ---
 title: Gmail
-description: A reproducible Gmail v1 API for local application testing.
+description: Messages, threads, labels, profile, and send.
 sidebar:
   icon: https://logos.composio.dev/api/gmail
 ---
 
-import compatibility from "../_generated/gmail.compatibility.json";
-import example from "../_generated/gmail-list-messages.json";
+Messages, threads, labels, profile, and send. Local Gmail v1 that keeps
+mailbox state across requests.
 
-Fabricate ships a Gmail v1 resource with a strict local API and synthetic OAuth
-token handling. It covers profile, labels, messages, threads, and sending mail
-in the included Acme Gmail environment.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `gmail.minimal.v1` | An empty inbox for a clean test. |
-| `gmail.acme-corp.v1` | A populated Acme support inbox with 28 messages, labels, and threads. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Google’s normal hostnames. |
+| API | Gmail v1 |
+| Auth | Synthetic bearer token. The proxy also refreshes Google OAuth. |
+| Hosts | `gmail.googleapis.com`, Gmail paths on `www.googleapis.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
@@ -46,7 +38,7 @@ service `gmail`, they become `FAB_GMAIL_URL` and `FAB_GMAIL_TOKEN`.
 
 The response is the Acme support inbox:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="gmail-list-messages" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -69,6 +61,13 @@ fail-closed conformance test.
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `gmail.minimal.v1` | An empty inbox for a clean test. |
+| `gmail.acme-corp.v1` | A populated Acme support inbox with 28 messages, labels, and threads. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -76,4 +75,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Gmail check ran against the Acme Gmail
 environment with Google's official Node SDK:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="gmail" />
+
+## Supported operations
+
+<SupportedOperations resource="gmail" />
