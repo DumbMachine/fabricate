@@ -64,7 +64,7 @@ jobs:
       - name: gofmt
         run: |
           out=$(gofmt -l .); if [ -n "$out" ]; then echo "gofmt needed:"; echo "$out"; exit 1; fi
-      - name: generated bindings are current
+      - name: generated bindings and operation catalogs are current
         run: make generate-check
 
   e2e:
@@ -122,4 +122,4 @@ jobs:
             make docs-examples DOCS_EXAMPLES_FLAGS="--since-ref $base"
           fi
       - name: Command snapshots are current
-        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json'
+        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json' ':(exclude)packages/docs-content/resources/_generated/*.operations.json'
