@@ -687,7 +687,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:6283103f1981a661a2cef08fe479045954f912d743810191cb3ce9bccc14ee70",
+    "digest": "sha256:94959ea43b83c9ec0bcbb131d4581aa7fed80359985e5b2a0699387e4eb2d54f",
     "roots": [
       {
         "path": "cli/run.go",
@@ -719,7 +719,7 @@
       },
       {
         "path": "resources/asana",
-        "digest": "sha256:507c1eaf3077ad311519b699062c569a8fac026e2ea3b1b1767381af99dc5ca2"
+        "digest": "sha256:106aa032b5e464b393b68d82b3c3c82359c4e4b3e80d9fa25e4fdb68009e728b"
       },
       {
         "path": "resources/cloudflare",
@@ -731,7 +731,7 @@
       },
       {
         "path": "resources/hubspot",
-        "digest": "sha256:7909632464103781e282052196585a62641df3ec75f6750c568bcae692a0be1d"
+        "digest": "sha256:0a480a8abf00d0ef377b2bb5f2464affbb4bb26521183d3fc18c8ae6ae527545"
       },
       {
         "path": "scenario",

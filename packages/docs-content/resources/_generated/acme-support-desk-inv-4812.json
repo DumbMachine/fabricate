@@ -121,7 +121,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:5343fdf3fe476bc941e1d07ba58ca8ea5cf1c7bdb127fca63c238edd81c22c56",
+    "digest": "sha256:30cf8026d5143eab86b01a03dd3d8252f03a2a7e4b643d3a354134d3cefc6b9e",
     "roots": [
       {
         "path": "cli/run.go",
@@ -153,7 +153,7 @@
       },
       {
         "path": "resources/asana",
-        "digest": "sha256:507c1eaf3077ad311519b699062c569a8fac026e2ea3b1b1767381af99dc5ca2"
+        "digest": "sha256:106aa032b5e464b393b68d82b3c3c82359c4e4b3e80d9fa25e4fdb68009e728b"
       },
       {
         "path": "resources/gmail",
@@ -161,11 +161,11 @@
       },
       {
         "path": "resources/hubspot",
-        "digest": "sha256:7909632464103781e282052196585a62641df3ec75f6750c568bcae692a0be1d"
+        "digest": "sha256:0a480a8abf00d0ef377b2bb5f2464affbb4bb26521183d3fc18c8ae6ae527545"
       },
       {
         "path": "resources/intercom",
-        "digest": "sha256:865d72b6bccee78a73908e2e90ef1b9c3887efa004bdc24edadd303880b39e00"
+        "digest": "sha256:05b913adce76d35918c830853b5f8e79020320fcdcc74eb7b9c2991a4388ac1a"
       },
       {
         "path": "scenario",

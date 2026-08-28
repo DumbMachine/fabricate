@@ -144,7 +144,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:72cc049b1a7166858400aaa1242d2c58543b16c879f7acd2da91fe3cb837f205",
+    "digest": "sha256:7ec1cb1e08dc305143d39535f05d93eaf429ea62f3c207d599b7e9f56e235014",
     "roots": [
       {
         "path": "cli/run.go",
@@ -176,15 +176,15 @@
       },
       {
         "path": "resources/attio",
-        "digest": "sha256:cfad051639b30bbeb462e15c77cad8baf7144567939b976e18bfdbad00f5b63a"
+        "digest": "sha256:40a3eb1b2372e556af883ee513d06cb69028f66a142f8297f0f43a90bc61dff7"
       },
       {
         "path": "resources/mailchimp",
-        "digest": "sha256:78bdcd8b11eb847e8787e3261bec8766d0b3daeae744f82c0637455534d120a9"
+        "digest": "sha256:5b1a42df4a93749a9831d5537d168842cad0e446c9e3dae5a943461489ae6acf"
       },
       {
         "path": "resources/resend",
-        "digest": "sha256:3d3f32c4b13308f875da23147a6101012a2ff67a91865774e8b05abd4731d476"
+        "digest": "sha256:5fcff59d32bfeffc0244674b882a7a7f05a4bb30bdac02f4639e9b043f34d3d4"
       },
       {
         "path": "scenario",

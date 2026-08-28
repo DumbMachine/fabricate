@@ -16,6 +16,7 @@ func TestDigestRootIgnoresTestsConformanceAndMarkdown(t *testing.T) {
 	writeFile(t, filepath.Join(dir, "keep.go"), "package gmail\n")
 	writeFile(t, filepath.Join(dir, "keep_test.go"), "package gmail\n")
 	writeFile(t, filepath.Join(dir, "README.md"), "# gmail\n")
+	writeFile(t, filepath.Join(dir, "openapi.prepared.json"), "{}\n")
 	writeFile(t, filepath.Join(dir, "conformance", "client.mjs"), "export {}\n")
 	writeFile(t, filepath.Join(dir, "testdata", "fixture.json"), "{}\n")
 
@@ -25,6 +26,7 @@ func TestDigestRootIgnoresTestsConformanceAndMarkdown(t *testing.T) {
 	}
 	writeFile(t, filepath.Join(dir, "keep_test.go"), "package gmail\nfunc TestX(t *testing.T) {}\n")
 	writeFile(t, filepath.Join(dir, "conformance", "client.mjs"), "changed\n")
+	writeFile(t, filepath.Join(dir, "openapi.prepared.json"), `{"changed":true}`+"\n")
 	second, err := digestRoot(dir, ".")
 	if err != nil {
 		t.Fatal(err)

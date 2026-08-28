@@ -94,7 +94,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:811e65bb52e242ce05b8a2850a725c547bba147fb33a4fad1e9cab1f18973d4b",
+    "digest": "sha256:547686fe1e0a55d6e0a01a480b8c89460663d82597f9233c066582e99a84b37d",
     "roots": [
       {
         "path": "cli/run.go",
@@ -130,11 +130,11 @@
       },
       {
         "path": "resources/hubspot",
-        "digest": "sha256:7909632464103781e282052196585a62641df3ec75f6750c568bcae692a0be1d"
+        "digest": "sha256:0a480a8abf00d0ef377b2bb5f2464affbb4bb26521183d3fc18c8ae6ae527545"
       },
       {
         "path": "resources/intercom",
-        "digest": "sha256:865d72b6bccee78a73908e2e90ef1b9c3887efa004bdc24edadd303880b39e00"
+        "digest": "sha256:05b913adce76d35918c830853b5f8e79020320fcdcc74eb7b9c2991a4388ac1a"
       },
       {
         "path": "scenario",
