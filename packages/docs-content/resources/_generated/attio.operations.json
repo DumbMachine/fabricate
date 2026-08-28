@@ -1,0 +1,42 @@
+{
+  "integration": "attio",
+  "api": "Attio v2",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v2/objects",
+      "operationId": "GetV2Objects",
+      "summary": "List objects"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/objects/{object}/records",
+      "operationId": "PostV2ObjectsObjectRecords",
+      "summary": "Create a record"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/objects/{object}/records/query",
+      "operationId": "PostV2ObjectsObjectRecordsQuery",
+      "summary": "List records"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/objects/{object}/records/{record_id}",
+      "operationId": "GetV2ObjectsObjectRecordsRecordId",
+      "summary": "Get a record"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/objects/{object}/records/{record_id}",
+      "operationId": "PatchV2ObjectsObjectRecordsRecordId",
+      "summary": "Update a record (append multiselect values)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/workspace_members",
+      "operationId": "GetV2WorkspaceMembers",
+      "summary": "List workspace members"
+    }
+  ]
+}
