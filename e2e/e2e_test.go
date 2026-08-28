@@ -56,7 +56,7 @@ func TestEnvironmentList(t *testing.T) {
 	if err != nil {
 		t.Fatalf("fab environment list: %v\n%s", err, out)
 	}
-	for _, needle := range []string{"acme-gmail", "acme-posthog"} {
+	for _, needle := range []string{"acme-gmail", "acme-cloudflare", "acme-posthog"} {
 		if !strings.Contains(out, needle) {
 			t.Fatalf("environment list missing %q:\n%s", needle, out)
 		}
