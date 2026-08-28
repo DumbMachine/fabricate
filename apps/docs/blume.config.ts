@@ -135,7 +135,7 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/mailchimp",
               },
               {
-                label: "GitHub (planned)",
+                label: "GitHub",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
               },
