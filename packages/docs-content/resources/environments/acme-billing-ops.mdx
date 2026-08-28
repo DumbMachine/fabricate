@@ -3,8 +3,6 @@ title: "Acme Billing Ops"
 description: A disposable Acme billing workflow spanning Gmail, Intercom, and HubSpot around invoice INV-4812.
 ---
 
-import example from "../_generated/acme-billing-ops-inv-4812.json";
-
 Acme Billing Ops is a ready-to-run environment for testing software that
 reconciles customer billing mail with chat and CRM. Every run starts from the
 same Northwind invoice dispute and is removed when the wrapped command exits.
@@ -71,7 +69,7 @@ Paste this command to download the environment manifest, start the three
 services, and read `INV-4812` from mail, chat, and CRM. You do not need to clone
 Fabricate.
 
-<CommandOutput example={example} />
+<CommandOutput id="acme-billing-ops-inv-4812" />
 
 `--proxy` keeps each provider’s normal hostname. See [Gmail](/resources/integrations/gmail),
 [Intercom](/resources/integrations/intercom), and [HubSpot](/resources/integrations/hubspot)

@@ -1,0 +1,24 @@
+{
+  "integration": "mailgun",
+  "api": "Mailgun v3",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v3/{domain_name}/events",
+      "operationId": "GetV3DomainNameEvents",
+      "summary": "Retrieves a paginated list of events"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/{domain_name}/messages",
+      "operationId": "POSTV3DomainNameMessages",
+      "summary": "Send an email"
+    },
+    {
+      "method": "GET",
+      "path": "/v4/domains",
+      "operationId": "GETV4Domains",
+      "summary": "Get domains"
+    }
+  ]
+}

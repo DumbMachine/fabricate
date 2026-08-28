@@ -1,0 +1,84 @@
+---
+import SnapshotUnavailable from "./SnapshotUnavailable.astro";
+import {loadOperationsCatalog} from "./generated";
+
+interface Props {
+  catalog?: unknown;
+  resource?: string;
+}
+
+const {catalog: provided, resource} = Astro.props as Props;
+const catalog = loadOperationsCatalog(resource, provided);
+const operations = catalog?.operations ?? [];
+const countLabel = operations.length === 1 ? "1 operation" : `${operations.length} operations`;
+---
+
+{!catalog ? (
+  <SnapshotUnavailable
+    eyebrow="API surface"
+    title="Supported operations"
+    hint="This operations catalog is missing or invalid. Recapture it with make docs-operations and commit the JSON under resources/_generated/."
+  />
+) : (
+<section class="operations not-prose" aria-label={`${catalog.integration} supported operations`}>
+  <header>
+    <div>
+      <p class="eyebrow">API SURFACE</p>
+      <p class="api">{catalog.api}</p>
+    </div>
+    <span class="count">{countLabel}</span>
+  </header>
+  <p class="note">Subset of the vendor API. Undeclared routes are not implemented.</p>
+  <table>
+    <caption>Declared operations</caption>
+    <thead>
+      <tr>
+        <th scope="col">Method</th>
+        <th scope="col">Path</th>
+        <th scope="col">Operation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {operations.map((operation) => (
+        <tr>
+          <th scope="row"><code class="method">{operation.method}</code></th>
+          <td><code class="path">{operation.path}</code></td>
+          <td>
+            <code class="id">{operation.operationId}</code>
+            {operation.summary ? <p class="summary">{operation.summary}</p> : null}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+)}
+
+<style>
+  .operations { background: var(--fabricate-surface-raised); border: 1px solid var(--fabricate-border); border-radius: var(--fabricate-radius-lg); margin: 1.8rem 0 2.4rem; padding: 1.15rem; }
+  header { align-items: center; display: flex; gap: 1rem; justify-content: space-between; margin-bottom: .7rem; }
+  .eyebrow { color: var(--fabricate-text-muted); font: 600 .68rem/1 var(--fabricate-font-mono); letter-spacing: .08em; margin: 0 0 .3rem; text-transform: uppercase; }
+  .api { color: var(--fabricate-text); font: 600 1rem/1.2 var(--fabricate-font-sans); margin: 0; }
+  .count { color: var(--fabricate-text-muted); font: 600 .68rem/1 var(--fabricate-font-mono); letter-spacing: .07em; text-transform: uppercase; }
+  .note { color: var(--fabricate-text-muted); font: 400 .84rem/1.45 var(--fabricate-font-sans); margin: 0 0 1rem; }
+  table { border-collapse: collapse; color: var(--fabricate-text); font-size: .85rem; margin: 0; width: 100%; }
+  caption { caption-side: top; font: 600 .84rem/1.2 var(--fabricate-font-sans); padding: 0 0 .7rem; text-align: left; }
+  th, td { border-bottom: 1px solid var(--fabricate-border); padding: .68rem .25rem; text-align: left; vertical-align: top; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  thead th { color: var(--fabricate-text-muted); font: 600 .68rem/1 var(--fabricate-font-mono); letter-spacing: .07em; text-transform: uppercase; }
+  tbody th { font-weight: 500; white-space: nowrap; width: 1%; padding-right: .9rem; }
+  .method, .path, .id {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  .method { color: var(--fabricate-text); font: 600 .72rem/1.2 var(--fabricate-font-mono); letter-spacing: .04em; }
+  .path, .id { color: var(--fabricate-text-secondary); font: 500 .78rem/1.4 var(--fabricate-font-mono); overflow-wrap: anywhere; }
+  .summary { color: var(--fabricate-text-muted); font: 400 .8rem/1.4 var(--fabricate-font-sans); margin: .22rem 0 0; }
+  @media (max-width: 32rem) {
+    tbody th { white-space: normal; width: auto; }
+    th, td { padding-inline: .15rem; }
+  }
+</style>

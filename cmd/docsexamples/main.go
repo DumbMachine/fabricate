@@ -1,4 +1,5 @@
-// Command docsexamples captures committed docs snapshots for resource pages.
+// Command docsexamples captures committed docs snapshots for resource pages:
+// command output, compiled operation catalogs, and compatibility reports.
 // It is a contributor tool, not a user CLI.
 package main
 
@@ -8,6 +9,7 @@ import (
 	"os"
 
 	"github.com/dumbmachine/fabricate/internal/docsexamples"
+	"github.com/dumbmachine/fabricate/resources/all"
 )
 
 func main() {
@@ -20,6 +22,8 @@ func main() {
 		os.Exit(capture())
 	case "install-compat":
 		os.Exit(installCompat())
+	case "operations":
+		os.Exit(operations())
 	default:
 		usage()
 		os.Exit(2)
@@ -29,6 +33,7 @@ func main() {
 func usage() {
 	fmt.Fprintln(os.Stderr, "usage: docsexamples capture --fab <binary> [flags]")
 	fmt.Fprintln(os.Stderr, "       docsexamples install-compat --from <report> --resource <id>")
+	fmt.Fprintln(os.Stderr, "       docsexamples operations [--resource <id>]")
 }
 
 func capture() int {
@@ -94,6 +99,25 @@ func installCompat() int {
 	}
 	if err := docsexamples.InstallCompatibility(*repo, *from, *resource, os.Stderr); err != nil {
 		fmt.Fprintf(os.Stderr, "docsexamples: %v\n", err)
+		return 1
+	}
+	return 0
+}
+
+func operations() int {
+	fs := flag.NewFlagSet("operations", flag.ContinueOnError)
+	fs.SetOutput(os.Stderr)
+	repo := fs.String("repo", ".", "repository root")
+	var resources []string
+	fs.Func("resource", "resource id to dump (gmail or resources/gmail); repeat as needed", func(value string) error {
+		resources = append(resources, value)
+		return nil
+	})
+	if err := fs.Parse(os.Args[2:]); err != nil {
+		return 2
+	}
+	if err := docsexamples.WriteOperations(*repo, all.Registry(), resources, os.Stderr); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return 1
 	}
 	return 0
