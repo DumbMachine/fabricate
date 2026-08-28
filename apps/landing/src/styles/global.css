@@ -133,6 +133,21 @@ h2 em {
    font-weight: 700;
 }
 
+.github-link {
+   display: inline-flex;
+   color: var(--ink);
+}
+
+.github-link svg {
+   display: block;
+   width: 1.4rem;
+   height: 1.4rem;
+}
+
+.github-link:hover {
+   color: var(--orange);
+}
+
 .consult-link {
    padding: .7rem .8rem;
    background: var(--ink);
@@ -151,8 +166,10 @@ h2 em {
 }
 
 .hero {
-   min-height: 760px;
-   padding: 10.5rem 0 4.75rem;
+   display: flex;
+   flex-direction: column;
+   min-height: clamp(720px, 86svh, 800px);
+   padding: clamp(8.5rem, 13vh, 10rem) 0 0;
    position: relative;
    overflow: hidden;
    border-bottom: 1px solid var(--ink);
@@ -168,18 +185,70 @@ h2 em {
 
 .hero-content {
    position: relative;
+   z-index: 1;
+   padding-bottom: clamp(2rem, 5vh, 3.5rem);
 }
 
 .hero h1 {
-   max-width: 1000px;
-   margin: 1.5rem 0;
-   font-size: clamp(4.25rem, 11vw, 11.5rem);
+   max-width: 900px;
+   margin: 1rem 0 1.25rem;
+   font-size: clamp(4.25rem, 9vw, 9.5rem);
 }
 
 .hero-copy {
    max-width: 390px;
    font-size: 1.2rem;
    line-height: 1.25;
+}
+
+.hero-actions {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: stretch;
+   gap: .75rem 1rem;
+   margin-top: 1.25rem;
+}
+
+.hero-actions .command-copy {
+   flex: 0 1 46rem;
+   width: auto;
+   min-width: 0;
+}
+
+.hero-actions .button {
+   margin-top: 0;
+}
+
+.command-copy {
+   display: flex;
+   align-items: stretch;
+   width: 100%;
+   border: 1px solid var(--ink);
+   background: var(--ink);
+   box-shadow: 4px 4px 0 var(--orange);
+}
+
+.command-copy pre {
+   flex: 1;
+   min-width: 0;
+   margin: 0;
+   overflow-x: auto;
+   padding: .85rem 1rem;
+   color: var(--lime);
+   font: 500 .72rem/1.45 ui-monospace, monospace;
+   white-space: nowrap;
+}
+
+.command-copy button {
+   flex: none;
+   border: 0;
+   border-left: 1px solid #484b43;
+   padding: 0 1rem;
+   background: var(--lime);
+   color: var(--ink);
+   cursor: pointer;
+   font: 800 .62rem ui-monospace, monospace;
+   text-transform: uppercase;
 }
 
 .button {
@@ -210,55 +279,164 @@ h2 em {
    box-shadow: 4px 4px 0 var(--ink);
 }
 
-.service-belt {
-   position: absolute;
-   bottom: 0;
+.button-secondary {
+   border: 1px solid var(--ink);
+   background: var(--paper);
+   color: var(--ink);
+   box-shadow: 4px 4px 0 var(--ink);
+}
+
+.button-secondary:hover,
+.button.button-secondary:hover {
+   color: var(--ink);
+   border-color: var(--ink);
+   transform: translate(-3px, -3px);
+   box-shadow: 7px 7px 0 var(--orange);
+}
+
+.button.button-secondary:active {
+   transform: translate(4px, 4px);
+   box-shadow: 0 0 0 transparent;
+}
+
+.service-strip {
    width: 100%;
-   padding: .8rem 0;
+   margin-top: auto;
+}
+
+.service-belt {
+   display: flex;
+   align-items: stretch;
+   height: 4rem;
    overflow: hidden;
    background: var(--lime);
    border-top: 1px solid var(--ink);
    border-bottom: 1px solid var(--ink);
 }
 
+.service-marquee {
+   flex: 1;
+   min-width: 0;
+   overflow: hidden;
+   contain: paint;
+   container-type: inline-size;
+}
+
 .service-track {
    display: flex;
    width: max-content;
-   animation: service-loop 28s linear infinite;
-   will-change: transform;
+   height: 100%;
+   animation: service-loop 60s linear infinite;
+   backface-visibility: hidden;
+}
+
+.service-belt:hover .service-track {
+   animation-play-state: paused;
+}
+
+.service-set {
+   display: flex;
+   flex: none;
+   align-items: stretch;
+   width: max-content;
+   margin: 0;
+   padding: 0;
+   list-style: none;
 }
 
 .service {
    display: flex;
    align-items: center;
-   gap: .6rem;
-   min-width: 205px;
-   padding: 0 2.1rem;
+   justify-content: center;
+   gap: .55rem;
+   width: clamp(10.5rem, 13vw, 14rem);
+   padding: 0 1.25rem;
    border-right: 1px solid var(--ink);
    font-weight: 800;
+   line-height: 1;
+   white-space: nowrap;
 }
 
 .service-icon {
-   width: 1.7rem;
-   height: 1.7rem;
+   display: block;
+   width: 1.5rem;
+   height: 1.5rem;
+   flex: none;
    object-fit: contain;
+}
+
+.hero-stamps {
+   position: absolute;
+   inset: 0;
+   pointer-events: none;
 }
 
 .hero-stamp {
    position: absolute;
-   right: 6%;
-   top: 27%;
    display: grid;
-   width: 145px;
-   aspect-ratio: 1;
    place-content: center;
-   border: 2px solid var(--orange);
-   border-radius: 50%;
-   color: var(--orange);
-   font: 700 .65rem/1.55 ui-monospace, monospace;
-   letter-spacing: .08em;
+   gap: .18rem;
+   border: 3px solid currentColor;
+   background-color: rgba(244, 242, 235, .38);
+   background-image: radial-gradient(rgba(184, 73, 43, .14) .7px, transparent .8px);
+   background-size: 6px 6px;
+   box-shadow: inset 0 0 0 3px rgba(244, 242, 235, .5), inset 0 0 0 4px currentColor, 2px 3px 0 rgba(23, 24, 18, .12);
+   color: color-mix(in srgb, var(--orange) 58%, var(--ink));
+   font-family: ui-monospace, monospace;
+   line-height: 1;
    text-align: center;
-   transform: rotate(16deg);
+   text-transform: uppercase;
+}
+
+.hero-stamp span,
+.hero-stamp small {
+   font-size: .4rem;
+   font-weight: 800;
+   letter-spacing: .14em;
+}
+
+.hero-stamp strong {
+   font-size: 1.08rem;
+   font-weight: 950;
+   letter-spacing: .015em;
+}
+
+.hero-stamp-round {
+   top: 19%;
+   right: 5%;
+   width: 9.5rem;
+   aspect-ratio: 1;
+   padding: 1.1rem;
+   border-radius: 50%;
+   transform: rotate(13deg);
+}
+
+.hero-stamp-inspected {
+   top: 45%;
+   left: 2%;
+   width: 11.5rem;
+   min-height: 4.8rem;
+   padding: .75rem 1rem;
+   transform: rotate(-8deg);
+}
+
+.hero-stamp-inspected small {
+   padding-top: .25rem;
+   border-top: 1px solid currentColor;
+}
+
+.hero-stamp-controlled {
+   right: 6%;
+   bottom: 15%;
+   width: 12.5rem;
+   min-height: 4.9rem;
+   padding: .75rem 1rem;
+   border-radius: 999px;
+   transform: rotate(5deg);
+}
+
+.hero-stamp-controlled strong {
+   font-size: .94rem;
 }
 
 .statement {
@@ -269,13 +447,21 @@ h2 em {
 
 .split-layout {
    display: grid;
-   grid-template-columns: .5fr 2fr 1.25fr;
-   gap: 2rem;
-   padding: 7.5rem 0;
+   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, .85fr);
+   align-items: end;
+   gap: clamp(2rem, 5vw, 4.5rem);
+   padding: clamp(4.5rem, 8vw, 7rem) 0;
+}
+
+.statement h2 {
+   max-width: 13ch;
+   margin: 0;
+   font-size: clamp(3.75rem, 6.6vw, 6.75rem);
 }
 
 .large-copy {
    align-self: end;
+   max-width: 27rem;
    margin: 0;
    font-size: 1.2rem;
    line-height: 1.25;
@@ -910,6 +1096,17 @@ h2 em {
    line-height: 1.3;
 }
 
+.install-panel {
+   margin-top: 2.25rem;
+}
+
+.install-panel h3 {
+   margin: 0 0 .7rem;
+   font: 800 .62rem/1 ui-monospace, monospace;
+   letter-spacing: .08em;
+   text-transform: uppercase;
+}
+
 .path-link {
    display: inline-block;
    margin-top: 1.5rem;
@@ -1226,6 +1423,7 @@ footer a {
 .open-prompt,
 .copy-prompt-primary,
 .prompt-box-head button,
+.command-copy button,
 .environment-title button,
 .dialog-close {
    transition: transform .14s ease, box-shadow .14s ease, background-color .14s ease;
@@ -1236,6 +1434,7 @@ footer a {
 .open-prompt:hover,
 .copy-prompt-primary:hover,
 .prompt-box-head button:hover,
+.command-copy button:hover,
 .environment-title button:hover {
    transform: translate(-2px, -2px);
 }
@@ -1245,6 +1444,7 @@ footer a {
 .open-prompt:active,
 .copy-prompt-primary:active,
 .prompt-box-head button:active,
+.command-copy button:active,
 .environment-title button:active {
    transform: translate(3px, 3px);
    box-shadow: 0 0 0 transparent;
@@ -1298,6 +1498,11 @@ footer a {
       scroll-behavior: auto !important;
       transition-duration: .01ms !important;
    }
+
+   .service-track {
+      animation: none !important;
+      transform: none;
+   }
 }
 
 @media (max-width:720px) {
@@ -1320,7 +1525,7 @@ footer a {
    }
 
    .header-actions {
-      gap: 0;
+      gap: .85rem;
    }
 
    .consult-link {
@@ -1329,25 +1534,81 @@ footer a {
    }
 
    .hero {
-      min-height: 680px;
-      padding-top: 9rem;
+      min-height: 700px;
+      padding-top: 8.25rem;
    }
 
-   .hero-stamp {
-      top: 44%;
-      right: 7%;
-      width: 100px;
+   .hero-stamps {
+      inset: 0;
+   }
+
+   .hero-stamp-round {
+      top: 27%;
+      right: -1.1rem;
+      width: 6.6rem;
+      padding: .75rem;
+   }
+
+   .hero-stamp-round strong {
+      font-size: .82rem;
+   }
+
+   .hero-stamp-round span,
+   .hero-stamp-round small {
+      font-size: .32rem;
+   }
+
+   .hero-stamp-inspected {
+      display: grid;
+      top: 48%;
+      left: -1.75rem;
+      width: 8.75rem;
+      min-height: 3.8rem;
+      padding: .55rem .75rem;
+   }
+
+   .hero-stamp-controlled {
+      display: grid;
+      top: auto;
+      right: -1.5rem;
+      bottom: 5.4rem;
+      left: auto;
+      width: 9.5rem;
+      min-height: 3.7rem;
+      padding: .55rem .75rem;
+   }
+
+   .hero-stamp-inspected strong,
+   .hero-stamp-controlled strong {
+      font-size: .7rem;
+   }
+
+   .hero-stamp-inspected span,
+   .hero-stamp-inspected small,
+   .hero-stamp-controlled span,
+   .hero-stamp-controlled small {
+      font-size: .3rem;
    }
 
    .service {
-      min-width: 168px;
-      padding: 0 1.25rem;
+      width: 10.5rem;
+      padding: 0 1rem;
       font-size: .9rem;
    }
 
    .service-icon {
-      width: 1.45rem;
-      height: 1.45rem;
+      width: 1.35rem;
+      height: 1.35rem;
+   }
+
+   .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .hero-actions .command-copy {
+      flex-basis: auto;
+      width: 100%;
    }
 
    .split-layout,
@@ -1394,6 +1655,16 @@ footer a {
 
    .get-started {
       padding: 5rem 0;
+   }
+
+   .command-copy pre {
+      padding: .75rem .85rem;
+      font-size: .62rem;
+   }
+
+   .command-copy button {
+      padding: 0 .75rem;
+      font-size: .55rem;
    }
 
    .start-path h3 {

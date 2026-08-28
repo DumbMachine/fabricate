@@ -1,0 +1,31 @@
+---
+interface Props {
+  command: string;
+}
+
+const { command } = Astro.props;
+---
+
+<div class="command-copy" data-command={command}>
+  <pre><code>{command}</code></pre>
+  <button type="button" data-copy-command aria-label="Copy install command">Copy</button>
+</div>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    "[data-copy-command]",
+  )) {
+    button.addEventListener("click", async () => {
+      const command = button
+        .closest("[data-command]")
+        ?.getAttribute("data-command");
+      if (!command) return;
+      await navigator.clipboard.writeText(command);
+      const label = button.textContent;
+      button.textContent = "Copied";
+      window.setTimeout(() => {
+        button.textContent = label;
+      }, 1800);
+    });
+  }
+</script>

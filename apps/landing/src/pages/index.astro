@@ -1,4 +1,5 @@
 ---
+import CommandCopy from "../components/CommandCopy.astro";
 import Header from "../components/Header.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -8,6 +9,8 @@ const docsBase = import.meta.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
 // the site, so `/docs` has no host to resolve against.
 const docsHref = import.meta.env.PUBLIC_FABRICATE_DOCS_URL || import.meta.env.PUBLIC_DOCS_URL || `${siteUrl.replace(/\/$/, "")}${docsBase}`;
 const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
+const installCommand =
+  "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh";
 const consultHref = "https://cal.com/dumbmachine/30min";
 const agentPrompt = `You are setting up Fabricate in this repository.
 
@@ -17,7 +20,7 @@ Fabricate runs reproducible local environments with real, stateful provider data
    - ${docsHref}/getting-started
    - ${docsHref}/resources/integrations/gmail
 2. Check whether the fab CLI is installed. If it is not, install it with:
-   curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
+   ${installCommand}
 3. Inspect this repository's run and test commands. Propose the smallest command that wraps the relevant command with Fabricate; do not edit application code or configuration until I approve.
 4. Use Fabricate's canonical Acme Gmail environment manifest. For direct service URLs, start from:
    curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | ${fab} run /dev/stdin -- <my command>
@@ -28,6 +31,17 @@ Report the exact command you recommend, which environment variables the wrapped 
 
 const services = [
   ["Gmail", "gmail"],
+  ["HubSpot", "hubspot"],
+  ["Intercom", "intercom"],
+  ["Asana", "asana"],
+  ["Cloudflare", "cloudflare"],
+  ["Mailchimp", "mailchimp"],
+  ["SendGrid", "sendgrid"],
+  ["Resend", "resend"],
+  ["Pipedrive", "pipedrive"],
+  ["Attio", "attio"],
+  ["Mailgun", "mailgun"],
+  ["Close", "close"],
   ["GitHub", "github"],
   ["Microsoft Teams", "microsoft_teams"],
   ["Slack", "slack"],
@@ -84,35 +98,60 @@ const faqs = [
     <section class="hero grid-stage" aria-labelledby="hero-title">
       <div class="grid-lines" aria-hidden="true"></div>
       <div class="container hero-content">
-        <h1 id="hero-title">Build environments<br />to test your agents.</h1>
+        <h1 id="hero-title">API Sandboxes<br />to test your agents.</h1>
         <p class="hero-copy">
-          Create environments with real, stateful data to test your APIs and
+          Create environments with real, stateful data to test your integrations and
           agents.
         </p>
-        <a class="button button-dark" href="#get-started">Start building</a>
-      </div>
-      <div class="service-belt" aria-label="Services supported by Fabricate">
-        <div class="service-track">
-          {
-            [...services, ...services, ...services].map(([name, icon]) => (
-              <div class="service">
-                <img
-                  class="service-icon"
-                  src={`https://logos.composio.dev/api/${icon}`}
-                  width="28"
-                  height="28"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-                {name}
-              </div>
-            ))
-          }
+        <div class="hero-actions">
+          <CommandCopy command={installCommand} />
+          <a class="button button-secondary" href="#get-started">Start building</a>
         </div>
       </div>
-      <div class="hero-stamp" aria-hidden="true">
-        <span>REAL DATA</span><span>REPEATABLE</span><span>DETERMINISTIC</span>
+      <div class="service-strip">
+        <div class="service-belt" aria-label="Services supported by Fabricate">
+          <div class="service-marquee">
+            <div class="service-track">
+              {
+                [false, true, true].map((duplicate) => (
+                  <ul class="service-set" aria-hidden={duplicate ? "true" : undefined}>
+                    {services.map(([name, icon]) => (
+                      <li class="service">
+                        <img
+                          class="service-icon"
+                          src={`https://logos.composio.dev/api/${icon}`}
+                          width="28"
+                          height="28"
+                          alt=""
+                          loading={duplicate ? "lazy" : "eager"}
+                          decoding="async"
+                        />
+                        {name}
+                      </li>
+                    ))}
+                  </ul>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stamps" aria-hidden="true">
+        <div class="hero-stamp hero-stamp-round">
+          <span>FAB // ENV 01</span>
+          <strong>REAL DATA</strong>
+          <small>STATEFUL INPUT</small>
+        </div>
+        <div class="hero-stamp hero-stamp-inspected">
+          <span>QA / 0042</span>
+          <strong>REPEATABLE</strong>
+          <small>INSPECTED</small>
+        </div>
+        <div class="hero-stamp hero-stamp-controlled">
+          <span>CONTROLLED STATE</span>
+          <strong>DETERMINISTIC</strong>
+          <small>RUN AFTER RUN</small>
+        </div>
       </div>
     </section>
 
@@ -506,6 +545,10 @@ const faqs = [
             >
           </article>
         </div>
+        <section class="install-panel" id="install" aria-labelledby="install-title">
+          <h3 id="install-title">Install the CLI</h3>
+          <CommandCopy command={installCommand} />
+        </section>
       </div>
     </section>
 

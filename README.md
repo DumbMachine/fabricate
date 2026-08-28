@@ -1,85 +1,120 @@
-# fabricate
+<p align="center">
+  <a href="https://fabricate.dmach.in/">
+    <img src="apps/landing/public/fabricate-wordmark.svg" alt="fabricate" width="420">
+  </a>
+</p>
 
-Fabricate runs reproducible local environments for applications and agents.
-Provider APIs use compiled OpenAPI resources, versioned scenarios, and `fab
-run` environments.
+<p align="center">
+  <b>API sandboxes</b> for apps and agents
+</p>
 
-Gmail is the reference HTTP resource. Its Acme Corp scenario contains 28
-handcrafted messages and works with applications that use Google's normal API
-hosts and OAuth refresh flow—no client endpoint override is required.
+<p align="center">
+  <a href="https://fabricate.dmach.in/">Website</a>
+  ·
+  <a href="https://fabricate.dmach.in/docs">Docs</a>
+  ·
+  <a href="https://fabricate.dmach.in/docs/getting-started">Getting started</a>
+</p>
 
-## Gmail through the transparent proxy
+Fabricate runs disposable, stateful provider APIs on your machine. Point a test,
+workflow, or agent at Gmail, HubSpot, Intercom, and other shipped resources,
+start from a known scenario, then tear the sandbox down when the command exits.
 
-Install the live-source contributor command once:
-
-```bash
-make install-dev
-export PATH="$HOME/bin:$PATH"   # only if ~/bin is not already on PATH
-```
-
-Wrap the application that should see fabricated Gmail:
-
-```bash
-fab-dev run acme-gmail \
-  --proxy \
-  -- <your command>
-```
-
-For the Access checkout:
+## Install
 
 ```bash
-cd /Users/dumbmachine/github.com/dumbmachine/access-mcp
-PORT=14820 fab-dev run acme-gmail \
-  --proxy \
-  -- make run
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh
 ```
 
-Fabricate starts isolated baseline/live SQLite databases, a strict generated
-Gmail server, a CONNECT/TLS proxy with a per-run CA, and a synthetic Google
-OAuth token endpoint. Other remote hosts are forwarded unchanged, so a larger
-application can keep unrelated network traffic working. Set
-`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+The installer puts `fab` on your PATH. See
+[Getting started](https://fabricate.dmach.in/docs/getting-started) if it prints
+a PATH hint.
 
-Every run prints a durable, redacted JSONL request-log path. Find it later with:
+## Example
+
+Run the seeded Acme Gmail inbox, list it, trash one message, and list again.
+The default list omits spam and trash, so the estimate drops from 27 to 26:
 
 ```bash
-fab-dev logs acme-gmail
-fab-dev logs acme-gmail --cat
-fab-dev logs acme-gmail --all
+fab run acme-gmail -- sh -c '
+  auth="Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN"
+  mail="$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me"
+
+  echo "== list =="
+  curl -sS -H "$auth" "$mail/messages?maxResults=1"
+  echo
+  echo "== trash msg-0028 =="
+  curl -sS -H "$auth" -X POST "$mail/messages/msg-0028/trash"
+  echo
+  echo "== list again =="
+  curl -sS -H "$auth" "$mail/messages?maxResults=1"
+  echo
+'
 ```
 
-## Bringing back another HTTP API
+```text
+== list ==
+{
+  "messages": [
+    {"id": "msg-0028", "threadId": "thr-refund"}
+  ],
+  "nextPageToken": "1",
+  "resultSizeEstimate": 27
+}
 
-Follow [Adding an HTTP API resource](docs/adding-an-http-api-resource.md). The short
-version is:
+== trash msg-0028 ==
+{
+  "id": "msg-0028",
+  "threadId": "thr-refund",
+  "labelIds": ["Label_billing", "TRASH"],
+  "snippet": "Received — we will watch for the refund on billing@tinyshop.example and confirm once it posts. Thanks for turning this a…"
+}
 
-1. add `resources/<id>/` with a curated OpenAPI contract and generated strict
-   server bindings;
-2. implement `httpresource.Resource`, its SQLite scenario codec, and behavior;
-3. add strict, versioned scenarios under that resource;
-4. register it once in `resources/all`;
-5. add an environment manifest and direct/proxy conformance tests using the
-   provider's official client.
+== list again ==
+{
+  "messages": [
+    {"id": "msg-0027", "threadId": "thr-sso-outage"}
+  ],
+  "nextPageToken": "1",
+  "resultSizeEstimate": 26
+}
+```
 
-The old `mockd`, `engine/httpmock`, and emulate-based GitHub paths have been
-removed. New APIs extend the same root-module engine used by Gmail.
+The trash response also includes the full RFC 822 payload; the next run of
+`fab run acme-gmail` starts from the same 28-message scenario again.
+
+Use `--proxy` when the client must keep production hostnames. Fabricate injects
+proxy and CA variables into that process only, and replaces `Authorization` on
+routed hosts:
+
+```bash
+fab run acme-gmail --proxy -- npm test
+```
+
+Inspect the catalog before you wrap anything:
+
+```bash
+fab environment list
+fab resource inspect gmail
+fab scenario list gmail
+```
+
+- [Getting started](https://fabricate.dmach.in/docs/getting-started)
+- [CLI](https://fabricate.dmach.in/docs/cli)
+- [Gmail](https://fabricate.dmach.in/docs/resources/integrations/gmail)
+- [Agent and workflow QA](https://fabricate.dmach.in/docs/guides/agent-workflows)
 
 ## Development
 
 ```bash
-make check           # vet, unit tests, and formatting check
-make generate        # regenerate committed OpenAPI bindings
-make generate-check  # regenerate and fail if bindings differ
-make conformance     # run black-box resource compatibility tests
+make check
+make generate-check
+make docs-operations
+make conformance
 ```
 
-`fab-dev` is an absolute symlink back to the checkout. Each invocation rebuilds
-current source through Go's build cache while preserving the caller's working
-directory. Set `FAB_INSTALL_DIR` or `FAB_DEV_GO` to override its install path or
-Go executable.
-
-Architecture: [docs/architecture.md](docs/architecture.md). Detailed delivery
-contract: [docs/http-api-engine-v1-plan.md](docs/http-api-engine-v1-plan.md).
+`make install-dev` installs `fab-dev`, a checkout-linked command for
+contributors. Public docs and the installer use `fab`.
 
 ## License
 
