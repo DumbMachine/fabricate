@@ -3,13 +3,13 @@
   "environment": {
     "label": "Acme Gmail",
     "manifest": "environments/acme-gmail.yaml",
-    "messages": 12
+    "messages": 28
   },
   "integration": "gmail",
   "modes": {
     "direct": {
-      "messagesAfter": 13,
-      "messagesBefore": 12,
+      "messagesAfter": 29,
+      "messagesBefore": 28,
       "operations": {
         "read": "passed",
         "send": "passed",
@@ -18,8 +18,8 @@
       "status": "passed"
     },
     "proxy": {
-      "messagesAfter": 13,
-      "messagesBefore": 12,
+      "messagesAfter": 29,
+      "messagesBefore": 28,
       "operations": {
         "read": "passed",
         "send": "passed",
