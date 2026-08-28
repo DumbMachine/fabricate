@@ -20,8 +20,10 @@ behavior, register once in `resources/all`, and prove direct plus official-clien
 transparent-proxy conformance. Never recreate `mockd`, `engine/httpmock`,
 provider Docker images, or service-specific CLI registries.
 
-Run `make check` and `make generate-check`. Run `make e2e` for container engine
-lifecycle changes and `make conformance <resource>` for HTTP API client
-coverage (writes `<id>.compatibility.json`). `make docs-examples` recaptures
-documented command snapshots. Both land under
+Run `make check` and `make generate-check`. After OpenAPI or handler changes,
+run `make docs-operations` so integration pages list the compiled surface.
+Run `make e2e` for container engine lifecycle changes and `make conformance
+<resource>` for HTTP API client coverage (writes `<id>.compatibility.json`).
+`make docs-examples` recaptures documented command snapshots. Operation
+catalogs, command snapshots, and compatibility reports land under
 `packages/docs-content/resources/_generated/`.
