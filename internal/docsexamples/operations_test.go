@@ -163,6 +163,8 @@ func (s stubResource) Contract() httpresource.Contract {
 
 func (stubResource) Scenarios() httpresource.ScenarioCodec { return nil }
 
+func (stubResource) ScenarioIDs() ([]string, error) { return nil, nil }
+
 func (stubResource) Scenario(string) (scenario.Document, error) {
 	return scenario.Document{}, nil
 }

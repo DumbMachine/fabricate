@@ -46,6 +46,8 @@ func (*Resource) Contract() httpresource.Contract {
 
 func (*Resource) Scenarios() httpresource.ScenarioCodec { return scenarioCodec{} }
 
+func (*Resource) ScenarioIDs() ([]string, error) { return scenario.EmbeddedIDs(builtInScenarios) }
+
 func (*Resource) Scenario(id string) (scenario.Document, error) {
 	entries, err := builtInScenarios.ReadDir("scenarios")
 	if err != nil {

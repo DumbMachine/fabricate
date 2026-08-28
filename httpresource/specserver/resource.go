@@ -78,6 +78,10 @@ func (b *Bound) Scenarios() httpresource.ScenarioCodec {
 	return b.codec
 }
 
+func (b *Bound) ScenarioIDs() ([]string, error) {
+	return scenario.EmbeddedIDs(b.scenarios)
+}
+
 func (b *Bound) Scenario(id string) (scenario.Document, error) {
 	entries, err := b.scenarios.ReadDir("scenarios")
 	if err != nil {

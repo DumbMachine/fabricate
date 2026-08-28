@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
+	"sort"
 )
 
 const Contract = "fabricate.scenario"
@@ -71,6 +73,31 @@ func (d Document) ValidateEnvelope() error {
 
 func (d Document) Metadata() Metadata {
 	return Metadata{ID: d.ID, Resource: d.Resource, ResourceVersion: d.ResourceVersion}
+}
+
+// EmbeddedIDs returns the scenario IDs stored in an embedded scenarios directory.
+func EmbeddedIDs(files fs.FS) ([]string, error) {
+	entries, err := fs.ReadDir(files, "scenarios")
+	if err != nil {
+		return nil, fmt.Errorf("scenario: list embedded scenarios: %w", err)
+	}
+	ids := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		raw, err := fs.ReadFile(files, "scenarios/"+entry.Name())
+		if err != nil {
+			return nil, fmt.Errorf("scenario: read embedded scenario %s: %w", entry.Name(), err)
+		}
+		doc, err := Parse(raw)
+		if err != nil {
+			return nil, fmt.Errorf("scenario: parse embedded scenario %s: %w", entry.Name(), err)
+		}
+		ids = append(ids, doc.ID)
+	}
+	sort.Strings(ids)
+	return ids, nil
 }
 
 // CanonicalJSON returns stable JSON suitable for hashing and storing. Go's

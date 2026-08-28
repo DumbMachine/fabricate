@@ -31,7 +31,6 @@ type ServiceSpec struct {
 }
 
 type ProxySpec struct {
-	Enabled      bool              `yaml:"enabled,omitempty"`
 	Hosts        map[string]string `yaml:"hosts,omitempty"`
 	Passthrough  []string          `yaml:"passthrough,omitempty"`
 	UnknownHosts string            `yaml:"unknown_hosts,omitempty"`
