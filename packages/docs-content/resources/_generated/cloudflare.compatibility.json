@@ -1,0 +1,44 @@
+{
+  "api": "Cloudflare API",
+  "environment": {
+    "label": "Acme Cloudflare",
+    "manifest": "environments/acme-cloudflare.yaml",
+    "messages": 3
+  },
+  "integration": "cloudflare",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List zones",
+    "write": "Create a zone",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T14:47:22.397Z",
+  "testedCommit": "e03d90b002e1cac6996d79dbcf2382d16efaa4b8"
+}
