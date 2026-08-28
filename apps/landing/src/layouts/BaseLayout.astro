@@ -26,5 +26,36 @@ const mark = isDevelopment ? "/fabricate-mark-dev.svg" : "/fabricate-mark.svg";
   </head>
   <body>
     <slot />
+    <script>
+      const probe = document.createElement("audio");
+      const PRESS_SOUND_URL = probe.canPlayType('audio/ogg; codecs="opus"')
+        ? "/sounds/keyboard-click.ogg"
+        : "/sounds/keyboard-click.mp3";
+      const PRESS_CONTROL = "[data-press-sound]";
+      const sample = new Audio(PRESS_SOUND_URL);
+      sample.preload = "auto";
+
+      const playPressSound = () => {
+        const click = new Audio(PRESS_SOUND_URL);
+        click.volume = 1;
+        void click.play().catch(() => {});
+      };
+
+      const isPressControl = (target: EventTarget | null) =>
+        target instanceof Element && Boolean(target.closest(PRESS_CONTROL));
+
+      document.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0) return;
+        if (!isPressControl(event.target)) return;
+        playPressSound();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.repeat) return;
+        if (event.key !== "Enter" && event.key !== " ") return;
+        if (!isPressControl(event.target)) return;
+        playPressSound();
+      });
+    </script>
   </body>
 </html>

@@ -3,11 +3,15 @@ import CommandCopy from "../components/CommandCopy.astro";
 import Header from "../components/Header.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const siteUrl = import.meta.env.PUBLIC_FABRICATE_SITE_URL || "https://fabricate.dmach.in";
+const siteUrl =
+  import.meta.env.PUBLIC_FABRICATE_SITE_URL || "https://fabricate.dmach.in";
 const docsBase = import.meta.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
 // Keep copyable links absolute: an agent reading this prompt is not browsing
 // the site, so `/docs` has no host to resolve against.
-const docsHref = import.meta.env.PUBLIC_FABRICATE_DOCS_URL || import.meta.env.PUBLIC_DOCS_URL || `${siteUrl.replace(/\/$/, "")}${docsBase}`;
+const docsHref =
+  import.meta.env.PUBLIC_FABRICATE_DOCS_URL ||
+  import.meta.env.PUBLIC_DOCS_URL ||
+  `${siteUrl.replace(/\/$/, "")}${docsBase}`;
 const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const installCommand =
   "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh";
@@ -100,12 +104,16 @@ const faqs = [
       <div class="container hero-content">
         <h1 id="hero-title">API Sandboxes<br />to test your agents.</h1>
         <p class="hero-copy">
-          Create environments with real, stateful data to test your integrations and
-          agents.
+          Create environments with real, stateful data to test your integrations
+          and agents.
         </p>
         <div class="hero-actions">
           <CommandCopy command={installCommand} />
-          <a class="button button-secondary" href="#get-started">Start building</a>
+          <a
+            class="button button-secondary"
+            href="#get-started"
+            data-press-sound>Start building</a
+          >
         </div>
       </div>
       <div class="service-strip">
@@ -114,7 +122,10 @@ const faqs = [
             <div class="service-track">
               {
                 [false, true, true].map((duplicate) => (
-                  <ul class="service-set" aria-hidden={duplicate ? "true" : undefined}>
+                  <ul
+                    class="service-set"
+                    aria-hidden={duplicate ? "true" : undefined}
+                  >
                     {services.map(([name, icon]) => (
                       <li class="service">
                         <img
@@ -165,9 +176,12 @@ const faqs = [
           </h2>
         </div>
         <p class="large-copy">
-          Fabricate gives your systems a living, repeatable environment — so
-          every customer experience is tested against the real states it needs
-          to survive.
+          Use real environments to test your integrations and customer
+          experiences
+          <br />
+          <br />
+          Release features at Claude speed, without the risk of breaking your users'
+          workflows.
         </p>
       </div>
     </section>
@@ -185,22 +199,66 @@ const faqs = [
                   {visual === "harness" && (
                     <div class="preview-window harness-window">
                       <div class="agent-window-head">
-                        <img src="https://logos.composio.dev/api/claude" width="16" height="16" alt="" />
-                        <div><b>Claude Code</b><small>acme support workspace</small></div>
+                        <img
+                          src="https://logos.composio.dev/api/claude"
+                          width="16"
+                          height="16"
+                          alt=""
+                        />
+                        <div>
+                          <b>Claude Code</b>
+                          <small>acme support workspace</small>
+                        </div>
                         <span class="agent-run-state">Running</span>
                       </div>
                       <div class="agent-conversation">
-                        <div class="agent-user-message">Investigate the renewal request and prepare the customer update.</div>
+                        <div class="agent-user-message">
+                          Investigate the renewal request and prepare the
+                          customer update.
+                        </div>
                         <div class="agent-turn">
                           <span class="agent-avatar">✦</span>
                           <div class="agent-turn-body">
-                            <p>I’ll load the relevant customer context first, then trace the request end to end.</p>
-                            <div class="agent-tool-row"><span class="agent-tool-symbol">⌕</span><span>Explore connected apps</span><img src="https://logos.composio.dev/api/gmail" width="15" height="15" alt="" /><img src="https://logos.composio.dev/api/hubspot" width="15" height="15" alt="" /><b>›</b></div>
-                            <div class="agent-tool-row"><span class="agent-tool-symbol">↳</span><span>Read renewal workflow</span><b>›</b></div>
+                            <p>
+                              I’ll load the relevant customer context first,
+                              then trace the request end to end.
+                            </p>
+                            <div class="agent-tool-row">
+                              <span class="agent-tool-symbol">⌕</span>
+                              <span>Explore connected apps</span>
+                              <img
+                                src="https://logos.composio.dev/api/gmail"
+                                width="15"
+                                height="15"
+                                alt=""
+                              />
+                              <img
+                                src="https://logos.composio.dev/api/hubspot"
+                                width="15"
+                                height="15"
+                                alt=""
+                              />
+                              <b>›</b>
+                            </div>
+                            <div class="agent-tool-row">
+                              <span class="agent-tool-symbol">↳</span>
+                              <span>Read renewal workflow</span>
+                              <b>›</b>
+                            </div>
                           </div>
                         </div>
-                        <div class="agent-turn agent-turn-followup"><span class="agent-avatar">✦</span><p>Found ACME-284. Checking the signed amendment now.</p></div>
-                        <div class="agent-composer"><span>Working through 2 connected services</span><i></i><i></i><i></i></div>
+                        <div class="agent-turn agent-turn-followup">
+                          <span class="agent-avatar">✦</span>
+                          <p>
+                            Found ACME-284. Checking the signed amendment now.
+                          </p>
+                        </div>
+                        <div class="agent-composer">
+                          <span>Working through 2 connected services</span>
+                          <i />
+                          <i />
+                          <i />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -422,69 +480,182 @@ const faqs = [
         <div class="environment-intro">
           <h2 id="environment-title">Make a world<br />worth testing in.</h2>
           <p>
-            Pick a ready-made environment with real state, or describe the
-            world your agent needs and create one from a grounded brief.
+            Pick a ready-made environment with real state, that changes predictably on every api call.
           </p>
           <div class="environment-options" aria-label="Environment examples">
-            <button class="environment-option" type="button" data-environment="gmail" aria-pressed="true">
+            <button
+              class="environment-option"
+              type="button"
+              data-environment="gmail"
+              data-press-sound
+              aria-pressed="true"
+            >
               <span>Acme Gmail support</span>
               <small>28 seeded messages · support workflow</small>
             </button>
-            <button class="environment-option" type="button" data-environment="workspace" aria-pressed="false">
+            <button
+              class="environment-option"
+              type="button"
+              data-environment="workspace"
+              data-press-sound
+              aria-pressed="false"
+            >
               <span>Acme Support Desk</span>
               <small>Gmail, Intercom, Asana, and HubSpot in one state</small>
             </button>
-            <button class="environment-option" type="button" data-environment="custom" aria-pressed="false">
+            <button
+              class="environment-option"
+              type="button"
+              data-environment="custom"
+              data-press-sound
+              aria-pressed="false"
+            >
               <span>Create your own</span>
-              <small>Give your coding agent the instructions and connections</small>
+              <small
+                >Give your coding agent the instructions and connections</small
+              >
             </button>
           </div>
         </div>
-        <div class="environment-preview" data-environment-selection="gmail" aria-live="polite">
+        <div
+          class="environment-preview"
+          data-environment-selection="gmail"
+          aria-live="polite"
+        >
           <article class="environment-demo" data-environment-preview="gmail">
             <div class="environment-demo-head">
-              <div><span class="demo-kicker">READY ENVIRONMENT</span><h3>Acme Gmail support</h3></div>
+              <div>
+                <span class="demo-kicker">READY ENVIRONMENT</span><h3>
+                  Acme Gmail support
+                </h3>
+              </div>
               <span class="demo-status">Ready</span>
             </div>
-            <p class="demo-description">A customer inbox with a repeatable support story already in motion.</p>
+            <p class="demo-description">
+              A customer inbox with a repeatable support story already in
+              motion.
+            </p>
             <div class="demo-service-list">
-              <div><img src="https://logos.composio.dev/api/gmail" width="20" height="20" alt="" /><span>Gmail</span><b>28 messages</b></div>
-              <div><span class="demo-dot"></span><span>Scenario</span><b>acme-corp.v1</b></div>
-              <div><span class="demo-dot"></span><span>Reset</span><b>on every run</b></div>
+              <div>
+                <img
+                  src="https://logos.composio.dev/api/gmail"
+                  width="20"
+                  height="20"
+                  alt=""
+                /><span>Gmail</span><b>28 messages</b>
+              </div>
+              <div>
+                <span class="demo-dot"></span><span>Scenario</span><b
+                  >acme-corp.v1</b
+                >
+              </div>
+              <div>
+                <span class="demo-dot"></span><span>Reset</span><b
+                  >on every run</b
+                >
+              </div>
             </div>
-            <div class="demo-event"><span>New reply</span><b>“Can you confirm the renewal terms?”</b><small>Hannah at Acme · 2 min ago</small></div>
+            <div class="demo-event">
+              <span>New reply</span><b>“Can you confirm the renewal terms?”</b
+              ><small>Hannah at Acme · 2 min ago</small>
+            </div>
           </article>
-          <article class="environment-demo" data-environment-preview="workspace" hidden>
+          <article
+            class="environment-demo"
+            data-environment-preview="workspace"
+            hidden
+          >
             <div class="environment-demo-head">
-              <div><span class="demo-kicker">READY ENVIRONMENT</span><h3>Acme Support Desk</h3></div>
+              <div>
+                <span class="demo-kicker">READY ENVIRONMENT</span><h3>
+                  Acme Support Desk
+                </h3>
+              </div>
               <span class="demo-status">Ready</span>
             </div>
-            <p class="demo-description">A connected support case across mail, chat, tasks, and CRM.</p>
+            <p class="demo-description">
+              A connected support case across mail, chat, tasks, and CRM.
+            </p>
             <div class="demo-service-list">
-              <div><img src="https://logos.composio.dev/api/gmail" width="20" height="20" alt="" /><span>Gmail</span><b>28 messages</b></div>
-              <div><img src="https://logos.composio.dev/api/intercom" width="20" height="20" alt="" /><span>Intercom</span><b>conversation 101</b></div>
-              <div><img src="https://logos.composio.dev/api/hubspot" width="20" height="20" alt="" /><span>HubSpot</span><b>deal 301</b></div>
+              <div>
+                <img
+                  src="https://logos.composio.dev/api/gmail"
+                  width="20"
+                  height="20"
+                  alt=""
+                /><span>Gmail</span><b>28 messages</b>
+              </div>
+              <div>
+                <img
+                  src="https://logos.composio.dev/api/intercom"
+                  width="20"
+                  height="20"
+                  alt=""
+                /><span>Intercom</span><b>conversation 101</b>
+              </div>
+              <div>
+                <img
+                  src="https://logos.composio.dev/api/hubspot"
+                  width="20"
+                  height="20"
+                  alt=""
+                /><span>HubSpot</span><b>deal 301</b>
+              </div>
             </div>
-            <div class="demo-event"><span>Account state</span><b>INV-4812 · duplicate charge under review</b><small>Shared across connected services</small></div>
+            <div class="demo-event">
+              <span>Account state</span><b
+                >INV-4812 · duplicate charge under review</b
+              ><small>Shared across connected services</small>
+            </div>
           </article>
-          <article class="environment-demo agent-brief-demo" data-environment-preview="custom" hidden>
+          <article
+            class="environment-demo agent-brief-demo"
+            data-environment-preview="custom"
+            hidden
+          >
             <div class="environment-demo-head">
-              <div><h3>Agent setup</h3><small>New Fabricate environment</small></div>
+              <div>
+                <h3>Agent setup</h3><small>New Fabricate environment</small>
+              </div>
               <span class="demo-status">Working</span>
             </div>
             <div class="environment-agent-chat">
-              <div class="environment-user-message">Create a support environment for Acme. Seed Gmail with an unresolved renewal request and connect the customer record from HubSpot.</div>
+              <div class="environment-user-message">
+                Create a support environment for Acme. Seed Gmail with an
+                unresolved renewal request and connect the customer record from
+                HubSpot.
+              </div>
               <div class="environment-agent-turn">
                 <span>✦</span>
                 <div>
-                  <p>I’ll load Fabricate’s environment skill, then turn this request into a repeatable scenario.</p>
-                  <div class="environment-agent-step"><i>⌕</i><b>Load Fabricate environment skill</b><em>✓</em></div>
-                  <div class="environment-agent-step"><i>⊞</i><b>Inspect Gmail and HubSpot connections</b><em>✓</em></div>
-                  <div class="environment-agent-step is-working"><i>↳</i><b>Compose acme-support.v1 scenario</b><em>Working</em></div>
+                  <p>
+                    I’ll load Fabricate’s environment skill, then turn this
+                    request into a repeatable scenario.
+                  </p>
+                  <div class="environment-agent-step">
+                    <i>⌕</i><b>Load Fabricate environment skill</b><em>✓</em>
+                  </div>
+                  <div class="environment-agent-step">
+                    <i>⊞</i><b>Inspect Gmail and HubSpot connections</b><em
+                      >✓</em
+                    >
+                  </div>
+                  <div class="environment-agent-step is-working">
+                    <i>↳</i><b>Compose acme-support.v1 scenario</b><em
+                      >Working</em
+                    >
+                  </div>
                 </div>
               </div>
-              <div class="environment-agent-turn environment-agent-followup"><span>✦</span><p>Next I’ll validate the seeded state and propose the command to run it.</p></div>
-              <div class="environment-agent-progress"><span>Creating environment</span><i></i><i></i><i></i></div>
+              <div class="environment-agent-turn environment-agent-followup">
+                <span>✦</span><p>
+                  Next I’ll validate the seeded state and propose the command to
+                  run it.
+                </p>
+              </div>
+              <div class="environment-agent-progress">
+                <span>Creating environment</span><i></i><i></i><i></i>
+              </div>
             </div>
           </article>
         </div>
@@ -538,14 +709,20 @@ const faqs = [
                 height="32"
                 alt="GitHub Copilot"
               />
-            </div><button
+            </div>
+            <button
               class="open-prompt"
               type="button"
-              data-open-agent-dialog>Preview the agent brief</button
+              data-open-agent-dialog
+              data-press-sound>Preview the agent brief</button
             >
           </article>
         </div>
-        <section class="install-panel" id="install" aria-labelledby="install-title">
+        <section
+          class="install-panel"
+          id="install"
+          aria-labelledby="install-title"
+        >
           <h3 id="install-title">Install the CLI</h3>
           <CommandCopy command={installCommand} />
         </section>
@@ -586,10 +763,12 @@ const faqs = [
           <h2 id="agent-dialog-title">
             Give your agent<br />the blueprint.
           </h2>
-        </div><button
+        </div>
+        <button
           class="dialog-close"
           type="button"
           data-close-agent-dialog
+          data-press-sound
           aria-label="Close prompt preview">×</button
         >
       </div>
@@ -609,6 +788,7 @@ const faqs = [
           class="copy-prompt-primary"
           type="button"
           data-copy-prompt
+          data-press-sound
           aria-live="polite">Copy prompt</button
         ><span>Built from the Fabricate quickstart</span>
       </div>
@@ -650,9 +830,8 @@ const faqs = [
     }, 1800);
   });
 
-  const environmentOptions = document.querySelectorAll<HTMLButtonElement>(
-    "[data-environment]",
-  );
+  const environmentOptions =
+    document.querySelectorAll<HTMLButtonElement>("[data-environment]");
   const environmentPreviews = document.querySelectorAll<HTMLElement>(
     "[data-environment-preview]",
   );
