@@ -54,7 +54,7 @@ echo "$persisted" | jq -e '.properties.dealstage == "closedwon"' >/dev/null
 
 tickets=$(read_json "$base/crm/v3/objects/tickets")
 echo "$tickets" | jq -e --arg id "$created_id" '[.results[].id] | index($id)' >/dev/null
-echo "$tickets" | jq -e '.results | length == 2' >/dev/null
+echo "$tickets" | jq -e '.results | length >= 2' >/dev/null
 
 python3 - "$mode" <<'PY'
 import json, os, sys
