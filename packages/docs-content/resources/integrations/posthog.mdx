@@ -1,43 +1,35 @@
 ---
 title: PostHog
-description: A reproducible PostHog feature-flag API for local application testing.
+description: Feature flags, insights, dashboards, cohorts, and experiments.
 sidebar:
   icon: https://logos.composio.dev/api/posthog
 ---
 
-import compatibility from "../_generated/posthog.compatibility.json";
-import example from "../_generated/posthog-list-feature-flags.json";
+Feature flags, insights, dashboards, cohorts, and experiments. Local PostHog
+v1 that keeps project state across requests.
 
-Fabricate ships a PostHog v1 resource with a local API driven by the official
-PostHog OpenAPI document and a synthetic bearer token. Every operation in that
-document is implemented. The included Acme PostHog environment seeds a SaaS-sized
-feature-flag, insight, and cohort catalog plus the shared Acme investigation
-needles (checkout reliability, Contoso SSO, INV-4812). Gmail, Asana, and HubSpot
-run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `posthog.minimal.v1` | Empty PostHog state for a clean test. |
-| `posthog.acme-flags.v1` | Acme production analytics: ~120 flags, insights, dashboards, cohorts, experiments, and persons. Needles: `checkout_reliability`, Contoso SSO / `contoso-eu`, INV-4812 / Northwind, fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop refund, BrightPath keys, Fabrikam SCIM `req_7Q4K2`. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep PostHog’s normal hostnames. |
+| API | PostHog v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `us.posthog.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-posthog.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_POSTHOG_TOKEN" "$FAB_POSTHOG_URL/api/projects/1/feature_flags/"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_POSTHOG_TOKEN" \
+      "$FAB_POSTHOG_URL/api/projects/1/feature_flags/"'
 ```
 
 The service is named `posthog` in the example manifest, so the variables are
@@ -45,7 +37,7 @@ The service is named `posthog` in the example manifest, so the variables are
 
 The response is the Acme feature-flag list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="posthog-list-feature-flags" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -60,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `us.posthog.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `posthog.minimal.v1` | Empty PostHog state for a clean test. |
+| `posthog.acme-flags.v1` | Acme production analytics: ~120 flags, insights, dashboards, cohorts, experiments, and persons. Needles: `checkout_reliability`, Contoso SSO / `contoso-eu`, INV-4812 / Northwind, fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop refund, BrightPath keys, Fabrikam SCIM `req_7Q4K2`. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -67,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest PostHog check ran against the Acme PostHog
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="posthog" />
+
+## Supported operations
+
+<SupportedOperations resource="posthog" />
