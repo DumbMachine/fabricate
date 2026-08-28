@@ -5,7 +5,7 @@
   "environmentLabel": "Acme GitHub",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/github-list-issues.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.github.com/repos/acme/web/issues",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.github.com/repos/acme/web/issues",
   "argv": [
     "curl",
     "-sS",

@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_GITHUB_TOKEN" \
       "$FAB_GITHUB_URL/repos/acme/web/issues"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme issue list:
 ### Start it through the proxy
 
 Use this when your app uses the normal GitHub URLs. This one-paste check
-calls GitHub's production hostname; the proxy supplies the local token.
+calls GitHub's production hostname. Omit `$FAB_GITHUB_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.github.com/repos/acme/web/issues
 ```
 
@@ -55,10 +55,13 @@ Git object routes (blobs, trees, commits, refs, and smart HTTP) are not served.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `github.minimal.v1` | Empty GitHub state for a clean test. |
-| `github.acme-issues.v1` | Busy `acme/*` org: repos, issues, and pulls. Needles on `acme/web`: checkout reliability (#1), Contoso SSO, INV-4812, plus fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop, BrightPath, Fabrikam `req_7Q4K2`. |
+<ResourceScenarios
+  resource="github"
+  descriptions={{
+    "github.minimal.v1": "Empty GitHub state for a clean test.",
+    "github.acme-issues.v1": "Busy `acme/*` org: repos, issues, and pulls. Needles on `acme/web`: checkout reliability (#1), Contoso SSO, INV-4812, plus fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop, BrightPath, Fabrikam `req_7Q4K2`.",
+  }}
+/>
 
 ## Compatibility verification
 

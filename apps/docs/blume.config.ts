@@ -69,6 +69,7 @@ export default defineConfig({
         items: [
           { label: "Introduction", href: "/" },
           { label: "Getting Started", href: "/getting-started" },
+          { label: "Agent and workflow QA", href: "/guides/agent-workflows" },
         ],
       },
       {
@@ -183,14 +184,11 @@ export default defineConfig({
             display: "group",
             collapsed: false,
             items: [
-              { label: `${fab} create`, href: "/cli/commands/create" },
-              { label: `${fab} ls`, href: "/cli/commands/ls" },
-              { label: `${fab} creds`, href: "/cli/commands/creds" },
-              { label: `${fab} destroy`, href: "/cli/commands/destroy" },
-              { label: `${fab} profiles`, href: "/cli/commands/profiles" },
-              { label: `${fab} engines`, href: "/cli/commands/engines" },
-              { label: `${fab} wait`, href: "/cli/commands/wait" },
               { label: `${fab} run`, href: "/cli/commands/run" },
+              { label: `${fab} environment`, href: "/cli/commands/environment" },
+              { label: `${fab} service`, href: "/cli/commands/service" },
+              { label: `${fab} resource`, href: "/cli/commands/resource" },
+              { label: `${fab} scenario`, href: "/cli/commands/scenario" },
               { label: `${fab} logs`, href: "/cli/commands/logs" },
             ],
           },

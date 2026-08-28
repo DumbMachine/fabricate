@@ -1,5 +1,6 @@
 // Command docsexamples captures committed docs snapshots for resource pages:
-// command output, compiled operation catalogs, and compatibility reports.
+// command output, compiled operation and scenario catalogs, and compatibility
+// reports.
 // It is a contributor tool, not a user CLI.
 package main
 
