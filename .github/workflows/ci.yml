@@ -75,7 +75,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: end-to-end smoke (real containers)
+      - name: end-to-end smoke (real CLI)
         run: go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
   conformance:

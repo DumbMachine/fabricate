@@ -81,7 +81,7 @@ generate-check: generate
 	@$(MAKE) docs-operations
 	git diff --exit-code -- 'resources/*/generated/**' 'packages/docs-content/resources/_generated/*.operations.json' 'packages/docs-content/resources/_generated/*.scenarios.json'
 
-# End-to-end smoke for container engines through the real CLI.
+# End-to-end smoke for `fab run` through the real CLI.
 e2e:
 	go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 

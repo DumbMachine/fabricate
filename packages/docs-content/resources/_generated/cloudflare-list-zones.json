@@ -687,11 +687,11 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:e44f30306c509a50852fb6e70cec45171ee5c83004f2557de98625cbb34a960b",
+    "digest": "sha256:6283103f1981a661a2cef08fe479045954f912d743810191cb3ce9bccc14ee70",
     "roots": [
       {
         "path": "cli/run.go",
-        "digest": "sha256:3e14b29e64afcaf8f26b5c03054f80c50506a5a0268e1607869abe989457991e"
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
       },
       {
         "path": "engine/http",
@@ -707,7 +707,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:c1d489bd90014abce1655f66d9fed2d7acc4dafcfad8a2a1d76039bf446a209f"
+        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
       },
       {
         "path": "packages/docs-content/resources/_examples/cloudflare-list-zones.json",
@@ -719,7 +719,7 @@
       },
       {
         "path": "resources/asana",
-        "digest": "sha256:4ea173b98bb61e55c7d578868b2938644ab5f9cdacbc77c9560db908f406556a"
+        "digest": "sha256:507c1eaf3077ad311519b699062c569a8fac026e2ea3b1b1767381af99dc5ca2"
       },
       {
         "path": "resources/cloudflare",
@@ -727,15 +727,15 @@
       },
       {
         "path": "resources/gmail",
-        "digest": "sha256:78c29fe837fb34d9db851d52ae40ab4475386696c04d98fbb6b25438e05899aa"
+        "digest": "sha256:da7d9821ce14f4120d503c09971f0f4eed3ab56f76a0addb5dbf285ac75a8459"
       },
       {
         "path": "resources/hubspot",
-        "digest": "sha256:a42ea120f83029947acd640e6bb5401988f01a3e8e14d65b4224e99d34470985"
+        "digest": "sha256:7909632464103781e282052196585a62641df3ec75f6750c568bcae692a0be1d"
       },
       {
         "path": "scenario",
-        "digest": "sha256:5e9d4f0cadf0109f4e52c0b0a5eeff49d0334c6ce0a77bc53feefdd310216263"
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
       }
     ]
   }

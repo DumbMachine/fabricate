@@ -144,11 +144,11 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:6533ad903d4593a20cf9880b496e6c2f2c3dd4c1e1d96bc73e72628be0672b07",
+    "digest": "sha256:72cc049b1a7166858400aaa1242d2c58543b16c879f7acd2da91fe3cb837f205",
     "roots": [
       {
         "path": "cli/run.go",
-        "digest": "sha256:3e14b29e64afcaf8f26b5c03054f80c50506a5a0268e1607869abe989457991e"
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
       },
       {
         "path": "engine/http",
@@ -164,7 +164,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:c1d489bd90014abce1655f66d9fed2d7acc4dafcfad8a2a1d76039bf446a209f"
+        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
       },
       {
         "path": "packages/docs-content/resources/_examples/acme-go-to-market-inv-4812.json",
@@ -176,19 +176,19 @@
       },
       {
         "path": "resources/attio",
-        "digest": "sha256:bb48a8b3948d8dc5285e51d3fb65da594417724874bb8d69a3ce1ada64379fd6"
+        "digest": "sha256:cfad051639b30bbeb462e15c77cad8baf7144567939b976e18bfdbad00f5b63a"
       },
       {
         "path": "resources/mailchimp",
-        "digest": "sha256:a687ed821572ae5e7b82da497aa214c4d1acb1ebcf3beaf577b1302626e4d572"
+        "digest": "sha256:78bdcd8b11eb847e8787e3261bec8766d0b3daeae744f82c0637455534d120a9"
       },
       {
         "path": "resources/resend",
-        "digest": "sha256:c6506f2a488e44db1459c63fad90291a96d4f3c36e4a6a79b27e22c3124213f7"
+        "digest": "sha256:3d3f32c4b13308f875da23147a6101012a2ff67a91865774e8b05abd4731d476"
       },
       {
         "path": "scenario",
-        "digest": "sha256:5e9d4f0cadf0109f4e52c0b0a5eeff49d0334c6ce0a77bc53feefdd310216263"
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
       }
     ]
   }
