@@ -1,38 +1,35 @@
 ---
 title: Figma
-description: A reproducible Figma API for local application testing.
+description: Files, comments, webhooks, and teams.
 sidebar:
   icon: https://logos.composio.dev/api/figma
 ---
 
-import compatibility from "../_generated/figma.compatibility.json";
-import example from "../_generated/figma-list-webhooks.json";
+Files, comments, webhooks, and teams. Local Figma v1 that keeps file and
+webhook state across requests.
 
-Fabricate ships a Figma v1 resource with a local API driven by the official Figma OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Figma environment seeds a SaaS-sized team webhook catalog plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `figma.minimal.v1` | Empty Figma state for a clean test. |
-| `figma.acme-webhooks.v1` | Team `team_acme` webhook catalog. Needles: `https://acme.example/hooks/files` (checkout reliability UI), Contoso SSO screens, INV-4812 receipts, fernworks CSV, LakeTech retries, Fabrikam SCIM. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Figma’s normal hostnames. |
+| API | Figma v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.figma.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_FIGMA_TOKEN" "$FAB_FIGMA_URL/v2/teams/team_acme/webhooks"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_FIGMA_TOKEN" \
+      "$FAB_FIGMA_URL/v2/teams/team_acme/webhooks"'
 ```
 
 The service is named `figma` in the example manifest, so the variables are
@@ -40,7 +37,7 @@ The service is named `figma` in the example manifest, so the variables are
 
 The response is the Acme webhook list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="figma-list-webhooks" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -55,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.figma.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `figma.minimal.v1` | Empty Figma state for a clean test. |
+| `figma.acme-webhooks.v1` | Team `team_acme` webhook catalog. Needles: `https://acme.example/hooks/files` (checkout reliability UI), Contoso SSO screens, INV-4812 receipts, fernworks CSV, LakeTech retries, Fabrikam SCIM. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -62,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Figma check ran against the Acme Figma
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="figma" />
+
+## Supported operations
+
+<SupportedOperations resource="figma" />
