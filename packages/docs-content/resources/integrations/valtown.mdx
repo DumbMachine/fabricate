@@ -1,38 +1,35 @@
 ---
 title: Val Town
-description: A reproducible Val Town API for local application testing.
+description: Vals, blobs, and sqlite.
 sidebar:
   icon: https://logos.composio.dev/api/valtown
 ---
 
-import compatibility from "../_generated/valtown.compatibility.json";
-import example from "../_generated/valtown-list-vals.json";
+Vals, blobs, and sqlite. Local Val Town v1 that keeps val state across
+requests.
 
-Fabricate ships a Val Town v1 resource with a local API driven by the official Val Town OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Val Town environment seeds a SaaS-sized val catalog plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `valtown.minimal.v1` | Empty Val Town state for a clean test. |
-| `valtown.acme-vals.v1` | Acme val catalog. Needles: `acme-webhooks` (LakeTech retries), checkout canary, Contoso SAML debug, INV-4812 billing helper, fernworks CSV probe, Adatum DNS recheck, Fabrikam SCIM. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Val Town’s normal hostnames. |
+| API | Val Town v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.val.town` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-valtown.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_VALTOWN_TOKEN" "$FAB_VALTOWN_URL/v2/vals"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_VALTOWN_TOKEN" \
+      "$FAB_VALTOWN_URL/v2/vals"'
 ```
 
 The service is named `valtown` in the example manifest, so the variables are
@@ -40,7 +37,7 @@ The service is named `valtown` in the example manifest, so the variables are
 
 The response is the Acme val list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="valtown-list-vals" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -55,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.val.town` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `valtown.minimal.v1` | Empty Val Town state for a clean test. |
+| `valtown.acme-vals.v1` | Acme val catalog. Needles: `acme-webhooks` (LakeTech retries), checkout canary, Contoso SAML debug, INV-4812 billing helper, fernworks CSV probe, Adatum DNS recheck, Fabrikam SCIM. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -62,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Val Town check ran against the Acme Val Town
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="valtown" />
+
+## Supported operations
+
+<SupportedOperations resource="valtown" />
