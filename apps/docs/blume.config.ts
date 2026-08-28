@@ -135,6 +135,11 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/mailchimp",
               },
               {
+                label: "Vercel",
+                href: "/resources/integrations/vercel",
+                icon: "https://logos.composio.dev/api/vercel",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
