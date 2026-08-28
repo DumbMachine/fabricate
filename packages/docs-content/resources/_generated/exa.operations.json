@@ -1,0 +1,48 @@
+{
+  "integration": "exa",
+  "api": "Exa v1",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/answer",
+      "operationId": "answer",
+      "summary": "Generate an answer from search results"
+    },
+    {
+      "method": "POST",
+      "path": "/contents",
+      "operationId": "getContents",
+      "summary": "Get Contents"
+    },
+    {
+      "method": "POST",
+      "path": "/findSimilar",
+      "operationId": "findSimilar",
+      "summary": "Find similar links"
+    },
+    {
+      "method": "GET",
+      "path": "/research/v0/tasks",
+      "operationId": "research-tasks-list",
+      "summary": "List research tasks"
+    },
+    {
+      "method": "POST",
+      "path": "/research/v0/tasks",
+      "operationId": "research-tasks-create",
+      "summary": "Create a research task with instructions and an output schema"
+    },
+    {
+      "method": "GET",
+      "path": "/research/v0/tasks/{id}",
+      "operationId": "ResearchControllerV0_getResearchTask",
+      "summary": "Get a research task by id"
+    },
+    {
+      "method": "POST",
+      "path": "/search",
+      "operationId": "search",
+      "summary": "Search"
+    }
+  ]
+}
