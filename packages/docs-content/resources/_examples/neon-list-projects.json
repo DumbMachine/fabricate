@@ -5,7 +5,7 @@
   "environmentLabel": "Acme Neon",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/neon-list-projects.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://console.neon.tech/api/v2/projects",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://console.neon.tech/api/v2/projects",
   "argv": [
     "curl",
     "-sS",

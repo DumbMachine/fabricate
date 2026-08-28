@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_NEON_TOKEN" \
       "$FAB_NEON_URL/api/v2/projects"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme project list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Neon URLs. This one-paste check
-calls Neon's production hostname; the proxy supplies the local token.
+calls Neon's production hostname. Omit `$FAB_NEON_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-neon.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://console.neon.tech/api/v2/projects
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `console.neon.tech` locally. Other hosts are forwarded unchang
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `neon.minimal.v1` | Empty Neon state for a clean test. |
-| `neon.acme-projects.v1` | Acme Postgres estate: projects, branches, and endpoints. Needles: `acme-prod` checkout/billing, INV-4812 ledger, Contoso `acme-sso`, fernworks analytics, Adatum DNS, LakeTech webhooks, Fabrikam SCIM. |
+<ResourceScenarios
+  resource="neon"
+  descriptions={{
+    "neon.minimal.v1": "Empty Neon state for a clean test.",
+    "neon.acme-projects.v1": "Acme Postgres estate: projects, branches, and endpoints. Needles: `acme-prod` checkout/billing, INV-4812 ledger, Contoso `acme-sso`, fernworks analytics, Adatum DNS, LakeTech webhooks, Fabrikam SCIM.",
+  }}
+/>
 
 ## Compatibility verification
 

@@ -147,7 +147,7 @@ func skipDir(name string) bool {
 }
 
 func skipFile(name string) bool {
-	if name == ".DS_Store" {
+	if name == ".DS_Store" || name == "openapi.prepared.json" {
 		return true
 	}
 	lower := strings.ToLower(name)

@@ -1,0 +1,82 @@
+---
+import SnapshotUnavailable from "./SnapshotUnavailable.astro";
+import {formatScenarioCounts, loadScenarioCatalog} from "./generated";
+
+interface Props {
+  catalog?: unknown;
+  descriptions?: Record<string, string>;
+  resource?: string;
+}
+
+const {catalog: provided, descriptions = {}, resource} = Astro.props as Props;
+const catalog = loadScenarioCatalog(resource, provided);
+const rows = catalog?.scenarios ?? [];
+---
+
+{!catalog ? (
+  <SnapshotUnavailable
+    eyebrow="Scenarios"
+    title="Catalog scenarios"
+    hint="This scenario catalog is missing or invalid. Recapture it with make docs-operations and commit the JSON under resources/_generated/."
+  />
+) : (
+<section class="scenarios not-prose" aria-label={`${catalog.integration} scenarios`}>
+  <header>
+    <div>
+      <p class="eyebrow">SCENARIOS</p>
+      <p class="api">{catalog.integration}</p>
+    </div>
+    <span class="count">{rows.length === 1 ? "1 scenario" : `${rows.length} scenarios`}</span>
+  </header>
+  <p class="note">Collection counts come from each scenario's seeded state.</p>
+  <table>
+    <caption>Catalog scenarios</caption>
+    <thead>
+      <tr>
+        <th scope="col">Scenario</th>
+        <th scope="col">Seeded state</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((entry) => (
+        <tr>
+          <th scope="row"><code class="id">{entry.id}</code></th>
+          <td>
+            <p class="counts">{formatScenarioCounts(entry) || "No seeded collections"}</p>
+            {descriptions[entry.id] ? <p class="summary">{descriptions[entry.id]}</p> : null}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+)}
+
+<style>
+  .scenarios { background: var(--fabricate-surface-raised); border: 1px solid var(--fabricate-border); border-radius: var(--fabricate-radius-lg); margin: 1.8rem 0 2.4rem; padding: 1.15rem; }
+  header { align-items: center; display: flex; gap: 1rem; justify-content: space-between; margin-bottom: .7rem; }
+  .eyebrow { color: var(--fabricate-text-muted); font: 600 .68rem/1 var(--fabricate-font-mono); letter-spacing: .08em; margin: 0 0 .3rem; text-transform: uppercase; }
+  .api { color: var(--fabricate-text); font: 600 1rem/1.2 var(--fabricate-font-sans); margin: 0; }
+  .count { color: var(--fabricate-text-muted); font: 600 .68rem/1 var(--fabricate-font-mono); letter-spacing: .07em; text-transform: uppercase; }
+  .note { color: var(--fabricate-text-muted); font: 400 .84rem/1.45 var(--fabricate-font-sans); margin: 0 0 1rem; }
+  table { border-collapse: collapse; color: var(--fabricate-text); font-size: .85rem; margin: 0; width: 100%; }
+  caption { caption-side: top; font: 600 .84rem/1.2 var(--fabricate-font-sans); padding: 0 0 .7rem; text-align: left; }
+  th, td { border-bottom: 1px solid var(--fabricate-border); padding: .68rem .25rem; text-align: left; vertical-align: top; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  thead th { color: var(--fabricate-text-muted); font: 600 .68rem/1 var(--fabricate-font-mono); letter-spacing: .07em; text-transform: uppercase; }
+  tbody th { font-weight: 500; padding-right: .9rem; width: 1%; }
+  .id, .counts, .summary {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  .id { color: var(--fabricate-text-secondary); font: 500 .78rem/1.4 var(--fabricate-font-mono); overflow-wrap: anywhere; }
+  .counts { color: var(--fabricate-text); font: 500 .9rem/1.4 var(--fabricate-font-sans); margin: 0; }
+  .summary { color: var(--fabricate-text-muted); font: 400 .82rem/1.45 var(--fabricate-font-sans); margin: .22rem 0 0; }
+  @media (max-width: 32rem) {
+    tbody th { width: auto; }
+    th, td { padding-inline: .15rem; }
+  }
+</style>

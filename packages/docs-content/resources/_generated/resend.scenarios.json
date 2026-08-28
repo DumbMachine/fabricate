@@ -1,0 +1,19 @@
+{
+  "integration": "resend",
+  "scenarios": [
+    {
+      "id": "resend.acme-outbox.v1",
+      "counts": {
+        "domains": 1,
+        "emails": 9
+      }
+    },
+    {
+      "id": "resend.minimal.v1",
+      "counts": {
+        "domains": 0,
+        "emails": 0
+      }
+    }
+  ]
+}
