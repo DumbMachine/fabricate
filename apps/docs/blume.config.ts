@@ -135,6 +135,11 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/mailchimp",
               },
               {
+                label: "PostHog",
+                href: "/resources/integrations/posthog",
+                icon: "https://logos.composio.dev/api/posthog",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
