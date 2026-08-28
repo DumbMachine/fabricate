@@ -15,6 +15,7 @@ import (
 	"github.com/dumbmachine/fabricate/environments"
 	"github.com/dumbmachine/fabricate/httpresource"
 	"github.com/dumbmachine/fabricate/resources/all"
+	"github.com/dumbmachine/fabricate/scenario"
 	"github.com/spf13/cobra"
 )
 
@@ -131,40 +132,33 @@ func resolveRunSpec(target, scenarioID string, registry *httpresource.Registry) 
 	if target == "" {
 		return environment.Spec{}, fmt.Errorf("run: environment or service is required")
 	}
-	if isManifestTarget(target) {
-		if scenarioID != "" {
-			return environment.Spec{}, fmt.Errorf("run: --scenario can only be used with a service")
-		}
-		return environment.Load(target)
+	if scenarioID != "" {
+		return wrapStandaloneService(target, scenarioID, registry)
 	}
-	names, err := environments.Names()
-	if err != nil {
-		return environment.Spec{}, err
+	spec, err := environments.Resolve(target)
+	if err == nil {
+		return spec, nil
 	}
-	for _, name := range names {
-		if target == name {
-			if scenarioID != "" {
-				return environment.Spec{}, fmt.Errorf("run: --scenario can only be used with a service")
-			}
-			return environments.Load(target)
-		}
+	if _, ok := registry.Get(target); ok {
+		return wrapStandaloneService(target, "", registry)
 	}
+	return environment.Spec{}, fmt.Errorf("run: unknown environment or service %q", target)
+}
+
+func wrapStandaloneService(target, scenarioID string, registry *httpresource.Registry) (environment.Spec, error) {
 	resource, ok := registry.Get(target)
 	if !ok {
-		return environment.Spec{}, fmt.Errorf("run: unknown environment or service %q", target)
+		return environment.Spec{}, fmt.Errorf("run: --scenario can only be used with a service")
 	}
+	docs, err := resource.ScenarioDocuments()
+	if err != nil {
+		return environment.Spec{}, fmt.Errorf("run: list scenarios for %s: %w", target, err)
+	}
+	ids := scenario.IDs(docs)
 	if scenarioID == "" {
-		ids, listErr := resource.ScenarioIDs()
-		if listErr != nil {
-			return environment.Spec{}, fmt.Errorf("run: list scenarios for %s: %w", target, listErr)
-		}
 		return environment.Spec{}, fmt.Errorf("run: service %q requires --scenario; choose one of: %s", target, strings.Join(ids, ", "))
 	}
-	if _, err := resource.Scenario(scenarioID); err != nil {
-		ids, listErr := resource.ScenarioIDs()
-		if listErr != nil {
-			return environment.Spec{}, err
-		}
+	if _, ok := scenario.Lookup(docs, scenarioID); !ok {
 		return environment.Spec{}, fmt.Errorf("run: unknown scenario %q for service %q; choose one of: %s", scenarioID, target, strings.Join(ids, ", "))
 	}
 	return environment.Spec{
@@ -175,17 +169,6 @@ func resolveRunSpec(target, scenarioID string, registry *httpresource.Registry) 
 			target: {Resource: target, Scenario: scenarioID},
 		},
 	}, nil
-}
-
-func isManifestTarget(target string) bool {
-	if target == "/dev/stdin" || strings.ContainsRune(target, os.PathSeparator) {
-		return true
-	}
-	if strings.HasSuffix(target, ".yaml") || strings.HasSuffix(target, ".yml") {
-		return true
-	}
-	_, err := os.Stat(target)
-	return err == nil
 }
 
 func printStandaloneEnvironment(out *os.File, values map[string]string) {

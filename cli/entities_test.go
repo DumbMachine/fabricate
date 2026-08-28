@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/dumbmachine/fabricate/environment"
+	"github.com/dumbmachine/fabricate/environments"
 	"github.com/dumbmachine/fabricate/internal/output"
 	"github.com/dumbmachine/fabricate/resources/all"
 )
@@ -29,7 +30,7 @@ func TestOfficialEnvironmentViewsIncludeServices(t *testing.T) {
 }
 
 func TestValidateEnvironmentDefinitionChecksScenario(t *testing.T) {
-	spec, err := loadEnvironmentDefinition("acme-gmail")
+	spec, err := environments.Resolve("acme-gmail")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,7 +97,7 @@ func TestEntityTableOutput(t *testing.T) {
 }
 
 func TestEnvironmentInspectOmitsEmptyProxy(t *testing.T) {
-	spec, err := loadEnvironmentDefinition("acme-gmail")
+	spec, err := environments.Resolve("acme-gmail")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -46,27 +46,12 @@ func (*Resource) Contract() httpresource.Contract {
 
 func (*Resource) Scenarios() httpresource.ScenarioCodec { return scenarioCodec{} }
 
-func (*Resource) ScenarioIDs() ([]string, error) { return scenario.EmbeddedIDs(builtInScenarios) }
+func (*Resource) ScenarioDocuments() ([]scenario.Document, error) {
+	return scenario.Embedded(builtInScenarios)
+}
 
 func (*Resource) Scenario(id string) (scenario.Document, error) {
-	entries, err := builtInScenarios.ReadDir("scenarios")
-	if err != nil {
-		return scenario.Document{}, fmt.Errorf("gmail: list embedded scenarios: %w", err)
-	}
-	for _, entry := range entries {
-		raw, err := builtInScenarios.ReadFile("scenarios/" + entry.Name())
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("gmail: read embedded scenario %s: %w", entry.Name(), err)
-		}
-		doc, err := scenario.Parse(raw)
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("gmail: parse embedded scenario %s: %w", entry.Name(), err)
-		}
-		if doc.ID == id {
-			return doc, nil
-		}
-	}
-	return scenario.Document{}, fmt.Errorf("gmail: unknown scenario %q", id)
+	return scenario.LookupEmbedded(builtInScenarios, id, "gmail")
 }
 
 func (*Resource) NewServer(ctx context.Context, dependencies httpresource.ServerDependencies) (httpresource.Server, error) {

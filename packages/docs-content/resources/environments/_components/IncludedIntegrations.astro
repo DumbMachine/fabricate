@@ -44,28 +44,31 @@ const countsFor = (entry: IncludedService) =>
       </tr>
     </thead>
     <tbody>
-      {services.map((entry) => (
-        <tr>
-          <th scope="row">
-            <a class="service" href={toDocsHref(entry.href)}>
-              <span class="icon">
-                <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt="" />
-                <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
-              </span>
-              <span class="service-copy">
-                <span class="service-label">{entry.label}</span>
-                <span class="service-name">{entry.service}</span>
-              </span>
-            </a>
-          </th>
-          <td>
-            <p class="scenario-id" title="Select to copy">{entry.scenario}</p>
-            <p class="summary">{entry.summary}</p>
-            {countsFor(entry) ? <p class="counts">{countsFor(entry)}</p> : null}
-            <p class="data">{entry.data}</p>
-          </td>
-        </tr>
-      ))}
+      {services.map((entry) => {
+        const counts = countsFor(entry);
+        return (
+          <tr>
+            <th scope="row">
+              <a class="service" href={toDocsHref(entry.href)}>
+                <span class="icon">
+                  <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt="" />
+                  <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
+                </span>
+                <span class="service-copy">
+                  <span class="service-label">{entry.label}</span>
+                  <span class="service-name">{entry.service}</span>
+                </span>
+              </a>
+            </th>
+            <td>
+              <p class="scenario-id" title="Select to copy">{entry.scenario}</p>
+              <p class="summary">{entry.summary}</p>
+              {counts ? <p class="counts">{counts}</p> : null}
+              <p class="data">{entry.data}</p>
+            </td>
+          </tr>
+        );
+      })}
     </tbody>
   </table>
 </section>

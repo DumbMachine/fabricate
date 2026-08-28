@@ -55,19 +55,19 @@ test("parseOperationsCatalog keeps valid rows and drops junk", () => {
   assert.equal(catalog.operations[0].operationId, "getProfile");
 });
 
-test("parseScenarioCatalog keeps counts and listable", () => {
+test("parseScenarioCatalog keeps collection counts", () => {
   const catalog = parseScenarioCatalog({
     integration: "gmail",
     scenarios: [
-      {id: "gmail.acme-corp.v1", counts: {messages: 28, labels: 6}, listable: {messages: 27}},
+      {id: "gmail.acme-corp.v1", counts: {messages: 28, labels: 6}},
       {id: "gmail.minimal.v1", counts: {messages: 0, labels: 0}},
       {id: "bad"},
     ],
   });
   assert.ok(catalog);
   assert.equal(catalog.scenarios.length, 2);
-  assert.equal(formatScenarioCounts(catalog.scenarios[0]), "28 messages · 6 labels · 27 listed by default");
-  assert.equal(formatScenarioCounts(catalog.scenarios[1]), "0 messages · 0 labels");
+  assert.equal(formatScenarioCounts(catalog.scenarios[0]), "6 labels · 28 messages");
+  assert.equal(formatScenarioCounts(catalog.scenarios[1]), "0 labels · 0 messages");
 });
 
 test("gmail seed counts agree across generated docs artifacts", () => {
@@ -76,7 +76,6 @@ test("gmail seed counts agree across generated docs artifacts", () => {
   const acme = catalog.scenarios.find((entry) => entry.id === "gmail.acme-corp.v1");
   assert.ok(acme);
   assert.equal(acme.counts.messages, 28);
-  assert.equal(acme.listable?.messages, 27);
 
   const compatibility = parseCompatibility(readGeneratedJSON("gmail.compatibility.json"));
   assert.ok(compatibility);
@@ -85,7 +84,7 @@ test("gmail seed counts agree across generated docs artifacts", () => {
   const example = parseCommandExample(readGeneratedJSON("gmail-list-messages.json"));
   assert.ok(example);
   assert.ok(isRecord(example.output));
-  assert.equal(example.output.resultSizeEstimate, acme.listable?.messages);
+  assert.equal(example.output.resultSizeEstimate, 27);
 });
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -10,7 +10,7 @@ import (
 	"github.com/dumbmachine/fabricate/scenario"
 )
 
-func TestCatalogFromScenariosCountsAndListable(t *testing.T) {
+func TestCatalogFromScenariosCountsTopLevelArrays(t *testing.T) {
 	catalog, err := CatalogFromScenarios("gmail", []scenario.Document{
 		mustScenario(t, `{
 			"$contract":"fabricate.scenario","$contractVersion":1,
@@ -43,11 +43,8 @@ func TestCatalogFromScenariosCountsAndListable(t *testing.T) {
 	if acme.Counts["messages"] != 2 || acme.Counts["labels"] != 1 {
 		t.Fatalf("acme counts = %#v", acme.Counts)
 	}
-	if acme.Listable["messages"] != 1 {
-		t.Fatalf("acme listable = %#v", acme.Listable)
-	}
 	minimal := catalog.Scenarios[1]
-	if minimal.Counts["messages"] != 0 || minimal.Listable != nil {
+	if minimal.Counts["messages"] != 0 || minimal.Counts["labels"] != 0 {
 		t.Fatalf("minimal = %+v", minimal)
 	}
 }
@@ -62,12 +59,11 @@ func TestCatalogFromScenariosRequiresID(t *testing.T) {
 func TestWriteOperationsWritesScenarioCatalog(t *testing.T) {
 	repo := t.TempDir()
 	registry := mustRegistry(t, stubResource{
-		id:          "gmail",
-		name:        "Gmail",
-		spec:        []byte(`{"paths":{"/profile":{"get":{"operationId":"getProfile"}}}}`),
-		scenarioIDs: []string{"gmail.minimal.v1"},
-		scenarios: map[string]scenario.Document{
-			"gmail.minimal.v1": mustScenario(t, `{
+		id:   "gmail",
+		name: "Gmail",
+		spec: []byte(`{"paths":{"/profile":{"get":{"operationId":"getProfile"}}}}`),
+		scenarios: []scenario.Document{
+			mustScenario(t, `{
 				"$contract":"fabricate.scenario","$contractVersion":1,
 				"$id":"gmail.minimal.v1","$resource":"gmail","$resourceVersion":"v1",
 				"state":{"labels":[],"messages":[]}

@@ -48,7 +48,7 @@ var environmentInspectCmd = &cobra.Command{
 	Short: "Show one environment and its services",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
-		spec, err := loadEnvironmentDefinition(args[0])
+		spec, err := environments.Resolve(args[0])
 		if err != nil {
 			return err
 		}
@@ -65,7 +65,7 @@ var environmentValidateCmd = &cobra.Command{
 	Short: "Validate an environment and every resource/scenario reference",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
-		spec, err := loadEnvironmentDefinition(args[0])
+		spec, err := environments.Resolve(args[0])
 		if err != nil {
 			return err
 		}
@@ -193,7 +193,7 @@ var serviceListCmd = &cobra.Command{
 	Short:   "List services in an environment",
 	Args:    cobra.NoArgs,
 	RunE: func(*cobra.Command, []string) error {
-		spec, err := loadEnvironmentDefinition(serviceEnvironment)
+		spec, err := environments.Resolve(serviceEnvironment)
 		if err != nil {
 			return err
 		}
@@ -210,7 +210,7 @@ var serviceInspectCmd = &cobra.Command{
 	Short: "Show one service in an environment",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
-		spec, err := loadEnvironmentDefinition(serviceEnvironment)
+		spec, err := environments.Resolve(serviceEnvironment)
 		if err != nil {
 			return err
 		}
@@ -277,25 +277,6 @@ func entityFormat() (output.Format, error) {
 		return "", fmt.Errorf("output format %q is not supported here (want json or table)", format)
 	}
 	return format, nil
-}
-
-func loadEnvironmentDefinition(target string) (environment.Spec, error) {
-	if target == "" {
-		return environment.Spec{}, fmt.Errorf("environment is required")
-	}
-	if isManifestTarget(target) {
-		return environment.Load(target)
-	}
-	names, err := environments.Names()
-	if err != nil {
-		return environment.Spec{}, err
-	}
-	for _, name := range names {
-		if target == name {
-			return environments.Load(target)
-		}
-	}
-	return environment.Spec{}, fmt.Errorf("unknown environment %q; choose one of: %s", target, strings.Join(names, ", "))
 }
 
 func validateEnvironmentDefinition(spec environment.Spec, registry *httpresource.Registry) error {
@@ -372,11 +353,11 @@ func resourceViewByID(registry *httpresource.Registry, id string) (resourceView,
 		}
 		return resourceView{}, fmt.Errorf("unknown resource %q; choose one of: %s", id, strings.Join(ids, ", "))
 	}
-	ids, err := resource.ScenarioIDs()
+	docs, err := resource.ScenarioDocuments()
 	if err != nil {
 		return resourceView{}, fmt.Errorf("resource %q: list scenarios: %w", id, err)
 	}
-	return resourceView{Resource: resource.Descriptor(), Scenarios: ids}, nil
+	return resourceView{Resource: resource.Descriptor(), Scenarios: scenario.IDs(docs)}, nil
 }
 
 func scenarioViews(registry *httpresource.Registry, resourceID string) ([]scenarioView, error) {
@@ -390,16 +371,15 @@ func scenarioViews(registry *httpresource.Registry, resourceID string) ([]scenar
 	}
 	var views []scenarioView
 	for _, descriptor := range descriptors {
-		resource, _ := registry.Get(descriptor.ID)
-		ids, err := resource.ScenarioIDs()
+		resource, ok := registry.Get(descriptor.ID)
+		if !ok {
+			return nil, fmt.Errorf("unknown resource %q", descriptor.ID)
+		}
+		docs, err := resource.ScenarioDocuments()
 		if err != nil {
 			return nil, fmt.Errorf("resource %q: list scenarios: %w", descriptor.ID, err)
 		}
-		for _, id := range ids {
-			doc, err := resource.Scenario(id)
-			if err != nil {
-				return nil, err
-			}
+		for _, doc := range docs {
 			views = append(views, scenarioView{ID: doc.ID, Resource: doc.Resource, ResourceVersion: doc.ResourceVersion})
 		}
 	}
@@ -430,23 +410,19 @@ func loadScenarioDefinition(target string, registry *httpresource.Registry) (sce
 	if !exists {
 		return scenario.Document{}, nil, fmt.Errorf("scenario %q names unknown resource %q", target, resourceID)
 	}
-	doc, err := resource.Scenario(target)
+	docs, err := resource.ScenarioDocuments()
 	if err != nil {
-		ids, listErr := resource.ScenarioIDs()
-		if listErr != nil {
-			return scenario.Document{}, nil, err
-		}
-		return scenario.Document{}, nil, fmt.Errorf("unknown scenario %q; choose one of: %s", target, strings.Join(ids, ", "))
+		return scenario.Document{}, nil, fmt.Errorf("resource %q: list scenarios: %w", resourceID, err)
+	}
+	doc, ok := scenario.Lookup(docs, target)
+	if !ok {
+		return scenario.Document{}, nil, fmt.Errorf("unknown scenario %q; choose one of: %s", target, strings.Join(scenario.IDs(docs), ", "))
 	}
 	return doc, resource, nil
 }
 
 func isScenarioPath(target string) bool {
-	if strings.ContainsRune(target, os.PathSeparator) || strings.HasSuffix(target, ".json") {
-		return true
-	}
-	_, err := os.Stat(target)
-	return err == nil
+	return strings.ContainsRune(target, os.PathSeparator) || strings.HasSuffix(target, ".json")
 }
 
 func writeEnvironmentList(w io.Writer, views []environmentView, format output.Format) error {

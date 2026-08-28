@@ -4,6 +4,7 @@ package environments
 import (
 	"embed"
 	"fmt"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -29,6 +30,33 @@ func Names() ([]string, error) {
 	}
 	sort.Strings(names)
 	return names, nil
+}
+
+// Resolve loads a manifest path or an official catalog name.
+func Resolve(target string) (environment.Spec, error) {
+	if target == "" {
+		return environment.Spec{}, fmt.Errorf("environment is required")
+	}
+	if isManifestPath(target) {
+		return environment.Load(target)
+	}
+	names, err := Names()
+	if err != nil {
+		return environment.Spec{}, err
+	}
+	for _, name := range names {
+		if target == name {
+			return Load(target)
+		}
+	}
+	return environment.Spec{}, fmt.Errorf("unknown environment %q; choose one of: %s", target, strings.Join(names, ", "))
+}
+
+func isManifestPath(target string) bool {
+	if target == "/dev/stdin" || strings.ContainsRune(target, os.PathSeparator) {
+		return true
+	}
+	return strings.HasSuffix(target, ".yaml") || strings.HasSuffix(target, ".yml")
 }
 
 // Load returns an official environment by name.

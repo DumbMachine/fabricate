@@ -78,29 +78,12 @@ func (b *Bound) Scenarios() httpresource.ScenarioCodec {
 	return b.codec
 }
 
-func (b *Bound) ScenarioIDs() ([]string, error) {
-	return scenario.EmbeddedIDs(b.scenarios)
+func (b *Bound) ScenarioDocuments() ([]scenario.Document, error) {
+	return scenario.Embedded(b.scenarios)
 }
 
 func (b *Bound) Scenario(id string) (scenario.Document, error) {
-	entries, err := b.scenarios.ReadDir("scenarios")
-	if err != nil {
-		return scenario.Document{}, fmt.Errorf("%s: list embedded scenarios: %w", b.id, err)
-	}
-	for _, entry := range entries {
-		raw, err := b.scenarios.ReadFile("scenarios/" + entry.Name())
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("%s: read embedded scenario %s: %w", b.id, entry.Name(), err)
-		}
-		doc, err := scenario.Parse(raw)
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("%s: parse embedded scenario %s: %w", b.id, entry.Name(), err)
-		}
-		if doc.ID == id {
-			return doc, nil
-		}
-	}
-	return scenario.Document{}, fmt.Errorf("%s: unknown scenario %q", b.id, id)
+	return scenario.LookupEmbedded(b.scenarios, id, b.id)
 }
 
 func (b *Bound) NewServer(ctx context.Context, dependencies httpresource.ServerDependencies) (httpresource.Server, error) {

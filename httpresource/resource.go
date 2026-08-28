@@ -41,7 +41,7 @@ type Resource interface {
 	Descriptor() Descriptor
 	Contract() Contract
 	Scenarios() ScenarioCodec
-	ScenarioIDs() ([]string, error)
+	ScenarioDocuments() ([]scenario.Document, error)
 	Scenario(string) (scenario.Document, error)
 	NewServer(context.Context, ServerDependencies) (Server, error)
 }

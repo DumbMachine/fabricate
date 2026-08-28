@@ -52,7 +52,6 @@ export type OperationsCatalog = {
 export type ScenarioFacts = {
   id: string;
   counts: Record<string, number>;
-  listable?: Record<string, number>;
 };
 
 export type ScenarioCatalog = {
@@ -233,20 +232,7 @@ export function parseScenarioCatalog(value: unknown): ScenarioCatalog | null {
         counts[key] = count;
       }
     }
-    const listableIn = isRecord(item.listable) ? item.listable : null;
-    const listable: Record<string, number> = {};
-    if (listableIn) {
-      for (const [key, count] of Object.entries(listableIn)) {
-        if (typeof count === "number" && Number.isFinite(count)) {
-          listable[key] = count;
-        }
-      }
-    }
-    scenarios.push({
-      id: item.id,
-      counts,
-      listable: Object.keys(listable).length > 0 ? listable : undefined,
-    });
+    scenarios.push({id: item.id, counts});
   }
   return {integration: value.integration, scenarios};
 }
@@ -263,15 +249,8 @@ export function formatScenarioCounts(facts: ScenarioFacts | null): string {
   if (!facts) {
     return "";
   }
-  const keys = Object.keys(facts.counts).sort((left, right) => {
-    if (left === "messages") return -1;
-    if (right === "messages") return 1;
-    return left.localeCompare(right);
-  });
-  const parts = keys.map((key) => `${facts.counts[key]} ${key}`);
-  const listed = facts.listable?.messages;
-  if (typeof listed === "number" && listed !== facts.counts.messages) {
-    parts.push(`${listed} listed by default`);
-  }
-  return parts.join(" · ");
+  return Object.keys(facts.counts)
+    .sort((left, right) => left.localeCompare(right))
+    .map((key) => `${facts.counts[key]} ${key}`)
+    .join(" · ");
 }

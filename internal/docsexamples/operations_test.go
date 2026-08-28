@@ -2,6 +2,7 @@ package docsexamples
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -148,11 +149,10 @@ func TestLoadRejectsOperationsOutputPath(t *testing.T) {
 }
 
 type stubResource struct {
-	id          string
-	name        string
-	spec        []byte
-	scenarioIDs []string
-	scenarios   map[string]scenario.Document
+	id        string
+	name      string
+	spec      []byte
+	scenarios []scenario.Document
 }
 
 func (s stubResource) Descriptor() httpresource.Descriptor {
@@ -165,13 +165,15 @@ func (s stubResource) Contract() httpresource.Contract {
 
 func (stubResource) Scenarios() httpresource.ScenarioCodec { return nil }
 
-func (s stubResource) ScenarioIDs() ([]string, error) { return s.scenarioIDs, nil }
+func (s stubResource) ScenarioDocuments() ([]scenario.Document, error) {
+	return s.scenarios, nil
+}
 
 func (s stubResource) Scenario(id string) (scenario.Document, error) {
-	if s.scenarios == nil {
-		return scenario.Document{}, nil
+	if doc, ok := scenario.Lookup(s.scenarios, id); ok {
+		return doc, nil
 	}
-	return s.scenarios[id], nil
+	return scenario.Document{}, fmt.Errorf("%s: unknown scenario %q", s.id, id)
 }
 
 func (stubResource) NewServer(context.Context, httpresource.ServerDependencies) (httpresource.Server, error) {
