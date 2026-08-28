@@ -1,29 +1,22 @@
 ---
 title: Intercom
-description: A reproducible Intercom API 2.16 for local application testing.
+description: Admins, contacts, and conversations.
 sidebar:
   icon: https://logos.composio.dev/api/intercom
 ---
 
-import compatibility from "../_generated/intercom.compatibility.json";
+Admins, contacts, and conversations. Local Intercom 2.16 that keeps inbox
+state across requests.
 
-Fabricate ships an Intercom API 2.16 resource with a strict local API and a
-synthetic bearer token. It covers the current admin, contacts, and
-conversations in the included Acme Intercom environment.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `intercom.minimal.v1` | An empty inbox with Val as the current admin. |
-| `intercom.acme-inbox.v1` | Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Intercom’s normal hostnames. |
+| API | Intercom 2.16 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.intercom.io`, `api.eu.intercom.io`, `api.au.intercom.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
@@ -122,6 +115,13 @@ Fabricate handles `api.intercom.io`, `api.eu.intercom.io`, and
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `intercom.minimal.v1` | An empty inbox with Val as the current admin. |
+| `intercom.acme-inbox.v1` | Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -129,4 +129,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Intercom check ran against the Acme Intercom
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="intercom" />
+
+## Supported operations
+
+<SupportedOperations resource="intercom" />

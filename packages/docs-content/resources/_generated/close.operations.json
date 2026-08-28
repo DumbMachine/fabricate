@@ -1,0 +1,78 @@
+{
+  "integration": "close",
+  "api": "Close v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/contact/",
+      "operationId": "ContactsList",
+      "summary": "List contacts"
+    },
+    {
+      "method": "POST",
+      "path": "/contact/",
+      "operationId": "ContactsCreate",
+      "summary": "Create a new contact"
+    },
+    {
+      "method": "GET",
+      "path": "/contact/{id}/",
+      "operationId": "ContactsGet",
+      "summary": "Fetch a single contact"
+    },
+    {
+      "method": "GET",
+      "path": "/lead/",
+      "operationId": "LeadsList",
+      "summary": "List Leads"
+    },
+    {
+      "method": "POST",
+      "path": "/lead/",
+      "operationId": "LeadsCreate",
+      "summary": "Create a new lead"
+    },
+    {
+      "method": "GET",
+      "path": "/lead/{id}/",
+      "operationId": "LeadsGet",
+      "summary": "Get a single Lead"
+    },
+    {
+      "method": "PUT",
+      "path": "/lead/{id}/",
+      "operationId": "LeadsUpdate",
+      "summary": "Update an existing lead"
+    },
+    {
+      "method": "GET",
+      "path": "/me/",
+      "operationId": "UsersGetMe",
+      "summary": "Fetch information about yourself"
+    },
+    {
+      "method": "GET",
+      "path": "/opportunity/",
+      "operationId": "OpportunitiesList",
+      "summary": "List or filter opportunities"
+    },
+    {
+      "method": "POST",
+      "path": "/opportunity/",
+      "operationId": "OpportunitiesCreate",
+      "summary": "Create an opportunity"
+    },
+    {
+      "method": "GET",
+      "path": "/opportunity/{id}/",
+      "operationId": "OpportunitiesGet",
+      "summary": "Retrieve an opportunity"
+    },
+    {
+      "method": "PUT",
+      "path": "/opportunity/{id}/",
+      "operationId": "OpportunitiesUpdate",
+      "summary": "Update an opportunity"
+    }
+  ]
+}

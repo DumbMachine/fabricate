@@ -1,0 +1,54 @@
+{
+  "integration": "intercom",
+  "api": "Intercom 2.16",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/contacts",
+      "operationId": "ListContacts",
+      "summary": "List all contacts"
+    },
+    {
+      "method": "POST",
+      "path": "/contacts",
+      "operationId": "CreateContact",
+      "summary": "Create contact"
+    },
+    {
+      "method": "GET",
+      "path": "/contacts/{contact_id}",
+      "operationId": "ShowContact",
+      "summary": "Get a contact"
+    },
+    {
+      "method": "GET",
+      "path": "/conversations",
+      "operationId": "ListConversations",
+      "summary": "List all conversations"
+    },
+    {
+      "method": "GET",
+      "path": "/conversations/{conversation_id}",
+      "operationId": "RetrieveConversation",
+      "summary": "Retrieve a conversation"
+    },
+    {
+      "method": "PUT",
+      "path": "/conversations/{conversation_id}",
+      "operationId": "UpdateConversation",
+      "summary": "Update a conversation"
+    },
+    {
+      "method": "POST",
+      "path": "/conversations/{conversation_id}/reply",
+      "operationId": "ReplyConversation",
+      "summary": "Reply to a conversation"
+    },
+    {
+      "method": "GET",
+      "path": "/me",
+      "operationId": "IdentifyAdmin",
+      "summary": "Identify an admin"
+    }
+  ]
+}

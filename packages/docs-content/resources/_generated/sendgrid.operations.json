@@ -1,0 +1,24 @@
+{
+  "integration": "sendgrid",
+  "api": "SendGrid v3",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/v3/mail/batch",
+      "operationId": "CreateMailBatch",
+      "summary": "Create a batch ID."
+    },
+    {
+      "method": "GET",
+      "path": "/v3/mail/batch/{batch_id}",
+      "operationId": "GetMailBatch",
+      "summary": "Validate a batch ID."
+    },
+    {
+      "method": "POST",
+      "path": "/v3/mail/send",
+      "operationId": "SendMail",
+      "summary": "Send Email with Twilio SendGrid."
+    }
+  ]
+}

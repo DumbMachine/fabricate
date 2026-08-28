@@ -1,0 +1,69 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  hint: string;
+}
+
+const {eyebrow, title, hint} = Astro.props as Props;
+---
+
+<section class="snapshot-unavailable not-prose" aria-label={`${title} unavailable`}>
+  <header>
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+    </div>
+    <span class="status"><i aria-hidden="true"></i>Snapshot unavailable</span>
+  </header>
+  <p class="note">{hint}</p>
+</section>
+
+<style>
+  .snapshot-unavailable {
+    background: var(--fabricate-surface-raised);
+    border: 1px solid var(--fabricate-border);
+    border-radius: var(--fabricate-radius-lg);
+    margin: 1.8rem 0 2.4rem;
+    padding: 1.15rem;
+  }
+  header {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: .7rem;
+  }
+  .eyebrow {
+    color: var(--fabricate-text-muted);
+    font: 600 .68rem/1 var(--fabricate-font-mono);
+    letter-spacing: .08em;
+    margin: 0 0 .3rem;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--fabricate-text);
+    font: 600 1rem/1.2 var(--fabricate-font-sans);
+    margin: 0;
+  }
+  .status {
+    align-items: center;
+    color: var(--fabricate-text-muted);
+    display: inline-flex;
+    font: 600 .68rem/1 var(--fabricate-font-mono);
+    gap: .42rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  .status i {
+    background: var(--fabricate-text-muted);
+    border-radius: 50%;
+    height: .42rem;
+    width: .42rem;
+  }
+  .note {
+    color: var(--fabricate-text-muted);
+    font: 400 .84rem/1.45 var(--fabricate-font-sans);
+    margin: 0;
+  }
+</style>

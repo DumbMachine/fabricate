@@ -1,0 +1,96 @@
+{
+  "integration": "asana",
+  "api": "Asana v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/projects",
+      "operationId": "GetProjects",
+      "summary": "Get multiple projects"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_gid}",
+      "operationId": "GetProject",
+      "summary": "Get a project"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_gid}/sections",
+      "operationId": "GetSectionsForProject",
+      "summary": "Get sections in a project"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_gid}/tasks",
+      "operationId": "GetTasksForProject",
+      "summary": "Get tasks from a project"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks",
+      "operationId": "GetTasks",
+      "summary": "Get multiple tasks"
+    },
+    {
+      "method": "POST",
+      "path": "/tasks",
+      "operationId": "CreateTask",
+      "summary": "Create a task"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/{task_gid}",
+      "operationId": "GetTask",
+      "summary": "Get a task"
+    },
+    {
+      "method": "PUT",
+      "path": "/tasks/{task_gid}",
+      "operationId": "UpdateTask",
+      "summary": "Update a task"
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/{task_gid}/stories",
+      "operationId": "GetStoriesForTask",
+      "summary": "Get stories from a task"
+    },
+    {
+      "method": "POST",
+      "path": "/tasks/{task_gid}/stories",
+      "operationId": "CreateStoryForTask",
+      "summary": "Create a story on a task"
+    },
+    {
+      "method": "GET",
+      "path": "/users",
+      "operationId": "GetUsers",
+      "summary": "Get multiple users"
+    },
+    {
+      "method": "GET",
+      "path": "/users/{user_gid}",
+      "operationId": "GetUser",
+      "summary": "Get a user"
+    },
+    {
+      "method": "GET",
+      "path": "/workspaces",
+      "operationId": "GetWorkspaces",
+      "summary": "Get multiple workspaces"
+    },
+    {
+      "method": "GET",
+      "path": "/workspaces/{workspace_gid}",
+      "operationId": "GetWorkspace",
+      "summary": "Get a workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/workspaces/{workspace_gid}/projects",
+      "operationId": "GetProjectsForWorkspace",
+      "summary": "Get all projects in a workspace"
+    }
+  ]
+}
