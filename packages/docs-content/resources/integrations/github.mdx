@@ -1,38 +1,35 @@
 ---
 title: GitHub
-description: A reproducible GitHub API for local application testing.
+description: Repositories, organizations, issues, and pull requests.
 sidebar:
   icon: https://logos.composio.dev/api/github
 ---
 
-import compatibility from "../_generated/github.compatibility.json";
-import example from "../_generated/github-list-issues.json";
+Repositories, organizations, issues, and pull requests. Local GitHub v1 that
+keeps repository state across requests.
 
-Fabricate ships a GitHub v1 resource with a local API driven by the official GitHub OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme GitHub environment seeds a busy `acme/*` org (repos, issues, pulls) plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `github.minimal.v1` | Empty GitHub state for a clean test. |
-| `github.acme-issues.v1` | Busy `acme/*` org: repos, issues, and pulls. Needles on `acme/web`: checkout reliability (#1), Contoso SSO, INV-4812, plus fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop, BrightPath, Fabrikam `req_7Q4K2`. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep GitHub’s normal hostnames. |
+| API | GitHub v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.github.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GITHUB_TOKEN" "$FAB_GITHUB_URL/repos/acme/web/issues"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GITHUB_TOKEN" \
+      "$FAB_GITHUB_URL/repos/acme/web/issues"'
 ```
 
 The service is named `github` in the example manifest, so the variables are
@@ -40,7 +37,7 @@ The service is named `github` in the example manifest, so the variables are
 
 The response is the Acme issue list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="github-list-issues" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -54,9 +51,14 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 ```
 
 Fabricate handles `api.github.com` locally. Other hosts are forwarded unchanged.
+Git object routes (blobs, trees, commits, refs, and smart HTTP) are not served.
 
-The first surface is repository issues only. It does not emulate Git smart HTTP,
-clone, fetch, push, pull-request merges, Actions, or file mutation.
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `github.minimal.v1` | Empty GitHub state for a clean test. |
+| `github.acme-issues.v1` | Busy `acme/*` org: repos, issues, and pulls. Needles on `acme/web`: checkout reliability (#1), Contoso SSO, INV-4812, plus fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop, BrightPath, Fabrikam `req_7Q4K2`. |
 
 ## Compatibility verification
 
@@ -65,4 +67,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest GitHub check ran against the Acme GitHub
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="github" />
+
+## Supported operations
+
+<SupportedOperations resource="github" />
