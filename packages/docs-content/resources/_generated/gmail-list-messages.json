@@ -121,7 +121,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:2b76bac5571d29e7b0359a27e9e8e923fa774793f4c2985b157ff0a0c36d2df5",
+    "digest": "sha256:5f893b1129d5f45f58b5438c38b4401132394510307a7b43f5f781308e58dba5",
     "roots": [
       {
         "path": "cli/run.go",
@@ -141,7 +141,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:8c8f441283f8a537fdc5bdb2aeb3bc2cf4fd194d3692cb398b025050521c29fe"
+        "digest": "sha256:40603b081911417a0b8fb883b57fb8c1e08228ecb9764e30c849c52d1ebcdec5"
       },
       {
         "path": "packages/docs-content/resources/_examples/gmail-list-messages.json",
