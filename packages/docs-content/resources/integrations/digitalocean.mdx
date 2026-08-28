@@ -1,38 +1,35 @@
 ---
 title: DigitalOcean
-description: A reproducible DigitalOcean API for local application testing.
+description: Droplets, databases, apps, Kubernetes, and monitoring.
 sidebar:
   icon: https://logos.composio.dev/api/digitalocean
 ---
 
-import compatibility from "../_generated/digitalocean.compatibility.json";
-import example from "../_generated/digitalocean-list-droplets.json";
+Droplets, databases, apps, Kubernetes, and monitoring. Local DigitalOcean v1
+that keeps droplet state across requests.
 
-Fabricate ships a DigitalOcean v1 resource with a local API driven by the official DigitalOcean OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme DigitalOcean environment seeds a SaaS-sized droplet/volume catalog plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `digitalocean.minimal.v1` | Empty DigitalOcean state for a clean test. |
-| `digitalocean.acme-droplets.v1` | Acme compute estate: droplets, volumes, SSH keys, and domains. Needles: `acme-web` checkout reliability, Contoso SSO API, INV-4812 billing, fernworks analytics, Adatum DNS, LakeTech hooks. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep DigitalOcean’s normal hostnames. |
+| API | DigitalOcean v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.digitalocean.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_DIGITALOCEAN_TOKEN" "$FAB_DIGITALOCEAN_URL/v2/droplets"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_DIGITALOCEAN_TOKEN" \
+      "$FAB_DIGITALOCEAN_URL/v2/droplets"'
 ```
 
 The service is named `digitalocean` in the example manifest, so the variables are
@@ -40,7 +37,7 @@ The service is named `digitalocean` in the example manifest, so the variables ar
 
 The response is the Acme droplet list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="digitalocean-list-droplets" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -55,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.digitalocean.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `digitalocean.minimal.v1` | Empty DigitalOcean state for a clean test. |
+| `digitalocean.acme-droplets.v1` | Acme compute estate: droplets, volumes, SSH keys, and domains. Needles: `acme-web` checkout reliability, Contoso SSO API, INV-4812 billing, fernworks analytics, Adatum DNS, LakeTech hooks. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -62,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest DigitalOcean check ran against the Acme DigitalOcean
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="digitalocean" />
+
+## Supported operations
+
+<SupportedOperations resource="digitalocean" />
