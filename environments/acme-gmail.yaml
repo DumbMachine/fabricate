@@ -7,12 +7,3 @@ services:
   support-mail:
     resource: gmail
     scenario: gmail.acme-corp.v1
-
-proxy:
-  enabled: true
-  # Access's OpenCode model remains live while Gmail and Google OAuth are
-  # intercepted locally. Every other unmatched destination is denied.
-  passthrough:
-    - opencode.ai
-    - models.dev
-    - update.opencode.ai

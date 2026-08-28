@@ -1,0 +1,19 @@
+{
+  "integration": "sendgrid",
+  "scenarios": [
+    {
+      "id": "sendgrid.acme-outbox.v1",
+      "counts": {
+        "batches": 1,
+        "messages": 4
+      }
+    },
+    {
+      "id": "sendgrid.minimal.v1",
+      "counts": {
+        "batches": 0,
+        "messages": 0
+      }
+    }
+  ]
+}

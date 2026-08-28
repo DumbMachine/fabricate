@@ -5,7 +5,7 @@
   "environmentLabel": "Acme DigitalOcean",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/digitalocean-list-droplets.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.digitalocean.com/v2/droplets",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.digitalocean.com/v2/droplets",
   "argv": [
     "curl",
     "-sS",

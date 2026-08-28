@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_DIGITALOCEAN_TOKEN" \
       "$FAB_DIGITALOCEAN_URL/v2/droplets"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme droplet list:
 ### Start it through the proxy
 
 Use this when your app uses the normal DigitalOcean URLs. This one-paste check
-calls DigitalOcean's production hostname; the proxy supplies the local token.
+calls DigitalOcean's production hostname. Omit `$FAB_DIGITALOCEAN_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.digitalocean.com/v2/droplets
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `api.digitalocean.com` locally. Other hosts are forwarded unch
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `digitalocean.minimal.v1` | Empty DigitalOcean state for a clean test. |
-| `digitalocean.acme-droplets.v1` | Acme compute estate: droplets, volumes, SSH keys, and domains. Needles: `acme-web` checkout reliability, Contoso SSO API, INV-4812 billing, fernworks analytics, Adatum DNS, LakeTech hooks. |
+<ResourceScenarios
+  resource="digitalocean"
+  descriptions={{
+    "digitalocean.minimal.v1": "Empty DigitalOcean state for a clean test.",
+    "digitalocean.acme-droplets.v1": "Acme compute estate: droplets, volumes, SSH keys, and domains. Needles: `acme-web` checkout reliability, Contoso SSO API, INV-4812 billing, fernworks analytics, Adatum DNS, LakeTech hooks.",
+  }}
+/>
 
 ## Compatibility verification
 
