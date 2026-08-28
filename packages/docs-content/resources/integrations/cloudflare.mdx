@@ -1,0 +1,76 @@
+---
+title: Cloudflare
+description: Accounts, zones, DNS records, workers, and Radar.
+sidebar:
+  icon: https://logos.composio.dev/api/cloudflare
+---
+
+Accounts, zones, DNS records, workers, and Radar. Local Cloudflare v1 that
+keeps zone state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Cloudflare v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.cloudflare.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_CLOUDFLARE_TOKEN" \
+      "$FAB_CLOUDFLARE_URL/client/v4/zones"'
+```
+
+The service is named `cloudflare` in the example manifest, so the variables are
+`FAB_CLOUDFLARE_URL` and `FAB_CLOUDFLARE_TOKEN`.
+
+The response is the Acme zone list:
+
+<CommandOutput id="cloudflare-list-zones" showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Cloudflare URLs. This one-paste check
+calls Cloudflare's production hostname. Omit `$FAB_CLOUDFLARE_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.cloudflare.com/client/v4/zones
+```
+
+Fabricate handles `api.cloudflare.com` locally. Other hosts are forwarded unchanged.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="cloudflare"
+  descriptions={{
+    "cloudflare.minimal.v1": "Empty Cloudflare state for a clean test.",
+    "cloudflare.acme-zones.v1": "Acme edge estate: product zones, customer custom hostnames, DNS records, workers, and KV. Needles: acme.example, checkout / auth.acme.example (Contoso SSO), INV-4812 billing, TXT acme-domain-verification=adatum-7f31, LakeTech hooks.acme.example.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Cloudflare check ran against the Acme Cloudflare
+environment with curl:
+
+<IntegrationCompatibility resource="cloudflare" />
+
+## Supported operations
+
+<SupportedOperations resource="cloudflare" />
