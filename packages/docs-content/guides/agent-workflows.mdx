@@ -32,6 +32,45 @@ proxy and CA environment variables. Model APIs and other unknown hosts continue
 to their real destinations by default. Set `proxy.unknown_hosts: reject` in a
 custom environment only when the whole run should be isolated.
 
+## Wrap a local agent
+
+The same wrap works for a local agent. Pass it after `--`; it keeps the
+provider's normal hostname while Fabricate authenticates those requests and
+serves the seeded inbox:
+
+```bash
+fab run acme-gmail --proxy -- opencode web
+```
+
+The agent must honor the injected HTTP proxy and CA variables, the same as a
+wrapped worker. After the session, `fab logs acme-gmail --cat` shows the
+redacted Gmail calls.
+
+<figure class="docs-screenshot">
+  <img
+    src="/docs/opencode-gmail-proxy.png"
+    alt="OpenCode fetching the latest message from the seeded Acme Gmail inbox through Fabricate's proxy"
+    width="1147"
+    height="1324"
+  />
+</figure>
+
+## Power your own agents
+
+The same environment can sit under a product's own agent, not only a wrapped
+CLI. [Krucible](https://krucible.app) uses Fabricate so its agent talks to
+Gmail the way a customer would, against a known inbox instead of a live
+account.
+
+<figure class="docs-screenshot">
+  <img
+    src="/docs/krucible-agent-gmail.png"
+    alt="Krucible listing the latest three Acme Gmail threads by sender and subject"
+    width="971"
+    height="1317"
+  />
+</figure>
+
 ## Run beside an existing worker
 
 If another runner owns the worker lifecycle, start Fabricate without a child
