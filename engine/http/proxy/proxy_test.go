@@ -43,6 +43,18 @@ func TestProxyInterceptsGmailAndInjectsSyntheticToken(t *testing.T) {
 	}
 }
 
+func TestInterceptedHostsAreUniqueAndSorted(t *testing.T) {
+	p := &Proxy{routes: []compiledRoute{
+		{Route: Route{Host: "www.googleapis.com"}},
+		{Route: Route{Host: "gmail.googleapis.com"}},
+		{Route: Route{Host: "www.googleapis.com", PathPrefix: "/gmail/"}},
+	}}
+	hosts := p.InterceptedHosts()
+	if got, want := strings.Join(hosts, ","), "gmail.googleapis.com,www.googleapis.com"; got != want {
+		t.Fatalf("hosts = %q, want %q", got, want)
+	}
+}
+
 func TestProxyMintsTokenUsedByService(t *testing.T) {
 	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, request *http.Request) {
 		if request.Header.Get("Authorization") != "Bearer synthetic" {

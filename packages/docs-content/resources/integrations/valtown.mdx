@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-valtown.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_VALTOWN_TOKEN" \
       "$FAB_VALTOWN_URL/v2/vals"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme val list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Val Town URLs. This one-paste check
-calls Val Town's production hostname; the proxy supplies the local token.
+calls Val Town's production hostname. Omit `$FAB_VALTOWN_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-valtown.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.val.town/v2/vals
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `api.val.town` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `valtown.minimal.v1` | Empty Val Town state for a clean test. |
-| `valtown.acme-vals.v1` | Acme val catalog. Needles: `acme-webhooks` (LakeTech retries), checkout canary, Contoso SAML debug, INV-4812 billing helper, fernworks CSV probe, Adatum DNS recheck, Fabrikam SCIM. |
+<ResourceScenarios
+  resource="valtown"
+  descriptions={{
+    "valtown.minimal.v1": "Empty Val Town state for a clean test.",
+    "valtown.acme-vals.v1": "Acme val catalog. Needles: `acme-webhooks` (LakeTech retries), checkout canary, Contoso SAML debug, INV-4812 billing helper, fernworks CSV probe, Adatum DNS recheck, Fabrikam SCIM.",
+  }}
+/>
 
 ## Compatibility verification
 

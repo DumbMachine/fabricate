@@ -1,0 +1,23 @@
+{
+  "integration": "intercom",
+  "scenarios": [
+    {
+      "id": "intercom.acme-inbox.v1",
+      "counts": {
+        "admins": 2,
+        "contacts": 6,
+        "conversations": 7,
+        "parts": 6
+      }
+    },
+    {
+      "id": "intercom.minimal.v1",
+      "counts": {
+        "admins": 1,
+        "contacts": 0,
+        "conversations": 0,
+        "parts": 0
+      }
+    }
+  ]
+}
