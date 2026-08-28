@@ -1,0 +1,3524 @@
+{
+  "integration": "stripe",
+  "api": "Stripe v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/account",
+      "operationId": "GetAccount",
+      "summary": "Retrieve account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/account_links",
+      "operationId": "PostAccountLinks",
+      "summary": "Create an account link"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/account_sessions",
+      "operationId": "PostAccountSessions",
+      "summary": "Create an Account Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts",
+      "operationId": "GetAccounts",
+      "summary": "List all connected accounts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts",
+      "operationId": "PostAccounts",
+      "summary": "Create an account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}",
+      "operationId": "GetAccountsAccount",
+      "summary": "Retrieve account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}",
+      "operationId": "PostAccountsAccount",
+      "summary": "Update an account"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/accounts/{account}",
+      "operationId": "DeleteAccountsAccount",
+      "summary": "Delete an account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/bank_accounts",
+      "operationId": "PostAccountsAccountBankAccounts",
+      "summary": "Create an external account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/bank_accounts/{id}",
+      "operationId": "GetAccountsAccountBankAccountsId",
+      "summary": "Retrieve an external account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/bank_accounts/{id}",
+      "operationId": "PostAccountsAccountBankAccountsId",
+      "summary": "Update a bank account"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/accounts/{account}/bank_accounts/{id}",
+      "operationId": "DeleteAccountsAccountBankAccountsId",
+      "summary": "Delete an external account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/capabilities",
+      "operationId": "GetAccountsAccountCapabilities",
+      "summary": "List all account capabilities"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/capabilities/{capability}",
+      "operationId": "GetAccountsAccountCapabilitiesCapability",
+      "summary": "Retrieve an Account Capability"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/capabilities/{capability}",
+      "operationId": "PostAccountsAccountCapabilitiesCapability",
+      "summary": "Update an Account Capability"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/external_accounts",
+      "operationId": "GetAccountsAccountExternalAccounts",
+      "summary": "List all external accounts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/external_accounts",
+      "operationId": "PostAccountsAccountExternalAccounts",
+      "summary": "Create an external account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/external_accounts/{id}",
+      "operationId": "GetAccountsAccountExternalAccountsId",
+      "summary": "Retrieve an external account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/external_accounts/{id}",
+      "operationId": "PostAccountsAccountExternalAccountsId",
+      "summary": "Update a bank account"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/accounts/{account}/external_accounts/{id}",
+      "operationId": "DeleteAccountsAccountExternalAccountsId",
+      "summary": "Delete an external account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/login_links",
+      "operationId": "PostAccountsAccountLoginLinks",
+      "summary": "Create a login link"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/people",
+      "operationId": "GetAccountsAccountPeople",
+      "summary": "List all persons"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/people",
+      "operationId": "PostAccountsAccountPeople",
+      "summary": "Create a person"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/people/{person}",
+      "operationId": "GetAccountsAccountPeoplePerson",
+      "summary": "Retrieve a person"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/people/{person}",
+      "operationId": "PostAccountsAccountPeoplePerson",
+      "summary": "Update a person"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/accounts/{account}/people/{person}",
+      "operationId": "DeleteAccountsAccountPeoplePerson",
+      "summary": "Delete a person"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/persons",
+      "operationId": "GetAccountsAccountPersons",
+      "summary": "List all persons"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/persons",
+      "operationId": "PostAccountsAccountPersons",
+      "summary": "Create a person"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/accounts/{account}/persons/{person}",
+      "operationId": "GetAccountsAccountPersonsPerson",
+      "summary": "Retrieve a person"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/persons/{person}",
+      "operationId": "PostAccountsAccountPersonsPerson",
+      "summary": "Update a person"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/accounts/{account}/persons/{person}",
+      "operationId": "DeleteAccountsAccountPersonsPerson",
+      "summary": "Delete a person"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/reject",
+      "operationId": "PostAccountsAccountReject",
+      "summary": "Reject an account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/accounts/{account}/unreject",
+      "operationId": "PostAccountsAccountUnreject",
+      "summary": "Unreject an account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apple_pay/domains",
+      "operationId": "GetApplePayDomains"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apple_pay/domains",
+      "operationId": "PostApplePayDomains"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apple_pay/domains/{domain}",
+      "operationId": "GetApplePayDomainsDomain"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/apple_pay/domains/{domain}",
+      "operationId": "DeleteApplePayDomainsDomain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/application_fees",
+      "operationId": "GetApplicationFees",
+      "summary": "List all application fees"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/application_fees/{fee}/refunds/{id}",
+      "operationId": "GetApplicationFeesFeeRefundsId",
+      "summary": "Retrieve an application fee refund"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/application_fees/{fee}/refunds/{id}",
+      "operationId": "PostApplicationFeesFeeRefundsId",
+      "summary": "Update an application fee refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/application_fees/{id}",
+      "operationId": "GetApplicationFeesId",
+      "summary": "Retrieve an application fee"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/application_fees/{id}/refund",
+      "operationId": "PostApplicationFeesIdRefund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/application_fees/{id}/refunds",
+      "operationId": "GetApplicationFeesIdRefunds",
+      "summary": "List all application fee refunds"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/application_fees/{id}/refunds",
+      "operationId": "PostApplicationFeesIdRefunds",
+      "summary": "Create an application fee refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/secrets",
+      "operationId": "GetAppsSecrets",
+      "summary": "List secrets"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/secrets",
+      "operationId": "PostAppsSecrets",
+      "summary": "Set a Secret"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/secrets/delete",
+      "operationId": "PostAppsSecretsDelete",
+      "summary": "Delete a Secret"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/secrets/find",
+      "operationId": "GetAppsSecretsFind",
+      "summary": "Find a Secret"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/balance",
+      "operationId": "GetBalance",
+      "summary": "Retrieve balance"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/balance/history",
+      "operationId": "GetBalanceHistory",
+      "summary": "List all balance transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/balance/history/{id}",
+      "operationId": "GetBalanceHistoryId",
+      "summary": "Retrieve a balance transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/balance_settings",
+      "operationId": "GetBalanceSettings",
+      "summary": "Retrieve balance settings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/balance_settings",
+      "operationId": "PostBalanceSettings",
+      "summary": "Update balance settings"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/balance_transactions",
+      "operationId": "GetBalanceTransactions",
+      "summary": "List all balance transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/balance_transactions/{id}",
+      "operationId": "GetBalanceTransactionsId",
+      "summary": "Retrieve a balance transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/alerts",
+      "operationId": "GetBillingAlerts",
+      "summary": "List billing alerts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/alerts",
+      "operationId": "PostBillingAlerts",
+      "summary": "Create a billing alert"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/alerts/{id}",
+      "operationId": "GetBillingAlertsId",
+      "summary": "Retrieve a billing alert"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/alerts/{id}/activate",
+      "operationId": "PostBillingAlertsIdActivate",
+      "summary": "Activate a billing alert"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/alerts/{id}/archive",
+      "operationId": "PostBillingAlertsIdArchive",
+      "summary": "Archive a billing alert"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/alerts/{id}/deactivate",
+      "operationId": "PostBillingAlertsIdDeactivate",
+      "summary": "Deactivate a billing alert"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/credit_balance_summary",
+      "operationId": "GetBillingCreditBalanceSummary",
+      "summary": "Retrieve the credit balance summary for a customer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/credit_balance_transactions",
+      "operationId": "GetBillingCreditBalanceTransactions",
+      "summary": "List credit balance transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/credit_balance_transactions/{id}",
+      "operationId": "GetBillingCreditBalanceTransactionsId",
+      "summary": "Retrieve a credit balance transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/credit_grants",
+      "operationId": "GetBillingCreditGrants",
+      "summary": "List credit grants"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/credit_grants",
+      "operationId": "PostBillingCreditGrants",
+      "summary": "Create a credit grant"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/credit_grants/{id}",
+      "operationId": "GetBillingCreditGrantsId",
+      "summary": "Retrieve a credit grant"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/credit_grants/{id}",
+      "operationId": "PostBillingCreditGrantsId",
+      "summary": "Update a credit grant"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/credit_grants/{id}/expire",
+      "operationId": "PostBillingCreditGrantsIdExpire",
+      "summary": "Expire a credit grant"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/credit_grants/{id}/void",
+      "operationId": "PostBillingCreditGrantsIdVoid",
+      "summary": "Void a credit grant"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/meter_event_adjustments",
+      "operationId": "PostBillingMeterEventAdjustments",
+      "summary": "Create a billing meter event adjustment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/meter_events",
+      "operationId": "PostBillingMeterEvents",
+      "summary": "Create a billing meter event"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/meters",
+      "operationId": "GetBillingMeters",
+      "summary": "List billing meters"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/meters",
+      "operationId": "PostBillingMeters",
+      "summary": "Create a billing meter"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/meters/{id}",
+      "operationId": "GetBillingMetersId",
+      "summary": "Retrieve a billing meter"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/meters/{id}",
+      "operationId": "PostBillingMetersId",
+      "summary": "Update a billing meter"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/meters/{id}/deactivate",
+      "operationId": "PostBillingMetersIdDeactivate",
+      "summary": "Deactivate a billing meter"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/meters/{id}/event_summaries",
+      "operationId": "GetBillingMetersIdEventSummaries",
+      "summary": "List billing meter event summaries"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/meters/{id}/reactivate",
+      "operationId": "PostBillingMetersIdReactivate",
+      "summary": "Reactivate a billing meter"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing_portal/configurations",
+      "operationId": "GetBillingPortalConfigurations",
+      "summary": "List portal configurations"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing_portal/configurations",
+      "operationId": "PostBillingPortalConfigurations",
+      "summary": "Create a portal configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing_portal/configurations/{configuration}",
+      "operationId": "GetBillingPortalConfigurationsConfiguration",
+      "summary": "Retrieve a portal configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing_portal/configurations/{configuration}",
+      "operationId": "PostBillingPortalConfigurationsConfiguration",
+      "summary": "Update a portal configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing_portal/sessions",
+      "operationId": "PostBillingPortalSessions",
+      "summary": "Create a portal session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/charges",
+      "operationId": "GetCharges",
+      "summary": "List all charges"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges",
+      "operationId": "PostCharges",
+      "summary": "Create a charge"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/charges/search",
+      "operationId": "GetChargesSearch",
+      "summary": "Search charges"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/charges/{charge}",
+      "operationId": "GetChargesCharge",
+      "summary": "Retrieve a charge"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}",
+      "operationId": "PostChargesCharge",
+      "summary": "Update a charge"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}/capture",
+      "operationId": "PostChargesChargeCapture",
+      "summary": "Capture a charge"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/charges/{charge}/dispute",
+      "operationId": "GetChargesChargeDispute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}/dispute",
+      "operationId": "PostChargesChargeDispute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}/dispute/close",
+      "operationId": "PostChargesChargeDisputeClose"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}/refund",
+      "operationId": "PostChargesChargeRefund",
+      "summary": "Create a refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/charges/{charge}/refunds",
+      "operationId": "GetChargesChargeRefunds",
+      "summary": "List all refunds"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}/refunds",
+      "operationId": "PostChargesChargeRefunds",
+      "summary": "Create a refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/charges/{charge}/refunds/{refund}",
+      "operationId": "GetChargesChargeRefundsRefund"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/charges/{charge}/refunds/{refund}",
+      "operationId": "PostChargesChargeRefundsRefund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/checkout/sessions",
+      "operationId": "GetCheckoutSessions",
+      "summary": "List all Checkout Sessions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/checkout/sessions",
+      "operationId": "PostCheckoutSessions",
+      "summary": "Create a Checkout Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/checkout/sessions/{session}",
+      "operationId": "GetCheckoutSessionsSession",
+      "summary": "Retrieve a Checkout Session"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/checkout/sessions/{session}",
+      "operationId": "PostCheckoutSessionsSession",
+      "summary": "Update a Checkout Session"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/checkout/sessions/{session}/expire",
+      "operationId": "PostCheckoutSessionsSessionExpire",
+      "summary": "Expire a Checkout Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/checkout/sessions/{session}/line_items",
+      "operationId": "GetCheckoutSessionsSessionLineItems",
+      "summary": "Retrieve a Checkout Session's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/climate/orders",
+      "operationId": "GetClimateOrders",
+      "summary": "List orders"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/climate/orders",
+      "operationId": "PostClimateOrders",
+      "summary": "Create an order"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/climate/orders/{order}",
+      "operationId": "GetClimateOrdersOrder",
+      "summary": "Retrieve an order"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/climate/orders/{order}",
+      "operationId": "PostClimateOrdersOrder",
+      "summary": "Update an order"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/climate/orders/{order}/cancel",
+      "operationId": "PostClimateOrdersOrderCancel",
+      "summary": "Cancel an order"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/climate/products",
+      "operationId": "GetClimateProducts",
+      "summary": "List products"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/climate/products/{product}",
+      "operationId": "GetClimateProductsProduct",
+      "summary": "Retrieve a product"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/climate/suppliers",
+      "operationId": "GetClimateSuppliers",
+      "summary": "List suppliers"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/climate/suppliers/{supplier}",
+      "operationId": "GetClimateSuppliersSupplier",
+      "summary": "Retrieve a supplier"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/confirmation_tokens/{confirmation_token}",
+      "operationId": "GetConfirmationTokensConfirmationToken",
+      "summary": "Retrieve a ConfirmationToken"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/country_specs",
+      "operationId": "GetCountrySpecs",
+      "summary": "List Country Specs"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/country_specs/{country}",
+      "operationId": "GetCountrySpecsCountry",
+      "summary": "Retrieve a Country Spec"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/coupons",
+      "operationId": "GetCoupons",
+      "summary": "List all coupons"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/coupons",
+      "operationId": "PostCoupons",
+      "summary": "Create a coupon"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/coupons/{coupon}",
+      "operationId": "GetCouponsCoupon",
+      "summary": "Retrieve a coupon"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/coupons/{coupon}",
+      "operationId": "PostCouponsCoupon",
+      "summary": "Update a coupon"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/coupons/{coupon}",
+      "operationId": "DeleteCouponsCoupon",
+      "summary": "Delete a coupon"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/credit_notes",
+      "operationId": "GetCreditNotes",
+      "summary": "List all credit notes"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/credit_notes",
+      "operationId": "PostCreditNotes",
+      "summary": "Create a credit note"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/credit_notes/preview",
+      "operationId": "GetCreditNotesPreview",
+      "summary": "Preview a credit note"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/credit_notes/preview/lines",
+      "operationId": "GetCreditNotesPreviewLines",
+      "summary": "Retrieve a credit note preview's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/credit_notes/{credit_note}/lines",
+      "operationId": "GetCreditNotesCreditNoteLines",
+      "summary": "Retrieve a credit note's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/credit_notes/{id}",
+      "operationId": "GetCreditNotesId",
+      "summary": "Retrieve a credit note"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/credit_notes/{id}",
+      "operationId": "PostCreditNotesId",
+      "summary": "Update a credit note"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/credit_notes/{id}/void",
+      "operationId": "PostCreditNotesIdVoid",
+      "summary": "Void a credit note"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customer_sessions",
+      "operationId": "PostCustomerSessions",
+      "summary": "Create a Customer Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers",
+      "operationId": "GetCustomers",
+      "summary": "List all customers"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers",
+      "operationId": "PostCustomers",
+      "summary": "Create a customer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/search",
+      "operationId": "GetCustomersSearch",
+      "summary": "Search customers"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}",
+      "operationId": "GetCustomersCustomer",
+      "summary": "Retrieve a customer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}",
+      "operationId": "PostCustomersCustomer",
+      "summary": "Update a customer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}",
+      "operationId": "DeleteCustomersCustomer",
+      "summary": "Delete a customer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/balance_transactions",
+      "operationId": "GetCustomersCustomerBalanceTransactions",
+      "summary": "List customer balance transactions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/balance_transactions",
+      "operationId": "PostCustomersCustomerBalanceTransactions",
+      "summary": "Create a customer balance transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/balance_transactions/{transaction}",
+      "operationId": "GetCustomersCustomerBalanceTransactionsTransaction",
+      "summary": "Retrieve a customer balance transaction"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/balance_transactions/{transaction}",
+      "operationId": "PostCustomersCustomerBalanceTransactionsTransaction",
+      "summary": "Update a customer credit balance transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/bank_accounts",
+      "operationId": "GetCustomersCustomerBankAccounts",
+      "summary": "List all bank accounts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/bank_accounts",
+      "operationId": "PostCustomersCustomerBankAccounts",
+      "summary": "Create a card"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/bank_accounts/{id}",
+      "operationId": "GetCustomersCustomerBankAccountsId",
+      "summary": "Retrieve a bank account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/bank_accounts/{id}",
+      "operationId": "PostCustomersCustomerBankAccountsId",
+      "summary": "Update a card"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/bank_accounts/{id}",
+      "operationId": "DeleteCustomersCustomerBankAccountsId",
+      "summary": "Delete a customer source"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/bank_accounts/{id}/verify",
+      "operationId": "PostCustomersCustomerBankAccountsIdVerify",
+      "summary": "Verify a bank account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/cards",
+      "operationId": "GetCustomersCustomerCards",
+      "summary": "List all cards"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/cards",
+      "operationId": "PostCustomersCustomerCards",
+      "summary": "Create a card"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/cards/{id}",
+      "operationId": "GetCustomersCustomerCardsId",
+      "summary": "Retrieve a card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/cards/{id}",
+      "operationId": "PostCustomersCustomerCardsId",
+      "summary": "Update a card"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/cards/{id}",
+      "operationId": "DeleteCustomersCustomerCardsId",
+      "summary": "Delete a customer source"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/cash_balance",
+      "operationId": "GetCustomersCustomerCashBalance",
+      "summary": "Retrieve a cash balance"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/cash_balance",
+      "operationId": "PostCustomersCustomerCashBalance",
+      "summary": "Update a cash balance's settings"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/cash_balance_transactions",
+      "operationId": "GetCustomersCustomerCashBalanceTransactions",
+      "summary": "List cash balance transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/cash_balance_transactions/{transaction}",
+      "operationId": "GetCustomersCustomerCashBalanceTransactionsTransaction",
+      "summary": "Retrieve a cash balance transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/discount",
+      "operationId": "GetCustomersCustomerDiscount"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/discount",
+      "operationId": "DeleteCustomersCustomerDiscount",
+      "summary": "Delete a customer discount"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/funding_instructions",
+      "operationId": "PostCustomersCustomerFundingInstructions",
+      "summary": "Create or retrieve funding instructions for a customer cash balance"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/payment_methods",
+      "operationId": "GetCustomersCustomerPaymentMethods",
+      "summary": "List a Customer's PaymentMethods"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/payment_methods/{payment_method}",
+      "operationId": "GetCustomersCustomerPaymentMethodsPaymentMethod",
+      "summary": "Retrieve a Customer's PaymentMethod"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/sources",
+      "operationId": "GetCustomersCustomerSources"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/sources",
+      "operationId": "PostCustomersCustomerSources",
+      "summary": "Create a card"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/sources/{id}",
+      "operationId": "GetCustomersCustomerSourcesId"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/sources/{id}",
+      "operationId": "PostCustomersCustomerSourcesId",
+      "summary": "Update a card"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/sources/{id}",
+      "operationId": "DeleteCustomersCustomerSourcesId",
+      "summary": "Delete a customer source"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/sources/{id}/verify",
+      "operationId": "PostCustomersCustomerSourcesIdVerify",
+      "summary": "Verify a bank account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/subscriptions",
+      "operationId": "GetCustomersCustomerSubscriptions",
+      "summary": "List active subscriptions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/subscriptions",
+      "operationId": "PostCustomersCustomerSubscriptions",
+      "summary": "Create a subscription"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}",
+      "operationId": "GetCustomersCustomerSubscriptionsSubscriptionExposedId",
+      "summary": "Retrieve a subscription"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}",
+      "operationId": "PostCustomersCustomerSubscriptionsSubscriptionExposedId",
+      "summary": "Update a subscription on a customer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}",
+      "operationId": "DeleteCustomersCustomerSubscriptionsSubscriptionExposedId",
+      "summary": "Cancel a subscription"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}/discount",
+      "operationId": "GetCustomersCustomerSubscriptionsSubscriptionExposedIdDiscount"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/subscriptions/{subscription_exposed_id}/discount",
+      "operationId": "DeleteCustomersCustomerSubscriptionsSubscriptionExposedIdDiscount",
+      "summary": "Delete a customer discount"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/tax_ids",
+      "operationId": "GetCustomersCustomerTaxIds",
+      "summary": "List all Customer tax IDs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/customers/{customer}/tax_ids",
+      "operationId": "PostCustomersCustomerTaxIds",
+      "summary": "Create a Customer tax ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/customers/{customer}/tax_ids/{id}",
+      "operationId": "GetCustomersCustomerTaxIdsId",
+      "summary": "Retrieve a Customer tax ID"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/customers/{customer}/tax_ids/{id}",
+      "operationId": "DeleteCustomersCustomerTaxIdsId",
+      "summary": "Delete a Customer tax ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/disputes",
+      "operationId": "GetDisputes",
+      "summary": "List all disputes"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/disputes/{dispute}",
+      "operationId": "GetDisputesDispute",
+      "summary": "Retrieve a dispute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/disputes/{dispute}",
+      "operationId": "PostDisputesDispute",
+      "summary": "Update a dispute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/disputes/{dispute}/close",
+      "operationId": "PostDisputesDisputeClose",
+      "summary": "Close a dispute"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entitlements/active_entitlements",
+      "operationId": "GetEntitlementsActiveEntitlements",
+      "summary": "List all active entitlements"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entitlements/active_entitlements/{id}",
+      "operationId": "GetEntitlementsActiveEntitlementsId",
+      "summary": "Retrieve an active entitlement"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entitlements/features",
+      "operationId": "GetEntitlementsFeatures",
+      "summary": "List all features"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/entitlements/features",
+      "operationId": "PostEntitlementsFeatures",
+      "summary": "Create a feature"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entitlements/features/{id}",
+      "operationId": "GetEntitlementsFeaturesId",
+      "summary": "Retrieve a feature"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/entitlements/features/{id}",
+      "operationId": "PostEntitlementsFeaturesId",
+      "summary": "Updates a feature"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ephemeral_keys",
+      "operationId": "PostEphemeralKeys",
+      "summary": "Create an ephemeral key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/ephemeral_keys/{key}",
+      "operationId": "DeleteEphemeralKeysKey",
+      "summary": "Immediately invalidate an ephemeral key"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "operationId": "GetEvents",
+      "summary": "List all events"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/{id}",
+      "operationId": "GetEventsId",
+      "summary": "Retrieve an event"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/exchange_rates",
+      "operationId": "GetExchangeRates",
+      "summary": "List all exchange rates"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/exchange_rates/{rate_id}",
+      "operationId": "GetExchangeRatesRateId",
+      "summary": "Retrieve an exchange rate"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/external_accounts/{id}",
+      "operationId": "PostExternalAccountsId",
+      "summary": "Update a bank account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/file_links",
+      "operationId": "GetFileLinks",
+      "summary": "List all file links"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/file_links",
+      "operationId": "PostFileLinks",
+      "summary": "Create a file link"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/file_links/{link}",
+      "operationId": "GetFileLinksLink",
+      "summary": "Retrieve a file link"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/file_links/{link}",
+      "operationId": "PostFileLinksLink",
+      "summary": "Update a file link"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files",
+      "operationId": "GetFiles",
+      "summary": "List all files"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/files",
+      "operationId": "PostFiles",
+      "summary": "Create a file"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file}",
+      "operationId": "GetFilesFile",
+      "summary": "Retrieve a file"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/financial_connections/accounts",
+      "operationId": "GetFinancialConnectionsAccounts",
+      "summary": "List Accounts"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/financial_connections/accounts/{account}",
+      "operationId": "GetFinancialConnectionsAccountsAccount",
+      "summary": "Retrieve an Account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/financial_connections/accounts/{account}/disconnect",
+      "operationId": "PostFinancialConnectionsAccountsAccountDisconnect",
+      "summary": "Disconnect an Account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/financial_connections/accounts/{account}/owners",
+      "operationId": "GetFinancialConnectionsAccountsAccountOwners",
+      "summary": "List Account Owners"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/financial_connections/accounts/{account}/refresh",
+      "operationId": "PostFinancialConnectionsAccountsAccountRefresh",
+      "summary": "Refresh Account data"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/financial_connections/accounts/{account}/subscribe",
+      "operationId": "PostFinancialConnectionsAccountsAccountSubscribe",
+      "summary": "Subscribe to data refreshes for an Account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/financial_connections/accounts/{account}/unsubscribe",
+      "operationId": "PostFinancialConnectionsAccountsAccountUnsubscribe",
+      "summary": "Unsubscribe from data refreshes for an Account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/financial_connections/sessions",
+      "operationId": "PostFinancialConnectionsSessions",
+      "summary": "Create a Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/financial_connections/sessions/{session}",
+      "operationId": "GetFinancialConnectionsSessionsSession",
+      "summary": "Retrieve a Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/financial_connections/transactions",
+      "operationId": "GetFinancialConnectionsTransactions",
+      "summary": "List Transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/financial_connections/transactions/{transaction}",
+      "operationId": "GetFinancialConnectionsTransactionsTransaction",
+      "summary": "Retrieve a Transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/forwarding/requests",
+      "operationId": "GetForwardingRequests",
+      "summary": "List all ForwardingRequests"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/forwarding/requests",
+      "operationId": "PostForwardingRequests",
+      "summary": "Create a ForwardingRequest"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/forwarding/requests/{id}",
+      "operationId": "GetForwardingRequestsId",
+      "summary": "Retrieve a ForwardingRequest"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/identity/verification_reports",
+      "operationId": "GetIdentityVerificationReports",
+      "summary": "List VerificationReports"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/identity/verification_reports/{report}",
+      "operationId": "GetIdentityVerificationReportsReport",
+      "summary": "Retrieve a VerificationReport"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/identity/verification_sessions",
+      "operationId": "GetIdentityVerificationSessions",
+      "summary": "List VerificationSessions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/identity/verification_sessions",
+      "operationId": "PostIdentityVerificationSessions",
+      "summary": "Create a VerificationSession"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/identity/verification_sessions/{session}",
+      "operationId": "GetIdentityVerificationSessionsSession",
+      "summary": "Retrieve a VerificationSession"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/identity/verification_sessions/{session}",
+      "operationId": "PostIdentityVerificationSessionsSession",
+      "summary": "Update a VerificationSession"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/identity/verification_sessions/{session}/cancel",
+      "operationId": "PostIdentityVerificationSessionsSessionCancel",
+      "summary": "Cancel a VerificationSession"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/identity/verification_sessions/{session}/redact",
+      "operationId": "PostIdentityVerificationSessionsSessionRedact",
+      "summary": "Redact a VerificationSession"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoice_payments",
+      "operationId": "GetInvoicePayments",
+      "summary": "List all payments for an invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoice_payments/{invoice_payment}",
+      "operationId": "GetInvoicePaymentsInvoicePayment",
+      "summary": "Retrieve an InvoicePayment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoice_rendering_templates",
+      "operationId": "GetInvoiceRenderingTemplates",
+      "summary": "List all invoice rendering templates"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoice_rendering_templates/{template}",
+      "operationId": "GetInvoiceRenderingTemplatesTemplate",
+      "summary": "Retrieve an invoice rendering template"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoice_rendering_templates/{template}/archive",
+      "operationId": "PostInvoiceRenderingTemplatesTemplateArchive",
+      "summary": "Archive an invoice rendering template"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoice_rendering_templates/{template}/unarchive",
+      "operationId": "PostInvoiceRenderingTemplatesTemplateUnarchive",
+      "summary": "Unarchive an invoice rendering template"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoiceitems",
+      "operationId": "GetInvoiceitems",
+      "summary": "List all invoice items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoiceitems",
+      "operationId": "PostInvoiceitems",
+      "summary": "Create an invoice item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoiceitems/{invoiceitem}",
+      "operationId": "GetInvoiceitemsInvoiceitem",
+      "summary": "Retrieve an invoice item"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoiceitems/{invoiceitem}",
+      "operationId": "PostInvoiceitemsInvoiceitem",
+      "summary": "Update an invoice item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/invoiceitems/{invoiceitem}",
+      "operationId": "DeleteInvoiceitemsInvoiceitem",
+      "summary": "Delete an invoice item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoices",
+      "operationId": "GetInvoices",
+      "summary": "List all invoices"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices",
+      "operationId": "PostInvoices",
+      "summary": "Create an invoice"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/create_preview",
+      "operationId": "PostInvoicesCreatePreview",
+      "summary": "Create a preview invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoices/search",
+      "operationId": "GetInvoicesSearch",
+      "summary": "Search invoices"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoices/{invoice}",
+      "operationId": "GetInvoicesInvoice",
+      "summary": "Retrieve an invoice"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}",
+      "operationId": "PostInvoicesInvoice",
+      "summary": "Update an invoice"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/invoices/{invoice}",
+      "operationId": "DeleteInvoicesInvoice",
+      "summary": "Delete a draft invoice"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/add_lines",
+      "operationId": "PostInvoicesInvoiceAddLines",
+      "summary": "Bulk add invoice line items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/attach_payment",
+      "operationId": "PostInvoicesInvoiceAttachPayment",
+      "summary": "Attach a payment to an Invoice"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/finalize",
+      "operationId": "PostInvoicesInvoiceFinalize",
+      "summary": "Finalize an invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invoices/{invoice}/lines",
+      "operationId": "GetInvoicesInvoiceLines",
+      "summary": "Retrieve an invoice's line items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/lines/{line_item_id}",
+      "operationId": "PostInvoicesInvoiceLinesLineItemId",
+      "summary": "Update an invoice's line item"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/mark_uncollectible",
+      "operationId": "PostInvoicesInvoiceMarkUncollectible",
+      "summary": "Mark an invoice as uncollectible"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/pay",
+      "operationId": "PostInvoicesInvoicePay",
+      "summary": "Pay an invoice"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/remove_lines",
+      "operationId": "PostInvoicesInvoiceRemoveLines",
+      "summary": "Bulk remove invoice line items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/send",
+      "operationId": "PostInvoicesInvoiceSend",
+      "summary": "Send an invoice for manual payment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/update_lines",
+      "operationId": "PostInvoicesInvoiceUpdateLines",
+      "summary": "Bulk update invoice line items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invoices/{invoice}/void",
+      "operationId": "PostInvoicesInvoiceVoid",
+      "summary": "Void an invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/authorizations",
+      "operationId": "GetIssuingAuthorizations",
+      "summary": "List all authorizations"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/authorizations/{authorization}",
+      "operationId": "GetIssuingAuthorizationsAuthorization",
+      "summary": "Retrieve an authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/authorizations/{authorization}",
+      "operationId": "PostIssuingAuthorizationsAuthorization",
+      "summary": "Update an authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/authorizations/{authorization}/approve",
+      "operationId": "PostIssuingAuthorizationsAuthorizationApprove",
+      "summary": "Approve an authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/authorizations/{authorization}/decline",
+      "operationId": "PostIssuingAuthorizationsAuthorizationDecline",
+      "summary": "Decline an authorization"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/cardholders",
+      "operationId": "GetIssuingCardholders",
+      "summary": "List all cardholders"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/cardholders",
+      "operationId": "PostIssuingCardholders",
+      "summary": "Create a cardholder"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/cardholders/{cardholder}",
+      "operationId": "GetIssuingCardholdersCardholder",
+      "summary": "Retrieve a cardholder"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/cardholders/{cardholder}",
+      "operationId": "PostIssuingCardholdersCardholder",
+      "summary": "Update a cardholder"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/cards",
+      "operationId": "GetIssuingCards",
+      "summary": "List all cards"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/cards",
+      "operationId": "PostIssuingCards",
+      "summary": "Create a card"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/cards/{card}",
+      "operationId": "GetIssuingCardsCard",
+      "summary": "Retrieve a card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/cards/{card}",
+      "operationId": "PostIssuingCardsCard",
+      "summary": "Update a card"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/disputes",
+      "operationId": "GetIssuingDisputes",
+      "summary": "List all disputes"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/disputes",
+      "operationId": "PostIssuingDisputes",
+      "summary": "Create a dispute"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/disputes/{dispute}",
+      "operationId": "GetIssuingDisputesDispute",
+      "summary": "Retrieve a dispute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/disputes/{dispute}",
+      "operationId": "PostIssuingDisputesDispute",
+      "summary": "Update a dispute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/disputes/{dispute}/submit",
+      "operationId": "PostIssuingDisputesDisputeSubmit",
+      "summary": "Submit a dispute"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/personalization_designs",
+      "operationId": "GetIssuingPersonalizationDesigns",
+      "summary": "List all personalization designs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/personalization_designs",
+      "operationId": "PostIssuingPersonalizationDesigns",
+      "summary": "Create a personalization design"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/personalization_designs/{personalization_design}",
+      "operationId": "GetIssuingPersonalizationDesignsPersonalizationDesign",
+      "summary": "Retrieve a personalization design"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/personalization_designs/{personalization_design}",
+      "operationId": "PostIssuingPersonalizationDesignsPersonalizationDesign",
+      "summary": "Update a personalization design"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/physical_bundles",
+      "operationId": "GetIssuingPhysicalBundles",
+      "summary": "List all physical bundles"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/physical_bundles/{physical_bundle}",
+      "operationId": "GetIssuingPhysicalBundlesPhysicalBundle",
+      "summary": "Retrieve a physical bundle"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/settlements/{settlement}",
+      "operationId": "GetIssuingSettlementsSettlement",
+      "summary": "Retrieve a settlement"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/settlements/{settlement}",
+      "operationId": "PostIssuingSettlementsSettlement",
+      "summary": "Update a settlement"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/tokens",
+      "operationId": "GetIssuingTokens",
+      "summary": "List all issuing tokens for card"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/tokens/{token}",
+      "operationId": "GetIssuingTokensToken",
+      "summary": "Retrieve an issuing token"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/tokens/{token}",
+      "operationId": "PostIssuingTokensToken",
+      "summary": "Update a token status"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/transactions",
+      "operationId": "GetIssuingTransactions",
+      "summary": "List all transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/issuing/transactions/{transaction}",
+      "operationId": "GetIssuingTransactionsTransaction",
+      "summary": "Retrieve a transaction"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/issuing/transactions/{transaction}",
+      "operationId": "PostIssuingTransactionsTransaction",
+      "summary": "Update a transaction"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/link_account_sessions",
+      "operationId": "PostLinkAccountSessions",
+      "summary": "Create a Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/link_account_sessions/{session}",
+      "operationId": "GetLinkAccountSessionsSession",
+      "summary": "Retrieve a Session"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/linked_accounts",
+      "operationId": "GetLinkedAccounts",
+      "summary": "List Accounts"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/linked_accounts/{account}",
+      "operationId": "GetLinkedAccountsAccount",
+      "summary": "Retrieve an Account"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/linked_accounts/{account}/disconnect",
+      "operationId": "PostLinkedAccountsAccountDisconnect",
+      "summary": "Disconnect an Account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/linked_accounts/{account}/owners",
+      "operationId": "GetLinkedAccountsAccountOwners",
+      "summary": "List Account Owners"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/linked_accounts/{account}/refresh",
+      "operationId": "PostLinkedAccountsAccountRefresh",
+      "summary": "Refresh Account data"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/mandates/{mandate}",
+      "operationId": "GetMandatesMandate",
+      "summary": "Retrieve a Mandate"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_attempt_records",
+      "operationId": "GetPaymentAttemptRecords",
+      "summary": "List Payment Attempt Records"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_attempt_records/{id}",
+      "operationId": "GetPaymentAttemptRecordsId",
+      "summary": "Retrieve a Payment Attempt Record"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents",
+      "operationId": "GetPaymentIntents",
+      "summary": "List all PaymentIntents"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "operationId": "PostPaymentIntents",
+      "summary": "Create a PaymentIntent"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/search",
+      "operationId": "GetPaymentIntentsSearch",
+      "summary": "Search PaymentIntents"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/{intent}",
+      "operationId": "GetPaymentIntentsIntent",
+      "summary": "Retrieve a PaymentIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}",
+      "operationId": "PostPaymentIntentsIntent",
+      "summary": "Update a PaymentIntent"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/{intent}/amount_details_line_items",
+      "operationId": "GetPaymentIntentsIntentAmountDetailsLineItems",
+      "summary": "List all PaymentIntent LineItems"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}/apply_customer_balance",
+      "operationId": "PostPaymentIntentsIntentApplyCustomerBalance",
+      "summary": "Reconcile a customer_balance PaymentIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}/cancel",
+      "operationId": "PostPaymentIntentsIntentCancel",
+      "summary": "Cancel a PaymentIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}/capture",
+      "operationId": "PostPaymentIntentsIntentCapture",
+      "summary": "Capture a PaymentIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}/confirm",
+      "operationId": "PostPaymentIntentsIntentConfirm",
+      "summary": "Confirm a PaymentIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}/increment_authorization",
+      "operationId": "PostPaymentIntentsIntentIncrementAuthorization",
+      "summary": "Increment an authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/{intent}/verify_microdeposits",
+      "operationId": "PostPaymentIntentsIntentVerifyMicrodeposits",
+      "summary": "Verify microdeposits on a PaymentIntent"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_links",
+      "operationId": "GetPaymentLinks",
+      "summary": "List all payment links"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_links",
+      "operationId": "PostPaymentLinks",
+      "summary": "Create a payment link"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_links/{payment_link}",
+      "operationId": "GetPaymentLinksPaymentLink",
+      "summary": "Retrieve payment link"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_links/{payment_link}",
+      "operationId": "PostPaymentLinksPaymentLink",
+      "summary": "Update a payment link"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_links/{payment_link}/line_items",
+      "operationId": "GetPaymentLinksPaymentLinkLineItems",
+      "summary": "Retrieve a payment link's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_method_configurations",
+      "operationId": "GetPaymentMethodConfigurations",
+      "summary": "List payment method configurations"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_method_configurations",
+      "operationId": "PostPaymentMethodConfigurations",
+      "summary": "Create a payment method configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_method_configurations/{configuration}",
+      "operationId": "GetPaymentMethodConfigurationsConfiguration",
+      "summary": "Retrieve payment method configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_method_configurations/{configuration}",
+      "operationId": "PostPaymentMethodConfigurationsConfiguration",
+      "summary": "Update payment method configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_method_domains",
+      "operationId": "GetPaymentMethodDomains",
+      "summary": "List payment method domains"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_method_domains",
+      "operationId": "PostPaymentMethodDomains",
+      "summary": "Create a payment method domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_method_domains/{payment_method_domain}",
+      "operationId": "GetPaymentMethodDomainsPaymentMethodDomain",
+      "summary": "Retrieve a payment method domain"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_method_domains/{payment_method_domain}",
+      "operationId": "PostPaymentMethodDomainsPaymentMethodDomain",
+      "summary": "Update a payment method domain"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_method_domains/{payment_method_domain}/validate",
+      "operationId": "PostPaymentMethodDomainsPaymentMethodDomainValidate",
+      "summary": "Validate an existing payment method domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_methods",
+      "operationId": "GetPaymentMethods",
+      "summary": "List PaymentMethods"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_methods",
+      "operationId": "PostPaymentMethods",
+      "summary": "Create a PaymentMethod"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_methods/{payment_method}",
+      "operationId": "GetPaymentMethodsPaymentMethod",
+      "summary": "Retrieve a PaymentMethod"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_methods/{payment_method}",
+      "operationId": "PostPaymentMethodsPaymentMethod",
+      "summary": "Update a PaymentMethod"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_methods/{payment_method}/attach",
+      "operationId": "PostPaymentMethodsPaymentMethodAttach",
+      "summary": "Attach a PaymentMethod to a Customer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_methods/{payment_method}/detach",
+      "operationId": "PostPaymentMethodsPaymentMethodDetach",
+      "summary": "Detach a PaymentMethod from a Customer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_records",
+      "operationId": "GetPaymentRecords",
+      "summary": "List Payment Records"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/report_payment",
+      "operationId": "PostPaymentRecordsReportPayment",
+      "summary": "Report a payment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_records/{id}",
+      "operationId": "GetPaymentRecordsId",
+      "summary": "Retrieve a Payment Record"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/{id}/report_payment_attempt",
+      "operationId": "PostPaymentRecordsIdReportPaymentAttempt",
+      "summary": "Report a payment attempt"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/{id}/report_payment_attempt_canceled",
+      "operationId": "PostPaymentRecordsIdReportPaymentAttemptCanceled",
+      "summary": "Report payment attempt canceled"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/{id}/report_payment_attempt_failed",
+      "operationId": "PostPaymentRecordsIdReportPaymentAttemptFailed",
+      "summary": "Report payment attempt failed"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/{id}/report_payment_attempt_guaranteed",
+      "operationId": "PostPaymentRecordsIdReportPaymentAttemptGuaranteed",
+      "summary": "Report payment attempt guaranteed"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/{id}/report_payment_attempt_informational",
+      "operationId": "PostPaymentRecordsIdReportPaymentAttemptInformational",
+      "summary": "Report payment attempt informational"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_records/{id}/report_refund",
+      "operationId": "PostPaymentRecordsIdReportRefund",
+      "summary": "Report a refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payouts",
+      "operationId": "GetPayouts",
+      "summary": "List all payouts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payouts",
+      "operationId": "PostPayouts",
+      "summary": "Create a payout"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payouts/{payout}",
+      "operationId": "GetPayoutsPayout",
+      "summary": "Retrieve a payout"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payouts/{payout}",
+      "operationId": "PostPayoutsPayout",
+      "summary": "Update a payout"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payouts/{payout}/cancel",
+      "operationId": "PostPayoutsPayoutCancel",
+      "summary": "Cancel a payout"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payouts/{payout}/reverse",
+      "operationId": "PostPayoutsPayoutReverse",
+      "summary": "Reverse a payout"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/plans",
+      "operationId": "GetPlans",
+      "summary": "List all plans"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/plans",
+      "operationId": "PostPlans",
+      "summary": "Create a plan"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/plans/{plan}",
+      "operationId": "GetPlansPlan",
+      "summary": "Retrieve a plan"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/plans/{plan}",
+      "operationId": "PostPlansPlan",
+      "summary": "Update a plan"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/plans/{plan}",
+      "operationId": "DeletePlansPlan",
+      "summary": "Delete a plan"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/prices",
+      "operationId": "GetPrices",
+      "summary": "List all prices"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/prices",
+      "operationId": "PostPrices",
+      "summary": "Create a price"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/prices/search",
+      "operationId": "GetPricesSearch",
+      "summary": "Search prices"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/prices/{price}",
+      "operationId": "GetPricesPrice",
+      "summary": "Retrieve a price"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/prices/{price}",
+      "operationId": "PostPricesPrice",
+      "summary": "Update a price"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products",
+      "operationId": "GetProducts",
+      "summary": "List all products"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/products",
+      "operationId": "PostProducts",
+      "summary": "Create a product"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/search",
+      "operationId": "GetProductsSearch",
+      "summary": "Search products"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/{id}",
+      "operationId": "GetProductsId",
+      "summary": "Retrieve a product"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/products/{id}",
+      "operationId": "PostProductsId",
+      "summary": "Update a product"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/products/{id}",
+      "operationId": "DeleteProductsId",
+      "summary": "Delete a product"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/{product}/features",
+      "operationId": "GetProductsProductFeatures",
+      "summary": "List all features attached to a product"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/products/{product}/features",
+      "operationId": "PostProductsProductFeatures",
+      "summary": "Attach a feature to a product"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/products/{product}/features/{id}",
+      "operationId": "GetProductsProductFeaturesId",
+      "summary": "Retrieve a product_feature"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/products/{product}/features/{id}",
+      "operationId": "DeleteProductsProductFeaturesId",
+      "summary": "Remove a feature from a product"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/promotion_codes",
+      "operationId": "GetPromotionCodes",
+      "summary": "List all promotion codes"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/promotion_codes",
+      "operationId": "PostPromotionCodes",
+      "summary": "Create a promotion code"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/promotion_codes/{promotion_code}",
+      "operationId": "GetPromotionCodesPromotionCode",
+      "summary": "Retrieve a promotion code"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/promotion_codes/{promotion_code}",
+      "operationId": "PostPromotionCodesPromotionCode",
+      "summary": "Update a promotion code"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/quotes",
+      "operationId": "GetQuotes",
+      "summary": "List all quotes"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/quotes",
+      "operationId": "PostQuotes",
+      "summary": "Create a quote"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/quotes/{quote}",
+      "operationId": "GetQuotesQuote",
+      "summary": "Retrieve a quote"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/quotes/{quote}",
+      "operationId": "PostQuotesQuote",
+      "summary": "Update a quote"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/quotes/{quote}/accept",
+      "operationId": "PostQuotesQuoteAccept",
+      "summary": "Accept a quote"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/quotes/{quote}/cancel",
+      "operationId": "PostQuotesQuoteCancel",
+      "summary": "Cancel a quote"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/quotes/{quote}/computed_upfront_line_items",
+      "operationId": "GetQuotesQuoteComputedUpfrontLineItems",
+      "summary": "Retrieve a quote's upfront line items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/quotes/{quote}/finalize",
+      "operationId": "PostQuotesQuoteFinalize",
+      "summary": "Finalize a quote"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/quotes/{quote}/line_items",
+      "operationId": "GetQuotesQuoteLineItems",
+      "summary": "Retrieve a quote's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/quotes/{quote}/pdf",
+      "operationId": "GetQuotesQuotePdf",
+      "summary": "Download quote PDF"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/radar/early_fraud_warnings",
+      "operationId": "GetRadarEarlyFraudWarnings",
+      "summary": "List all early fraud warnings"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/radar/early_fraud_warnings/{early_fraud_warning}",
+      "operationId": "GetRadarEarlyFraudWarningsEarlyFraudWarning",
+      "summary": "Retrieve an early fraud warning"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/radar/payment_evaluations",
+      "operationId": "PostRadarPaymentEvaluations",
+      "summary": "Create a Payment Evaluation"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/radar/value_list_items",
+      "operationId": "GetRadarValueListItems",
+      "summary": "List all value list items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/radar/value_list_items",
+      "operationId": "PostRadarValueListItems",
+      "summary": "Create a value list item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/radar/value_list_items/{item}",
+      "operationId": "GetRadarValueListItemsItem",
+      "summary": "Retrieve a value list item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/radar/value_list_items/{item}",
+      "operationId": "DeleteRadarValueListItemsItem",
+      "summary": "Delete a value list item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/radar/value_lists",
+      "operationId": "GetRadarValueLists",
+      "summary": "List all value lists"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/radar/value_lists",
+      "operationId": "PostRadarValueLists",
+      "summary": "Create a value list"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/radar/value_lists/{value_list}",
+      "operationId": "GetRadarValueListsValueList",
+      "summary": "Retrieve a value list"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/radar/value_lists/{value_list}",
+      "operationId": "PostRadarValueListsValueList",
+      "summary": "Update a value list"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/radar/value_lists/{value_list}",
+      "operationId": "DeleteRadarValueListsValueList",
+      "summary": "Delete a value list"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/refunds",
+      "operationId": "GetRefunds",
+      "summary": "List all refunds"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/refunds",
+      "operationId": "PostRefunds",
+      "summary": "Create a refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/refunds/{refund}",
+      "operationId": "GetRefundsRefund",
+      "summary": "Retrieve a refund"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/refunds/{refund}",
+      "operationId": "PostRefundsRefund",
+      "summary": "Update a refund"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/refunds/{refund}/cancel",
+      "operationId": "PostRefundsRefundCancel",
+      "summary": "Cancel a refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reporting/report_runs",
+      "operationId": "GetReportingReportRuns",
+      "summary": "List all Report Runs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reporting/report_runs",
+      "operationId": "PostReportingReportRuns",
+      "summary": "Create a Report Run"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reporting/report_runs/{report_run}",
+      "operationId": "GetReportingReportRunsReportRun",
+      "summary": "Retrieve a Report Run"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reporting/report_types",
+      "operationId": "GetReportingReportTypes",
+      "summary": "List all Report Types"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reporting/report_types/{report_type}",
+      "operationId": "GetReportingReportTypesReportType",
+      "summary": "Retrieve a Report Type"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reviews",
+      "operationId": "GetReviews",
+      "summary": "List all open reviews"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reviews/{review}",
+      "operationId": "GetReviewsReview",
+      "summary": "Retrieve a review"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reviews/{review}/approve",
+      "operationId": "PostReviewsReviewApprove",
+      "summary": "Approve a review"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/setup_attempts",
+      "operationId": "GetSetupAttempts",
+      "summary": "List all SetupAttempts"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/setup_intents",
+      "operationId": "GetSetupIntents",
+      "summary": "List all SetupIntents"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup_intents",
+      "operationId": "PostSetupIntents",
+      "summary": "Create a SetupIntent"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/setup_intents/{intent}",
+      "operationId": "GetSetupIntentsIntent",
+      "summary": "Retrieve a SetupIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup_intents/{intent}",
+      "operationId": "PostSetupIntentsIntent",
+      "summary": "Update a SetupIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup_intents/{intent}/cancel",
+      "operationId": "PostSetupIntentsIntentCancel",
+      "summary": "Cancel a SetupIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup_intents/{intent}/confirm",
+      "operationId": "PostSetupIntentsIntentConfirm",
+      "summary": "Confirm a SetupIntent"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup_intents/{intent}/verify_microdeposits",
+      "operationId": "PostSetupIntentsIntentVerifyMicrodeposits",
+      "summary": "Verify microdeposits on a SetupIntent"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/shipping_rates",
+      "operationId": "GetShippingRates",
+      "summary": "List all shipping rates"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/shipping_rates",
+      "operationId": "PostShippingRates",
+      "summary": "Create a shipping rate"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/shipping_rates/{shipping_rate_token}",
+      "operationId": "GetShippingRatesShippingRateToken",
+      "summary": "Retrieve a shipping rate"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/shipping_rates/{shipping_rate_token}",
+      "operationId": "PostShippingRatesShippingRateToken",
+      "summary": "Update a shipping rate"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sigma/saved_queries/{id}",
+      "operationId": "PostSigmaSavedQueriesId",
+      "summary": "Update an existing Sigma Query"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sigma/scheduled_query_runs",
+      "operationId": "GetSigmaScheduledQueryRuns",
+      "summary": "List all scheduled query runs"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sigma/scheduled_query_runs/{scheduled_query_run}",
+      "operationId": "GetSigmaScheduledQueryRunsScheduledQueryRun",
+      "summary": "Retrieve a scheduled query run"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sources",
+      "operationId": "PostSources",
+      "summary": "Create a source"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sources/{source}",
+      "operationId": "GetSourcesSource",
+      "summary": "Retrieve a source"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sources/{source}",
+      "operationId": "PostSourcesSource",
+      "summary": "Update a source"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sources/{source}/mandate_notifications/{mandate_notification}",
+      "operationId": "GetSourcesSourceMandateNotificationsMandateNotification",
+      "summary": "Retrieve a Source MandateNotification"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sources/{source}/source_transactions",
+      "operationId": "GetSourcesSourceSourceTransactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sources/{source}/source_transactions/{source_transaction}",
+      "operationId": "GetSourcesSourceSourceTransactionsSourceTransaction",
+      "summary": "Retrieve a source transaction"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sources/{source}/verify",
+      "operationId": "PostSourcesSourceVerify"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscription_items",
+      "operationId": "GetSubscriptionItems",
+      "summary": "List all subscription items"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscription_items",
+      "operationId": "PostSubscriptionItems",
+      "summary": "Create a subscription item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscription_items/{item}",
+      "operationId": "GetSubscriptionItemsItem",
+      "summary": "Retrieve a subscription item"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscription_items/{item}",
+      "operationId": "PostSubscriptionItemsItem",
+      "summary": "Update a subscription item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/subscription_items/{item}",
+      "operationId": "DeleteSubscriptionItemsItem",
+      "summary": "Delete a subscription item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscription_schedules",
+      "operationId": "GetSubscriptionSchedules",
+      "summary": "List all schedules"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscription_schedules",
+      "operationId": "PostSubscriptionSchedules",
+      "summary": "Create a schedule"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscription_schedules/{schedule}",
+      "operationId": "GetSubscriptionSchedulesSchedule",
+      "summary": "Retrieve a schedule"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscription_schedules/{schedule}",
+      "operationId": "PostSubscriptionSchedulesSchedule",
+      "summary": "Update a schedule"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscription_schedules/{schedule}/cancel",
+      "operationId": "PostSubscriptionSchedulesScheduleCancel",
+      "summary": "Cancel a schedule"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscription_schedules/{schedule}/release",
+      "operationId": "PostSubscriptionSchedulesScheduleRelease",
+      "summary": "Release a schedule"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscriptions",
+      "operationId": "GetSubscriptions",
+      "summary": "List subscriptions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscriptions",
+      "operationId": "PostSubscriptions",
+      "summary": "Create a subscription"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscriptions/search",
+      "operationId": "GetSubscriptionsSearch",
+      "summary": "Search subscriptions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/subscriptions/{subscription_exposed_id}",
+      "operationId": "GetSubscriptionsSubscriptionExposedId",
+      "summary": "Retrieve a subscription"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscriptions/{subscription_exposed_id}",
+      "operationId": "PostSubscriptionsSubscriptionExposedId",
+      "summary": "Update a subscription"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/subscriptions/{subscription_exposed_id}",
+      "operationId": "DeleteSubscriptionsSubscriptionExposedId",
+      "summary": "Cancel a subscription"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/subscriptions/{subscription_exposed_id}/discount",
+      "operationId": "DeleteSubscriptionsSubscriptionExposedIdDiscount",
+      "summary": "Delete a subscription discount"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscriptions/{subscription}/migrate",
+      "operationId": "PostSubscriptionsSubscriptionMigrate",
+      "summary": "Migrate a subscription"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/subscriptions/{subscription}/resume",
+      "operationId": "PostSubscriptionsSubscriptionResume",
+      "summary": "Resume a subscription"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/associations/find",
+      "operationId": "GetTaxAssociationsFind",
+      "summary": "Find a Tax Association"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax/calculations",
+      "operationId": "PostTaxCalculations",
+      "summary": "Create a Calculation"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/calculations/{calculation}",
+      "operationId": "GetTaxCalculationsCalculation",
+      "summary": "Retrieve a Calculation"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/calculations/{calculation}/line_items",
+      "operationId": "GetTaxCalculationsCalculationLineItems",
+      "summary": "Retrieve a Calculation's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/registrations",
+      "operationId": "GetTaxRegistrations",
+      "summary": "List registrations"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax/registrations",
+      "operationId": "PostTaxRegistrations",
+      "summary": "Create a registration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/registrations/{id}",
+      "operationId": "GetTaxRegistrationsId",
+      "summary": "Retrieve a registration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax/registrations/{id}",
+      "operationId": "PostTaxRegistrationsId",
+      "summary": "Update a registration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/settings",
+      "operationId": "GetTaxSettings",
+      "summary": "Retrieve settings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax/settings",
+      "operationId": "PostTaxSettings",
+      "summary": "Update settings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax/transactions/create_from_calculation",
+      "operationId": "PostTaxTransactionsCreateFromCalculation",
+      "summary": "Create a Transaction from a Calculation"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax/transactions/create_reversal",
+      "operationId": "PostTaxTransactionsCreateReversal",
+      "summary": "Create a reversal Transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/transactions/{transaction}",
+      "operationId": "GetTaxTransactionsTransaction",
+      "summary": "Retrieve a Transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax/transactions/{transaction}/line_items",
+      "operationId": "GetTaxTransactionsTransactionLineItems",
+      "summary": "Retrieve a Transaction's line items"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax_codes",
+      "operationId": "GetTaxCodes",
+      "summary": "List all tax codes"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax_codes/{id}",
+      "operationId": "GetTaxCodesId",
+      "summary": "Retrieve a tax code"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax_ids",
+      "operationId": "GetTaxIds",
+      "summary": "List all tax IDs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax_ids",
+      "operationId": "PostTaxIds",
+      "summary": "Create a tax ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax_ids/{id}",
+      "operationId": "GetTaxIdsId",
+      "summary": "Retrieve a tax ID"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/tax_ids/{id}",
+      "operationId": "DeleteTaxIdsId",
+      "summary": "Delete a tax ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax_rates",
+      "operationId": "GetTaxRates",
+      "summary": "List all tax rates"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax_rates",
+      "operationId": "PostTaxRates",
+      "summary": "Create a tax rate"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tax_rates/{tax_rate}",
+      "operationId": "GetTaxRatesTaxRate",
+      "summary": "Retrieve a tax rate"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tax_rates/{tax_rate}",
+      "operationId": "PostTaxRatesTaxRate",
+      "summary": "Update a tax rate"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/terminal/configurations",
+      "operationId": "GetTerminalConfigurations",
+      "summary": "List all Configurations"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/configurations",
+      "operationId": "PostTerminalConfigurations",
+      "summary": "Create a Configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/terminal/configurations/{configuration}",
+      "operationId": "GetTerminalConfigurationsConfiguration",
+      "summary": "Retrieve a Configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/configurations/{configuration}",
+      "operationId": "PostTerminalConfigurationsConfiguration",
+      "summary": "Update a Configuration"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/terminal/configurations/{configuration}",
+      "operationId": "DeleteTerminalConfigurationsConfiguration",
+      "summary": "Delete a Configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/connection_tokens",
+      "operationId": "PostTerminalConnectionTokens",
+      "summary": "Create a Connection Token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/terminal/locations",
+      "operationId": "GetTerminalLocations",
+      "summary": "List all Locations"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/locations",
+      "operationId": "PostTerminalLocations",
+      "summary": "Create a Location"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/terminal/locations/{location}",
+      "operationId": "GetTerminalLocationsLocation",
+      "summary": "Retrieve a Location"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/locations/{location}",
+      "operationId": "PostTerminalLocationsLocation",
+      "summary": "Update a Location"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/terminal/locations/{location}",
+      "operationId": "DeleteTerminalLocationsLocation",
+      "summary": "Delete a Location"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/onboarding_links",
+      "operationId": "PostTerminalOnboardingLinks",
+      "summary": "Create an Onboarding Link"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/terminal/readers",
+      "operationId": "GetTerminalReaders",
+      "summary": "List all Readers"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers",
+      "operationId": "PostTerminalReaders",
+      "summary": "Create a Reader"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/terminal/readers/{reader}",
+      "operationId": "GetTerminalReadersReader",
+      "summary": "Retrieve a Reader"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}",
+      "operationId": "PostTerminalReadersReader",
+      "summary": "Update a Reader"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/terminal/readers/{reader}",
+      "operationId": "DeleteTerminalReadersReader",
+      "summary": "Delete a Reader"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/cancel_action",
+      "operationId": "PostTerminalReadersReaderCancelAction",
+      "summary": "Cancel the current reader action"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/collect_inputs",
+      "operationId": "PostTerminalReadersReaderCollectInputs",
+      "summary": "Collect inputs using a Reader"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/collect_payment_method",
+      "operationId": "PostTerminalReadersReaderCollectPaymentMethod",
+      "summary": "Hand off a PaymentIntent to a Reader and collect card details"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/confirm_payment_intent",
+      "operationId": "PostTerminalReadersReaderConfirmPaymentIntent",
+      "summary": "Confirm a PaymentIntent on the Reader"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/process_payment_intent",
+      "operationId": "PostTerminalReadersReaderProcessPaymentIntent",
+      "summary": "Hand-off a PaymentIntent to a Reader"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/process_setup_intent",
+      "operationId": "PostTerminalReadersReaderProcessSetupIntent",
+      "summary": "Hand-off a SetupIntent to a Reader"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/refund_payment",
+      "operationId": "PostTerminalReadersReaderRefundPayment",
+      "summary": "Refund a Charge or a PaymentIntent in-person"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/readers/{reader}/set_reader_display",
+      "operationId": "PostTerminalReadersReaderSetReaderDisplay",
+      "summary": "Set reader display"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/terminal/refunds",
+      "operationId": "PostTerminalRefunds",
+      "summary": "Create a refund using a Terminal-supported device."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/confirmation_tokens",
+      "operationId": "PostTestHelpersConfirmationTokens",
+      "summary": "Create a test Confirmation Token"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/customers/{customer}/fund_cash_balance",
+      "operationId": "PostTestHelpersCustomersCustomerFundCashBalance",
+      "summary": "Fund a test mode cash balance"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations",
+      "operationId": "PostTestHelpersIssuingAuthorizations",
+      "summary": "Create a test-mode authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations/{authorization}/capture",
+      "operationId": "PostTestHelpersIssuingAuthorizationsAuthorizationCapture",
+      "summary": "Capture a test-mode authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations/{authorization}/expire",
+      "operationId": "PostTestHelpersIssuingAuthorizationsAuthorizationExpire",
+      "summary": "Expire a test-mode authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations/{authorization}/finalize_amount",
+      "operationId": "PostTestHelpersIssuingAuthorizationsAuthorizationFinalizeAmount",
+      "summary": "Finalize a test-mode authorization's amount"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations/{authorization}/fraud_challenges/respond",
+      "operationId": "PostTestHelpersIssuingAuthorizationsAuthorizationFraudChallengesRespond",
+      "summary": "Respond to fraud challenge"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations/{authorization}/increment",
+      "operationId": "PostTestHelpersIssuingAuthorizationsAuthorizationIncrement",
+      "summary": "Increment a test-mode authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/authorizations/{authorization}/reverse",
+      "operationId": "PostTestHelpersIssuingAuthorizationsAuthorizationReverse",
+      "summary": "Reverse a test-mode authorization"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/cards/{card}/shipping/deliver",
+      "operationId": "PostTestHelpersIssuingCardsCardShippingDeliver",
+      "summary": "Deliver a testmode card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/cards/{card}/shipping/fail",
+      "operationId": "PostTestHelpersIssuingCardsCardShippingFail",
+      "summary": "Fail a testmode card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/cards/{card}/shipping/return",
+      "operationId": "PostTestHelpersIssuingCardsCardShippingReturn",
+      "summary": "Return a testmode card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/cards/{card}/shipping/ship",
+      "operationId": "PostTestHelpersIssuingCardsCardShippingShip",
+      "summary": "Ship a testmode card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/cards/{card}/shipping/submit",
+      "operationId": "PostTestHelpersIssuingCardsCardShippingSubmit",
+      "summary": "Submit a testmode card"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/personalization_designs/{personalization_design}/activate",
+      "operationId": "PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignActivate",
+      "summary": "Activate a testmode personalization design"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/personalization_designs/{personalization_design}/deactivate",
+      "operationId": "PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignDeactivate",
+      "summary": "Deactivate a testmode personalization design"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/personalization_designs/{personalization_design}/reject",
+      "operationId": "PostTestHelpersIssuingPersonalizationDesignsPersonalizationDesignReject",
+      "summary": "Reject a testmode personalization design"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/settlements",
+      "operationId": "PostTestHelpersIssuingSettlements",
+      "summary": "Create a test-mode settlement"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/settlements/{settlement}/complete",
+      "operationId": "PostTestHelpersIssuingSettlementsSettlementComplete",
+      "summary": "Complete a test-mode settlement"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/transactions/create_force_capture",
+      "operationId": "PostTestHelpersIssuingTransactionsCreateForceCapture",
+      "summary": "Create a test-mode force capture"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/transactions/create_unlinked_refund",
+      "operationId": "PostTestHelpersIssuingTransactionsCreateUnlinkedRefund",
+      "summary": "Create a test-mode unlinked refund"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/issuing/transactions/{transaction}/refund",
+      "operationId": "PostTestHelpersIssuingTransactionsTransactionRefund",
+      "summary": "Refund a test-mode transaction"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/refunds/{refund}/expire",
+      "operationId": "PostTestHelpersRefundsRefundExpire",
+      "summary": "Expire a pending refund."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/terminal/readers/{reader}/present_payment_method",
+      "operationId": "PostTestHelpersTerminalReadersReaderPresentPaymentMethod",
+      "summary": "Simulate presenting a payment method"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/terminal/readers/{reader}/succeed_input_collection",
+      "operationId": "PostTestHelpersTerminalReadersReaderSucceedInputCollection",
+      "summary": "Simulate a successful input collection"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/terminal/readers/{reader}/timeout_input_collection",
+      "operationId": "PostTestHelpersTerminalReadersReaderTimeoutInputCollection",
+      "summary": "Simulate an input collection timeout"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/test_helpers/test_clocks",
+      "operationId": "GetTestHelpersTestClocks",
+      "summary": "List all test clocks"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/test_clocks",
+      "operationId": "PostTestHelpersTestClocks",
+      "summary": "Create a test clock"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/test_helpers/test_clocks/{test_clock}",
+      "operationId": "GetTestHelpersTestClocksTestClock",
+      "summary": "Retrieve a test clock"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/test_helpers/test_clocks/{test_clock}",
+      "operationId": "DeleteTestHelpersTestClocksTestClock",
+      "summary": "Delete a test clock"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/test_clocks/{test_clock}/advance",
+      "operationId": "PostTestHelpersTestClocksTestClockAdvance",
+      "summary": "Advance a test clock"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/inbound_transfers/{id}/fail",
+      "operationId": "PostTestHelpersTreasuryInboundTransfersIdFail",
+      "summary": "Test mode: Fail an InboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/inbound_transfers/{id}/return",
+      "operationId": "PostTestHelpersTreasuryInboundTransfersIdReturn",
+      "summary": "Test mode: Return an InboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/inbound_transfers/{id}/succeed",
+      "operationId": "PostTestHelpersTreasuryInboundTransfersIdSucceed",
+      "summary": "Test mode: Succeed an InboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_payments/{id}",
+      "operationId": "PostTestHelpersTreasuryOutboundPaymentsId",
+      "summary": "Test mode: Update an OutboundPayment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_payments/{id}/fail",
+      "operationId": "PostTestHelpersTreasuryOutboundPaymentsIdFail",
+      "summary": "Test mode: Fail an OutboundPayment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_payments/{id}/post",
+      "operationId": "PostTestHelpersTreasuryOutboundPaymentsIdPost",
+      "summary": "Test mode: Post an OutboundPayment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_payments/{id}/return",
+      "operationId": "PostTestHelpersTreasuryOutboundPaymentsIdReturn",
+      "summary": "Test mode: Return an OutboundPayment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}",
+      "operationId": "PostTestHelpersTreasuryOutboundTransfersOutboundTransfer",
+      "summary": "Test mode: Update an OutboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/fail",
+      "operationId": "PostTestHelpersTreasuryOutboundTransfersOutboundTransferFail",
+      "summary": "Test mode: Fail an OutboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/post",
+      "operationId": "PostTestHelpersTreasuryOutboundTransfersOutboundTransferPost",
+      "summary": "Test mode: Post an OutboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/outbound_transfers/{outbound_transfer}/return",
+      "operationId": "PostTestHelpersTreasuryOutboundTransfersOutboundTransferReturn",
+      "summary": "Test mode: Return an OutboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/received_credits",
+      "operationId": "PostTestHelpersTreasuryReceivedCredits",
+      "summary": "Test mode: Create a ReceivedCredit"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/test_helpers/treasury/received_debits",
+      "operationId": "PostTestHelpersTreasuryReceivedDebits",
+      "summary": "Test mode: Create a ReceivedDebit"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/tokens",
+      "operationId": "PostTokens",
+      "summary": "Create a bank account token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tokens/{token}",
+      "operationId": "GetTokensToken",
+      "summary": "Retrieve a token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/topups",
+      "operationId": "GetTopups",
+      "summary": "List all top-ups"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/topups",
+      "operationId": "PostTopups",
+      "summary": "Create a top-up"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/topups/{topup}",
+      "operationId": "GetTopupsTopup",
+      "summary": "Retrieve a top-up"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/topups/{topup}",
+      "operationId": "PostTopupsTopup",
+      "summary": "Update a top-up"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/topups/{topup}/cancel",
+      "operationId": "PostTopupsTopupCancel",
+      "summary": "Cancel a top-up"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/transfers",
+      "operationId": "GetTransfers",
+      "summary": "List all transfers"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/transfers",
+      "operationId": "PostTransfers",
+      "summary": "Create a transfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/transfers/{id}/reversals",
+      "operationId": "GetTransfersIdReversals",
+      "summary": "List all reversals"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/transfers/{id}/reversals",
+      "operationId": "PostTransfersIdReversals",
+      "summary": "Create a transfer reversal"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/transfers/{transfer}",
+      "operationId": "GetTransfersTransfer",
+      "summary": "Retrieve a transfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/transfers/{transfer}",
+      "operationId": "PostTransfersTransfer",
+      "summary": "Update a transfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/transfers/{transfer}/reversals/{id}",
+      "operationId": "GetTransfersTransferReversalsId",
+      "summary": "Retrieve a reversal"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/transfers/{transfer}/reversals/{id}",
+      "operationId": "PostTransfersTransferReversalsId",
+      "summary": "Update a reversal"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/credit_reversals",
+      "operationId": "GetTreasuryCreditReversals",
+      "summary": "List all CreditReversals"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/credit_reversals",
+      "operationId": "PostTreasuryCreditReversals",
+      "summary": "Create a CreditReversal"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/credit_reversals/{credit_reversal}",
+      "operationId": "GetTreasuryCreditReversalsCreditReversal",
+      "summary": "Retrieve a CreditReversal"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/debit_reversals",
+      "operationId": "GetTreasuryDebitReversals",
+      "summary": "List all DebitReversals"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/debit_reversals",
+      "operationId": "PostTreasuryDebitReversals",
+      "summary": "Create a DebitReversal"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/debit_reversals/{debit_reversal}",
+      "operationId": "GetTreasuryDebitReversalsDebitReversal",
+      "summary": "Retrieve a DebitReversal"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/financial_accounts",
+      "operationId": "GetTreasuryFinancialAccounts",
+      "summary": "List all FinancialAccounts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/financial_accounts",
+      "operationId": "PostTreasuryFinancialAccounts",
+      "summary": "Create a FinancialAccount"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/financial_accounts/{financial_account}",
+      "operationId": "GetTreasuryFinancialAccountsFinancialAccount",
+      "summary": "Retrieve a FinancialAccount"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/financial_accounts/{financial_account}",
+      "operationId": "PostTreasuryFinancialAccountsFinancialAccount",
+      "summary": "Update a FinancialAccount"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/financial_accounts/{financial_account}/close",
+      "operationId": "PostTreasuryFinancialAccountsFinancialAccountClose",
+      "summary": "Close a FinancialAccount"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/financial_accounts/{financial_account}/features",
+      "operationId": "GetTreasuryFinancialAccountsFinancialAccountFeatures",
+      "summary": "Retrieve FinancialAccount Features"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/financial_accounts/{financial_account}/features",
+      "operationId": "PostTreasuryFinancialAccountsFinancialAccountFeatures",
+      "summary": "Update FinancialAccount Features"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/inbound_transfers",
+      "operationId": "GetTreasuryInboundTransfers",
+      "summary": "List all InboundTransfers"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/inbound_transfers",
+      "operationId": "PostTreasuryInboundTransfers",
+      "summary": "Create an InboundTransfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/inbound_transfers/{id}",
+      "operationId": "GetTreasuryInboundTransfersId",
+      "summary": "Retrieve an InboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/inbound_transfers/{inbound_transfer}/cancel",
+      "operationId": "PostTreasuryInboundTransfersInboundTransferCancel",
+      "summary": "Cancel an InboundTransfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/outbound_payments",
+      "operationId": "GetTreasuryOutboundPayments",
+      "summary": "List all OutboundPayments"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/outbound_payments",
+      "operationId": "PostTreasuryOutboundPayments",
+      "summary": "Create an OutboundPayment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/outbound_payments/{id}",
+      "operationId": "GetTreasuryOutboundPaymentsId",
+      "summary": "Retrieve an OutboundPayment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/outbound_payments/{id}/cancel",
+      "operationId": "PostTreasuryOutboundPaymentsIdCancel",
+      "summary": "Cancel an OutboundPayment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/outbound_transfers",
+      "operationId": "GetTreasuryOutboundTransfers",
+      "summary": "List all OutboundTransfers"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/outbound_transfers",
+      "operationId": "PostTreasuryOutboundTransfers",
+      "summary": "Create an OutboundTransfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/outbound_transfers/{outbound_transfer}",
+      "operationId": "GetTreasuryOutboundTransfersOutboundTransfer",
+      "summary": "Retrieve an OutboundTransfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/treasury/outbound_transfers/{outbound_transfer}/cancel",
+      "operationId": "PostTreasuryOutboundTransfersOutboundTransferCancel",
+      "summary": "Cancel an OutboundTransfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/received_credits",
+      "operationId": "GetTreasuryReceivedCredits",
+      "summary": "List all ReceivedCredits"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/received_credits/{id}",
+      "operationId": "GetTreasuryReceivedCreditsId",
+      "summary": "Retrieve a ReceivedCredit"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/received_debits",
+      "operationId": "GetTreasuryReceivedDebits",
+      "summary": "List all ReceivedDebits"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/received_debits/{id}",
+      "operationId": "GetTreasuryReceivedDebitsId",
+      "summary": "Retrieve a ReceivedDebit"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/transaction_entries",
+      "operationId": "GetTreasuryTransactionEntries",
+      "summary": "List all TransactionEntries"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/transaction_entries/{id}",
+      "operationId": "GetTreasuryTransactionEntriesId",
+      "summary": "Retrieve a TransactionEntry"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/transactions",
+      "operationId": "GetTreasuryTransactions",
+      "summary": "List all Transactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/treasury/transactions/{id}",
+      "operationId": "GetTreasuryTransactionsId",
+      "summary": "Retrieve a Transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/webhook_endpoints",
+      "operationId": "GetWebhookEndpoints",
+      "summary": "List all webhook endpoints"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/webhook_endpoints",
+      "operationId": "PostWebhookEndpoints",
+      "summary": "Create a webhook endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/webhook_endpoints/{webhook_endpoint}",
+      "operationId": "GetWebhookEndpointsWebhookEndpoint",
+      "summary": "Retrieve a webhook endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/webhook_endpoints/{webhook_endpoint}",
+      "operationId": "PostWebhookEndpointsWebhookEndpoint",
+      "summary": "Update a webhook endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/webhook_endpoints/{webhook_endpoint}",
+      "operationId": "DeleteWebhookEndpointsWebhookEndpoint",
+      "summary": "Delete a webhook endpoint"
+    }
+  ]
+}

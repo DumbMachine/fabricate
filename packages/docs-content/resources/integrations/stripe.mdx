@@ -1,38 +1,35 @@
 ---
 title: Stripe
-description: A reproducible Stripe API for local application testing.
+description: Customers, invoices, charges, subscriptions, and payment intents.
 sidebar:
   icon: https://logos.composio.dev/api/stripe
 ---
 
-import compatibility from "../_generated/stripe.compatibility.json";
-import example from "../_generated/stripe-list-customers.json";
+Customers, invoices, charges, subscriptions, and payment intents. Local
+Stripe v1 that keeps billing state across requests.
 
-Fabricate ships a Stripe v1 resource with a local API driven by the official Stripe OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Stripe environment seeds a SaaS-sized billing catalog (customers, invoices, charges, subscriptions) plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `stripe.minimal.v1` | Empty Stripe state for a clean test. |
-| `stripe.acme-customers.v1` | Acme billing ledger: customers, invoices, charges, subscriptions, products. Needles: Northwind `cus_northwind` / INV-4812 ($1,240 duplicate), Contoso 380 seats, TinyShop 30-day refund, Fabrikam SCIM. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Stripe’s normal hostnames. |
+| API | Stripe v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.stripe.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-stripe.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_STRIPE_TOKEN" "$FAB_STRIPE_URL/v1/customers"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_STRIPE_TOKEN" \
+      "$FAB_STRIPE_URL/v1/customers"'
 ```
 
 The service is named `stripe` in the example manifest, so the variables are
@@ -40,7 +37,7 @@ The service is named `stripe` in the example manifest, so the variables are
 
 The response is the Acme customer list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="stripe-list-customers" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -55,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.stripe.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `stripe.minimal.v1` | Empty Stripe state for a clean test. |
+| `stripe.acme-customers.v1` | Acme billing ledger: customers, invoices, charges, subscriptions, products. Needles: Northwind `cus_northwind` / INV-4812 ($1,240 duplicate), Contoso 380 seats, TinyShop 30-day refund, Fabrikam SCIM. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -62,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Stripe check ran against the Acme Stripe
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="stripe" />
+
+## Supported operations
+
+<SupportedOperations resource="stripe" />
