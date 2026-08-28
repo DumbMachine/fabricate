@@ -1,0 +1,66 @@
+{
+  "integration": "gmail",
+  "api": "Gmail v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/labels",
+      "operationId": "GmailUsersLabelsList",
+      "summary": "Lists all labels in the user's mailbox."
+    },
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/labels/{id}",
+      "operationId": "GmailUsersLabelsGet",
+      "summary": "Gets a label and its current message and thread counts."
+    },
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/messages",
+      "operationId": "GmailUsersMessagesList",
+      "summary": "Lists messages, optionally filtered by Gmail search syntax and labels."
+    },
+    {
+      "method": "POST",
+      "path": "/gmail/v1/users/{userId}/messages/send",
+      "operationId": "GmailUsersMessagesSend",
+      "summary": "Sends an RFC 2822 message encoded as base64url."
+    },
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/messages/{id}",
+      "operationId": "GmailUsersMessagesGet",
+      "summary": "Gets a message."
+    },
+    {
+      "method": "POST",
+      "path": "/gmail/v1/users/{userId}/messages/{id}/modify",
+      "operationId": "GmailUsersMessagesModify",
+      "summary": "Modifies labels on a message."
+    },
+    {
+      "method": "POST",
+      "path": "/gmail/v1/users/{userId}/messages/{id}/trash",
+      "operationId": "GmailUsersMessagesTrash",
+      "summary": "Moves a message to trash."
+    },
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/profile",
+      "operationId": "GmailUsersGetProfile",
+      "summary": "Gets the current user's Gmail profile."
+    },
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/threads",
+      "operationId": "GmailUsersThreadsList",
+      "summary": "Lists threads containing matching messages."
+    },
+    {
+      "method": "GET",
+      "path": "/gmail/v1/users/{userId}/threads/{id}",
+      "operationId": "GmailUsersThreadsGet",
+      "summary": "Gets a thread and all its messages."
+    }
+  ]
+}

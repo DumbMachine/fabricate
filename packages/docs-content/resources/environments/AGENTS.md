@@ -50,9 +50,7 @@ with a scenario one-liner and a following line about the data. Keep `resource`,
   primitive. Do not hand-write JSON output on the page:
 
 ```mdx
-import example from "../_generated/<id>.json";
-
-<CommandOutput example={example} />
+<CommandOutput id="<id>" />
 ```
 
   Add a spec next to the Gmail example at
@@ -74,10 +72,13 @@ import example from "../_generated/<id>.json";
   `DOCS_EXAMPLES_FLAGS='--id <id>'` for one spec. Unknown resource names fail.
   Capture requires JSON stdout. Several curl bodies are stored as a JSON
   array in `output`; a single curl stays an object. Do not hand-edit
-  `_generated/`. The docs site must import the snapshot; it must not start
-  environments at build time. Force recapture with
-  `make docs-examples DOCS_EXAMPLES_FLAGS=--all`. `make conformance` writes
-  `*.compatibility.json` and is a separate pipeline.
+  `_generated/`. The docs site reads the snapshot at build time; it must not
+  start environments. Force recapture with
+  `make docs-examples DOCS_EXAMPLES_FLAGS=--all`. `make docs-operations` writes
+  `*.operations.json` from each compiled OpenAPI contract. `make conformance`
+  writes `*.compatibility.json`. Those three pipelines are separate.
+  Missing or corrupt snapshots render an unavailable card instead of failing
+  the docs build.
 - Keep claims scoped to services actually present in the manifest. Link to the
   integration page for API coverage, response examples, and proxy details.
 

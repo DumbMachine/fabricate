@@ -17,23 +17,40 @@ checking out Fabricate or creating an environment file by hand.
 - Keep secrets in Fabricate-injected environment variables. Never put a token,
   credential, or local path that a reader cannot have in a published command.
 
+## Page structure
+
+Implemented integration pages use this order:
+
+1. Frontmatter `description` and the opening sentence: named entities from the
+   compiled surface, so coverage is visible at a glance. Do not start with
+   “A reproducible … API” or “Fabricate ships …”.
+2. `## Integration`: properties (API version, auth, `ProviderHosts`, direct
+   URL, transparent proxy), then start commands.
+3. `## Scenarios`
+4. `## Compatibility verification`
+5. `## Supported operations`
+
+Planned pages (GitHub, Shopify) are not runnable resources. Do not invent an
+entity list or integration table for them.
+
 ## Generated page artifacts
 
-Command output and compatibility tables are the same kind of evidence:
-committed JSON under `packages/docs-content/resources/_generated/`. The docs
-site only imports those files; it never starts environments.
+Command output, operation catalogs, and compatibility tables are the same
+kind of evidence: committed JSON under
+`packages/docs-content/resources/_generated/`. The docs site reads those
+files at build time; it never starts environments.
 
 ```mdx
-import example from "../_generated/<id>.json";
-import compatibility from "../_generated/<integration>.compatibility.json";
-
-<CommandOutput example={example} showCommand={false} />
-<IntegrationCompatibility compatibility={compatibility} />
+<CommandOutput id="<example-id>" showCommand={false} />
+<IntegrationCompatibility resource="<integration>" />
+<SupportedOperations resource="<integration>" />
 ```
 
-Do not hand-write JSON or bespoke status UI on the page. Do not hand-edit
-files in `_generated/`. After the inputs change, recapture and commit the
-snapshots. CI fails if they drifted.
+Do not import `_generated/*.json` from the page. The components read those
+files at build time, validate the shape, and render a “snapshot unavailable”
+card when a file is missing or corrupt. Do not hand-write JSON or bespoke
+status UI. Do not hand-edit files in `_generated/`. After the inputs change,
+recapture and commit the snapshots. CI fails if they drifted.
 
 - Command snapshots: specs live under
   `packages/docs-content/resources/_examples/` with shared invalidation roots
@@ -42,6 +59,10 @@ snapshots. CI fails if they drifted.
   fails if none match. Use `showCommand={false}` when the page already has a
   copyable command block. Force selected examples with
   `make docs-examples DOCS_EXAMPLES_FLAGS=--all`.
+- Operations catalogs: `make docs-operations` walks the official resource
+  registry and writes `<id>.operations.json` from each compiled OpenAPI
+  contract. `make docs-operations gmail asana` limits to named resources.
+  Empty path stubs are omitted. Do not list operations by hand.
 - Compatibility reports: each resource owns `resources/<id>/conformance/` with
   `curl.sh`, `sdk.json`, or both. `make conformance` runs every client that
   exists and writes `<id>.compatibility.json`; `make conformance gmail asana`
@@ -59,10 +80,10 @@ are documented.
 
 ## Compatibility verification
 
-Every implemented integration page must finish with a `## Compatibility
-verification` section. State that Fabricate works with any API client, then
-explain exactly which client the latest check used. Do not imply that the
-tested SDK is the only supported way to call the API.
+Every implemented integration page must include a `## Compatibility
+verification` section after Scenarios. State that Fabricate works
+with any API client, then explain exactly which client the latest check used.
+Do not imply that the tested SDK is the only supported way to call the API.
 
 The report must identify the environment, test commit and time, verification
 client, direct/proxy modes where applicable, and the result of each operation.
@@ -94,3 +115,10 @@ For a new integration, use this report shape as the starting point:
   "testedCommit": "abcdef0"
 }
 ```
+
+## Supported operations
+
+Every implemented integration page must finish with a `## Supported operations`
+section after compatibility verification. Render
+`<SupportedOperations resource="<id>" />`. That table is the advertised HTTP
+surface, not the conformance workflow. Do not hand-write the method/path list.
