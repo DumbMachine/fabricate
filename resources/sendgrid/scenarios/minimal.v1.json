@@ -1,0 +1,11 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "sendgrid.minimal.v1",
+  "$resource": "sendgrid",
+  "$resourceVersion": "v3",
+  "state": {
+    "batches": [],
+    "messages": []
+  }
+}

@@ -11,8 +11,9 @@ Kubernetes, Prometheus, and AWS-console fixtures.
 
 Use `fab run --environment <manifest> --proxy -- <command>` for provider HTTP
 APIs. The wrapped command receives proxy and CA environment variables only for
-its process tree. Unknown hosts fail closed unless the manifest explicitly
-allows exact passthrough hosts.
+its process tree. Unknown hosts are forwarded unchanged by default; set
+`proxy.unknown_hosts: reject` for a fail-closed conformance test, with optional
+exact passthrough hosts.
 
 Inspect the newest redacted request trace with `fab logs <environment> --cat`.
 Use `--all` to list retained runs.

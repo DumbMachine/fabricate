@@ -1,0 +1,14 @@
+CREATE TABLE lists (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE members (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE campaigns (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

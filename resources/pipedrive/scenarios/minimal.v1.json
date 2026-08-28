@@ -1,0 +1,12 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "pipedrive.minimal.v1",
+  "$resource": "pipedrive",
+  "$resourceVersion": "v2",
+  "state": {
+    "persons": [],
+    "organizations": [],
+    "deals": []
+  }
+}

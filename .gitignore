@@ -6,6 +6,9 @@
 # fab state/keys never belong in a repo (plaintext creds for local throwaways)
 state.json
 
+# oapi-codegen input derived from the stored vendor OpenAPI
+resources/*/generated/openapi.prepared.json
+
 # Documentation app outputs
 apps/docs/.blume/
 apps/docs/.fabricate-mode/

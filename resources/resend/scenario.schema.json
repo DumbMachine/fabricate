@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "emails",
+    "domains"
+  ],
+  "properties": {
+    "emails": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

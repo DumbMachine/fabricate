@@ -71,12 +71,15 @@ func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enab
 		runtime.Services[name] = service
 	}
 
-	if enableProxy || spec.Proxy.Enabled {
+	if enableProxy {
 		routes, err := runtime.proxyRoutes()
 		if err != nil {
 			return nil, err
 		}
-		runtime.Proxy, err = proxyengine.Start(filepath.Join(stateDir, "proxy"), routes, runtime.Requests, spec.Proxy.Passthrough...)
+		runtime.Proxy, err = proxyengine.Start(filepath.Join(stateDir, "proxy"), routes, runtime.Requests, proxyengine.Options{
+			Passthrough:   spec.Proxy.Passthrough,
+			RejectUnknown: spec.Proxy.RejectUnknownHosts(),
+		})
 		if err != nil {
 			return nil, err
 		}

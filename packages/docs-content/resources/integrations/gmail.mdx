@@ -1,40 +1,33 @@
 ---
 title: Gmail
-description: A reproducible Gmail v1 API for local application testing.
+description: Messages, threads, labels, profile, and send.
 sidebar:
   icon: https://logos.composio.dev/api/gmail
 ---
 
-import compatibility from "./_generated/gmail.compatibility.json";
+Messages, threads, labels, profile, and send. Local Gmail v1 that keeps
+mailbox state across requests.
 
-Fabricate ships a Gmail v1 resource with a strict local API and synthetic OAuth
-token handling. It covers profile, labels, messages, threads, and sending mail
-in the included Acme Gmail environment.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `gmail.minimal.v1` | An empty inbox for a clean test. |
-| `gmail.acme-corp.v1` | A populated Acme support inbox with 12 messages, labels, and threads. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Google’s normal hostnames. |
+| API | Gmail v1 |
+| Auth | Synthetic bearer token. Direct mode requires it; proxy mode injects it. |
+| Hosts | `gmail.googleapis.com`, Gmail paths on `www.googleapis.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
 Fabricate injects a URL and a short-lived token for the service name in that
-manifest.
+manifest. Direct calls must send that token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
       "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
 ```
@@ -43,46 +36,47 @@ The service is named `support-mail` in the example manifest, so the variables
 are `FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`. If you name the
 service `gmail`, they become `FAB_GMAIL_URL` and `FAB_GMAIL_TOKEN`.
 
-The response is the Acme support inbox:
+The response is the Acme support inbox. Gmail's default list omits spam and
+trash, so `resultSizeEstimate` is one less than the seeded message count:
 
-```json
-{
-  "messages": [
-    { "id": "msg-0003", "threadId": "thr-sso-outage" },
-    { "id": "msg-0002", "threadId": "thr-double-charge" },
-    { "id": "msg-0010", "threadId": "thr-audit-log" },
-    { "id": "msg-0004", "threadId": "thr-csv-export" },
-    { "id": "msg-0005", "threadId": "thr-refund" },
-    { "id": "msg-0006", "threadId": "thr-domain-verification" },
-    { "id": "msg-0001", "threadId": "thr-double-charge" },
-    { "id": "msg-0011", "threadId": "thr-maintenance" },
-    { "id": "msg-0007", "threadId": "thr-webhook-retries" },
-    { "id": "msg-0009", "threadId": "thr-api-key-rotation" },
-    { "id": "msg-0008", "threadId": "thr-api-key-rotation" }
-  ],
-  "resultSizeEstimate": 11
-}
-```
+<CommandOutput id="gmail-list-messages" showCommand={false} />
 
 ### Start it through the proxy
 
 Use this when your app uses the normal Gmail/Google URLs and follows standard
 proxy and CA environment variables. This one-paste check calls Gmail's normal
-production hostname; replace the final `sh -c ...` command with your app.
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_SUPPORT_MAIL_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "https://gmail.googleapis.com/gmail/v1/users/me/messages"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages
 ```
 
 Fabricate handles `gmail.googleapis.com` and the Gmail path on
-`www.googleapis.com` locally, including the token-refresh route. Other hosts
-fail closed unless the manifest lists them in `proxy.passthrough`.
+`www.googleapis.com` locally. Other hosts are forwarded unchanged; set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The Gmail proxy also answers `POST https://oauth2.googleapis.com/token` when
+the body is `grant_type=refresh_token` with a non-empty `refresh_token`. It
+returns the same synthetic access token. That is the entire OAuth surface: no
+authorization-code flow, no customer refresh-token store, and no refresh for
+other providers.
 
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="gmail"
+  descriptions={{
+    "gmail.minimal.v1": "An empty inbox for a clean test.",
+    "gmail.acme-corp.v1": "A populated Acme support inbox with labels and threads, including one phishing message in spam/trash.",
+  }}
+/>
 
 ## Compatibility verification
 
@@ -91,4 +85,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Gmail check ran against the Acme Gmail
 environment with Google's official Node SDK:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="gmail" />
+
+## Supported operations
+
+<SupportedOperations resource="gmail" />

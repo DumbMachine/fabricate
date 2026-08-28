@@ -1,0 +1,325 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "asana.acme-sprint.v1",
+  "$resource": "asana",
+  "$resourceVersion": "v1",
+  "state": {
+    "currentUserGid": "user-val",
+    "workspaces": [
+      {
+        "gid": "ws-acme",
+        "name": "Acme",
+        "isOrganization": true
+      }
+    ],
+    "users": [
+      {
+        "gid": "user-dana",
+        "name": "Dana Whitfield",
+        "email": "dana@northwind.example"
+      },
+      {
+        "gid": "user-harper",
+        "name": "Harper Liu",
+        "email": "harper@acme.example"
+      },
+      {
+        "gid": "user-leila",
+        "name": "Leila Haddad",
+        "email": "leila@fabrikam.example"
+      },
+      {
+        "gid": "user-mei",
+        "name": "Mei Chen",
+        "email": "mei.chen@acme.example"
+      },
+      {
+        "gid": "user-priya",
+        "name": "Priya Nair",
+        "email": "priya@fernworks.example"
+      },
+      {
+        "gid": "user-sofia",
+        "name": "Sofia Marin",
+        "email": "sofia@brightpath.example"
+      },
+      {
+        "gid": "user-val",
+        "name": "Val Ortega",
+        "email": "val@acme.example"
+      }
+    ],
+    "projects": [
+      {
+        "gid": "proj-archive",
+        "workspaceGid": "ws-acme",
+        "name": "2019 website relaunch",
+        "archived": true
+      },
+      {
+        "gid": "proj-checkout",
+        "workspaceGid": "ws-acme",
+        "name": "Checkout reliability",
+        "archived": false
+      },
+      {
+        "gid": "proj-onboarding",
+        "workspaceGid": "ws-acme",
+        "name": "Customer onboarding",
+        "archived": false
+      }
+    ],
+    "sections": [
+      {
+        "gid": "sec-blocked",
+        "projectGid": "proj-checkout",
+        "name": "Blocked",
+        "position": 2
+      },
+      {
+        "gid": "sec-done",
+        "projectGid": "proj-checkout",
+        "name": "Done",
+        "position": 3
+      },
+      {
+        "gid": "sec-inbox",
+        "projectGid": "proj-checkout",
+        "name": "Inbox",
+        "position": 0
+      },
+      {
+        "gid": "sec-onb-backlog",
+        "projectGid": "proj-onboarding",
+        "name": "Backlog",
+        "position": 0
+      },
+      {
+        "gid": "sec-onb-done",
+        "projectGid": "proj-onboarding",
+        "name": "Done",
+        "position": 1
+      },
+      {
+        "gid": "sec-progress",
+        "projectGid": "proj-checkout",
+        "name": "In progress",
+        "position": 1
+      }
+    ],
+    "tasks": [
+      {
+        "gid": "task-adatum-dns",
+        "workspaceGid": "ws-acme",
+        "name": "Adatum domain verification stuck on Pending",
+        "notes": "Owen Brooks at adatum.example added TXT acme-domain-verification=adatum-7f31. Public DNS resolves it but the admin console still shows Pending after 20 hours.",
+        "completed": false,
+        "sectionGid": "sec-inbox",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-24T10:30:00Z",
+        "modifiedAt": "2026-08-25T09:15:00Z"
+      },
+      {
+        "gid": "task-allhands",
+        "workspaceGid": "ws-acme",
+        "name": "Prep slides for internal support standup",
+        "notes": "Harper is collecting wins, blockers, and on-call handoff notes for Friday's 30-minute standup. No customer tickets on the agenda.",
+        "completed": true,
+        "assigneeGid": "user-harper",
+        "sectionGid": "sec-onb-done",
+        "projectGids": [
+          "proj-onboarding"
+        ],
+        "createdAt": "2026-08-22T14:00:00Z",
+        "modifiedAt": "2026-08-25T17:00:00Z"
+      },
+      {
+        "gid": "task-audit-scim",
+        "workspaceGid": "ws-acme",
+        "name": "Fabrikam audit export missing SCIM group events",
+        "notes": "Leila Haddad reports user provisioning events appear but SCIM group membership changes from yesterday are absent. Sample request id: req_7Q4K2.",
+        "completed": false,
+        "assigneeGid": "user-val",
+        "sectionGid": "sec-progress",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-25T12:00:00Z",
+        "modifiedAt": "2026-08-25T19:30:00Z"
+      },
+      {
+        "gid": "task-csv-export",
+        "workspaceGid": "ws-acme",
+        "name": "CSV export downloads an empty file",
+        "notes": "Analytics > Export CSV returns a zero-byte file in fernworks-prod. Blocked on a warehouse schema change.",
+        "completed": false,
+        "assigneeGid": "user-val",
+        "sectionGid": "sec-blocked",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-25T11:00:00Z",
+        "modifiedAt": "2026-08-25T18:22:00Z"
+      },
+      {
+        "gid": "task-double-charge",
+        "workspaceGid": "ws-acme",
+        "name": "Refund duplicate charge on INV-4812",
+        "notes": "Northwind was billed twice for $1,240 on August 18. Finance needs a refund reference before books close.",
+        "completed": false,
+        "assigneeGid": "user-mei",
+        "dueOn": "2026-08-20",
+        "sectionGid": "sec-progress",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-18T14:15:00Z",
+        "modifiedAt": "2026-08-25T16:40:00Z"
+      },
+      {
+        "gid": "task-helix-trial",
+        "workspaceGid": "ws-acme",
+        "name": "Helix Bio sales trial follow-up",
+        "notes": "Noah Patel at Helix Bio started a 14-day trial through the sales form. Harper owns the handoff deck and pricing call — no support mailbox thread yet.",
+        "completed": false,
+        "assigneeGid": "user-harper",
+        "sectionGid": "sec-onb-backlog",
+        "projectGids": [
+          "proj-onboarding"
+        ],
+        "createdAt": "2026-08-23T16:45:00Z",
+        "modifiedAt": "2026-08-24T11:20:00Z"
+      },
+      {
+        "gid": "task-rotate-keys",
+        "workspaceGid": "ws-acme",
+        "name": "Rotate webhook signing keys",
+        "notes": "Completed ahead of the security review. Old key retired after 24h overlap.",
+        "completed": true,
+        "assigneeGid": "user-val",
+        "sectionGid": "sec-done",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-10T09:00:00Z",
+        "modifiedAt": "2026-08-14T17:30:00Z"
+      },
+      {
+        "gid": "task-sso",
+        "workspaceGid": "ws-acme",
+        "name": "SAML login loop affecting Contoso (380 users)",
+        "notes": "Employees loop between Okta and the Acme callback. Existing sessions work. Org slug: contoso-eu.",
+        "completed": false,
+        "sectionGid": "sec-inbox",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-26T09:12:00Z",
+        "modifiedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "gid": "task-tinyshop-refund",
+        "workspaceGid": "ws-acme",
+        "name": "TinyShop annual Pro refund under 30-day guarantee",
+        "notes": "Marco Silva at tinyshop.example bought annual Pro twelve days ago and wants the renewal cancelled with a full refund. Account owner: billing@tinyshop.example.",
+        "completed": false,
+        "sectionGid": "sec-inbox",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-24T08:00:00Z",
+        "modifiedAt": "2026-08-24T08:00:00Z"
+      },
+      {
+        "gid": "task-webhook-retries",
+        "workspaceGid": "ws-acme",
+        "name": "Retry failed webhooks with backoff",
+        "notes": "Failed deliveries currently drop. Add exponential backoff so integrations recover without polling.",
+        "completed": false,
+        "sectionGid": "sec-inbox",
+        "projectGids": [
+          "proj-checkout"
+        ],
+        "createdAt": "2026-08-12T16:04:00Z",
+        "modifiedAt": "2026-08-12T16:04:00Z"
+      }
+    ],
+    "stories": [
+      {
+        "gid": "story-adatum-1",
+        "taskGid": "task-adatum-dns",
+        "text": "Owen says public DNS already returns acme-domain-verification=adatum-7f31 but our checker has not re-polled since yesterday.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-25T09:15:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-allhands-1",
+        "taskGid": "task-allhands",
+        "text": "Slides are ready — just team metrics and on-call rotation, no customer escalations this week.",
+        "createdBy": "user-harper",
+        "createdAt": "2026-08-25T17:00:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-audit-1",
+        "taskGid": "task-audit-scim",
+        "text": "Leila pasted req_7Q4K2 from yesterday's group rename. The audit export shows user.created but nothing for group membership.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-25T19:30:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-csv-1",
+        "taskGid": "task-csv-export",
+        "text": "Warehouse team says the export view is missing the events table after yesterday's migration.",
+        "createdBy": "user-mei",
+        "createdAt": "2026-08-25T18:22:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-csv-2",
+        "taskGid": "task-csv-export",
+        "text": "Priya Nair confirmed the zero-byte download in fernworks-prod across Chrome and Firefox. Blocks her Monday board report.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-25T19:00:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-double-charge-1",
+        "taskGid": "task-double-charge",
+        "text": "Dana from Northwind finance pinged again \u2014 both charges have settled.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-25T16:40:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-helix-1",
+        "taskGid": "task-helix-trial",
+        "text": "Noah Patel signed up through the sales form only — no ticket in support@ yet. Scheduling pricing call for Thursday.",
+        "createdBy": "user-harper",
+        "createdAt": "2026-08-24T11:20:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-sso-1",
+        "taskGid": "task-sso",
+        "text": "Mei Chen at Contoso (mei.chen@contoso.example) emailed support. That is a different person from Mei Chen on this workspace.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-26T09:20:00Z",
+        "resourceSubtype": "comment_added"
+      },
+      {
+        "gid": "story-tinyshop-1",
+        "taskGid": "task-tinyshop-refund",
+        "text": "Marco Silva emailed billing@ asking for the 30-day guarantee refund on annual Pro purchased twelve days ago.",
+        "createdBy": "user-val",
+        "createdAt": "2026-08-24T08:30:00Z",
+        "resourceSubtype": "comment_added"
+      }
+    ]
+  }
+}

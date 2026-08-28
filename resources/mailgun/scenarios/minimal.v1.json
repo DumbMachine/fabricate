@@ -1,0 +1,12 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "mailgun.minimal.v1",
+  "$resource": "mailgun",
+  "$resourceVersion": "v3",
+  "state": {
+    "domains": [],
+    "events": [],
+    "messages": []
+  }
+}

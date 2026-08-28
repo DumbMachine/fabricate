@@ -17,6 +17,10 @@ official client
   -> local compiled resource handler
 ```
 
+The proxy overwrites `Authorization` on routed provider hosts with the
+environment's ephemeral token. Direct-mode clients still send
+`$FAB_*_TOKEN` to `$FAB_*_URL`. Proxy-mode examples omit that header.
+
 The child receives `HTTPS_PROXY`, `HTTP_PROXY`, `SSL_CERT_FILE`,
 `NODE_EXTRA_CA_CERTS`, `REQUESTS_CA_BUNDLE`, and `GIT_SSL_CAINFO` as applicable.
 The CA and ephemeral service state are destroyed when the wrapper exits.
@@ -27,11 +31,15 @@ Provider hosts come from `httpresource.Descriptor.ProviderHosts`. A resource
 may require narrower path routing on a shared host; Gmail, for example, claims
 only `/gmail/` on `www.googleapis.com`. Google OAuth token refresh is handled by
 a local synthetic token route so the wrapped application does not need working
-Google credentials.
+Google credentials. The route accepts `POST /token` on `oauth2.googleapis.com`
+with `grant_type=refresh_token` and a non-empty refresh token, then returns
+the environment's synthetic access token. It does not implement
+authorization-code OAuth, store customer tokens, or refresh other providers.
 
-Unknown hosts fail closed. An environment may name exact bare hostnames under
-`proxy.passthrough` for unrelated live dependencies. Passthrough is never
-inferred and cannot override a route claimed by a Fabricate resource.
+Unknown hosts are tunneled unchanged to their normal destination by default.
+This lets one provider be fabricated inside a full application without
+interfering with unrelated networked subprocesses. A route claimed by a
+Fabricate resource always takes precedence over forwarding.
 
 ```yaml
 apiVersion: fabricate.dev/v1alpha1
@@ -43,10 +51,23 @@ services:
     resource: gmail
     scenario: gmail.acme-corp.v1
 proxy:
-  enabled: true
+  unknown_hosts: reject
   passthrough:
     - api.openai.com
 ```
+
+Use strict mode for isolated provider conformance tests. It denies every
+unmapped destination except exact bare hostnames listed under
+`proxy.passthrough`:
+
+```yaml
+proxy:
+  unknown_hosts: reject
+```
+
+Strict mode prevents accidental live provider egress from the wrapped process
+tree. `passthrough` remains useful when a conformance test has a small, known
+secondary dependency.
 
 ## Compatibility limits
 

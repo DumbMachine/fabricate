@@ -123,8 +123,8 @@ func TestAcmeScenarioValidatesAndRoundTrips(t *testing.T) {
 	if err := json.Unmarshal(dumped.State, &state); err != nil {
 		t.Fatal(err)
 	}
-	if len(state.Messages) != 12 {
-		t.Fatalf("Acme scenario contains %d messages, want 12", len(state.Messages))
+	if len(state.Messages) != 28 {
+		t.Fatalf("Acme scenario contains %d messages, want 28", len(state.Messages))
 	}
 }
 
@@ -168,7 +168,7 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	}
 
 	profile := request(t, handler, http.MethodGet, "/gmail/v1/users/me/profile", "", testToken)
-	if profile.Code != http.StatusOK || !strings.Contains(profile.Body.String(), `"messagesTotal":12`) {
+	if profile.Code != http.StatusOK || !strings.Contains(profile.Body.String(), `"messagesTotal":28`) {
 		t.Fatalf("profile = %d %s", profile.Code, profile.Body.String())
 	}
 

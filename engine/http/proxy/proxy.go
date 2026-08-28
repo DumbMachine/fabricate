@@ -1,6 +1,6 @@
 // Package proxy provides Fabricate's process-scoped transparent HTTPS proxy.
-// It intercepts explicitly declared provider hosts and never infers public
-// network egress. Exact non-provider passthrough hosts require manifest opt-in.
+// It intercepts explicitly declared provider hosts and tunnels every other
+// destination unchanged unless the environment opts into strict rejection.
 package proxy
 
 import (
@@ -46,18 +46,24 @@ type compiledRoute struct {
 }
 
 type Proxy struct {
-	listener    net.Listener
-	server      *http.Server
-	transport   *http.Transport
-	routes      []compiledRoute
-	passthrough map[string]bool
-	requests    *requestlog.Log
-	ca          *certificateAuthority
-	CAPath      string
-	URL         string
+	listener      net.Listener
+	server        *http.Server
+	transport     *http.Transport
+	routes        []compiledRoute
+	passthrough   map[string]bool
+	rejectUnknown bool
+	requests      *requestlog.Log
+	ca            *certificateAuthority
+	CAPath        string
+	URL           string
 }
 
-func Start(stateDir string, routes []Route, requests *requestlog.Log, passthrough ...string) (*Proxy, error) {
+type Options struct {
+	Passthrough   []string
+	RejectUnknown bool
+}
+
+func Start(stateDir string, routes []Route, requests *requestlog.Log, options Options) (*Proxy, error) {
 	if len(routes) == 0 {
 		return nil, fmt.Errorf("proxy: at least one route is required")
 	}
@@ -100,10 +106,10 @@ func Start(stateDir string, routes []Route, requests *requestlog.Log, passthroug
 	}
 	p := &Proxy{
 		listener: listener, transport: &http.Transport{DisableCompression: true},
-		routes: compiled, passthrough: make(map[string]bool, len(passthrough)), requests: requests,
+		routes: compiled, passthrough: make(map[string]bool, len(options.Passthrough)), rejectUnknown: options.RejectUnknown, requests: requests,
 		ca: ca, CAPath: caPath, URL: "http://" + listener.Addr().String(),
 	}
-	for _, host := range passthrough {
+	for _, host := range options.Passthrough {
 		host = canonicalHost(host)
 		if host == "" {
 			listener.Close()
@@ -126,6 +132,20 @@ func (p *Proxy) Environment() map[string]string {
 	}
 }
 
+// InterceptedHosts returns the provider hosts routed to local services.
+func (p *Proxy) InterceptedHosts() []string {
+	seen := make(map[string]struct{}, len(p.routes))
+	for _, route := range p.routes {
+		seen[route.Host] = struct{}{}
+	}
+	hosts := make([]string, 0, len(seen))
+	for host := range seen {
+		hosts = append(hosts, host)
+	}
+	sort.Strings(hosts)
+	return hosts
+}
+
 func (p *Proxy) Close(ctx context.Context) error {
 	p.transport.CloseIdleConnections()
 	return p.server.Shutdown(ctx)
@@ -142,7 +162,7 @@ func (p *Proxy) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 	}
 	route := p.match(host, request.URL.Path)
 	if route == nil {
-		if p.passthrough[canonicalHost(host)] {
+		if p.canPassthrough(host) {
 			out := request.Clone(request.Context())
 			out.RequestURI = ""
 			stripForwardingHeaders(out.Header)
@@ -177,7 +197,7 @@ func (p *Proxy) connect(w http.ResponseWriter, request *http.Request) {
 		host, _, _ = net.SplitHostPort(request.Host)
 	}
 	if !p.hasHost(host) {
-		if p.passthrough[canonicalHost(host)] {
+		if p.canPassthrough(host) {
 			p.passthroughConnect(w, request)
 			return
 		}
@@ -213,6 +233,10 @@ func (p *Proxy) connect(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 	go p.serveTunnel(tlsClient, canonicalHost(host))
+}
+
+func (p *Proxy) canPassthrough(host string) bool {
+	return !p.rejectUnknown || p.passthrough[canonicalHost(host)]
 }
 
 func (p *Proxy) passthroughConnect(w http.ResponseWriter, request *http.Request) {

@@ -1,0 +1,44 @@
+{
+  "api": "Asana REST API 1.0",
+  "environment": {
+    "label": "Acme Asana",
+    "manifest": "environments/acme-asana.yaml",
+    "messages": 8
+  },
+  "integration": "asana",
+  "modes": {
+    "direct": {
+      "messagesAfter": 9,
+      "messagesBefore": 8,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 9,
+      "messagesBefore": 8,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read sprint board",
+    "write": "Complete task and comment",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T08:41:40.852Z",
+  "testedCommit": "d5411386c8f17181e5a5f9437346eb84e360ca2e"
+}

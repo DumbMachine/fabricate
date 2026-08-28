@@ -14,26 +14,26 @@ import (
 const APIVersion = "fabricate.dev/v1alpha1"
 
 type Spec struct {
-	APIVersion string                 `yaml:"apiVersion"`
-	Kind       string                 `yaml:"kind"`
-	Metadata   Metadata               `yaml:"metadata"`
-	Services   map[string]ServiceSpec `yaml:"services"`
-	Proxy      ProxySpec              `yaml:"proxy,omitempty"`
+	APIVersion string                 `yaml:"apiVersion" json:"apiVersion"`
+	Kind       string                 `yaml:"kind" json:"kind"`
+	Metadata   Metadata               `yaml:"metadata" json:"metadata"`
+	Services   map[string]ServiceSpec `yaml:"services" json:"services"`
+	Proxy      ProxySpec              `yaml:"proxy,omitempty" json:"proxy,omitempty"`
 }
 
 type Metadata struct {
-	Name string `yaml:"name"`
+	Name string `yaml:"name" json:"name"`
 }
 
 type ServiceSpec struct {
-	Resource string `yaml:"resource"`
-	Scenario string `yaml:"scenario"`
+	Resource string `yaml:"resource" json:"resource"`
+	Scenario string `yaml:"scenario" json:"scenario"`
 }
 
 type ProxySpec struct {
-	Enabled     bool              `yaml:"enabled,omitempty"`
-	Hosts       map[string]string `yaml:"hosts,omitempty"`
-	Passthrough []string          `yaml:"passthrough,omitempty"`
+	Hosts        map[string]string `yaml:"hosts,omitempty" json:"hosts,omitempty"`
+	Passthrough  []string          `yaml:"passthrough,omitempty" json:"passthrough,omitempty"`
+	UnknownHosts string            `yaml:"unknown_hosts,omitempty" json:"unknown_hosts,omitempty"`
 }
 
 var namePattern = regexp.MustCompile(`^[a-z][a-z0-9-]{0,62}$`)
@@ -100,5 +100,12 @@ func (s Spec) Validate() error {
 			return fmt.Errorf("environment: proxy passthrough host %q must be a bare hostname", host)
 		}
 	}
+	if policy := strings.TrimSpace(s.Proxy.UnknownHosts); policy != "" && policy != "reject" && policy != "passthrough" {
+		return fmt.Errorf("environment: proxy unknown_hosts must be \"reject\" or \"passthrough\"")
+	}
 	return nil
+}
+
+func (s ProxySpec) RejectUnknownHosts() bool {
+	return strings.TrimSpace(s.UnknownHosts) == "reject"
 }

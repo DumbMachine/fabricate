@@ -1,0 +1,14 @@
+{
+  "id": "acme-go-to-market-inv-4812",
+  "title": "Read INV-4812 from each service",
+  "environment": "environments/acme-go-to-market.yaml",
+  "environmentLabel": "Acme Go to Market",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/acme-go-to-market-inv-4812.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-go-to-market.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS -H \"Content-Type: application/json\" -d \"{}\" https://api.attio.com/v2/objects/deals/records/query\n      echo\n      curl -sS https://api.resend.com/emails/email_inv4812\n      echo\n      curl -sS https://us1.api.mailchimp.com/3.0/campaigns/campaign_inv4812\n    '",
+  "argv": [
+    "sh",
+    "-c",
+    "curl -sS -H \"Content-Type: application/json\" -d \"{}\" https://api.attio.com/v2/objects/deals/records/query\necho\ncurl -sS https://api.resend.com/emails/email_inv4812\necho\ncurl -sS https://us1.api.mailchimp.com/3.0/campaigns/campaign_inv4812"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "asana.minimal.v1",
+  "$resource": "asana",
+  "$resourceVersion": "v1",
+  "state": {
+    "currentUserGid": "user-val",
+    "workspaces": [{"gid": "ws-acme", "name": "Acme", "isOrganization": true}],
+    "users": [{"gid": "user-val", "name": "Val Ortega", "email": "val@acme.example"}],
+    "projects": [],
+    "sections": [],
+    "tasks": [],
+    "stories": []
+  }
+}

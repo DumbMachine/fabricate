@@ -1,0 +1,13 @@
+package: generated
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output: generated/server.gen.go
+output-options:
+  include-operation-ids:
+    - emails/send
+    - emails/list
+    - emails/get
+    - domains/list

@@ -1,0 +1,44 @@
+{
+  "api": "Gmail API v1",
+  "environment": {
+    "label": "Acme Gmail",
+    "manifest": "environments/acme-gmail.yaml",
+    "messages": 28
+  },
+  "integration": "gmail",
+  "modes": {
+    "direct": {
+      "messagesAfter": 29,
+      "messagesBefore": 28,
+      "operations": {
+        "read": "passed",
+        "send": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 29,
+      "messagesBefore": 28,
+      "operations": {
+        "read": "passed",
+        "send": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "persistence": "Confirm persistence",
+    "read": "Read mailbox",
+    "send": "Send message"
+  },
+  "testedAt": "2026-08-26T17:14:06.971Z",
+  "testedCommit": "56861749836b6968e98dca6a6316c39583966514",
+  "verification": {
+    "client": "googleapis@144.0.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
+}

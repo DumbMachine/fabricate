@@ -1,0 +1,69 @@
+---
+title: Close
+description: Leads, contacts, and opportunities.
+sidebar:
+  icon: https://logos.composio.dev/api/close
+---
+
+Leads, contacts, and opportunities. Local Close v1 that keeps CRM state
+across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Close v1 |
+| Auth | Synthetic bearer token. Close's live API uses HTTP Basic with an API key. |
+| Hosts | `api.close.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-close.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_CLOSE_TOKEN" "$FAB_CLOSE_URL/api/v1/lead/"'
+```
+
+The service is named `close` in the example manifest, so the variables are
+`FAB_CLOSE_URL` and `FAB_CLOSE_TOKEN`.
+
+### Start it through the proxy
+
+Use this when your app uses the normal Close URLs. This one-paste check
+calls Close's production hostname. Omit `$FAB_CLOSE_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-close.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.close.com/api/v1/lead/
+```
+
+Fabricate handles `api.close.com` locally. Other hosts are forwarded unchanged.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="close"
+  descriptions={{
+    "close.minimal.v1": "Empty Close state for a clean test.",
+    "close.acme-pipeline.v1": "Dana at Northwind, INV-4812, Contoso SSO, and Fernworks.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Close check ran against the Acme Close
+environment with curl:
+
+<IntegrationCompatibility resource="close" />
+
+## Supported operations
+
+<SupportedOperations resource="close" />

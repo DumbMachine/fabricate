@@ -11,31 +11,45 @@ Its manifest identifier is `acme-gmail`.
 
 ## Included integrations
 
-- <img src="https://logos.composio.dev/api/gmail" alt="" width="20" height="20" /> **[Gmail](/resources/integrations/gmail)** — service name: `support-mail`; scenario: `gmail.acme-corp.v1`.
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with labels and threads.",
+      data: "Billing, SSO, refund, CSV export, webhook, and key-rotation threads, including INV-4812.",
+    },
+  ]}
+/>
 
 ## Scenario data
 
-`gmail.acme-corp.v1` seeds 12 handcrafted messages across support threads,
-including double charges, SSO outages, refunds, CSV exports, webhooks, and API
-key rotation. It gives an inbox workflow realistic threads and labels to search
-and change instead of an empty mailbox.
+`gmail.acme-corp.v1` seeds support threads for double charges, SSO outages,
+refunds, CSV exports, webhooks, and API key rotation, plus one phishing
+message in spam/trash. A default message list hides that last one. It gives
+an inbox workflow realistic threads and labels to search and change instead of
+an empty mailbox.
 
 The scenario is the initial state. Your application can change messages,
 threads, and labels during its run; the next run begins from the original Acme
 Corp data again.
+
+For the same inbox composed with Intercom, Asana, and HubSpot so those records
+join across services, see [Acme Support Desk](/resources/environments/acme-support-desk).
 
 ## Get started
 
 Paste this command to download the environment manifest, start the Gmail
 service, and list the seeded messages. You do not need to clone Fabricate.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
-```
+<CommandOutput id="gmail-list-messages" />
 
-Fabricate injects `FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN` into the
-wrapped process. See [Gmail](/resources/integrations/gmail) for the response,
-direct-URL integration, and transparent-proxy setup.
+Gmail's default list omits spam and trash, so `resultSizeEstimate` is one less
+than the seeded message count.
+
+`--proxy` keeps Gmail’s normal hostname and supplies the local token. See
+[Gmail](/resources/integrations/gmail) for direct-URL integration and proxy
+setup.

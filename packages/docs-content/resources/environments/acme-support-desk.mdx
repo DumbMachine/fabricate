@@ -1,0 +1,93 @@
+---
+title: "Acme Support Desk"
+description: A disposable Acme support world spanning Gmail, Intercom, Asana, and HubSpot, with incidents that join across services.
+---
+
+Acme Support Desk is a ready-to-run environment for testing software that
+triages customer incidents across mail, chat, a work board, and CRM. Every run
+starts from the same Acme Corp world and is removed when the wrapped command
+exits.
+
+Its manifest identifier is `acme-support-desk`.
+
+## Included integrations
+
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with labels and threads.",
+      data: "Threads for INV-4812, Contoso SSO, Fernworks CSV, refunds, webhooks, and key rotation.",
+    },
+    {
+      resource: "intercom",
+      label: "Intercom",
+      href: "/resources/integrations/intercom",
+      service: "inbox",
+      scenario: "intercom.acme-inbox.v1",
+      summary: "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+      data: "Open conversations 101 (INV-4812) and 102 (Contoso SSO), with Dana and Contoso contacts.",
+    },
+    {
+      resource: "asana",
+      label: "Asana",
+      href: "/resources/integrations/asana",
+      service: "board",
+      scenario: "asana.acme-sprint.v1",
+      summary: "A Checkout reliability project plus onboarding work, with tasks, sections, and comments.",
+      data: "Incomplete INV-4812 refund, unassigned Contoso SSO task, and a blocked Fernworks CSV export.",
+    },
+    {
+      resource: "hubspot",
+      label: "HubSpot",
+      href: "/resources/integrations/hubspot",
+      service: "crm",
+      scenario: "hubspot.acme-pipeline.v1",
+      summary: "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+      data: "Deal 301 still open on INV-4812, ticket 401 for Contoso SSO, and shared contacts and companies.",
+    },
+  ]}
+/>
+
+## Scenario data
+
+The four scenarios describe one company, not four unrelated demos. Shared
+people, companies, and incident IDs appear in more than one service so an
+application has to corroborate records before it writes.
+
+| Join key | Gmail | Intercom | Asana | HubSpot |
+| --- | --- | --- | --- | --- |
+| Invoice `INV-4812` / $1,240 | thread `thr-double-charge` from Dana Whitfield | open conversation `101` | incomplete task `task-double-charge` | stalled deal `301` (`invoice`: `INV-4812`) |
+| `dana@northwind.example` | From on the billing thread | contact `contact-dana` | user `user-dana` | contact `101`, company Northwind Traders |
+| Contoso SSO / `contoso-eu` | starred mail from Mei Chen | open conversation `102` | unassigned inbox task `task-sso` | high-priority ticket `401`, company Contoso, contact `103` |
+| Fernworks CSV export | thread `thr-csv-export` from Priya Nair | — | blocked task `task-csv-export` | contact `104`, company Fernworks |
+
+The data is intentionally incomplete in places. Asana's Mei Chen is
+`mei.chen@acme.example` (internal); Gmail and HubSpot have a different Mei Chen
+at `mei.chen@contoso.example`. Jules Okonkwo is a second Northwind contact in
+CRM only. Rita Gomez appears in marketing mail, not support or CRM. Amina
+Farouk's Intercom thread cites invoice `INV-9021`, which does not exist in
+Gmail or HubSpot. The SSO task is unassigned. The Northwind deal is still
+`appointmentscheduled` while finance is waiting on a refund reference. A
+safe agent task should read at least two of these services before it sends mail,
+closes a ticket, or marks a task complete.
+
+Single-service manifests such as [Acme's Gmail](/resources/environments/acme-gmail)
+remain available for integration tests that only need one provider.
+
+## Get started
+
+Paste this command to download the environment manifest, start all four
+services, and read the `INV-4812` billing incident from each one. You do not
+need to clone Fabricate.
+
+<CommandOutput id="acme-support-desk-inv-4812" />
+
+`--proxy` keeps each provider’s normal hostname. See [Gmail](/resources/integrations/gmail),
+[Intercom](/resources/integrations/intercom), [Asana](/resources/integrations/asana), and
+[HubSpot](/resources/integrations/hubspot) for API coverage, response examples, and the
+direct-URL option.

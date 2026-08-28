@@ -1,0 +1,21 @@
+package: generated
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output: generated/server.gen.go
+output-options:
+  include-operation-ids:
+    - users_get_me
+    - leads_list
+    - leads_create
+    - leads_get
+    - leads_update
+    - contacts_list
+    - contacts_create
+    - contacts_get
+    - opportunities_list
+    - opportunities_create
+    - opportunities_get
+    - opportunities_update

@@ -1,0 +1,44 @@
+{
+  "api": "Mailgun API",
+  "environment": {
+    "label": "Acme Mailgun",
+    "manifest": "environments/acme-mailgun.yaml",
+    "messages": 3
+  },
+  "integration": "mailgun",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read domains and events",
+    "write": "Send a message",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T07:24:10.453Z",
+  "testedCommit": "1a333a153ae794651d5f46f7880eeb47479b3b75"
+}

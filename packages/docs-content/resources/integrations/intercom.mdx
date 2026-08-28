@@ -1,0 +1,139 @@
+---
+title: Intercom
+description: Admins, contacts, and conversations.
+sidebar:
+  icon: https://logos.composio.dev/api/intercom
+---
+
+Admins, contacts, and conversations. Local Intercom 2.16 that keeps inbox
+state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Intercom 2.16 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.intercom.io`, `api.eu.intercom.io`, `api.au.intercom.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-intercom.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_INTERCOM_TOKEN" \
+      "$FAB_INTERCOM_URL/conversations"'
+```
+
+The service is named `intercom` in the example manifest, so the variables are
+`FAB_INTERCOM_URL` and `FAB_INTERCOM_TOKEN`.
+
+The response is the Acme support inbox:
+
+```json
+{
+  "conversations": [
+    {
+      "contacts": {
+        "contacts": [
+          {
+            "id": "contact-dana"
+          }
+        ],
+        "type": "contact.list"
+      },
+      "created_at": 1755525600,
+      "id": "101",
+      "open": true,
+      "state": "open",
+      "title": "Charged twice for INV-4812",
+      "updated_at": 1756132800
+    },
+    {
+      "contacts": {
+        "contacts": [
+          {
+            "id": "contact-contoso"
+          }
+        ],
+        "type": "contact.list"
+      },
+      "created_at": 1756194720,
+      "id": "102",
+      "open": true,
+      "state": "open",
+      "title": "SAML login loop affecting Contoso",
+      "updated_at": 1756194720
+    },
+    {
+      "contacts": {
+        "contacts": [
+          {
+            "id": "contact-dana"
+          }
+        ],
+        "type": "contact.list"
+      },
+      "created_at": 1754812800,
+      "id": "103",
+      "open": false,
+      "state": "closed",
+      "title": "Webhook signing key rotation",
+      "updated_at": 1755167400
+    }
+  ],
+  "total_count": 3,
+  "type": "conversation.list"
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Intercom URLs and follows standard
+proxy and CA environment variables. This one-paste check calls Intercom's
+normal production hostname; replace the final `curl` with your app. Omit
+`$FAB_INTERCOM_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-intercom.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.intercom.io/conversations
+```
+
+Fabricate handles `api.intercom.io`, `api.eu.intercom.io`, and
+`api.au.intercom.io` locally. Other hosts are forwarded unchanged; set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="intercom"
+  descriptions={{
+    "intercom.minimal.v1": "An empty inbox with Val as the current admin.",
+    "intercom.acme-inbox.v1": "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Intercom check ran against the Acme Intercom
+environment with curl:
+
+<IntegrationCompatibility resource="intercom" />
+
+## Supported operations
+
+<SupportedOperations resource="intercom" />

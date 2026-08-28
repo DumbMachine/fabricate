@@ -1,0 +1,344 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "attio.acme-workspace.v1",
+  "$resource": "attio",
+  "$resourceVersion": "v2",
+  "state": {
+    "objects": [
+      {
+        "api_slug": "companies",
+        "singular_noun": "Company",
+        "plural_noun": "Companies",
+        "created_at": "2026-01-10T09:00:00.000000000Z",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222"
+        }
+      },
+      {
+        "api_slug": "deals",
+        "singular_noun": "Deal",
+        "plural_noun": "Deals",
+        "created_at": "2026-01-10T09:00:00.000000000Z",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "33333333-3333-4333-8333-333333333333"
+        }
+      },
+      {
+        "api_slug": "people",
+        "singular_noun": "Person",
+        "plural_noun": "People",
+        "created_at": "2026-01-10T09:00:00.000000000Z",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111"
+        }
+      }
+    ],
+    "records": [
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b1111111-1111-4111-8111-111111111111"
+        },
+        "created_at": "2026-08-18T14:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Northwind Traders", "attribute_type": "text"}],
+          "domains": [{"domain": "northwind.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b2222222-2222-4222-8222-222222222222"
+        },
+        "created_at": "2026-01-10T09:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Acme", "attribute_type": "text"}],
+          "domains": [{"domain": "acme.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b3333333-3333-4333-8333-333333333333"
+        },
+        "created_at": "2026-08-26T09:12:00.000000000Z",
+        "values": {
+          "name": [{"value": "Contoso", "attribute_type": "text"}],
+          "domains": [{"domain": "contoso.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b4444444-4444-4444-8444-444444444444"
+        },
+        "created_at": "2026-08-25T11:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Fernworks", "attribute_type": "text"}],
+          "domains": [{"domain": "fernworks.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b5555555-5555-4555-8555-555555555555"
+        },
+        "created_at": "2026-08-22T11:30:00.000000000Z",
+        "values": {
+          "name": [{"value": "Fabrikam", "attribute_type": "text"}],
+          "domains": [{"domain": "fabrikam.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b6666666-6666-4666-8666-666666666666"
+        },
+        "created_at": "2026-08-23T14:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Brightpath", "attribute_type": "text"}],
+          "domains": [{"domain": "brightpath.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b7777777-7777-4777-8777-777777777777"
+        },
+        "created_at": "2026-08-24T09:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Adatum", "attribute_type": "text"}],
+          "domains": [{"domain": "adatum.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "companies",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "22222222-2222-4222-8222-222222222222",
+          "record_id": "b8888888-8888-4888-8888-888888888888"
+        },
+        "created_at": "2026-08-26T10:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Helix Bio", "attribute_type": "text"}],
+          "domains": [{"domain": "helixbio.example", "attribute_type": "domain"}]
+        }
+      },
+      {
+        "object": "deals",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "33333333-3333-4333-8333-333333333333",
+          "record_id": "c1111111-1111-4111-8111-111111111111"
+        },
+        "created_at": "2026-08-18T14:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Northwind checkout expansion", "attribute_type": "text"}],
+          "invoice": [{"value": "INV-4812", "attribute_type": "text"}],
+          "value": [{"currency_value": 1240, "currency_code": "USD", "attribute_type": "currency"}]
+        }
+      },
+      {
+        "object": "deals",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "33333333-3333-4333-8333-333333333333",
+          "record_id": "c2222222-2222-4222-8222-222222222222"
+        },
+        "created_at": "2026-08-25T11:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Fernworks platform expansion", "attribute_type": "text"}],
+          "invoice": [{"value": "INV-2207", "attribute_type": "text"}],
+          "value": [{"currency_value": 8900, "currency_code": "USD", "attribute_type": "currency"}]
+        }
+      },
+      {
+        "object": "deals",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "33333333-3333-4333-8333-333333333333",
+          "record_id": "c3333333-3333-4333-8333-333333333333"
+        },
+        "created_at": "2026-08-26T10:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Helix Bio sales trial", "attribute_type": "text"}],
+          "value": [{"currency_value": 4200, "currency_code": "USD", "attribute_type": "currency"}]
+        }
+      },
+      {
+        "object": "deals",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "33333333-3333-4333-8333-333333333333",
+          "record_id": "c4444444-4444-4444-8444-444444444444"
+        },
+        "created_at": "2026-08-23T14:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Brightpath API key rotation", "attribute_type": "text"}],
+          "value": [{"currency_value": 2100, "currency_code": "USD", "attribute_type": "currency"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a1111111-1111-4111-8111-111111111111"
+        },
+        "created_at": "2026-08-18T14:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Dana Whitfield", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "dana@northwind.example", "original_email_address": "dana@northwind.example", "email_domain": "northwind.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a2222222-2222-4222-8222-222222222222"
+        },
+        "created_at": "2026-01-10T09:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Val Ortega", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "val@acme.example", "original_email_address": "val@acme.example", "email_domain": "acme.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a3333333-3333-4333-8333-333333333333"
+        },
+        "created_at": "2026-08-26T09:12:00.000000000Z",
+        "values": {
+          "name": [{"value": "Mei Chen", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "mei.chen@contoso.example", "original_email_address": "mei.chen@contoso.example", "email_domain": "contoso.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a4444444-4444-4444-8444-444444444444"
+        },
+        "created_at": "2026-08-25T11:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Priya Nair", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "priya@fernworks.example", "original_email_address": "priya@fernworks.example", "email_domain": "fernworks.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a5555555-5555-4555-8555-555555555555"
+        },
+        "created_at": "2026-08-19T10:15:00.000000000Z",
+        "values": {
+          "name": [{"value": "Jules Okonkwo", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "jules@northwind.example", "original_email_address": "jules@northwind.example", "email_domain": "northwind.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a6666666-6666-4666-8666-666666666666"
+        },
+        "created_at": "2026-08-22T11:30:00.000000000Z",
+        "values": {
+          "name": [{"value": "Leila Haddad", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "leila@fabrikam.example", "original_email_address": "leila@fabrikam.example", "email_domain": "fabrikam.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a7777777-7777-4777-8777-777777777777"
+        },
+        "created_at": "2026-08-23T14:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Sofia Marin", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "sofia@brightpath.example", "original_email_address": "sofia@brightpath.example", "email_domain": "brightpath.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a8888888-8888-4888-8888-888888888888"
+        },
+        "created_at": "2026-08-24T09:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Owen Brooks", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "owen@adatum.example", "original_email_address": "owen@adatum.example", "email_domain": "adatum.example", "attribute_type": "email_address"}]
+        }
+      },
+      {
+        "object": "people",
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "object_id": "11111111-1111-4111-8111-111111111111",
+          "record_id": "a9999999-9999-4999-8999-999999999999"
+        },
+        "created_at": "2026-08-26T10:00:00.000000000Z",
+        "values": {
+          "name": [{"value": "Noah Patel", "attribute_type": "text"}],
+          "email_addresses": [{"email_address": "noah@helixbio.example", "original_email_address": "noah@helixbio.example", "email_domain": "helixbio.example", "attribute_type": "email_address"}]
+        }
+      }
+    ],
+    "workspaceMembers": [
+      {
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "workspace_member_id": "44444444-4444-4444-8444-444444444444"
+        },
+        "first_name": "Val",
+        "last_name": "Ortega",
+        "email_address": "val@acme.example",
+        "access_level": "admin",
+        "created_at": "2026-01-10T09:00:00.000000000Z",
+        "avatar_url": null
+      },
+      {
+        "id": {
+          "workspace_id": "0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a",
+          "workspace_member_id": "55555555-5555-4555-8555-555555555555"
+        },
+        "first_name": "Harper",
+        "last_name": "Liu",
+        "email_address": "harper@acme.example",
+        "access_level": "member",
+        "created_at": "2026-08-20T09:00:00.000000000Z",
+        "avatar_url": null
+      }
+    ]
+  }
+}

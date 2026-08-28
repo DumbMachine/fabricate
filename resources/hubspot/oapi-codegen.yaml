@@ -1,0 +1,29 @@
+package: generated
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output: generated/server.gen.go
+output-options:
+  include-operation-ids:
+    - get-/crm/v3/objects/contacts_getPage
+    - post-/crm/v3/objects/contacts_create
+    - get-/crm/v3/objects/contacts/{contactId}_getById
+    - patch-/crm/v3/objects/contacts/{contactId}_update
+    - post-/crm/v3/objects/contacts/search_doSearch
+    - get-/crm/v3/objects/companies_getPage
+    - post-/crm/v3/objects/companies_create
+    - get-/crm/v3/objects/companies/{companyId}_getById
+    - patch-/crm/v3/objects/companies/{companyId}_update
+    - post-/crm/v3/objects/companies/search_doSearch
+    - get-/crm/v3/objects/0-3_getPage
+    - post-/crm/v3/objects/0-3_create
+    - get-/crm/v3/objects/0-3/{dealId}_getById
+    - patch-/crm/v3/objects/0-3/{dealId}_update
+    - post-/crm/v3/objects/0-3/search_doSearch
+    - get-/crm/v3/objects/tickets_getPage
+    - post-/crm/v3/objects/tickets_create
+    - get-/crm/v3/objects/tickets/{ticketId}_getById
+    - patch-/crm/v3/objects/tickets/{ticketId}_update
+    - post-/crm/v3/objects/tickets/search_doSearch

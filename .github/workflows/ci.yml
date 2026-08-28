@@ -5,29 +5,50 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      gmail: ${{ steps.filter.outputs.gmail }}
+      docs_examples: ${{ steps.filter.outputs.docs_examples }}
+      resources: ${{ steps.matrix.outputs.resources }}
     steps:
       - uses: actions/checkout@v4
-      - id: filter
-        uses: dorny/paths-filter@v3
         with:
-          filters: |
-            gmail:
-              - 'resources/gmail/**'
-              - 'environments/acme-gmail.yaml'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'scripts/test-gmail-sdk.sh'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
+          fetch-depth: 0
+      - id: filter
+        name: Detect docs-examples path changes
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$base" ]; then
+            base="${{ github.event.before }}"
+          fi
+          if [ -z "$base" ] || [ "$(printf '%s' "$base" | tr -d '0')" = "" ]; then
+            echo "docs_examples=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          docs_examples=false
+          while IFS= read -r line; do
+            case "$line" in
+              cmd/docsexamples/*|internal/docsexamples/*|packages/docs-content/resources/_examples/*|resources/*|environments/*|environment/*|engine/http/*|httpresource/*|requestlog/*|scenario/*|cli/run.go|Makefile|.github/workflows/ci.yml)
+                docs_examples=true
+                break
+                ;;
+            esac
+          done < <(git diff --name-only --no-renames --relative "$base"...HEAD)
+          echo "docs_examples=$docs_examples" >> "$GITHUB_OUTPUT"
+      - id: matrix
+        name: Select changed conformance resources
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$base" ]; then
+            base="${{ github.event.before }}"
+          fi
+          ids=$(./scripts/test.sh --changed-since "$base")
+          json=$(printf '%s\n' "$ids" | python3 -c 'import json,sys; print(json.dumps([line.strip() for line in sys.stdin if line.strip()]))')
+          echo "resources=$json" >> "$GITHUB_OUTPUT"
 
   check:
     runs-on: ubuntu-latest
@@ -43,7 +64,7 @@ jobs:
       - name: gofmt
         run: |
           out=$(gofmt -l .); if [ -n "$out" ]; then echo "gofmt needed:"; echo "$out"; exit 1; fi
-      - name: generated bindings are current
+      - name: generated bindings and operation catalogs are current
         run: make generate-check
 
   e2e:
@@ -54,15 +75,17 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: end-to-end smoke (real containers)
+      - name: end-to-end smoke (real CLI)
         run: go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
-  gmail-sdk:
+  conformance:
     runs-on: ubuntu-latest
     needs: [check, changes]
-    if: needs.changes.outputs.gmail == 'true'
-    permissions:
-      contents: write
+    if: needs.changes.outputs.resources != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        resource: ${{ fromJSON(needs.changes.outputs.resources) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -71,14 +94,32 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Google APIs Node SDK conformance
-        run: make gmail-sdk
-      - name: Publish verified Gmail compatibility data
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Resource conformance
+        run: make conformance ${{ matrix.resource }}
+      - name: Compatibility snapshot is current
+        run: git diff --exit-code -- packages/docs-content/resources/_generated/${{ matrix.resource }}.compatibility.json
+
+  docs-examples:
+    runs-on: ubuntu-latest
+    needs: [check, changes]
+    if: needs.changes.outputs.docs_examples == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Capture dirty documented command output
         run: |
-          git diff --quiet -- packages/docs-content/resources/integrations/_generated/gmail.compatibility.json && exit 0
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/docs-content/resources/integrations/_generated/gmail.compatibility.json
-          git commit -m "chore(compat): update Gmail verification"
-          git push
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$base" ]; then
+            base="${{ github.event.before }}"
+          fi
+          if [ -z "$base" ] || [ "$(echo "$base" | tr -d '0')" = "" ]; then
+            make docs-examples DOCS_EXAMPLES_FLAGS=--all
+          else
+            make docs-examples DOCS_EXAMPLES_FLAGS="--since-ref $base"
+          fi
+      - name: Command snapshots are current
+        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json' ':(exclude)packages/docs-content/resources/_generated/*.operations.json' ':(exclude)packages/docs-content/resources/_generated/*.scenarios.json'

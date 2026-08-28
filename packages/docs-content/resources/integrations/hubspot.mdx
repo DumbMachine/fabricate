@@ -1,0 +1,139 @@
+---
+title: HubSpot
+description: Contacts, companies, deals, and tickets.
+sidebar:
+  icon: https://logos.composio.dev/api/hubspot
+---
+
+Contacts, companies, deals, and tickets. Local HubSpot CRM v3 that keeps
+object state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | HubSpot CRM v3 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.hubapi.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_HUBSPOT_TOKEN" \
+      "$FAB_HUBSPOT_URL/crm/v3/objects/contacts"'
+```
+
+The service is named `hubspot` in the example manifest, so the variables are
+`FAB_HUBSPOT_URL` and `FAB_HUBSPOT_TOKEN`.
+
+The response is the Acme CRM contact list:
+
+```json
+{
+  "results": [
+    {
+      "archived": false,
+      "createdAt": "2026-08-18T14:00:00Z",
+      "id": "101",
+      "properties": {
+        "email": "dana@northwind.example",
+        "firstname": "Dana",
+        "lastname": "Whitfield",
+        "lifecyclestage": "opportunity"
+      },
+      "updatedAt": "2026-08-25T16:40:00Z"
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-01-10T09:00:00Z",
+      "id": "102",
+      "properties": {
+        "email": "val@acme.example",
+        "firstname": "Val",
+        "lastname": "Ortega",
+        "lifecyclestage": "customer"
+      },
+      "updatedAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-08-26T09:12:00Z",
+      "id": "103",
+      "properties": {
+        "email": "mei.chen@contoso.example",
+        "firstname": "Mei",
+        "lastname": "Chen",
+        "lifecyclestage": "customer"
+      },
+      "updatedAt": "2026-08-26T09:12:00Z"
+    },
+    {
+      "archived": false,
+      "createdAt": "2026-08-25T11:00:00Z",
+      "id": "104",
+      "properties": {
+        "email": "priya@fernworks.example",
+        "firstname": "Priya",
+        "lastname": "Nair",
+        "lifecyclestage": "customer"
+      },
+      "updatedAt": "2026-08-25T11:00:00Z"
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal HubSpot URLs and follows standard proxy
+and CA environment variables. This one-paste check calls HubSpot's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_HUBSPOT_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.hubapi.com/crm/v3/objects/contacts
+```
+
+Fabricate handles `api.hubapi.com` locally. Object-type aliases such as
+`/crm/v3/objects/deals` are accepted in addition to HubSpot's `/crm/v3/objects/0-3`
+deal path. Other hosts are forwarded unchanged, so a larger application can
+keep unrelated network traffic working. Set `proxy.unknown_hosts: reject` for
+an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="hubspot"
+  descriptions={{
+    "hubspot.minimal.v1": "Empty CRM objects for a clean test.",
+    "hubspot.acme-pipeline.v1": "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest HubSpot check ran against the Acme HubSpot
+environment with curl:
+
+<IntegrationCompatibility resource="hubspot" />
+
+## Supported operations
+
+<SupportedOperations resource="hubspot" />

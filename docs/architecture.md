@@ -1,6 +1,6 @@
 # Architecture
 
-Fabricate has a shared CLI but two independent lifecycle models.
+Fabricate runs compiled provider APIs inside disposable environments.
 
 ## Compiled HTTP/API environments
 
@@ -25,45 +25,37 @@ The packages have narrow ownership:
   resource handlers.
 - `environment/` composes named services and the proxy for one foreground run.
 - `engine/http/proxy/` provides CONNECT/TLS interception, per-run CA material,
-  exact host/path routing, synthetic authentication, and fail-closed behavior.
+  exact host/path routing, synthetic authentication, default forwarding for
+  unknown hosts, and opt-in strict rejection.
 - `requestlog/` stores redacted request/response JSONL outside ephemeral state.
 
-Gmail is the first reference resource. `gmail.acme-corp.v1` contains twelve
-handcrafted messages. The environment at `environments/acme-gmail.yaml` routes
-normal Gmail and Google OAuth hosts to local handlers, allowing an unmodified
-official Google API client to run inside the wrapper.
+Gmail is the first reference resource. `gmail.acme-corp.v1` contains 28
+handcrafted messages. Single-service manifests such as
+`environments/acme-gmail.yaml` start one provider. Composed manifests such as
+`environments/acme-support-desk.yaml` start Gmail, Intercom, Asana, and HubSpot
+together with shared Acme incident data, and route each provider's normal hosts
+to the local handlers.
 
 ```bash
-fab run --environment ./environments/acme-gmail.yaml --proxy -- <command>
+fab run acme-support-desk --proxy -- <command>
 ```
 
 The current supervisor is foreground-only. It deletes live state on shutdown
 but retains the redacted request log. Detached environments, explicit reset,
 capture, and general multi-resource lifecycle commands remain future work.
 
-## Infrastructure profiles
+## Legacy boundary
 
-The established profile pipeline remains for real infrastructure:
-
-```text
-profile.yaml -> profile.Load -> engine.Engine -> target -> Instance/Creds
-```
-
-`fab create`, `fab ls`, `fab creds`, `fab wait`, and `fab destroy` operate on
-that pipeline. Docker is the default target; supported engines may also use the
-Kubernetes target. Profile seeds are engine-specific SQL, JavaScript,
-Redis commands, Prometheus config, shell, and similar infrastructure inputs.
-
-HTTP APIs do not pass through the profile pipeline. This prevents two resource
-registries, two state formats, and provider-specific container lifecycles from
-reappearing.
+The old container-profile implementation remains in the repository as inactive
+legacy code. It is not registered in the CLI and must not be changed or
+extended. Infrastructure workflows may return through a clean refactor in a
+future version.
 
 ## Extension boundary
 
 - New provider API: implement `httpresource.Resource` under `resources/`.
 - New provider scenario: add a strict versioned document under its resource.
 - New runnable composition: add an `environment` manifest.
-- New infrastructure product: implement `engine.Engine` and add profiles.
 
 The detailed HTTP/API v1 contract is
 [http-api-engine-v1-plan.md](http-api-engine-v1-plan.md). The SQLite/module

@@ -1,0 +1,11 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "resend.minimal.v1",
+  "$resource": "resend",
+  "$resourceVersion": "v1",
+  "state": {
+    "emails": [],
+    "domains": []
+  }
+}

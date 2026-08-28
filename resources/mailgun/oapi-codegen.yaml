@@ -1,0 +1,12 @@
+package: generated
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output: generated/server.gen.go
+output-options:
+  include-operation-ids:
+    - POST-v3--domain-name--messages
+    - get-v3-domain_name-events
+    - GET-v4-domains

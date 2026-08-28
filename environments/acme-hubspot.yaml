@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-hubspot
+
+services:
+  hubspot:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1

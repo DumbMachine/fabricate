@@ -1,0 +1,15 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-go-to-market
+
+services:
+  crm:
+    resource: attio
+    scenario: attio.acme-workspace.v1
+  transactional:
+    resource: resend
+    scenario: resend.acme-outbox.v1
+  audience:
+    resource: mailchimp
+    scenario: mailchimp.acme-audience.v1

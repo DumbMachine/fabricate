@@ -1,0 +1,14 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "intercom.minimal.v1",
+  "$resource": "intercom",
+  "$resourceVersion": "2.16",
+  "state": {
+    "currentAdminId": "admin-val",
+    "admins": [{"id": "admin-val", "name": "Val Ortega", "email": "val@acme.example"}],
+    "contacts": [],
+    "conversations": [],
+    "parts": []
+  }
+}

@@ -1,0 +1,9 @@
+CREATE TABLE emails (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE domains (
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

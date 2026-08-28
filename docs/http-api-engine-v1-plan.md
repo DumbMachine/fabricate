@@ -1182,7 +1182,7 @@ Do not add a Fabricate language SDK solely to wrap provider SDK construction.
 Preferred development and CI command:
 
 ```bash
-fab run --environment ./fabricate/ci.yaml -- npm test
+fab run ./fabricate/ci.yaml -- npm test
 ```
 
 Lifecycle:
@@ -1234,8 +1234,9 @@ uploads.github.com      -> source
 gmail.googleapis.com    -> support-mail
 ```
 
-Unknown hosts are rejected. The proxy must not fall back to the public
-internet.
+Unknown hosts are forwarded unchanged by default. Environments that need an
+isolated provider conformance test select `proxy.unknown_hosts: reject` to
+deny public fallback.
 
 If two service instances claim the same provider host, startup fails unless
 the environment explicitly selects the proxy target:
@@ -1269,10 +1270,11 @@ Document language-specific trust variables only when tested.
 
 ### Authentication safety
 
-- provider requests never leave the machine through the proxy;
-- the proxy rejects unknown destinations;
-- exact non-provider hosts may be explicitly declared as passthrough when the
-  wrapped application needs a live dependency such as its model provider;
+- declared provider requests never leave the machine through the proxy;
+- unknown destinations are forwarded unchanged unless the environment selects
+  strict rejection;
+- exact non-provider hosts may be explicitly declared as passthrough when a
+  strict environment needs a known live dependency such as its model provider;
 - the proxy strips untrusted internal forwarding headers;
 - it accepts only the environment's synthetic credentials or an explicitly
   documented placeholder;
@@ -1314,7 +1316,7 @@ fab scenario diff <environment> <service>
 fab scenario load <environment> <service> <scenario-or-path>
 fab scenario capture <environment> <service> --as <new-id> [--output path]
 
-fab run --environment <manifest> [--proxy] [--artifacts dir] -- <command...>
+fab run <manifest> [--proxy] [--artifacts dir] -- <command...>
 ```
 
 HTTP resources must not require users to type:
@@ -1566,7 +1568,7 @@ Deliverables:
 
 Exit criteria:
 
-- `fab run --environment ... -- node test.mjs` starts Gmail, injects its
+- `fab run ... -- node test.mjs` starts Gmail, injects its
   direct endpoint, runs the child, and tears everything down;
 - parallel runs do not share ports, state, or credentials;
 - stdout remains machine-parseable.
@@ -1760,7 +1762,9 @@ A resource may be registered as official only when all applicable items pass:
    context.
 10. **Ambiguous proxy hosts.** Require an explicit mapping when two instances
     use the same provider host.
-11. **Proxy public fallback.** Unknown hosts must fail closed.
+11. **Proxy public fallback without an explicit policy.** Keep strict rejection
+    available for isolated conformance tests while forwarding is the default
+    for full applications.
 12. **Global CA installation.** Trust the ephemeral CA only in the launched
     process.
 13. **Real credentials in scenarios or logs.** Secret-scan scenarios and redact
@@ -1802,7 +1806,7 @@ Afterward, proxy conformance runs the same official SDKs on their normal vendor
 hosts through:
 
 ```bash
-fab run --environment ./fabricate/environments/duolingo-ci.yaml --proxy -- npm test
+fab run ./fabricate/environments/duolingo-ci.yaml --proxy -- npm test
 ```
 
 No request reaches a real provider. Reset restores the exact scenario

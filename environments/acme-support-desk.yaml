@@ -1,0 +1,18 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-support-desk
+
+services:
+  support-mail:
+    resource: gmail
+    scenario: gmail.acme-corp.v1
+  inbox:
+    resource: intercom
+    scenario: intercom.acme-inbox.v1
+  board:
+    resource: asana
+    scenario: asana.acme-sprint.v1
+  crm:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1

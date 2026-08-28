@@ -1,0 +1,20 @@
+package: generated
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output: generated/server.gen.go
+output-options:
+  include-operation-ids:
+    - getPing
+    - getLists
+    - postLists
+    - getListsId
+    - getListsIdMembers
+    - postListsIdMembers
+    - getListsIdMembersId
+    - getCampaigns
+    - postCampaigns
+    - getCampaignsId
+    - postCampaignsIdActionsSend

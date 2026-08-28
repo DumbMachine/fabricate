@@ -1,0 +1,21 @@
+{
+  "integration": "mailchimp",
+  "scenarios": [
+    {
+      "id": "mailchimp.acme-audience.v1",
+      "counts": {
+        "campaigns": 3,
+        "lists": 2,
+        "members": 12
+      }
+    },
+    {
+      "id": "mailchimp.minimal.v1",
+      "counts": {
+        "campaigns": 0,
+        "lists": 0,
+        "members": 0
+      }
+    }
+  ]
+}

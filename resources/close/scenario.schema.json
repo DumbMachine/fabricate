@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "leads",
+    "contacts",
+    "opportunities",
+    "users"
+  ],
+  "properties": {
+    "leads": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

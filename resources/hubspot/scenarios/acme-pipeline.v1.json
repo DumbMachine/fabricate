@@ -1,0 +1,318 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "hubspot.acme-pipeline.v1",
+  "$resource": "hubspot",
+  "$resourceVersion": "v3",
+  "state": {
+    "contacts": [
+      {
+        "id": "101",
+        "properties": {
+          "email": "dana@northwind.example",
+          "firstname": "Dana",
+          "lastname": "Whitfield",
+          "lifecyclestage": "opportunity"
+        },
+        "createdAt": "2026-08-18T14:00:00Z",
+        "updatedAt": "2026-08-25T16:40:00Z"
+      },
+      {
+        "id": "102",
+        "properties": {
+          "email": "val@acme.example",
+          "firstname": "Val",
+          "lastname": "Ortega",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-01-10T09:00:00Z",
+        "updatedAt": "2026-08-01T00:00:00Z"
+      },
+      {
+        "id": "103",
+        "properties": {
+          "email": "mei.chen@contoso.example",
+          "firstname": "Mei",
+          "lastname": "Chen",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-26T09:12:00Z",
+        "updatedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "104",
+        "properties": {
+          "email": "priya@fernworks.example",
+          "firstname": "Priya",
+          "lastname": "Nair",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-25T11:00:00Z",
+        "updatedAt": "2026-08-25T11:00:00Z"
+      },
+      {
+        "id": "105",
+        "properties": {
+          "email": "jules@northwind.example",
+          "firstname": "Jules",
+          "lastname": "Okonkwo",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-19T10:15:00Z",
+        "updatedAt": "2026-08-19T10:15:00Z"
+      },
+      {
+        "id": "106",
+        "properties": {
+          "email": "leila@fabrikam.example",
+          "firstname": "Leila",
+          "lastname": "Haddad",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-22T11:30:00Z",
+        "updatedAt": "2026-08-22T11:30:00Z"
+      },
+      {
+        "id": "107",
+        "properties": {
+          "email": "sofia@brightpath.example",
+          "firstname": "Sofia",
+          "lastname": "Marin",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-23T14:00:00Z",
+        "updatedAt": "2026-08-23T14:00:00Z"
+      },
+      {
+        "id": "108",
+        "properties": {
+          "email": "owen@adatum.example",
+          "firstname": "Owen",
+          "lastname": "Brooks",
+          "lifecyclestage": "lead"
+        },
+        "createdAt": "2026-08-24T09:00:00Z",
+        "updatedAt": "2026-08-24T09:00:00Z"
+      },
+      {
+        "id": "109",
+        "properties": {
+          "email": "noah@helixbio.example",
+          "firstname": "Noah",
+          "lastname": "Patel",
+          "lifecyclestage": "lead"
+        },
+        "createdAt": "2026-08-26T10:00:00Z",
+        "updatedAt": "2026-08-26T10:00:00Z"
+      },
+      {
+        "id": "110",
+        "properties": {
+          "email": "marco@tinyshop.example",
+          "firstname": "Marco",
+          "lastname": "Silva",
+          "lifecyclestage": "customer"
+        },
+        "createdAt": "2026-08-12T08:30:00Z",
+        "updatedAt": "2026-08-24T16:00:00Z"
+      }
+    ],
+    "companies": [
+      {
+        "id": "201",
+        "properties": {
+          "domain": "acme.example",
+          "name": "Acme"
+        },
+        "createdAt": "2026-01-10T09:00:00Z",
+        "updatedAt": "2026-01-10T09:00:00Z"
+      },
+      {
+        "id": "202",
+        "properties": {
+          "domain": "northwind.example",
+          "name": "Northwind Traders"
+        },
+        "createdAt": "2026-08-18T14:00:00Z",
+        "updatedAt": "2026-08-18T14:00:00Z"
+      },
+      {
+        "id": "203",
+        "properties": {
+          "domain": "contoso.example",
+          "name": "Contoso"
+        },
+        "createdAt": "2026-08-26T09:12:00Z",
+        "updatedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "204",
+        "properties": {
+          "domain": "fernworks.example",
+          "name": "Fernworks"
+        },
+        "createdAt": "2026-08-25T11:00:00Z",
+        "updatedAt": "2026-08-25T11:00:00Z"
+      },
+      {
+        "id": "205",
+        "properties": {
+          "domain": "fabrikam.example",
+          "name": "Fabrikam"
+        },
+        "createdAt": "2026-08-22T11:30:00Z",
+        "updatedAt": "2026-08-22T11:30:00Z"
+      },
+      {
+        "id": "206",
+        "properties": {
+          "domain": "brightpath.example",
+          "name": "Brightpath"
+        },
+        "createdAt": "2026-08-23T14:00:00Z",
+        "updatedAt": "2026-08-23T14:00:00Z"
+      },
+      {
+        "id": "207",
+        "properties": {
+          "domain": "adatum.example",
+          "name": "Adatum"
+        },
+        "createdAt": "2026-08-24T09:00:00Z",
+        "updatedAt": "2026-08-24T09:00:00Z"
+      },
+      {
+        "id": "208",
+        "properties": {
+          "domain": "helixbio.example",
+          "name": "Helix Bio"
+        },
+        "createdAt": "2026-08-26T10:00:00Z",
+        "updatedAt": "2026-08-26T10:00:00Z"
+      },
+      {
+        "id": "209",
+        "properties": {
+          "domain": "tinyshop.example",
+          "name": "TinyShop"
+        },
+        "createdAt": "2026-08-12T08:30:00Z",
+        "updatedAt": "2026-08-12T08:30:00Z"
+      }
+    ],
+    "deals": [
+      {
+        "id": "301",
+        "properties": {
+          "amount": "12400",
+          "dealname": "Northwind checkout expansion",
+          "dealstage": "appointmentscheduled",
+          "description": "Checkout expansion for Northwind Traders. Duplicate INV-4812 charge ($1,240) is still open.",
+          "invoice": "INV-4812",
+          "pipeline": "default"
+        },
+        "createdAt": "2026-08-18T15:00:00Z",
+        "updatedAt": "2026-08-25T16:40:00Z"
+      },
+      {
+        "id": "302",
+        "properties": {
+          "amount": "1188",
+          "dealname": "TinyShop annual Pro",
+          "dealstage": "closedwon",
+          "description": "Annual Pro subscription for TinyShop. Marco Silva is now requesting cancellation and refund under the 30-day guarantee.",
+          "pipeline": "default"
+        },
+        "createdAt": "2026-08-12T08:30:00Z",
+        "updatedAt": "2026-08-12T08:30:00Z"
+      },
+      {
+        "id": "303",
+        "properties": {
+          "amount": "4200",
+          "dealname": "Helix Bio sales trial",
+          "dealstage": "appointmentscheduled",
+          "description": "Evaluation trial for Helix Bio. Noah Patel requested a demo and sandbox access for the sales team.",
+          "pipeline": "default"
+        },
+        "createdAt": "2026-08-26T10:00:00Z",
+        "updatedAt": "2026-08-26T10:00:00Z"
+      },
+      {
+        "id": "304",
+        "properties": {
+          "amount": "8900",
+          "dealname": "Fernworks platform expansion",
+          "dealstage": "qualifiedtobuy",
+          "description": "Platform expansion for Fernworks. Invoice INV-2207 covers the annual upgrade; Priya Nair is blocked on a separate CSV export bug.",
+          "invoice": "INV-2207",
+          "pipeline": "default"
+        },
+        "createdAt": "2026-08-25T11:00:00Z",
+        "updatedAt": "2026-08-25T11:00:00Z"
+      },
+      {
+        "id": "305",
+        "properties": {
+          "amount": "2100",
+          "dealname": "Brightpath API key rotation",
+          "dealstage": "closedwon",
+          "description": "Security review project for Brightpath. Sofia Marin confirmed overlapping API keys worked during the rotation.",
+          "pipeline": "default"
+        },
+        "createdAt": "2026-08-23T14:00:00Z",
+        "updatedAt": "2026-08-24T11:00:00Z"
+      }
+    ],
+    "tickets": [
+      {
+        "id": "401",
+        "properties": {
+          "content": "Employees loop between Okta and the Acme callback. Existing sessions work. Org slug: contoso-eu.",
+          "hs_pipeline": "0",
+          "hs_pipeline_stage": "1",
+          "hs_ticket_priority": "HIGH",
+          "subject": "SAML login loop affecting Contoso"
+        },
+        "createdAt": "2026-08-26T09:12:00Z",
+        "updatedAt": "2026-08-26T09:12:00Z"
+      },
+      {
+        "id": "402",
+        "properties": {
+          "content": "Owen Brooks added TXT record acme-domain-verification=adatum-7f31 about 20 hours ago. Public DNS resolves it, but the admin page still shows Pending for adatum.example.",
+          "hs_pipeline": "0",
+          "hs_pipeline_stage": "1",
+          "hs_ticket_priority": "HIGH",
+          "subject": "Domain verification TXT record still pending"
+        },
+        "createdAt": "2026-08-24T09:00:00Z",
+        "updatedAt": "2026-08-24T15:30:00Z"
+      },
+      {
+        "id": "403",
+        "properties": {
+          "content": "Leila Haddad from Fabrikam needs an audit export that includes SCIM group membership changes. Current export covers user provisioning but not group events from yesterday (req_7Q4K2).",
+          "hs_pipeline": "0",
+          "hs_pipeline_stage": "1",
+          "hs_ticket_priority": "MEDIUM",
+          "subject": "Audit log missing SCIM group changes"
+        },
+        "createdAt": "2026-08-22T11:30:00Z",
+        "updatedAt": "2026-08-23T09:00:00Z"
+      },
+      {
+        "id": "404",
+        "properties": {
+          "content": "Marco Silva requested cancellation of the annual Pro renewal and a refund under the 30-day guarantee. Account owner: billing@tinyshop.example.",
+          "hs_pipeline": "0",
+          "hs_pipeline_stage": "1",
+          "hs_ticket_priority": "LOW",
+          "subject": "Cancel annual Pro plan under 30-day guarantee"
+        },
+        "createdAt": "2026-08-24T16:00:00Z",
+        "updatedAt": "2026-08-24T16:00:00Z"
+      }
+    ]
+  }
+}

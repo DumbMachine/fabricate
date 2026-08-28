@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/intercom/scenario-v1.json",
+  "title": "Fabricate Intercom scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["currentAdminId", "admins", "contacts", "conversations", "parts"],
+  "properties": {
+    "currentAdminId": {"type": "string", "minLength": 1},
+    "admins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "email"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "email": {"type": "string", "format": "email"}
+        }
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "email"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "email": {"type": "string", "format": "email"},
+          "role": {"type": "string"},
+          "createdAt": {"type": "integer"},
+          "updatedAt": {"type": "integer"}
+        }
+      }
+    },
+    "conversations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "state", "contactId"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "state": {"type": "string", "enum": ["open", "closed", "snoozed"]},
+          "contactId": {"type": "string", "minLength": 1},
+          "createdAt": {"type": "integer"},
+          "updatedAt": {"type": "integer"}
+        }
+      }
+    },
+    "parts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "conversationId", "authorType", "authorId", "body"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "conversationId": {"type": "string", "minLength": 1},
+          "authorType": {"type": "string", "minLength": 1},
+          "authorId": {"type": "string", "minLength": 1},
+          "body": {"type": "string", "minLength": 1},
+          "createdAt": {"type": "integer"}
+        }
+      }
+    }
+  }
+}

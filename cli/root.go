@@ -5,51 +5,36 @@ import (
 	"fmt"
 	"os"
 
-	// Side-effect import: registers the embedded profile catalog
-	// onto the loader. Without this, fab has no built-in profiles.
-	_ "github.com/dumbmachine/fabricate/profiles"
-
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "fab",
-	Short: "Spin up real, seeded, throwaway local resources",
-	Long: `fab provisions ephemeral, seeded resources from declarative profiles
-and returns connection credentials: real databases and hosts
-(postgres, mysql, mongodb, redis, prometheus, ssh, kubernetes,
-aws_console). HTTP APIs run in foreground environments with compiled
-OpenAPI contracts and optional transparent proxying. Container resources
-are Docker-backed by default, with an optional Kubernetes target.
+	Short: "Run disposable, stateful provider APIs",
+	Long: `fab runs reproducible API sandbox environments with known state.
 
-Discover what's available, then create:
+Run an official environment, a local manifest, or one service:
 
-  fab engines                     # engines + accepted seed types
-  fab profiles                    # every (slug, profile) pair
-  fab create <slug> -p <profile>  # provision; prints credentials
+  fab run acme-gmail
+  fab run ./environment.yaml -- npm test
+  fab run gmail --scenario gmail.minimal.v1
 
-Author your own profile without reading source:
+Inspect the available definitions:
 
-  fab profiles schema                    # the profile.yaml reference
-  fab profiles show <name> --files       # list a working example's seed files
-  fab profiles show <name> --file <f>     # print one seed file (head-capped)
-  fab profiles init <slug> <name>        # scaffold under ~/.config/fab/profiles/`,
-	SilenceUsage: true,
+  fab environment list
+  fab service list --environment acme-support-desk
+  fab resource list
+  fab scenario list gmail`,
+	SilenceUsage:  true,
+	SilenceErrors: true,
 }
 
 var outputFlag string
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&outputFlag, "output", "o", "",
-		"Output format: json, table, env, url (default: table for TTY, json for pipes)")
+		"Output format: json or table (default: table for TTY, json for pipes)")
 
-	rootCmd.AddCommand(createCmd)
-	rootCmd.AddCommand(lsCmd)
-	rootCmd.AddCommand(credsCmd)
-	rootCmd.AddCommand(destroyCmd)
-	rootCmd.AddCommand(profilesCmd)
-	rootCmd.AddCommand(enginesCmd)
-	rootCmd.AddCommand(waitCmd)
 	rootCmd.AddCommand(runCmd)
 	rootCmd.AddCommand(logsCmd)
 }

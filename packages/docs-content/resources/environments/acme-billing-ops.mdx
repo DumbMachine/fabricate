@@ -1,0 +1,76 @@
+---
+title: "Acme Billing Ops"
+description: A disposable Acme billing workflow spanning Gmail, Intercom, and HubSpot around invoice INV-4812.
+---
+
+Acme Billing Ops is a ready-to-run environment for testing software that
+reconciles customer billing mail with chat and CRM. Every run starts from the
+same Northwind invoice dispute and is removed when the wrapped command exits.
+
+Its manifest identifier is `acme-billing-ops`.
+
+## Included integrations
+
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with labels and threads.",
+      data: "Dana's INV-4812 double-charge thread sits next to SSO, refund, and key-rotation mail.",
+    },
+    {
+      resource: "intercom",
+      label: "Intercom",
+      href: "/resources/integrations/intercom",
+      service: "inbox",
+      scenario: "intercom.acme-inbox.v1",
+      summary: "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+      data: "Open conversation 101 is the INV-4812 dispute; conversation 102 is Contoso SSO context.",
+    },
+    {
+      resource: "hubspot",
+      label: "HubSpot",
+      href: "/resources/integrations/hubspot",
+      service: "crm",
+      scenario: "hubspot.acme-pipeline.v1",
+      summary: "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+      data: "Deal 301 still open on INV-4812 for $1,240, with Dana as contact 101 at Northwind Traders.",
+    },
+  ]}
+/>
+
+## Scenario data
+
+This environment is a billing slice of the same Acme world as
+[Acme Support Desk](/resources/environments/acme-support-desk). The join key is
+invoice `INV-4812`: Dana Whitfield at Northwind was charged twice for $1,240.
+
+| Join key | Gmail | Intercom | HubSpot |
+| --- | --- | --- | --- |
+| `INV-4812` | thread `thr-double-charge` | open conversation `101` | deal `301` (`invoice`: `INV-4812`, amount `12400`) |
+| `dana@northwind.example` | From on both billing messages | contact `contact-dana` | contact `101`, company Northwind Traders |
+
+The inbox still contains the rest of Acme's support mail, and CRM still has the
+Contoso SSO ticket. Those records are context, not the billing job. Closing the
+Northwind deal or refunding Dana without reading both the mail thread and the
+open Intercom conversation is the kind of incomplete write this fixture is meant
+to catch.
+
+For the engineering board that tracks the same invoice, use
+[Acme Support Desk](/resources/environments/acme-support-desk).
+
+## Get started
+
+Paste this command to download the environment manifest, start the three
+services, and read `INV-4812` from mail, chat, and CRM. You do not need to clone
+Fabricate.
+
+<CommandOutput id="acme-billing-ops-inv-4812" />
+
+`--proxy` keeps each provider’s normal hostname. See [Gmail](/resources/integrations/gmail),
+[Intercom](/resources/integrations/intercom), and [HubSpot](/resources/integrations/hubspot)
+for API coverage, response examples, and the direct-URL option.

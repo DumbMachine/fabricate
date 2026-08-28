@@ -1,0 +1,44 @@
+{
+  "api": "HubSpot CRM v3",
+  "environment": {
+    "label": "Acme HubSpot",
+    "manifest": "environments/acme-hubspot.yaml",
+    "messages": 10
+  },
+  "integration": "hubspot",
+  "modes": {
+    "direct": {
+      "messagesAfter": 11,
+      "messagesBefore": 10,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 11,
+      "messagesBefore": 10,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read pipeline",
+    "write": "Close deal and open ticket",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-26T20:02:31.333Z",
+  "testedCommit": "c3358d3da0eaf926662f3d696bc5def356e7ded6"
+}

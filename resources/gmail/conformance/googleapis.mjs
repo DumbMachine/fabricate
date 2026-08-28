@@ -45,7 +45,7 @@ const operations = {};
 const before = await gmail.users.messages.list({userId: "me", maxResults: 50});
 assert.ok(before.data.messages?.length, "expected readable messages in the Acme environment");
 const beforeProfile = await gmail.users.getProfile({userId: "me"});
-assert.equal(beforeProfile.data.messagesTotal, 12, "expected the Acme environment");
+assert.equal(beforeProfile.data.messagesTotal, 28, "expected the Acme environment");
 operations.read = "passed";
 
 const raw = Buffer.from(
@@ -62,7 +62,7 @@ assert.ok(sent.data.id, "send should return a Gmail message ID");
 operations.send = "passed";
 
 const afterProfile = await gmail.users.getProfile({userId: "me"});
-assert.equal(afterProfile.data.messagesTotal, 13, "sent message should persist");
+assert.equal(afterProfile.data.messagesTotal, 29, "sent message should persist");
 operations.persistence = "passed";
 
 const modeReport = {
@@ -75,7 +75,7 @@ const reportPath = process.env.FAB_COMPATIBILITY_REPORT;
 if (reportPath) {
   let report = {
     api: "Gmail API v1",
-    environment: {label: "Acme Gmail", manifest: "environments/acme-gmail.yaml", messages: 12},
+    environment: {label: "Acme Gmail", manifest: "environments/acme-gmail.yaml", messages: 28},
     integration: "gmail",
     modes: {},
     operationLabels: {

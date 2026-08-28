@@ -1,0 +1,15 @@
+package: generated
+generate:
+  models: true
+  std-http-server: true
+  strict-server: true
+  embedded-spec: true
+output: generated/server.gen.go
+output-options:
+  include-operation-ids:
+    - get_v2_workspace_members
+    - get_v2_objects
+    - post_v2_objects_object_records_query
+    - post_v2_objects_object_records
+    - get_v2_objects_object_records_record_id
+    - patch_v2_objects_object_records_record_id

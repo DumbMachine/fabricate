@@ -1,0 +1,14 @@
+{
+  "id": "acme-billing-ops-inv-4812",
+  "title": "Read INV-4812 from mail, chat, and CRM",
+  "environment": "environments/acme-billing-ops.yaml",
+  "environmentLabel": "Acme Billing Ops",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/acme-billing-ops-inv-4812.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-billing-ops.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://api.intercom.io/conversations/101\n      echo\n      curl -sS https://api.hubapi.com/crm/v3/objects/deals/301\n    '",
+  "argv": [
+    "sh",
+    "-c",
+    "curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\necho\ncurl -sS https://api.intercom.io/conversations/101\necho\ncurl -sS https://api.hubapi.com/crm/v3/objects/deals/301"
+  ]
+}

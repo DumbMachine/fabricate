@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "hubspot.minimal.v1",
+  "$resource": "hubspot",
+  "$resourceVersion": "v3",
+  "state": {
+    "contacts": [],
+    "companies": [],
+    "deals": [],
+    "tickets": []
+  }
+}
