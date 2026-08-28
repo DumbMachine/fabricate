@@ -145,7 +145,9 @@ export default defineConfig({
                 href: "/resources/integrations/shopify",
                 icon: "https://logos.composio.dev/api/shopify",
               },
-            ],
+            ]
+              // this is shamefull and needs to be fixed in the future
+              .sort((a, b) => a.label.localeCompare(b.label))
           },
           {
             label: "Environments",
