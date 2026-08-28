@@ -1,29 +1,22 @@
 ---
 title: SendGrid
-description: A reproducible SendGrid mail API for local application testing.
+description: Mail send and batches.
 sidebar:
   icon: https://logos.composio.dev/api/sendgrid
 ---
 
-import compatibility from "../_generated/sendgrid.compatibility.json";
+Mail send and batches. Local SendGrid v3 that keeps batch state across
+requests.
 
-Fabricate ships a SendGrid v3 resource with a strict local API and a
-synthetic bearer token. It covers mail send and batch IDs in the included Acme SendGrid
-environment.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `sendgrid.minimal.v1` | Empty SendGrid state for a clean test. |
-| `sendgrid.acme-outbox.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep SendGrid’s normal hostnames. |
+| API | SendGrid v3 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.sendgrid.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
@@ -52,6 +45,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.sendgrid.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `sendgrid.minimal.v1` | Empty SendGrid state for a clean test. |
+| `sendgrid.acme-outbox.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -59,4 +59,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest SendGrid check ran against the Acme SendGrid
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="sendgrid" />
+
+## Supported operations
+
+<SupportedOperations resource="sendgrid" />

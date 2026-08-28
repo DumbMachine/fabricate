@@ -1,0 +1,30 @@
+{
+  "integration": "resend",
+  "api": "Resend v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/domains",
+      "operationId": "Domainslist",
+      "summary": "Retrieve a list of domains"
+    },
+    {
+      "method": "GET",
+      "path": "/emails",
+      "operationId": "Emailslist",
+      "summary": "Retrieve a list of emails"
+    },
+    {
+      "method": "POST",
+      "path": "/emails",
+      "operationId": "Emailssend",
+      "summary": "Send an email"
+    },
+    {
+      "method": "GET",
+      "path": "/emails/{email_id}",
+      "operationId": "Emailsget",
+      "summary": "Retrieve a single email"
+    }
+  ]
+}
