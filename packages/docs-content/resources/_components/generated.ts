@@ -2,8 +2,24 @@ import fs from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 
-const generatedDir = fileURLToPath(new URL("../_generated/", import.meta.url));
+declare global {
+  interface ImportMeta {
+    glob(pattern: string, options?: {eager?: boolean; import?: string}): Record<string, unknown>;
+  }
+}
+
 const snapshotName = /^[a-zA-Z0-9._-]+$/;
+
+// Vite inlines this map at compile time so `blume build` does not depend on
+// import.meta.url still pointing at this source file. Node has no glob helper,
+// so the catch falls through to the filesystem (tests and unbundled runs).
+const bundledSnapshots: Record<string, unknown> = (() => {
+  try {
+    return import.meta.glob("../_generated/*.json", {eager: true, import: "default"});
+  } catch {
+    return {};
+  }
+})();
 
 export type CommandExample = {
   command: string;
@@ -67,8 +83,59 @@ function isStatus(value: unknown): value is OperationStatus {
   return value === "passed" || value === "failed" || value === "pending";
 }
 
+function bundledSnapshot(filename: string): unknown | undefined {
+  const suffix = `/${filename}`;
+  for (const [key, value] of Object.entries(bundledSnapshots)) {
+    if (key !== filename && !key.endsWith(suffix)) {
+      continue;
+    }
+    return isRecord(value) && "default" in value ? value.default : value;
+  }
+  return undefined;
+}
+
+function generatedDirFromDisk(): string | null {
+  const candidates: string[] = [];
+  const contentDir = process.env.FABRICATE_DOCS_CONTENT_DIR;
+  if (contentDir) {
+    candidates.push(path.resolve(contentDir, "resources/_generated"));
+  }
+  try {
+    candidates.push(fileURLToPath(new URL(/* @vite-ignore */ "../_generated/", import.meta.url)));
+  } catch {
+    // Bundled import.meta.url may not be a file: URL.
+  }
+  let dir = process.cwd();
+  for (let i = 0; i < 8; i++) {
+    candidates.push(path.join(dir, "packages/docs-content/resources/_generated"));
+    const parent = path.dirname(dir);
+    if (parent === dir) {
+      break;
+    }
+    dir = parent;
+  }
+  for (const candidate of candidates) {
+    try {
+      if (fs.statSync(candidate).isDirectory()) {
+        return candidate;
+      }
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
 export function readGeneratedJSON(filename: string): unknown | null {
   if (!snapshotName.test(filename)) {
+    return null;
+  }
+  const bundled = bundledSnapshot(filename);
+  if (bundled !== undefined) {
+    return bundled;
+  }
+  const generatedDir = generatedDirFromDisk();
+  if (!generatedDir) {
     return null;
   }
   const dest = path.resolve(generatedDir, filename);

@@ -1,0 +1,742 @@
+{
+  "id": "cloudflare-list-zones",
+  "title": "List seeded zones",
+  "environment": {
+    "label": "Acme Cloudflare",
+    "manifest": "environments/acme-cloudflare.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.cloudflare.com/client/v4/zones",
+  "output": {
+    "errors": [],
+    "messages": [],
+    "result": [
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Production apex. Checkout reliability and INV-4812 billing portal live here.",
+        "id": "zone_acme",
+        "name": "acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Adatum custom hostname pending TXT acme-domain-verification=adatum-7f31. Owen Brooks.",
+        "id": "zone_adatum",
+        "name": "adatum.acme.example",
+        "status": "pending",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_admin",
+        "name": "admin.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Aperture Science.",
+        "id": "zone_aperture",
+        "name": "aperture.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_api",
+        "name": "api.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Atlas Civic.",
+        "id": "zone_atlas",
+        "name": "atlas.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "SSO / SAML callback host for Contoso contoso-eu. Mei Chen, 380 users.",
+        "id": "zone_auth",
+        "name": "auth.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Billing portal; Northwind INV-4812 receipts. Dana Whitfield.",
+        "id": "zone_billing",
+        "name": "billing.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Black Mesa.",
+        "id": "zone_blackmesa",
+        "name": "blackmesa.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Bluth Company.",
+        "id": "zone_bluth",
+        "name": "bluth.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "BrightPath API hostname; overlapping keys.",
+        "id": "zone_brightpath",
+        "name": "brightpath.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Canyon Insurance.",
+        "id": "zone_canyon",
+        "name": "canyon.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_cdn",
+        "name": "cdn.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Checkout reliability patched host.",
+        "id": "zone_checkout",
+        "name": "checkout.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Cobalt Health.",
+        "id": "zone_cobalt",
+        "name": "cobalt.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Contoso custom hostname / SSO contoso-eu.",
+        "id": "zone_contoso",
+        "name": "contoso.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Cyberdyne Systems.",
+        "id": "zone_cyberdyne",
+        "name": "cyberdyne.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_dev",
+        "name": "dev.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_docs",
+        "name": "docs.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Driftwood Media.",
+        "id": "zone_driftwood",
+        "name": "driftwood.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Dunder Mifflin.",
+        "id": "zone_dunder",
+        "name": "dunder.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme_eu"
+        },
+        "id": "zone_eu",
+        "name": "eu.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Fabrikam SCIM / req_7Q4K2.",
+        "id": "zone_fabrikam",
+        "name": "fabrikam.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Fernworks-prod custom hostname. Priya Nair CSV.",
+        "id": "zone_fernworks",
+        "name": "fernworks.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Globex.",
+        "id": "zone_globex",
+        "name": "globex.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Harbor Bank.",
+        "id": "zone_harbor",
+        "name": "harbor.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Helix Bio.",
+        "id": "zone_helix",
+        "name": "helix.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Customer webhooks; LakeTech retries. Ben Okafor.",
+        "id": "zone_hooks",
+        "name": "hooks.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Hooli.",
+        "id": "zone_hooli",
+        "name": "hooli.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_images",
+        "name": "images.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for InGen.",
+        "id": "zone_ingen",
+        "name": "ingen.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Initech.",
+        "id": "zone_initech",
+        "name": "initech.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_internal",
+        "name": "internal.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Kiln Studio.",
+        "id": "zone_kiln",
+        "name": "kiln.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "LakeTech webhook publisher hostname.",
+        "id": "zone_laketech",
+        "name": "laketech.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Los Pollos Hermanos.",
+        "id": "zone_lospollos",
+        "name": "lospollos.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Lumen Schools.",
+        "id": "zone_lumen",
+        "name": "lumen.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Massive Dynamic.",
+        "id": "zone_massive",
+        "name": "massive.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Meadow Supply.",
+        "id": "zone_meadow",
+        "name": "meadow.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Nakatomi Trading.",
+        "id": "zone_nakatomi",
+        "name": "nakatomi.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Nimbus Weather.",
+        "id": "zone_nimbus",
+        "name": "nimbus.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Northstar Logistics.",
+        "id": "zone_northstar",
+        "name": "northstar.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Northwind Traders custom hostname. INV-4812.",
+        "id": "zone_northwind",
+        "name": "northwind.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Orbiter.",
+        "id": "zone_orbiter",
+        "name": "orbiter.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Pebble Pay.",
+        "id": "zone_pebble",
+        "name": "pebble.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Pied Piper.",
+        "id": "zone_piedpiper",
+        "name": "piedpiper.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Pioneer Freight.",
+        "id": "zone_pioneer",
+        "name": "pioneer.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Prestige Worldwide.",
+        "id": "zone_prestige",
+        "name": "prestige.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_preview",
+        "name": "preview.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Quartz Analytics.",
+        "id": "zone_quartz",
+        "name": "quartz.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Raviga Capital.",
+        "id": "zone_raviga",
+        "name": "raviga.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Redwood Labs.",
+        "id": "zone_redwood",
+        "name": "redwood.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_sandbox",
+        "name": "sandbox.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_shop",
+        "name": "shop.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Sienna Retail.",
+        "id": "zone_sienna",
+        "name": "sienna.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Soylent Corp.",
+        "id": "zone_soylent",
+        "name": "soylent.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_staging",
+        "name": "staging.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_status",
+        "name": "status.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Sterling Cooper.",
+        "id": "zone_sterling",
+        "name": "sterling.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "TinyShop workspace paused after 30-day refund.",
+        "id": "zone_tinyshop",
+        "name": "tinyshop.acme.example",
+        "status": "moved",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Tyrell Corporation.",
+        "id": "zone_tyrell",
+        "name": "tyrell.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Umbrella Labs.",
+        "id": "zone_umbrella",
+        "name": "umbrella.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Vandelay Industries.",
+        "id": "zone_vandelay",
+        "name": "vandelay.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Vector Robotics.",
+        "id": "zone_vector",
+        "name": "vector.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Waypoint Travel.",
+        "id": "zone_waypoint",
+        "name": "waypoint.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "acme-web front door; checkout reliability incident.",
+        "id": "zone_web",
+        "name": "web.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "description": "Custom hostname for Weyland-Yutani.",
+        "id": "zone_weyland",
+        "name": "weyland.customers.acme.example",
+        "status": "active",
+        "type": "full"
+      },
+      {
+        "account": {
+          "id": "acct_acme"
+        },
+        "id": "zone_ws",
+        "name": "ws.acme.example",
+        "status": "active",
+        "type": "full"
+      }
+    ],
+    "result_info": {
+      "count": 68,
+      "page": 1,
+      "per_page": 50,
+      "total_count": 68
+    },
+    "success": true
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:94959ea43b83c9ec0bcbb131d4581aa7fed80359985e5b2a0699387e4eb2d54f",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:88bd4645954970ba3a3219e4006a0f56653b7a2ece326be41ab01c55fc70e948"
+      },
+      {
+        "path": "environments/acme-cloudflare.yaml",
+        "digest": "sha256:9d5ed02e1c9fde6b497cfa1365ad7c9916f05577477a4dd73669580fc441d09c"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/cloudflare-list-zones.json",
+        "digest": "sha256:3c5b13280615e0970a2f886e88135d4eaabf0e466128ec02cca5d55ef88b74ed"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/asana",
+        "digest": "sha256:106aa032b5e464b393b68d82b3c3c82359c4e4b3e80d9fa25e4fdb68009e728b"
+      },
+      {
+        "path": "resources/cloudflare",
+        "digest": "sha256:9805a42f0ee00d80c3e7d0bd089f0ec9064db495e0539fe9aeafcff6c9772089"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:da7d9821ce14f4120d503c09971f0f4eed3ab56f76a0addb5dbf285ac75a8459"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:0a480a8abf00d0ef377b2bb5f2464affbb4bb26521183d3fc18c8ae6ae527545"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
+      }
+    ]
+  }
+}
