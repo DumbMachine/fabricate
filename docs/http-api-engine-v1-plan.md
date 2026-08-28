@@ -1182,7 +1182,7 @@ Do not add a Fabricate language SDK solely to wrap provider SDK construction.
 Preferred development and CI command:
 
 ```bash
-fab run --environment ./fabricate/ci.yaml -- npm test
+fab run ./fabricate/ci.yaml -- npm test
 ```
 
 Lifecycle:
@@ -1316,7 +1316,7 @@ fab scenario diff <environment> <service>
 fab scenario load <environment> <service> <scenario-or-path>
 fab scenario capture <environment> <service> --as <new-id> [--output path]
 
-fab run --environment <manifest> [--proxy] [--artifacts dir] -- <command...>
+fab run <manifest> [--proxy] [--artifacts dir] -- <command...>
 ```
 
 HTTP resources must not require users to type:
@@ -1568,7 +1568,7 @@ Deliverables:
 
 Exit criteria:
 
-- `fab run --environment ... -- node test.mjs` starts Gmail, injects its
+- `fab run ... -- node test.mjs` starts Gmail, injects its
   direct endpoint, runs the child, and tears everything down;
 - parallel runs do not share ports, state, or credentials;
 - stdout remains machine-parseable.
@@ -1806,7 +1806,7 @@ Afterward, proxy conformance runs the same official SDKs on their normal vendor
 hosts through:
 
 ```bash
-fab run --environment ./fabricate/environments/duolingo-ci.yaml --proxy -- npm test
+fab run ./fabricate/environments/duolingo-ci.yaml --proxy -- npm test
 ```
 
 No request reaches a real provider. Reset restores the exact scenario

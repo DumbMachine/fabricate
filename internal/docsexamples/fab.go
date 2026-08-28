@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-// RunFab executes `fab run --environment <manifest> [--proxy] -- argv...`
+// RunFab executes `fab run <manifest> [--proxy] -- argv...`
 // and returns stdout. Informational fab logs stay on stderr.
 func RunFab(fab, environment string, proxy bool, argv []string) ([]byte, error) {
 	if fab == "" {
@@ -17,7 +17,7 @@ func RunFab(fab, environment string, proxy bool, argv []string) ([]byte, error) 
 	if err != nil {
 		return nil, fmt.Errorf("docsexamples: resolve fab: %w", err)
 	}
-	args := []string{"run", "--environment", environment}
+	args := []string{"run", environment}
 	if proxy {
 		args = append(args, "--proxy")
 	}

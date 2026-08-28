@@ -5,7 +5,7 @@
   "environmentLabel": "Acme Exa",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/exa-list-tasks.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.exa.ai/research/v0/tasks",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.exa.ai/research/v0/tasks",
   "argv": [
     "curl",
     "-sS",

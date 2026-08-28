@@ -1,0 +1,21 @@
+{
+  "integration": "mailgun",
+  "scenarios": [
+    {
+      "id": "mailgun.acme-outbox.v1",
+      "counts": {
+        "domains": 1,
+        "events": 5,
+        "messages": 5
+      }
+    },
+    {
+      "id": "mailgun.minimal.v1",
+      "counts": {
+        "domains": 0,
+        "events": 0,
+        "messages": 0
+      }
+    }
+  ]
+}

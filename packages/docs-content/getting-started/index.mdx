@@ -6,8 +6,6 @@ description: Install the CLI, check the catalog, and run the first local environ
 ## Prerequisites
 
 You need macOS or Linux on `amd64` or `arm64`, plus one of `curl` or `wget`.
-Docker is only needed when you create an infrastructure resource such as
-Postgres or Redis. It is not needed for the Gmail environment below.
 
 ## Install the CLI
 
@@ -28,13 +26,11 @@ fab --help
 
 ## Run an environment
 
-Run a command with the Acme Gmail environment available as local environment
-variables. This command fetches the canonical manifest, so you do not need to
-clone Fabricate:
+Run a command with the built-in Acme Gmail environment available as local
+environment variables:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+fab run acme-gmail -- \
   sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
   "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/profile"'
 ```
@@ -81,8 +77,7 @@ def profile():
 Run it with the local URL only for this process:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin -- \
+fab run acme-gmail -- \
   sh -c 'GMAIL_API_BASE_URL="$FAB_SUPPORT_MAIL_URL/gmail/v1" uvicorn main:app'
 ```
 
@@ -91,31 +86,34 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 Use `--proxy` when your application already calls normal provider hosts and
 you do not want to add a Fabricate base-URL configuration. Fabricate injects a
 process-scoped HTTPS proxy and CA trust settings, then routes supported Gmail
-and Google OAuth traffic to the local environment. Other provider traffic fails
-closed unless the environment explicitly allows it.
+and Google OAuth traffic to the local environment. Other destinations pass
+through unchanged unless the environment sets `proxy.unknown_hosts: reject`.
+Do not send `$FAB_SUPPORT_MAIL_TOKEN` on these requests: the proxy replaces
+`Authorization` on routed hosts.
 
 For an existing FastAPI app that uses `httpx`'s default environment-aware
-transport, keep the normal Gmail URL unchanged:
+transport, keep the normal Gmail URL unchanged and omit the Fabricate token:
 
 ```python
 @app.get("/profile")
 def profile():
     response = httpx.get(
         "https://gmail.googleapis.com/gmail/v1/users/me/profile",
-        headers={"Authorization": f"Bearer {os.environ['FAB_SUPPORT_MAIL_TOKEN']}"},
     )
     response.raise_for_status()
     return response.json()
 ```
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+fab run acme-gmail --proxy -- \
   uvicorn main:app
 ```
 
 The same applies to an existing JavaScript application using Google's official
-client: retain its normal Gmail construction and run it under the proxy.
+client: retain its normal Gmail construction and run it under the proxy. The
+client may keep a refresh-token grant against `oauth2.googleapis.com/token`.
+Fabricate answers that route with the synthetic access token; it does not
+complete a real Google login or store customer credentials.
 
 ```js
 import {google} from "googleapis";
@@ -126,23 +124,12 @@ console.log(profile.data);
 ```
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+fab run acme-gmail --proxy -- \
   node app.mjs
 ```
 
 Your client must respect standard proxy and CA environment variables. Use the
 direct base URL when it pins certificates or bypasses proxy settings.
 
-## Try an infrastructure profile
-
-Use profiles for services that are meant to be actual containers, not provider
-API emulators:
-
-```bash
-fab profiles
-fab create postgres -p stripe-payments
-fab destroy --all
-```
-
-`fab create` prints the connection details. `fab destroy` tears them down.
+For a worker managed by an agent platform or a separate process supervisor,
+continue with [Agent and workflow QA](/guides/agent-workflows).

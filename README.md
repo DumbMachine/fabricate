@@ -1,13 +1,10 @@
 # fabricate
 
 Fabricate runs reproducible local environments for applications and agents.
-It has two deliberately separate extension paths:
+Provider APIs use compiled OpenAPI resources, versioned scenarios, and `fab
+run` environments.
 
-- infrastructure resources use `fab create` with container profiles;
-- provider HTTP APIs use compiled OpenAPI resources, versioned scenarios, and
-  `fab run` environments.
-
-Gmail is the reference HTTP resource. Its Acme Corp scenario contains twelve
+Gmail is the reference HTTP resource. Its Acme Corp scenario contains 28
 handcrafted messages and works with applications that use Google's normal API
 hosts and OAuth refresh flow—no client endpoint override is required.
 
@@ -23,8 +20,7 @@ export PATH="$HOME/bin:$PATH"   # only if ~/bin is not already on PATH
 Wrap the application that should see fabricated Gmail:
 
 ```bash
-fab-dev run \
-  --environment /Users/dumbmachine/github.com/dumbmachine/fabricate/environments/acme-gmail.yaml \
+fab-dev run acme-gmail \
   --proxy \
   -- <your command>
 ```
@@ -33,8 +29,7 @@ For the Access checkout:
 
 ```bash
 cd /Users/dumbmachine/github.com/dumbmachine/access-mcp
-PORT=14820 fab-dev run \
-  --environment /Users/dumbmachine/github.com/dumbmachine/fabricate/environments/acme-gmail.yaml \
+PORT=14820 fab-dev run acme-gmail \
   --proxy \
   -- make run
 ```
@@ -52,22 +47,6 @@ fab-dev logs acme-gmail
 fab-dev logs acme-gmail --cat
 fab-dev logs acme-gmail --all
 ```
-
-## Infrastructure resources
-
-Container profiles remain available for databases, caches, hosts, Kubernetes,
-Prometheus, and a Moto-backed AWS environment:
-
-```bash
-fab-dev profiles
-fab-dev create postgres -p stripe-payments
-fab-dev create redis -p hot-keys
-fab-dev destroy --all
-```
-
-Profiles are only for infrastructure engines. Provider APIs do not use
-`engine: httpmock`, `MOCK_SERVICE`, service-specific Docker images, or
-`fab create`.
 
 ## Bringing back another HTTP API
 
@@ -91,7 +70,7 @@ removed. New APIs extend the same root-module engine used by Gmail.
 make check           # vet, unit tests, and formatting check
 make generate        # regenerate committed OpenAPI bindings
 make generate-check  # regenerate and fail if bindings differ
-make e2e             # container-engine smoke tests; needs Docker
+make conformance     # run black-box resource compatibility tests
 ```
 
 `fab-dev` is an absolute symlink back to the checkout. Each invocation rebuilds

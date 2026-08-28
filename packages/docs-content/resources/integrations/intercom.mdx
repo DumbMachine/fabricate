@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-intercom.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_INTERCOM_TOKEN" \
       "$FAB_INTERCOM_URL/conversations"'
 ```
@@ -98,14 +98,14 @@ The response is the Acme support inbox:
 
 Use this when your app uses the normal Intercom URLs and follows standard
 proxy and CA environment variables. This one-paste check calls Intercom's
-normal production hostname; replace the final `sh -c ...` command with your
-app.
+normal production hostname; replace the final `curl` with your app. Omit
+`$FAB_INTERCOM_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-intercom.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_INTERCOM_TOKEN" \
-      "https://api.intercom.io/conversations"'
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.intercom.io/conversations
 ```
 
 Fabricate handles `api.intercom.io`, `api.eu.intercom.io`, and
@@ -117,10 +117,13 @@ settings. In that case, use the direct URL.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `intercom.minimal.v1` | An empty inbox with Val as the current admin. |
-| `intercom.acme-inbox.v1` | Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation. |
+<ResourceScenarios
+  resource="intercom"
+  descriptions={{
+    "intercom.minimal.v1": "An empty inbox with Val as the current admin.",
+    "intercom.acme-inbox.v1": "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+  }}
+/>
 
 ## Compatibility verification
 

@@ -48,7 +48,7 @@ idempotent and preserve the state-lock behavior.
 ```bash
 make check
 make generate-check
-make docs-operations         # dump compiled HTTP operations (all resources)
+make docs-operations         # dump compiled HTTP operations and scenario counts (all resources)
 make docs-operations gmail   # same, limited to named resources
 make docs-examples           # recapture dirty command snapshots (all resources)
 make docs-examples gmail     # same, limited to named resources

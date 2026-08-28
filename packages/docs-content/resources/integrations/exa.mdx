@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_EXA_TOKEN" \
       "$FAB_EXA_URL/research/v0/tasks"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme research task list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Exa URLs. This one-paste check
-calls Exa's production hostname; the proxy supplies the local token.
+calls Exa's production hostname. Omit `$FAB_EXA_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.exa.ai/research/v0/tasks
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `api.exa.ai` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `exa.minimal.v1` | Empty Exa state for a clean test. |
-| `exa.acme-tasks.v1` | Research-task haystack. Needles: checkout reliability, Contoso SSO, INV-4812 / Northwind, fernworks CSV, Adatum TXT, LakeTech backoff, TinyShop refund, BrightPath keys, Fabrikam `req_7Q4K2`. |
+<ResourceScenarios
+  resource="exa"
+  descriptions={{
+    "exa.minimal.v1": "Empty Exa state for a clean test.",
+    "exa.acme-tasks.v1": "Research-task haystack. Needles: checkout reliability, Contoso SSO, INV-4812 / Northwind, fernworks CSV, Adatum TXT, LakeTech backoff, TinyShop refund, BrightPath keys, Fabrikam `req_7Q4K2`.",
+  }}
+/>
 
 ## Compatibility verification
 

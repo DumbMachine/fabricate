@@ -23,7 +23,6 @@ kind: Environment
 metadata: {name: acme-gmail}
 services:
   support-mail: {resource: gmail, scenario: gmail.acme-corp.v1}
-proxy: {enabled: true}
 `))
 	if err != nil {
 		t.Fatal(err)

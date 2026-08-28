@@ -1,0 +1,17 @@
+{
+  "integration": "exa",
+  "scenarios": [
+    {
+      "id": "exa.acme-tasks.v1",
+      "counts": {
+        "tasks": 40
+      }
+    },
+    {
+      "id": "exa.minimal.v1",
+      "counts": {
+        "tasks": 0
+      }
+    }
+  ]
+}
