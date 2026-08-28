@@ -13,6 +13,3 @@ services:
   audience:
     resource: mailchimp
     scenario: mailchimp.acme-audience.v1
-
-proxy:
-  enabled: true

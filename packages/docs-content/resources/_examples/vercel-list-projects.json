@@ -5,7 +5,7 @@
   "environmentLabel": "Acme Vercel",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/vercel-list-projects.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://api.vercel.com/v10/projects",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.vercel.com/v10/projects",
   "argv": [
     "curl",
     "-sS",

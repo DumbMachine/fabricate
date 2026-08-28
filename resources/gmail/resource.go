@@ -28,7 +28,7 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 		ID: "gmail", DisplayName: "Gmail", Version: "v1", OpenAPIVersion: "3.0.3",
 		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"gmail.googleapis.com", "www.googleapis.com"},
-		SDK:           httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true},
+		SDK:           httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true},
 	}
 }
 
@@ -46,25 +46,12 @@ func (*Resource) Contract() httpresource.Contract {
 
 func (*Resource) Scenarios() httpresource.ScenarioCodec { return scenarioCodec{} }
 
+func (*Resource) ScenarioDocuments() ([]scenario.Document, error) {
+	return scenario.Embedded(builtInScenarios)
+}
+
 func (*Resource) Scenario(id string) (scenario.Document, error) {
-	entries, err := builtInScenarios.ReadDir("scenarios")
-	if err != nil {
-		return scenario.Document{}, fmt.Errorf("gmail: list embedded scenarios: %w", err)
-	}
-	for _, entry := range entries {
-		raw, err := builtInScenarios.ReadFile("scenarios/" + entry.Name())
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("gmail: read embedded scenario %s: %w", entry.Name(), err)
-		}
-		doc, err := scenario.Parse(raw)
-		if err != nil {
-			return scenario.Document{}, fmt.Errorf("gmail: parse embedded scenario %s: %w", entry.Name(), err)
-		}
-		if doc.ID == id {
-			return doc, nil
-		}
-	}
-	return scenario.Document{}, fmt.Errorf("gmail: unknown scenario %q", id)
+	return scenario.LookupEmbedded(builtInScenarios, id, "gmail")
 }
 
 func (*Resource) NewServer(ctx context.Context, dependencies httpresource.ServerDependencies) (httpresource.Server, error) {

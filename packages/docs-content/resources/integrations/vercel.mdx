@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_VERCEL_TOKEN" \
       "$FAB_VERCEL_URL/v10/projects"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme project list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Vercel URLs. This one-paste check
-calls Vercel's production hostname; the proxy supplies the local token.
+calls Vercel's production hostname. Omit `$FAB_VERCEL_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.vercel.com/v10/projects
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `api.vercel.com` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `vercel.minimal.v1` | Empty Vercel state for a clean test. |
-| `vercel.acme-projects.v1` | Acme frontend estate: projects, deployments, and domains on `team_acme`. Needles: `acme-web` checkout reliability, Contoso SSO / `acme-auth`, INV-4812 billing, fernworks export, Adatum DNS, LakeTech hooks. |
+<ResourceScenarios
+  resource="vercel"
+  descriptions={{
+    "vercel.minimal.v1": "Empty Vercel state for a clean test.",
+    "vercel.acme-projects.v1": "Acme frontend estate: projects, deployments, and domains on `team_acme`. Needles: `acme-web` checkout reliability, Contoso SSO / `acme-auth`, INV-4812 billing, fernworks export, Adatum DNS, LakeTech hooks.",
+  }}
+/>
 
 ## Compatibility verification
 
