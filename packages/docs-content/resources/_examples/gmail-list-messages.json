@@ -5,7 +5,7 @@
   "environmentLabel": "Acme's Gmail",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/gmail-list-messages.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages",
   "argv": [
     "curl",
     "-sS",

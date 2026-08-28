@@ -49,6 +49,16 @@ export type OperationsCatalog = {
   operations: Operation[];
 };
 
+export type ScenarioFacts = {
+  id: string;
+  counts: Record<string, number>;
+};
+
+export type ScenarioCatalog = {
+  integration: string;
+  scenarios: ScenarioFacts[];
+};
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -205,4 +215,42 @@ export function loadCompatibility(resource?: string, provided?: unknown): Compat
 
 export function loadOperationsCatalog(resource?: string, provided?: unknown): OperationsCatalog | null {
   return parseOperationsCatalog(provided) ?? (resource ? parseOperationsCatalog(readGeneratedJSON(`${resource}.operations.json`)) : null);
+}
+
+export function parseScenarioCatalog(value: unknown): ScenarioCatalog | null {
+  if (!isRecord(value) || typeof value.integration !== "string" || !Array.isArray(value.scenarios)) {
+    return null;
+  }
+  const scenarios: ScenarioFacts[] = [];
+  for (const item of value.scenarios) {
+    if (!isRecord(item) || typeof item.id !== "string" || !isRecord(item.counts)) {
+      continue;
+    }
+    const counts: Record<string, number> = {};
+    for (const [key, count] of Object.entries(item.counts)) {
+      if (typeof count === "number" && Number.isFinite(count)) {
+        counts[key] = count;
+      }
+    }
+    scenarios.push({id: item.id, counts});
+  }
+  return {integration: value.integration, scenarios};
+}
+
+export function loadScenarioCatalog(resource?: string, provided?: unknown): ScenarioCatalog | null {
+  return parseScenarioCatalog(provided) ?? (resource ? parseScenarioCatalog(readGeneratedJSON(`${resource}.scenarios.json`)) : null);
+}
+
+export function scenarioFacts(catalog: ScenarioCatalog | null, id: string): ScenarioFacts | null {
+  return catalog?.scenarios.find((entry) => entry.id === id) ?? null;
+}
+
+export function formatScenarioCounts(facts: ScenarioFacts | null): string {
+  if (!facts) {
+    return "";
+  }
+  return Object.keys(facts.counts)
+    .sort((left, right) => left.localeCompare(right))
+    .map((key) => `${facts.counts[key]} ${key}`)
+    .join(" · ");
 }

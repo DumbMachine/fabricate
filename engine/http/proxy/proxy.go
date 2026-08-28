@@ -132,6 +132,20 @@ func (p *Proxy) Environment() map[string]string {
 	}
 }
 
+// InterceptedHosts returns the provider hosts routed to local services.
+func (p *Proxy) InterceptedHosts() []string {
+	seen := make(map[string]struct{}, len(p.routes))
+	for _, route := range p.routes {
+		seen[route.Host] = struct{}{}
+	}
+	hosts := make([]string, 0, len(seen))
+	for host := range seen {
+		hosts = append(hosts, host)
+	}
+	sort.Strings(hosts)
+	return hosts
+}
+
 func (p *Proxy) Close(ctx context.Context) error {
 	p.transport.CloseIdleConnections()
 	return p.server.Shutdown(ctx)

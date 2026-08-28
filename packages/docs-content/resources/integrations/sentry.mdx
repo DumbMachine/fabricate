@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_SENTRY_TOKEN" \
       "$FAB_SENTRY_URL/api/0/organizations/acme/projects/"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme project list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Sentry URLs. This one-paste check
-calls Sentry's production hostname; the proxy supplies the local token.
+calls Sentry's production hostname. Omit `$FAB_SENTRY_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://us.sentry.io/api/0/organizations/acme/projects/
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `us.sentry.io` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `sentry.minimal.v1` | Empty Sentry state for a clean test. |
-| `sentry.acme-projects.v1` | Acme error tracking: projects, teams, and issues. Needles: `acme-web` checkout reliability, Contoso SSO at `auth.acme.example`, INV-4812, fernworks CSV, Adatum DNS, LakeTech webhooks, Fabrikam `req_7Q4K2`. |
+<ResourceScenarios
+  resource="sentry"
+  descriptions={{
+    "sentry.minimal.v1": "Empty Sentry state for a clean test.",
+    "sentry.acme-projects.v1": "Acme error tracking: projects, teams, and issues. Needles: `acme-web` checkout reliability, Contoso SSO at `auth.acme.example`, INV-4812, fernworks CSV, Adatum DNS, LakeTech webhooks, Fabrikam `req_7Q4K2`.",
+  }}
+/>
 
 ## Compatibility verification
 

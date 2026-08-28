@@ -5,7 +5,7 @@
   "environmentLabel": "Acme Sentry",
   "proxy": true,
   "outputPath": "packages/docs-content/resources/_generated/sentry-list-projects.json",
-  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml \\\n  | fab run --environment /dev/stdin --proxy -- \\\n    curl -sS https://us.sentry.io/api/0/organizations/acme/projects/",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://us.sentry.io/api/0/organizations/acme/projects/",
   "argv": [
     "curl",
     "-sS",

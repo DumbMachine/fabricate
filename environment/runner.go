@@ -71,7 +71,7 @@ func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enab
 		runtime.Services[name] = service
 	}
 
-	if enableProxy || spec.Proxy.Enabled {
+	if enableProxy {
 		routes, err := runtime.proxyRoutes()
 		if err != nil {
 			return nil, err
