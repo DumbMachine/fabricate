@@ -1,5 +1,37 @@
 ---
 title: fab logs
+description: Find or read retained request traces from completed and standalone runs.
 ---
 
-TODO
+Fabricate deletes live service state at shutdown but retains a redacted JSONL
+request trace. Authorization headers, cookies, and credential fields are
+removed before the trace reaches disk.
+
+Print the newest trace path for an environment:
+
+```bash
+fab logs acme-gmail
+```
+
+```text
+/Users/me/Library/Application Support/fab/logs/acme-gmail/20260828T065329Z-8faffa92/requests.jsonl
+```
+
+Print every retained trace, newest first:
+
+```bash
+fab logs acme-gmail --all
+```
+
+Write the newest JSONL trace to stdout:
+
+```bash
+fab logs acme-gmail --cat
+```
+
+```json
+{"timestamp":"2026-08-28T06:47:08.178068Z","environment":"acme-gmail","runId":"20260828T064708.124846000Z-1e645a39","service":"support-mail","host":"gmail.googleapis.com","method":"GET","path":"/gmail/v1/users/me/profile","request":{"headers":{"Authorization":["[REDACTED]"]},"bytes":0},"response":{"headers":{"Content-Type":["application/json"]},"body":{"emailAddress":"support@acme.example","historyId":"1","messagesTotal":28,"threadsTotal":14},"bytes":93},"status":200,"durationMs":0.397}
+```
+
+Request and response bodies are included when available and size-limited by
+the request logger.

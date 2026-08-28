@@ -1,6 +1,72 @@
 ---
 title: fab CLI
-description: TODO
+description: Run API sandbox environments and inspect their resources, scenarios, and services.
 ---
 
-TODO
+`fab` runs disposable, stateful provider APIs on your machine. Use an official
+environment, a local environment manifest, or one resource with an explicit
+scenario.
+
+```bash
+fab run acme-gmail
+fab run ./environment.yaml -- npm test
+fab run gmail --scenario gmail.minimal.v1
+```
+
+The first and third commands stay in the foreground until you press `Ctrl-C`.
+The second starts the environment, runs `npm test` with its connection
+variables, and tears everything down when the command exits.
+
+## Entities
+
+Fabricate's CLI follows the environment model directly:
+
+```text
+Environment
+  Service = Resource + Scenario
+```
+
+- An **environment** is a named collection of services.
+- A **service** is one resource running with one scenario.
+- A **resource** implements a provider-shaped API such as Gmail or HubSpot.
+- A **scenario** is the immutable state loaded when a service starts.
+
+Inspect the catalog before running anything:
+
+```bash
+fab environment list
+fab service list --environment acme-support-desk
+fab resource inspect gmail
+fab scenario list gmail
+```
+
+Example output from `fab service list --environment acme-support-desk`:
+
+```text
+NAME          RESOURCE  SCENARIO
+board         asana     asana.acme-sprint.v1
+crm           hubspot   hubspot.acme-pipeline.v1
+inbox         intercom  intercom.acme-inbox.v1
+support-mail  gmail     gmail.acme-corp.v1
+```
+
+## Output
+
+Catalog commands print a table in an interactive terminal and JSON when stdout
+is piped. Set the format explicitly when a script needs a stable shape:
+
+```bash
+fab resource list --output json
+fab environment inspect acme-gmail --output table
+```
+
+`fab run` writes lifecycle information to stderr. A wrapped command keeps
+control of stdin, stdout, and stderr.
+
+## Command reference
+
+- [`fab run`](/cli/commands/run)
+- [`fab environment`](/cli/commands/environment)
+- [`fab service`](/cli/commands/service)
+- [`fab resource`](/cli/commands/resource)
+- [`fab scenario`](/cli/commands/scenario)

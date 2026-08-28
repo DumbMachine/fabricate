@@ -91,8 +91,8 @@ func CatalogFromOpenAPI(id, api string, openapiJSON []byte) (OperationCatalog, e
 	return OperationCatalog{Integration: id, API: api, Operations: ops}, nil
 }
 
-// WriteOperations dumps operation catalogs for official resources into
-// packages/docs-content/resources/_generated/<id>.operations.json.
+// WriteOperations dumps operation and scenario catalogs for official
+// resources into packages/docs-content/resources/_generated/.
 func WriteOperations(repo string, registry *httpresource.Registry, names []string, stderr io.Writer) error {
 	if stderr == nil {
 		stderr = os.Stderr
@@ -118,7 +118,11 @@ func WriteOperations(repo string, registry *httpresource.Registry, names []strin
 		if err != nil {
 			return err
 		}
-		if err := writeOperationCatalog(repo, catalog, stderr); err != nil {
+		if err := writeJSONCatalog(repo, catalog.Integration, operationsSuffix, catalog, stderr,
+			fmt.Sprintf("docs-operations: write %s (%d operations)", catalog.Integration, len(catalog.Operations))); err != nil {
+			return err
+		}
+		if err := writeScenarioCatalog(repo, resource, stderr); err != nil {
 			return err
 		}
 	}
@@ -153,40 +157,6 @@ func selectResourceIDs(registry *httpresource.Registry, names []string) ([]strin
 		return nil, fmt.Errorf("docsexamples: no resources selected")
 	}
 	return ids, nil
-}
-
-func writeOperationCatalog(repo string, catalog OperationCatalog, stderr io.Writer) error {
-	if catalog.Integration == "" {
-		return fmt.Errorf("docsexamples: operation catalog is missing integration")
-	}
-	if !resourceID.MatchString(catalog.Integration) {
-		return fmt.Errorf("docsexamples: invalid resource %q", catalog.Integration)
-	}
-	raw, err := json.Marshal(catalog)
-	if err != nil {
-		return fmt.Errorf("docsexamples: marshal %s operations: %w", catalog.Integration, err)
-	}
-	body, err := indentJSON(raw)
-	if err != nil {
-		return fmt.Errorf("docsexamples: indent %s operations: %w", catalog.Integration, err)
-	}
-	dest := filepath.Join(repo, generatedDir, catalog.Integration+operationsSuffix)
-	existing, err := os.ReadFile(dest)
-	if err != nil && !os.IsNotExist(err) {
-		return fmt.Errorf("docsexamples: read existing operations catalog: %w", err)
-	}
-	if err == nil && bytes.Equal(existing, body) {
-		fmt.Fprintf(stderr, "docs-operations: skip %s (unchanged)\n", catalog.Integration)
-		return nil
-	}
-	if err := os.MkdirAll(filepath.Dir(dest), 0o755); err != nil {
-		return fmt.Errorf("docsexamples: mkdir generated: %w", err)
-	}
-	if err := os.WriteFile(dest, body, 0o644); err != nil {
-		return fmt.Errorf("docsexamples: write operations catalog: %w", err)
-	}
-	fmt.Fprintf(stderr, "docs-operations: write %s (%d operations)\n", catalog.Integration, len(catalog.Operations))
-	return nil
 }
 
 func methodRank(method string) int {

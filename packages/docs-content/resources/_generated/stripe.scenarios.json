@@ -1,0 +1,21 @@
+{
+  "integration": "stripe",
+  "scenarios": [
+    {
+      "id": "stripe.acme-customers.v1",
+      "counts": {
+        "charges": 51,
+        "customers": 48,
+        "invoices": 53,
+        "products": 10,
+        "subscriptions": 48
+      }
+    },
+    {
+      "id": "stripe.minimal.v1",
+      "counts": {
+        "customers": 0
+      }
+    }
+  ]
+}

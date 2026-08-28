@@ -1,0 +1,49 @@
+---
+title: fab resource
+description: Inspect supported provider API resources and their contracts.
+---
+
+A resource implements a stateful provider-shaped API. Its metadata declares
+the provider hosts, OpenAPI contract, available scenarios, and verified client
+modes.
+
+## List resources
+
+```bash
+fab resource list
+```
+
+```text
+ID        NAME      VERSION  PROVIDER HOSTS                                  SCENARIOS
+gmail     Gmail     v1       gmail.googleapis.com,www.googleapis.com         2
+hubspot   HubSpot   v3       api.hubapi.com                                  2
+intercom  Intercom  2.16     api.intercom.io,api.eu.intercom.io,api.au.intercom.io  2
+```
+
+The full command prints every resource compiled into the binary.
+
+## Inspect a resource
+
+```bash
+fab resource inspect gmail
+```
+
+```text
+FIELD            VALUE
+id               gmail
+name             Gmail
+version          v1
+OpenAPI          3.0.3
+OpenAPI digest   sha256:345a986652ac50bb4ff1a635117ecfd740238a59e9e84723ea8c94f5233784d8
+provider hosts   gmail.googleapis.com, www.googleapis.com
+scenarios        gmail.acme-corp.v1, gmail.minimal.v1
+SDK              googleapis javascript
+direct verified  true
+proxy verified   true
+```
+
+Use JSON when an agent or script needs the full digest and SDK metadata:
+
+```bash
+fab resource inspect gmail --output json
+```

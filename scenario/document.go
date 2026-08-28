@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
+	"sort"
 )
 
 const Contract = "fabricate.scenario"
@@ -71,6 +73,68 @@ func (d Document) ValidateEnvelope() error {
 
 func (d Document) Metadata() Metadata {
 	return Metadata{ID: d.ID, Resource: d.Resource, ResourceVersion: d.ResourceVersion}
+}
+
+// Embedded returns the scenario documents stored in an embedded scenarios directory.
+func Embedded(files fs.FS) ([]Document, error) {
+	entries, err := fs.ReadDir(files, "scenarios")
+	if err != nil {
+		return nil, fmt.Errorf("scenario: list embedded scenarios: %w", err)
+	}
+	docs := make([]Document, 0, len(entries))
+	seen := map[string]struct{}{}
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		raw, err := fs.ReadFile(files, "scenarios/"+entry.Name())
+		if err != nil {
+			return nil, fmt.Errorf("scenario: read embedded scenario %s: %w", entry.Name(), err)
+		}
+		doc, err := Parse(raw)
+		if err != nil {
+			return nil, fmt.Errorf("scenario: parse embedded scenario %s: %w", entry.Name(), err)
+		}
+		if _, dup := seen[doc.ID]; dup {
+			return nil, fmt.Errorf("scenario: duplicate embedded scenario %q", doc.ID)
+		}
+		seen[doc.ID] = struct{}{}
+		docs = append(docs, doc)
+	}
+	sort.Slice(docs, func(i, j int) bool { return docs[i].ID < docs[j].ID })
+	return docs, nil
+}
+
+// IDs returns document IDs in the given order.
+func IDs(docs []Document) []string {
+	ids := make([]string, len(docs))
+	for i, doc := range docs {
+		ids[i] = doc.ID
+	}
+	return ids
+}
+
+// Lookup returns the document with the given ID.
+func Lookup(docs []Document, id string) (Document, bool) {
+	for _, doc := range docs {
+		if doc.ID == id {
+			return doc, true
+		}
+	}
+	return Document{}, false
+}
+
+// LookupEmbedded loads embedded documents once and returns the named scenario.
+func LookupEmbedded(files fs.FS, id, resourceID string) (Document, error) {
+	docs, err := Embedded(files)
+	if err != nil {
+		return Document{}, err
+	}
+	doc, ok := Lookup(docs, id)
+	if !ok {
+		return Document{}, fmt.Errorf("%s: unknown scenario %q", resourceID, id)
+	}
+	return doc, nil
 }
 
 // CanonicalJSON returns stable JSON suitable for hashing and storing. Go's

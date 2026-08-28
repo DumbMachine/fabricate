@@ -13,6 +13,3 @@ services:
   crm:
     resource: hubspot
     scenario: hubspot.acme-pipeline.v1
-
-proxy:
-  enabled: true

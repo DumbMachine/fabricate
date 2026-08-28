@@ -85,9 +85,9 @@ run_curl() {
   export FAB_COMPATIBILITY_REPORT="$report"
   export FAB_COMPATIBILITY_COMMIT="$commit"
   export FAB_COMPATIBILITY_CLIENT="$client"
-  "$fab_bin" run --environment "$env" -- \
+  "$fab_bin" run "$env" -- \
     "$repo_dir/resources/$resource/conformance/curl.sh" direct
-  "$fab_bin" run --environment "$env" --proxy -- \
+  "$fab_bin" run "$env" --proxy -- \
     "$repo_dir/resources/$resource/conformance/curl.sh" proxy
 }
 
@@ -112,12 +112,12 @@ run_sdk() {
   FAB_COMPATIBILITY_REPORT="$report" \
   FAB_COMPATIBILITY_SDK_VERSION="$sdk_version" \
   FAB_COMPATIBILITY_COMMIT="$(git -C "$repo_dir" rev-parse HEAD)" \
-    "$fab_bin" run --environment "$env" -- \
+    "$fab_bin" run "$env" -- \
     node "$work/$entry" direct
   FAB_COMPATIBILITY_REPORT="$report" \
   FAB_COMPATIBILITY_SDK_VERSION="$sdk_version" \
   FAB_COMPATIBILITY_COMMIT="$(git -C "$repo_dir" rev-parse HEAD)" \
-    "$fab_bin" run --environment "$env" --proxy -- \
+    "$fab_bin" run "$env" --proxy -- \
     node "$work/$entry" proxy
 }
 

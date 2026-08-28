@@ -1,0 +1,44 @@
+---
+title: fab service
+description: Inspect the services composed by an environment.
+---
+
+A service is a resource paired with a scenario inside an environment. Services
+are definitions, not independently installed daemons.
+
+## List services
+
+```bash
+fab service list --environment acme-support-desk
+```
+
+```text
+NAME          RESOURCE  SCENARIO
+board         asana     asana.acme-sprint.v1
+crm           hubspot   hubspot.acme-pipeline.v1
+inbox         intercom  intercom.acme-inbox.v1
+support-mail  gmail     gmail.acme-corp.v1
+```
+
+The environment can also be a local manifest path:
+
+```bash
+fab service list --environment ./environment.yaml
+```
+
+## Inspect one service
+
+```bash
+fab service inspect support-mail --environment acme-gmail
+```
+
+```text
+NAME          RESOURCE  SCENARIO
+support-mail  gmail     gmail.acme-corp.v1
+```
+
+Use the resource and scenario shown here to run the service by itself:
+
+```bash
+fab run gmail --scenario gmail.acme-corp.v1
+```
