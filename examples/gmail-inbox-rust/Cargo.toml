@@ -1,0 +1,13 @@
+[package]
+name = "gmail-inbox"
+version = "0.1.0"
+edition = "2021"
+publish = false
+rust-version = "1.83"
+
+[dependencies]
+# A tiny HTTP/1.1 client on native-tls. Newer hyper/reqwest/ureq stacks pull
+# url/idna/ICU crates that need edition2024 (Rust 1.85+).
+native-tls = "=0.2.12"
+serde = { version = "=1.0.217", features = ["derive"] }
+serde_json = "=1.0.135"
