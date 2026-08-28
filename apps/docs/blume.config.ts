@@ -136,6 +136,11 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/mailchimp",
               },
               {
+                label: "Cloudflare",
+                href: "/resources/integrations/cloudflare",
+                icon: "https://logos.composio.dev/api/cloudflare",
+              },
+              {
                 label: "Sentry",
                 href: "/resources/integrations/sentry",
                 icon: "https://logos.composio.dev/api/sentry",

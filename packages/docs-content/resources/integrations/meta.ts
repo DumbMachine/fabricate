@@ -2,5 +2,5 @@ import { defineMeta } from "blume";
 
 export default defineMeta({
   title: "Integrations",
-  pages: ["gmail", "asana", "hubspot", "intercom", "attio", "pipedrive", "close", "resend", "mailgun", "sendgrid", "mailchimp", "sentry", "github", "shopify"],
+  pages: ["gmail", "asana", "hubspot", "intercom", "attio", "pipedrive", "close", "resend", "mailgun", "sendgrid", "mailchimp", "cloudflare", "sentry", "github", "shopify"],
 });
