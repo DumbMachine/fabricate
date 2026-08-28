@@ -1,6 +1,6 @@
 // Package docsexamples writes committed resource-page snapshots: documented
-// command output and conformance compatibility reports. The docs build never
-// starts environments.
+// command output, compiled operation catalogs, and conformance compatibility
+// reports. The docs build never starts environments.
 package docsexamples
 
 import (
@@ -140,6 +140,9 @@ func loadSpec(repo, rel string, cat catalog) (Spec, error) {
 	}
 	if strings.HasSuffix(spec.OutputPath, ".compatibility.json") {
 		return Spec{}, fmt.Errorf("docsexamples: %s: outputPath %s is a compatibility report; CommandOutput snapshots cannot use that name", rel, spec.OutputPath)
+	}
+	if strings.HasSuffix(spec.OutputPath, operationsSuffix) {
+		return Spec{}, fmt.Errorf("docsexamples: %s: outputPath %s is an operations catalog; CommandOutput snapshots cannot use that name", rel, spec.OutputPath)
 	}
 	if err := validateRoots(repo, spec.ExtraRoots, rel+" extraRoots"); err != nil {
 		return Spec{}, err

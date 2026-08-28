@@ -3,8 +3,6 @@ title: "Acme's Gmail"
 description: A disposable Gmail support inbox for local development, integration tests, and agent workflows.
 ---
 
-import example from "../_generated/gmail-list-messages.json";
-
 Acme's Gmail is a ready-to-run environment for testing software that reads,
 organizes, or sends support mail. Every run starts with the same Acme Corp
 support inbox and is removed when the wrapped command exits.
@@ -46,7 +44,7 @@ join across services, see [Acme Support Desk](/resources/environments/acme-suppo
 Paste this command to download the environment manifest, start the Gmail
 service, and list the seeded messages. You do not need to clone Fabricate.
 
-<CommandOutput example={example} />
+<CommandOutput id="gmail-list-messages" />
 
 `--proxy` keeps Gmail’s normal hostname. See [Gmail](/resources/integrations/gmail)
 for direct-URL integration and proxy setup.

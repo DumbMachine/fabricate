@@ -1,29 +1,22 @@
 ---
 title: Close
-description: A reproducible Close CRM API for local application testing.
+description: Leads, contacts, and opportunities.
 sidebar:
   icon: https://logos.composio.dev/api/close
 ---
 
-import compatibility from "../_generated/close.compatibility.json";
+Leads, contacts, and opportunities. Local Close v1 that keeps CRM state
+across requests.
 
-Fabricate ships a Close v1 resource with a strict local API and a
-synthetic bearer token. It covers leads, contacts, and opportunities in the included Acme Close
-environment.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `close.minimal.v1` | Empty Close state for a clean test. |
-| `close.acme-pipeline.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Close’s normal hostnames. |
+| API | Close v1 |
+| Auth | Synthetic bearer token. Close's live API uses HTTP Basic with an API key. |
+| Hosts | `api.close.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
@@ -52,6 +45,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.close.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `close.minimal.v1` | Empty Close state for a clean test. |
+| `close.acme-pipeline.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -59,4 +59,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Close check ran against the Acme Close
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="close" />
+
+## Supported operations
+
+<SupportedOperations resource="close" />

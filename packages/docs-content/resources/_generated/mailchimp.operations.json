@@ -1,0 +1,72 @@
+{
+  "integration": "mailchimp",
+  "api": "Mailchimp 3.0",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/campaigns",
+      "operationId": "GetCampaigns",
+      "summary": "List campaigns"
+    },
+    {
+      "method": "POST",
+      "path": "/campaigns",
+      "operationId": "PostCampaigns",
+      "summary": "Add campaign"
+    },
+    {
+      "method": "GET",
+      "path": "/campaigns/{campaign_id}",
+      "operationId": "GetCampaignsId",
+      "summary": "Get campaign info"
+    },
+    {
+      "method": "POST",
+      "path": "/campaigns/{campaign_id}/actions/send",
+      "operationId": "PostCampaignsIdActionsSend",
+      "summary": "Send campaign"
+    },
+    {
+      "method": "GET",
+      "path": "/lists",
+      "operationId": "GetLists",
+      "summary": "Get lists info"
+    },
+    {
+      "method": "POST",
+      "path": "/lists",
+      "operationId": "PostLists",
+      "summary": "Add list"
+    },
+    {
+      "method": "GET",
+      "path": "/lists/{list_id}",
+      "operationId": "GetListsId",
+      "summary": "Get list info"
+    },
+    {
+      "method": "GET",
+      "path": "/lists/{list_id}/members",
+      "operationId": "GetListsIdMembers",
+      "summary": "List members info"
+    },
+    {
+      "method": "POST",
+      "path": "/lists/{list_id}/members",
+      "operationId": "PostListsIdMembers",
+      "summary": "Add member to list"
+    },
+    {
+      "method": "GET",
+      "path": "/lists/{list_id}/members/{subscriber_hash}",
+      "operationId": "GetListsIdMembersId",
+      "summary": "Get member info"
+    },
+    {
+      "method": "GET",
+      "path": "/ping",
+      "operationId": "GetPing",
+      "summary": "Ping"
+    }
+  ]
+}

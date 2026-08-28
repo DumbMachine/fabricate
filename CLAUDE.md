@@ -18,7 +18,7 @@ scenario/            strict immutable scenario envelope and digest
 environments/        runnable multi-service environment manifests
 profile/, profiles/  container-engine profile catalog only
 target/              Docker/Kubernetes provisioning for container engines
-internal/docsexamples/ command snapshots and compatibility report install
+internal/docsexamples/ command snapshots, operations catalogs, and compatibility report install
 ```
 
 ## HTTP API rule
@@ -48,6 +48,8 @@ idempotent and preserve the state-lock behavior.
 ```bash
 make check
 make generate-check
+make docs-operations         # dump compiled HTTP operations (all resources)
+make docs-operations gmail   # same, limited to named resources
 make docs-examples           # recapture dirty command snapshots (all resources)
 make docs-examples gmail     # same, limited to named resources
 make conformance             # resource curl/SDK tests (all resources)
