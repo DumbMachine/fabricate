@@ -1,38 +1,35 @@
 ---
 title: Sentry
-description: A reproducible Sentry API for local application testing.
+description: Organizations, projects, teams, and issues.
 sidebar:
   icon: https://logos.composio.dev/api/sentry
 ---
 
-import compatibility from "../_generated/sentry.compatibility.json";
-import example from "../_generated/sentry-list-projects.json";
+Organizations, projects, teams, and issues. Local Sentry v1 that keeps
+project state across requests.
 
-Fabricate ships a Sentry v1 resource with a local API driven by the official Sentry OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme Sentry environment seeds a SaaS-sized project/issue catalog plus the shared Acme investigation needles. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `sentry.minimal.v1` | Empty Sentry state for a clean test. |
-| `sentry.acme-projects.v1` | Acme error tracking: projects, teams, and issues. Needles: `acme-web` checkout reliability, Contoso SSO at `auth.acme.example`, INV-4812, fernworks CSV, Adatum DNS, LakeTech webhooks, Fabrikam `req_7Q4K2`. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Sentry’s normal hostnames. |
+| API | Sentry v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `us.sentry.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-sentry.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SENTRY_TOKEN" "$FAB_SENTRY_URL/api/0/organizations/acme/projects/"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SENTRY_TOKEN" \
+      "$FAB_SENTRY_URL/api/0/organizations/acme/projects/"'
 ```
 
 The service is named `sentry` in the example manifest, so the variables are
@@ -40,7 +37,7 @@ The service is named `sentry` in the example manifest, so the variables are
 
 The response is the Acme project list:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="sentry-list-projects" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -55,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `us.sentry.io` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `sentry.minimal.v1` | Empty Sentry state for a clean test. |
+| `sentry.acme-projects.v1` | Acme error tracking: projects, teams, and issues. Needles: `acme-web` checkout reliability, Contoso SSO at `auth.acme.example`, INV-4812, fernworks CSV, Adatum DNS, LakeTech webhooks, Fabrikam `req_7Q4K2`. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -62,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Sentry check ran against the Acme Sentry
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="sentry" />
+
+## Supported operations
+
+<SupportedOperations resource="sentry" />
