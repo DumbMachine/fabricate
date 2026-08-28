@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-posthog.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_POSTHOG_TOKEN" \
       "$FAB_POSTHOG_URL/api/projects/1/feature_flags/"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme feature-flag list:
 ### Start it through the proxy
 
 Use this when your app uses the normal PostHog URLs. This one-paste check
-calls PostHog's production hostname; the proxy supplies the local token.
+calls PostHog's production hostname. Omit `$FAB_POSTHOG_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-posthog.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://us.posthog.com/api/projects/1/feature_flags/
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `us.posthog.com` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `posthog.minimal.v1` | Empty PostHog state for a clean test. |
-| `posthog.acme-flags.v1` | Acme production analytics: ~120 flags, insights, dashboards, cohorts, experiments, and persons. Needles: `checkout_reliability`, Contoso SSO / `contoso-eu`, INV-4812 / Northwind, fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop refund, BrightPath keys, Fabrikam SCIM `req_7Q4K2`. |
+<ResourceScenarios
+  resource="posthog"
+  descriptions={{
+    "posthog.minimal.v1": "Empty PostHog state for a clean test.",
+    "posthog.acme-flags.v1": "Acme production analytics: ~120 flags, insights, dashboards, cohorts, experiments, and persons. Needles: `checkout_reliability`, Contoso SSO / `contoso-eu`, INV-4812 / Northwind, fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop refund, BrightPath keys, Fabrikam SCIM `req_7Q4K2`.",
+  }}
+/>
 
 ## Compatibility verification
 

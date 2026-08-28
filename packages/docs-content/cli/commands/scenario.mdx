@@ -1,0 +1,65 @@
+---
+title: fab scenario
+description: List, inspect, and validate resource scenarios.
+---
+
+A scenario is the immutable baseline loaded when a service starts. Writes
+change only that run's live state; the next run starts from the baseline again.
+
+## List scenarios
+
+List every built-in scenario, or limit the result to one resource:
+
+```bash
+fab scenario list
+fab scenario list gmail
+```
+
+```text
+ID                  RESOURCE  RESOURCE VERSION
+gmail.acme-corp.v1  gmail     v1
+gmail.minimal.v1    gmail     v1
+```
+
+## Inspect a scenario
+
+```bash
+fab scenario inspect gmail.minimal.v1
+```
+
+```text
+FIELD             VALUE
+id                gmail.minimal.v1
+resource          gmail
+resource version  v1
+contract          fabricate.scenario
+contract version  1
+
+state
+{
+  "emailAddress": "me@acme.example",
+  "labels": [],
+  "messages": []
+}
+```
+
+`inspect` also accepts a local JSON path.
+
+## Validate a scenario
+
+Validation checks the common scenario envelope and the resource-specific state
+schema:
+
+```bash
+fab scenario validate ./scenarios/customer-support.json
+```
+
+```text
+scenario gmail.customer-support.v1: valid
+```
+
+Run a valid scenario directly with its resource:
+
+```bash
+fab run gmail --scenario gmail.minimal.v1
+```
