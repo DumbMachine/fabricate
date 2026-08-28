@@ -4,7 +4,7 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-MAKE_TARGETS := build install install-dev test vet fmt check generate generate-check e2e conformance docs-examples verify clean start landing docs
+MAKE_TARGETS := build install install-dev test vet fmt check generate generate-check e2e conformance docs-examples docs-operations verify clean start landing docs
 
 .PHONY: $(MAKE_TARGETS)
 
@@ -13,7 +13,7 @@ MAKE_TARGETS := build install install-dev test vet fmt check generate generate-c
 # `make docs-examples check` still runs `check`.
 RESOURCE_SELECTORS := $(filter-out $(MAKE_TARGETS),$(MAKECMDGOALS))
 
-ifneq ($(filter conformance docs-examples,$(MAKECMDGOALS)),)
+ifneq ($(filter conformance docs-examples docs-operations,$(MAKECMDGOALS)),)
 ifneq ($(RESOURCE_SELECTORS),)
 .PHONY: $(RESOURCE_SELECTORS)
 $(RESOURCE_SELECTORS):
@@ -72,11 +72,14 @@ check: vet test
 
 # Compiled HTTP resources own committed strict server bindings. The generator
 # is pinned through go.mod's tool directive; no global binary is required.
+# generate-check also dumps operation catalogs so docs stay locked to the
+# compiled OpenAPI surface.
 generate:
 	go generate ./resources/...
 
 generate-check: generate
-	git diff --exit-code -- 'resources/*/generated/**'
+	@$(MAKE) docs-operations
+	git diff --exit-code -- 'resources/*/generated/**' 'packages/docs-content/resources/_generated/*.operations.json'
 
 # End-to-end smoke for container engines through the real CLI.
 e2e:
@@ -104,6 +107,14 @@ docs-examples:
 	go build -o "$$tmp/fab" ./cmd/fab; \
 	go build -o "$$tmp/docsexamples" ./cmd/docsexamples; \
 	"$$tmp/docsexamples" capture --repo "$(CURDIR)" --fab "$$tmp/fab" $(DOCS_EXAMPLES_FLAGS) $(foreach r,$(RESOURCE_SELECTORS),--resource $(r))
+
+# Dump compiled HTTP operations into packages/docs-content/resources/_generated/.
+# Default is every official resource. `make docs-operations gmail asana` limits
+# to those resources; unknown names fail. CI fails if the catalogs drifted.
+docs-operations:
+	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-docs-operations-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; \
+	go build -o "$$tmp/docsexamples" ./cmd/docsexamples; \
+	"$$tmp/docsexamples" operations --repo "$(CURDIR)" $(foreach r,$(RESOURCE_SELECTORS),--resource $(r))
 
 # Unit tests plus container e2e. Resource clients are `make conformance`.
 verify: check e2e

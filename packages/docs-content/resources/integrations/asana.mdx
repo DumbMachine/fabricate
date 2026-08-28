@@ -1,29 +1,22 @@
 ---
 title: Asana
-description: A reproducible Asana REST API for local application testing.
+description: Users, workspaces, projects, tasks, sections, and stories.
 sidebar:
   icon: https://logos.composio.dev/api/asana
 ---
 
-import compatibility from "../_generated/asana.compatibility.json";
+Users, workspaces, projects, tasks, sections, and stories. Local Asana REST
+1.0 that keeps board state across requests.
 
-Fabricate ships an Asana REST API 1.0 resource with a strict local API and a
-synthetic bearer token. It covers users, workspaces, projects, tasks, sections,
-and stories in the included Acme Asana environment.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `asana.minimal.v1` | An empty Acme workspace for a clean test. |
-| `asana.acme-sprint.v1` | Checkout reliability plus onboarding: ten tasks, sections, and comments. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep Asana’s normal hostnames. |
+| API | Asana REST 1.0 |
+| Auth | Synthetic bearer token |
+| Hosts | `app.asana.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
@@ -95,6 +88,13 @@ set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `asana.minimal.v1` | An empty Acme workspace for a clean test. |
+| `asana.acme-sprint.v1` | Checkout reliability plus onboarding: ten tasks, sections, and comments. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -102,4 +102,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Asana check ran against the Acme Asana
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="asana" />
+
+## Supported operations
+
+<SupportedOperations resource="asana" />

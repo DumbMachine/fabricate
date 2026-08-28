@@ -1,0 +1,126 @@
+{
+  "integration": "hubspot",
+  "api": "HubSpot v3",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/0-3",
+      "operationId": "Getcrmv3objects03GetPage",
+      "summary": "List"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/0-3",
+      "operationId": "Postcrmv3objects03Create",
+      "summary": "Create"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/0-3/search",
+      "operationId": "Postcrmv3objects03searchDoSearch",
+      "summary": "Search for deals using various filters and criteria to retrieve specific records."
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/0-3/{dealId}",
+      "operationId": "Getcrmv3objects03DealIdGetById",
+      "summary": "Read"
+    },
+    {
+      "method": "PATCH",
+      "path": "/crm/v3/objects/0-3/{dealId}",
+      "operationId": "Patchcrmv3objects03DealIdUpdate",
+      "summary": "Update"
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/companies",
+      "operationId": "Getcrmv3objectscompaniesGetPage",
+      "summary": "Retrieve companies"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/companies",
+      "operationId": "Postcrmv3objectscompaniesCreate",
+      "summary": "Create a company"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/companies/search",
+      "operationId": "Postcrmv3objectscompaniessearchDoSearch",
+      "summary": "Search for companies"
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/companies/{companyId}",
+      "operationId": "Getcrmv3objectscompaniesCompanyIdGetById",
+      "summary": "Retrieve a company"
+    },
+    {
+      "method": "PATCH",
+      "path": "/crm/v3/objects/companies/{companyId}",
+      "operationId": "Patchcrmv3objectscompaniesCompanyIdUpdate",
+      "summary": "Update a company"
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/contacts",
+      "operationId": "Getcrmv3objectscontactsGetPage",
+      "summary": "Retrieve contacts"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/contacts",
+      "operationId": "Postcrmv3objectscontactsCreate",
+      "summary": "Create a contact"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/contacts/search",
+      "operationId": "Postcrmv3objectscontactssearchDoSearch",
+      "summary": "Search for contacts"
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/contacts/{contactId}",
+      "operationId": "Getcrmv3objectscontactsContactIdGetById",
+      "summary": "Retrieve a contact"
+    },
+    {
+      "method": "PATCH",
+      "path": "/crm/v3/objects/contacts/{contactId}",
+      "operationId": "Patchcrmv3objectscontactsContactIdUpdate",
+      "summary": "Update a contact"
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/tickets",
+      "operationId": "Getcrmv3objectsticketsGetPage",
+      "summary": "List"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/tickets",
+      "operationId": "Postcrmv3objectsticketsCreate",
+      "summary": "Create"
+    },
+    {
+      "method": "POST",
+      "path": "/crm/v3/objects/tickets/search",
+      "operationId": "Postcrmv3objectsticketssearchDoSearch",
+      "summary": "Search for tickets"
+    },
+    {
+      "method": "GET",
+      "path": "/crm/v3/objects/tickets/{ticketId}",
+      "operationId": "Getcrmv3objectsticketsTicketIdGetById",
+      "summary": "Read"
+    },
+    {
+      "method": "PATCH",
+      "path": "/crm/v3/objects/tickets/{ticketId}",
+      "operationId": "Patchcrmv3objectsticketsTicketIdUpdate",
+      "summary": "Update"
+    }
+  ]
+}
