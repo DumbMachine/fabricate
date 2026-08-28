@@ -1,46 +1,43 @@
 ---
 title: OpenAI
-description: A reproducible OpenAI API for local application testing.
+description: Responses, chat completions, embeddings, and models.
 sidebar:
   icon: https://logos.composio.dev/api/openai
 ---
 
-import compatibility from "../_generated/openai.compatibility.json";
-import example from "../_generated/openai-list-responses.json";
+Responses, chat completions, embeddings, and models. Local OpenAI v1 that
+keeps response state across requests.
 
-Fabricate ships an OpenAI v1 resource with a local API driven by the official OpenAI OpenAPI document and a synthetic bearer token. Every operation in that document is implemented. The included Acme OpenAI environment seeds a Responses catalog covering the shared Acme investigation needles plus unrelated drafting jobs. Gmail, Asana, and HubSpot run in the same environment so agents can join those facts across products.
+## Integration
 
-## Scenarios
-
-| Scenario | What it gives you |
+| | Details |
 | --- | --- |
-| `openai.minimal.v1` | Empty OpenAI state for a clean test. |
-| `openai.acme-responses.v1` | Seeded Responses jobs for every Acme investigation (checkout reliability, Contoso SSO, INV-4812, fernworks CSV, Adatum DNS, LakeTech, TinyShop, BrightPath, Fabrikam `req_7Q4K2`) plus unrelated drafting haystack. |
-
-## Integration options
-
-| Option | Supported | Use it when |
-| --- | --- | --- |
-| Direct base URL | Yes | Your client can use a local URL or root URL. |
-| Transparent proxy | Yes | Your client must keep OpenAI’s normal hostnames. |
+| API | OpenAI v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.openai.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
 ### Start it with a direct URL
 
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-openai.yaml | \
   fab run --environment /dev/stdin -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OPENAI_TOKEN" "$FAB_OPENAI_URL/v1/responses/resp_checkout"'
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OPENAI_TOKEN" \
+      "$FAB_OPENAI_URL/v1/responses/resp_checkout"'
 ```
 
 The service is named `openai` in the example manifest, so the variables are
 `FAB_OPENAI_URL` and `FAB_OPENAI_TOKEN`.
 
-The response is the Acme response list:
+The response is the seeded checkout-reliability Responses job:
 
-<CommandOutput example={example} showCommand={false} />
+<CommandOutput id="openai-list-responses" showCommand={false} />
 
 ### Start it through the proxy
 
@@ -55,6 +52,13 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 
 Fabricate handles `api.openai.com` locally. Other hosts are forwarded unchanged.
 
+## Scenarios
+
+| Scenario | What it gives you |
+| --- | --- |
+| `openai.minimal.v1` | Empty OpenAI state for a clean test. |
+| `openai.acme-responses.v1` | Seeded Responses jobs for every Acme investigation (checkout reliability, Contoso SSO, INV-4812, fernworks CSV, Adatum DNS, LakeTech, TinyShop, BrightPath, Fabrikam `req_7Q4K2`) plus unrelated drafting haystack. |
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
@@ -62,4 +66,8 @@ code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest OpenAI check ran against the Acme OpenAI
 environment with curl:
 
-<IntegrationCompatibility compatibility={compatibility} />
+<IntegrationCompatibility resource="openai" />
+
+## Supported operations
+
+<SupportedOperations resource="openai" />
