@@ -27,7 +27,7 @@ manifest.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
-  fab run --environment /dev/stdin -- \
+  fab run /dev/stdin -- \
     sh -c 'curl -sS -H "Authorization: Bearer $FAB_FIGMA_TOKEN" \
       "$FAB_FIGMA_URL/v2/teams/team_acme/webhooks"'
 ```
@@ -42,11 +42,11 @@ The response is the Acme webhook list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Figma URLs. This one-paste check
-calls Figma's production hostname; the proxy supplies the local token.
+calls Figma's production hostname. Omit `$FAB_FIGMA_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-figma.yaml | \
-  fab run --environment /dev/stdin --proxy -- \
+  fab run /dev/stdin --proxy -- \
     curl -sS https://api.figma.com/v2/teams/team_acme/webhooks
 ```
 
@@ -54,10 +54,13 @@ Fabricate handles `api.figma.com` locally. Other hosts are forwarded unchanged.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `figma.minimal.v1` | Empty Figma state for a clean test. |
-| `figma.acme-webhooks.v1` | Team `team_acme` webhook catalog. Needles: `https://acme.example/hooks/files` (checkout reliability UI), Contoso SSO screens, INV-4812 receipts, fernworks CSV, LakeTech retries, Fabrikam SCIM. |
+<ResourceScenarios
+  resource="figma"
+  descriptions={{
+    "figma.minimal.v1": "Empty Figma state for a clean test.",
+    "figma.acme-webhooks.v1": "Team `team_acme` webhook catalog. Needles: `https://acme.example/hooks/files` (checkout reliability UI), Contoso SSO screens, INV-4812 receipts, fernworks CSV, LakeTech retries, Fabrikam SCIM.",
+  }}
+/>
 
 ## Compatibility verification
 

@@ -92,7 +92,7 @@
 }
 
 /* Keep the display face readable in docs; Teko remains the product wordmark. */
-[data-blume-header] > a:first-of-type {
+[data-blume-header]>a:first-of-type {
   font-family: var(--fabricate-font-brand);
   font-size: 1.45rem;
   font-weight: 600;
@@ -126,7 +126,7 @@
   line-height: 1.65;
 }
 
-.prose > h1 + p.text-muted-foreground {
+.prose>h1+p.text-muted-foreground {
   color: var(--fabricate-text-secondary);
 }
 
@@ -166,19 +166,30 @@
   padding-inline: 0.875rem 2.75rem;
 }
 
-.prose > :where(pre[data-language][data-icon]) > .blume-lang-icon {
+.prose> :where(pre[data-language][data-icon])>.blume-lang-icon {
   left: 0.875rem;
   top: 0.8125rem;
 }
 
-.prose > :where(pre[data-language][data-icon])::before {
+.prose> :where(pre[data-language][data-icon])::before {
   padding-left: 2.25rem;
 }
 
 .prose :where(pre:not(.twoslash, .twoslash pre, blume-panel-tabs *) > code) {
-  min-height: var(--fabricate-code-content-min-height);
   max-height: var(--fabricate-code-content-max-height);
   padding: 0 1rem 0.25rem;
+}
+
+.docs-screenshot {
+  margin: 1.5rem 0;
+}
+
+.docs-screenshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--fabricate-border);
+  border-radius: var(--fabricate-radius-lg);
 }
 
 /* The environment model is ordinary document markup so provider icons load
@@ -197,9 +208,6 @@
   gap: .85rem;
   align-items: center;
   margin: 1.75rem 0;
-  padding: 1rem;
-  border: 1px solid var(--model-outer-border);
-  border-radius: 12px;
   background: var(--model-canvas);
   color: var(--model-text);
   font-family: var(--fabricate-font-sans);
@@ -209,8 +217,6 @@
 .environment-model__environment,
 .environment-model__service,
 .environment-model__part {
-  border: 1px solid var(--model-inner-border);
-  border-radius: 8px;
   background: var(--model-service);
 }
 
@@ -263,7 +269,7 @@
 }
 
 .environment-model__parts {
-   display: grid;
+  display: grid;
   grid-template-columns: 1fr;
   gap: .45rem;
   margin-top: .85rem;
@@ -320,7 +326,7 @@
   border-left-color: var(--model-inner-border);
 }
 
-.environment-model__service--compact > .environment-model__provider-icon {
+.environment-model__service--compact>.environment-model__provider-icon {
   margin: .1rem 0 0;
 }
 

@@ -1,3 +1,8 @@
+// LEGACY INFRASTRUCTURE CODE.
+//
+// This file belongs to the retired container-profile CLI. It is not part of
+// the current API-sandbox product. Do not change or extend it. A refactored
+// infrastructure workflow may return in a future version.
 package cli
 
 import (

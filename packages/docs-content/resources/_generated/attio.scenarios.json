@@ -1,0 +1,21 @@
+{
+  "integration": "attio",
+  "scenarios": [
+    {
+      "id": "attio.acme-workspace.v1",
+      "counts": {
+        "objects": 3,
+        "records": 21,
+        "workspaceMembers": 2
+      }
+    },
+    {
+      "id": "attio.minimal.v1",
+      "counts": {
+        "objects": 0,
+        "records": 0,
+        "workspaceMembers": 0
+      }
+    }
+  ]
+}
