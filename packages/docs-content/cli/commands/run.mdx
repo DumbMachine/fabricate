@@ -83,5 +83,12 @@ generated CA through `SSL_CERT_FILE`, `NODE_EXTRA_CA_CERTS`,
 by default. Set `proxy.unknown_hosts: reject` in the environment manifest for
 strict isolation.
 
+Routed provider hosts do not need `$FAB_*_TOKEN`. The proxy replaces
+`Authorization` with the environment's ephemeral token. Direct mode still
+requires the injected bearer token on `$FAB_*_URL`. The Gmail proxy also
+answers `POST https://oauth2.googleapis.com/token` for `grant_type=refresh_token`
+with a non-empty refresh token and returns that same synthetic access token.
+That is not a general OAuth implementation.
+
 The old `--environment <manifest>` form remains temporarily available but is
 deprecated. Pass the environment name or path as the first argument instead.

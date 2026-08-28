@@ -1,0 +1,21 @@
+{
+  "integration": "pipedrive",
+  "scenarios": [
+    {
+      "id": "pipedrive.acme-pipeline.v1",
+      "counts": {
+        "deals": 4,
+        "organizations": 8,
+        "persons": 9
+      }
+    },
+    {
+      "id": "pipedrive.minimal.v1",
+      "counts": {
+        "deals": 0,
+        "organizations": 0,
+        "persons": 0
+      }
+    }
+  ]
+}

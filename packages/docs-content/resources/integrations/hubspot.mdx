@@ -96,7 +96,9 @@ The response is the Acme CRM contact list:
 
 Use this when your app uses the normal HubSpot URLs and follows standard proxy
 and CA environment variables. This one-paste check calls HubSpot's normal
-production hostname; replace the final `sh -c ...` command with your app.
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_HUBSPOT_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-hubspot.yaml | \
@@ -115,10 +117,13 @@ settings. In that case, use the direct URL.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `hubspot.minimal.v1` | Empty CRM objects for a clean test. |
-| `hubspot.acme-pipeline.v1` | Dana at Northwind, a stalled `INV-4812` deal, Contoso SSO, and Fernworks. |
+<ResourceScenarios
+  resource="hubspot"
+  descriptions={{
+    "hubspot.minimal.v1": "Empty CRM objects for a clean test.",
+    "hubspot.acme-pipeline.v1": "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+  }}
+/>
 
 ## Compatibility verification
 

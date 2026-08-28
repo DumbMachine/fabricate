@@ -1,0 +1,22 @@
+{
+  "integration": "gmail",
+  "scenarios": [
+    {
+      "id": "gmail.acme-corp.v1",
+      "counts": {
+        "labels": 6,
+        "messages": 28
+      },
+      "listable": {
+        "messages": 27
+      }
+    },
+    {
+      "id": "gmail.minimal.v1",
+      "counts": {
+        "labels": 0,
+        "messages": 0
+      }
+    }
+  ]
+}

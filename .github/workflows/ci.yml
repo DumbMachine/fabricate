@@ -122,4 +122,4 @@ jobs:
             make docs-examples DOCS_EXAMPLES_FLAGS="--since-ref $base"
           fi
       - name: Command snapshots are current
-        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json' ':(exclude)packages/docs-content/resources/_generated/*.operations.json'
+        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json' ':(exclude)packages/docs-content/resources/_generated/*.operations.json' ':(exclude)packages/docs-content/resources/_generated/*.scenarios.json'

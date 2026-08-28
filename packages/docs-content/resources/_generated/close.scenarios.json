@@ -1,0 +1,23 @@
+{
+  "integration": "close",
+  "scenarios": [
+    {
+      "id": "close.acme-pipeline.v1",
+      "counts": {
+        "contacts": 11,
+        "leads": 9,
+        "opportunities": 5,
+        "users": 2
+      }
+    },
+    {
+      "id": "close.minimal.v1",
+      "counts": {
+        "contacts": 0,
+        "leads": 0,
+        "opportunities": 0,
+        "users": 0
+      }
+    }
+  ]
+}

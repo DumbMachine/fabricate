@@ -8,6 +8,8 @@ import {
   parseCommandExample,
   parseCompatibility,
   parseOperationsCatalog,
+  parseScenarioCatalog,
+  formatScenarioCounts,
   readGeneratedJSON,
 } from "./generated.ts";
 
@@ -52,6 +54,43 @@ test("parseOperationsCatalog keeps valid rows and drops junk", () => {
   assert.equal(catalog.operations.length, 1);
   assert.equal(catalog.operations[0].operationId, "getProfile");
 });
+
+test("parseScenarioCatalog keeps counts and listable", () => {
+  const catalog = parseScenarioCatalog({
+    integration: "gmail",
+    scenarios: [
+      {id: "gmail.acme-corp.v1", counts: {messages: 28, labels: 6}, listable: {messages: 27}},
+      {id: "gmail.minimal.v1", counts: {messages: 0, labels: 0}},
+      {id: "bad"},
+    ],
+  });
+  assert.ok(catalog);
+  assert.equal(catalog.scenarios.length, 2);
+  assert.equal(formatScenarioCounts(catalog.scenarios[0]), "28 messages · 6 labels · 27 listed by default");
+  assert.equal(formatScenarioCounts(catalog.scenarios[1]), "0 messages · 0 labels");
+});
+
+test("gmail seed counts agree across generated docs artifacts", () => {
+  const catalog = parseScenarioCatalog(readGeneratedJSON("gmail.scenarios.json"));
+  assert.ok(catalog);
+  const acme = catalog.scenarios.find((entry) => entry.id === "gmail.acme-corp.v1");
+  assert.ok(acme);
+  assert.equal(acme.counts.messages, 28);
+  assert.equal(acme.listable?.messages, 27);
+
+  const compatibility = parseCompatibility(readGeneratedJSON("gmail.compatibility.json"));
+  assert.ok(compatibility);
+  assert.equal(compatibility.environment.messages, acme.counts.messages);
+
+  const example = parseCommandExample(readGeneratedJSON("gmail-list-messages.json"));
+  assert.ok(example);
+  assert.ok(isRecord(example.output));
+  assert.equal(example.output.resultSizeEstimate, acme.listable?.messages);
+});
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
 
 test("readGeneratedJSON loads a committed snapshot", () => {
   const got = readGeneratedJSON("gmail.operations.json");

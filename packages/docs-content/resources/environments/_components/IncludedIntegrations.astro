@@ -1,4 +1,6 @@
 ---
+import {formatScenarioCounts, loadScenarioCatalog, scenarioFacts} from "../../_components/generated";
+
 interface IncludedService {
   data: string;
   href: string;
@@ -14,6 +16,8 @@ const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
 const logo = (resource: string, theme?: "dark") =>
   `https://logos.composio.dev/api/${resource}${theme === "dark" ? "?theme=dark" : ""}`;
 const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBase}${href.startsWith("/") ? href : `/${href}`}`);
+const countsFor = (entry: IncludedService) =>
+  formatScenarioCounts(scenarioFacts(loadScenarioCatalog(entry.resource), entry.scenario));
 ---
 
 <section class="included not-prose" aria-label="Included integrations">
@@ -57,6 +61,7 @@ const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBa
           <td>
             <p class="scenario-id" title="Select to copy">{entry.scenario}</p>
             <p class="summary">{entry.summary}</p>
+            {countsFor(entry) ? <p class="counts">{countsFor(entry)}</p> : null}
             <p class="data">{entry.data}</p>
           </td>
         </tr>
@@ -181,6 +186,7 @@ const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBa
   .service-name,
   .scenario-id,
   .summary,
+  .counts,
   .data {
     background: transparent !important;
     border: 0 !important;
@@ -207,6 +213,11 @@ const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBa
     color: var(--fabricate-text);
     font: 500 .9rem/1.4 var(--fabricate-font-sans);
     margin: 0;
+  }
+  .counts {
+    color: var(--fabricate-text-secondary);
+    font: 500 .78rem/1.4 var(--fabricate-font-mono);
+    margin: .2rem 0 0;
   }
   .data {
     color: var(--fabricate-text-muted);

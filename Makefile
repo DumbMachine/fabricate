@@ -72,14 +72,14 @@ check: vet test
 
 # Compiled HTTP resources own committed strict server bindings. The generator
 # is pinned through go.mod's tool directive; no global binary is required.
-# generate-check also dumps operation catalogs so docs stay locked to the
-# compiled OpenAPI surface.
+# generate-check also dumps operation and scenario catalogs so docs stay
+# locked to the compiled OpenAPI surface and catalog scenario state.
 generate:
 	go generate ./resources/...
 
 generate-check: generate
 	@$(MAKE) docs-operations
-	git diff --exit-code -- 'resources/*/generated/**' 'packages/docs-content/resources/_generated/*.operations.json'
+	git diff --exit-code -- 'resources/*/generated/**' 'packages/docs-content/resources/_generated/*.operations.json' 'packages/docs-content/resources/_generated/*.scenarios.json'
 
 # End-to-end smoke for container engines through the real CLI.
 e2e:
@@ -108,9 +108,10 @@ docs-examples:
 	go build -o "$$tmp/docsexamples" ./cmd/docsexamples; \
 	"$$tmp/docsexamples" capture --repo "$(CURDIR)" --fab "$$tmp/fab" $(DOCS_EXAMPLES_FLAGS) $(foreach r,$(RESOURCE_SELECTORS),--resource $(r))
 
-# Dump compiled HTTP operations into packages/docs-content/resources/_generated/.
-# Default is every official resource. `make docs-operations gmail asana` limits
-# to those resources; unknown names fail. CI fails if the catalogs drifted.
+# Dump compiled HTTP operations and catalog scenario counts into
+# packages/docs-content/resources/_generated/. Default is every official
+# resource. `make docs-operations gmail asana` limits to those resources;
+# unknown names fail. CI fails if the catalogs drifted.
 docs-operations:
 	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/fabricate-docs-operations-bin.XXXXXX"); trap 'rm -rf "$$tmp"' EXIT; \
 	go build -o "$$tmp/docsexamples" ./cmd/docsexamples; \

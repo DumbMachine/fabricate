@@ -91,8 +91,8 @@ func CatalogFromOpenAPI(id, api string, openapiJSON []byte) (OperationCatalog, e
 	return OperationCatalog{Integration: id, API: api, Operations: ops}, nil
 }
 
-// WriteOperations dumps operation catalogs for official resources into
-// packages/docs-content/resources/_generated/<id>.operations.json.
+// WriteOperations dumps operation and scenario catalogs for official
+// resources into packages/docs-content/resources/_generated/.
 func WriteOperations(repo string, registry *httpresource.Registry, names []string, stderr io.Writer) error {
 	if stderr == nil {
 		stderr = os.Stderr
@@ -119,6 +119,9 @@ func WriteOperations(repo string, registry *httpresource.Registry, names []strin
 			return err
 		}
 		if err := writeOperationCatalog(repo, catalog, stderr); err != nil {
+			return err
+		}
+		if err := writeScenarioCatalog(repo, resource, stderr); err != nil {
 			return err
 		}
 	}

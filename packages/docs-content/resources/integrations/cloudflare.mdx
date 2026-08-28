@@ -42,7 +42,7 @@ The response is the Acme zone list:
 ### Start it through the proxy
 
 Use this when your app uses the normal Cloudflare URLs. This one-paste check
-calls Cloudflare's production hostname; the proxy supplies the local token.
+calls Cloudflare's production hostname. Omit `$FAB_CLOUDFLARE_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-cloudflare.yaml | \
@@ -54,10 +54,13 @@ Fabricate handles `api.cloudflare.com` locally. Other hosts are forwarded unchan
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `cloudflare.minimal.v1` | Empty Cloudflare state for a clean test. |
-| `cloudflare.acme-zones.v1` | Acme edge estate: product zones, customer custom hostnames, DNS records, workers, and KV. Needles: `acme.example`, checkout / `auth.acme.example` (Contoso SSO), INV-4812 billing, TXT `acme-domain-verification=adatum-7f31`, LakeTech `hooks.acme.example`. |
+<ResourceScenarios
+  resource="cloudflare"
+  descriptions={{
+    "cloudflare.minimal.v1": "Empty Cloudflare state for a clean test.",
+    "cloudflare.acme-zones.v1": "Acme edge estate: product zones, customer custom hostnames, DNS records, workers, and KV. Needles: acme.example, checkout / auth.acme.example (Contoso SSO), INV-4812 billing, TXT acme-domain-verification=adatum-7f31, LakeTech hooks.acme.example.",
+  }}
+/>
 
 ## Compatibility verification
 

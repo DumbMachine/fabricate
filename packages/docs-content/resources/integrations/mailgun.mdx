@@ -35,7 +35,7 @@ The service is named `mailgun` in the example manifest, so the variables are
 ### Start it through the proxy
 
 Use this when your app uses the normal Mailgun URLs. This one-paste check
-calls Mailgun's production hostname; the proxy supplies the local token.
+calls Mailgun's production hostname. Omit `$FAB_MAILGUN_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-mailgun.yaml | \
@@ -47,10 +47,13 @@ Fabricate handles `api.mailgun.net` locally. Other hosts are forwarded unchanged
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `mailgun.minimal.v1` | Empty Mailgun state for a clean test. |
-| `mailgun.acme-outbox.v1` | Dana at Northwind, INV-4812, Contoso SSO, and Fernworks. |
+<ResourceScenarios
+  resource="mailgun"
+  descriptions={{
+    "mailgun.minimal.v1": "Empty Mailgun state for a clean test.",
+    "mailgun.acme-outbox.v1": "Dana at Northwind, INV-4812, Contoso SSO, and Fernworks.",
+  }}
+/>
 
 ## Compatibility verification
 

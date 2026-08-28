@@ -35,8 +35,10 @@ selected scenarios.
 ```
 
 The component shows a row of resource icons, then a table of each service
-with a scenario one-liner and a following line about the data. Keep `resource`,
-`service`, and `scenario` aligned with the manifest.
+with a scenario one-liner, generated collection counts, and a following line
+about the data. Keep `resource`, `service`, and `scenario` aligned with the
+manifest. Do not put mailbox or record counts in `summary` or `data`; those
+come from `<id>.scenarios.json`.
 - Explain the scenario's data and why it is useful for an application, agent,
   or test workflow.
 - Include a one-paste startup command that reads the canonical raw manifest
@@ -75,7 +77,8 @@ with a scenario one-liner and a following line about the data. Keep `resource`,
   `_generated/`. The docs site reads the snapshot at build time; it must not
   start environments. Force recapture with
   `make docs-examples DOCS_EXAMPLES_FLAGS=--all`. `make docs-operations` writes
-  `*.operations.json` from each compiled OpenAPI contract. `make conformance`
+  `*.operations.json` from each compiled OpenAPI contract and
+  `*.scenarios.json` from catalog scenario state. `make conformance`
   writes `*.compatibility.json`. Those three pipelines are separate.
   Missing or corrupt snapshots render an unavailable card instead of failing
   the docs build.

@@ -148,9 +148,11 @@ func TestLoadRejectsOperationsOutputPath(t *testing.T) {
 }
 
 type stubResource struct {
-	id   string
-	name string
-	spec []byte
+	id          string
+	name        string
+	spec        []byte
+	scenarioIDs []string
+	scenarios   map[string]scenario.Document
 }
 
 func (s stubResource) Descriptor() httpresource.Descriptor {
@@ -163,10 +165,13 @@ func (s stubResource) Contract() httpresource.Contract {
 
 func (stubResource) Scenarios() httpresource.ScenarioCodec { return nil }
 
-func (stubResource) ScenarioIDs() ([]string, error) { return nil, nil }
+func (s stubResource) ScenarioIDs() ([]string, error) { return s.scenarioIDs, nil }
 
-func (stubResource) Scenario(string) (scenario.Document, error) {
-	return scenario.Document{}, nil
+func (s stubResource) Scenario(id string) (scenario.Document, error) {
+	if s.scenarios == nil {
+		return scenario.Document{}, nil
+	}
+	return s.scenarios[id], nil
 }
 
 func (stubResource) NewServer(context.Context, httpresource.ServerDependencies) (httpresource.Server, error) {

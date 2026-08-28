@@ -26,10 +26,11 @@ Use `--proxy` when the worker must keep normal provider hostnames:
 fab run acme-support-desk --proxy -- ./bin/eval-worker
 ```
 
-The worker must honor standard HTTP proxy and CA environment variables. Model
-APIs and other unknown hosts continue to their real destinations by default.
-Set `proxy.unknown_hosts: reject` in a custom environment only when the whole
-run should be isolated.
+Do not configure `$FAB_*_TOKEN` on those provider hostnames. The proxy
+replaces `Authorization` on routed hosts. The worker must honor standard HTTP
+proxy and CA environment variables. Model APIs and other unknown hosts continue
+to their real destinations by default. Set `proxy.unknown_hosts: reject` in a
+custom environment only when the whole run should be isolated.
 
 ## Run beside an existing worker
 
@@ -64,11 +65,14 @@ Fabricate performs that injection automatically.
 
 ## Authentication boundary
 
-Fabricate issues synthetic bearer tokens for the disposable services. It does
+Fabricate issues synthetic bearer tokens for the disposable services. Direct
+URL clients must send them. Proxy mode overwrites `Authorization` on routed
+provider hosts, so those clients should not send `$FAB_*_TOKEN`. Fabricate does
 not use, exchange, or preserve a customer's production OAuth connection. The
-Gmail proxy implements the supported local token-refresh route so an SDK can
-complete its normal refresh flow against the sandbox; the returned access
-token is still synthetic.
+Gmail proxy implements one local token-refresh route: `POST
+https://oauth2.googleapis.com/token` with `grant_type=refresh_token` and a
+non-empty refresh token returns the synthetic access token. There is no
+authorization-code flow, customer token store, or refresh for other providers.
 
 A hosted platform can use Fabricate when it can run a local or CI worker next
 to the CLI and configure that worker's HTTP clients. A native SaaS connector

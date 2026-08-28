@@ -1,0 +1,27 @@
+{
+  "integration": "asana",
+  "scenarios": [
+    {
+      "id": "asana.acme-sprint.v1",
+      "counts": {
+        "projects": 3,
+        "sections": 6,
+        "stories": 9,
+        "tasks": 10,
+        "users": 7,
+        "workspaces": 1
+      }
+    },
+    {
+      "id": "asana.minimal.v1",
+      "counts": {
+        "projects": 0,
+        "sections": 0,
+        "stories": 0,
+        "tasks": 0,
+        "users": 1,
+        "workspaces": 1
+      }
+    }
+  ]
+}

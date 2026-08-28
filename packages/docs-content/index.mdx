@@ -11,8 +11,8 @@ exits.
 
 For example, run an email workflow against a seeded Gmail support inbox, let
 the workflow search, label, and send mail, and run it again from the exact same
-inbox. The shipped Gmail scenario has 28 handcrafted support messages, so a
-test can exercise realistic threads instead of a blank or generic fixture.
+inbox. The shipped Gmail scenario seeds 28 handcrafted support messages; a
+default list returns 27 because one phishing message is in spam/trash.
 
 ## What Fabricate is for
 
@@ -116,9 +116,11 @@ Fabricate injects into the process.
 
 Use the **transparent proxy** when an SDK must keep its normal provider
 hostname. Add `--proxy` to `fab run`; Fabricate sets proxy and CA variables
-only for the wrapped process and routes the provider hosts declared by the
-environment to local services. Other hosts pass through by default; strict
-environments can set `proxy.unknown_hosts: reject`.
+only for the wrapped process, routes the provider hosts declared by the
+environment to local services, and replaces `Authorization` on those hosts
+with the ephemeral token. Direct examples send `$FAB_*_TOKEN`; proxy examples
+do not. Other hosts pass through by default; strict environments can set
+`proxy.unknown_hosts: reject`.
 
 Continue with [Getting started](/getting-started) to install the CLI, or open
 the [agent and workflow QA guide](/guides/agent-workflows) to connect a worker.

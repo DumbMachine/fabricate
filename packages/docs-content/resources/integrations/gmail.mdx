@@ -13,7 +13,7 @@ mailbox state across requests.
 | | Details |
 | --- | --- |
 | API | Gmail v1 |
-| Auth | Synthetic bearer token. The proxy also refreshes Google OAuth. |
+| Auth | Synthetic bearer token. Direct mode requires it; proxy mode injects it. |
 | Hosts | `gmail.googleapis.com`, Gmail paths on `www.googleapis.com` |
 | Direct URL | Yes |
 | Transparent proxy | Yes |
@@ -23,7 +23,7 @@ mailbox state across requests.
 Use `fab run` without `--proxy`. The command below downloads Fabricate's
 example manifest directly, so you do not need to clone this repository.
 Fabricate injects a URL and a short-lived token for the service name in that
-manifest.
+manifest. Direct calls must send that token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
@@ -36,7 +36,8 @@ The service is named `support-mail` in the example manifest, so the variables
 are `FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN`. If you name the
 service `gmail`, they become `FAB_GMAIL_URL` and `FAB_GMAIL_TOKEN`.
 
-The response is the Acme support inbox:
+The response is the Acme support inbox. Gmail's default list omits spam and
+trash, so `resultSizeEstimate` is one less than the seeded message count:
 
 <CommandOutput id="gmail-list-messages" showCommand={false} />
 
@@ -44,7 +45,9 @@ The response is the Acme support inbox:
 
 Use this when your app uses the normal Gmail/Google URLs and follows standard
 proxy and CA environment variables. This one-paste check calls Gmail's normal
-production hostname; replace the final `sh -c ...` command with your app.
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_SUPPORT_MAIL_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
@@ -53,19 +56,27 @@ curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environm
 ```
 
 Fabricate handles `gmail.googleapis.com` and the Gmail path on
-`www.googleapis.com` locally, including the token-refresh route. Other hosts
-are forwarded unchanged; set `proxy.unknown_hosts: reject` for an isolated,
-fail-closed conformance test.
+`www.googleapis.com` locally. Other hosts are forwarded unchanged; set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The Gmail proxy also answers `POST https://oauth2.googleapis.com/token` when
+the body is `grant_type=refresh_token` with a non-empty `refresh_token`. It
+returns the same synthetic access token. That is the entire OAuth surface: no
+authorization-code flow, no customer refresh-token store, and no refresh for
+other providers.
 
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
 
 ## Scenarios
 
-| Scenario | What it gives you |
-| --- | --- |
-| `gmail.minimal.v1` | An empty inbox for a clean test. |
-| `gmail.acme-corp.v1` | A populated Acme support inbox with 28 messages, labels, and threads. |
+<ResourceScenarios
+  resource="gmail"
+  descriptions={{
+    "gmail.minimal.v1": "An empty inbox for a clean test.",
+    "gmail.acme-corp.v1": "A populated Acme support inbox with labels and threads, including one phishing message in spam/trash.",
+  }}
+/>
 
 ## Compatibility verification
 
