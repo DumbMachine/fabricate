@@ -141,6 +141,11 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/cloudflare",
               },
               {
+                label: "Val Town",
+                href: "/resources/integrations/valtown",
+                icon: "https://logos.composio.dev/api/valtown",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
