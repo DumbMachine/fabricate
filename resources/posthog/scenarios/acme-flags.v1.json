@@ -1,0 +1,2026 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "posthog.acme-flags.v1",
+  "$resource": "posthog",
+  "$resourceVersion": "v1",
+  "state": {
+    "cohorts": [
+      {
+        "id": "coh_adatum",
+        "name": "Adatum pending DNS",
+        "project_id": "1",
+        "description": "Owen Brooks / acme-domain-verification=adatum-7f31."
+      },
+      {
+        "id": "coh_annual",
+        "name": "Annual Pro",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_brightpath",
+        "name": "BrightPath keys",
+        "project_id": "1",
+        "description": "Sofia Marin overlapping API keys."
+      },
+      {
+        "id": "coh_churn_risk",
+        "name": "Churn risk",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_contoso",
+        "name": "Contoso EU",
+        "project_id": "1",
+        "description": "contoso-eu SAML org, 380 users."
+      },
+      {
+        "id": "coh_custom_dns",
+        "name": "Custom hostname",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_enterprise",
+        "name": "Enterprise SSO",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_eu",
+        "name": "EU workspaces",
+        "project_id": "4"
+      },
+      {
+        "id": "coh_fabrikam",
+        "name": "Fabrikam SCIM",
+        "project_id": "1",
+        "description": "Leila Haddad req_7Q4K2."
+      },
+      {
+        "id": "coh_fernworks",
+        "name": "Fernworks prod",
+        "project_id": "1",
+        "description": "Priya Nair fernworks-prod CSV export."
+      },
+      {
+        "id": "coh_laketech",
+        "name": "LakeTech webhooks",
+        "project_id": "1",
+        "description": "Ben Okafor failed deliveries."
+      },
+      {
+        "id": "coh_mobile",
+        "name": "Mobile-only",
+        "project_id": "3"
+      },
+      {
+        "id": "coh_northwind",
+        "name": "Northwind Traders",
+        "project_id": "1",
+        "description": "Dana Whitfield workspace; INV-4812."
+      },
+      {
+        "id": "coh_nps_detractors",
+        "name": "NPS detractors",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_power",
+        "name": "Power users",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_scim",
+        "name": "SCIM enabled",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_tinyshop",
+        "name": "TinyShop refunds",
+        "project_id": "1",
+        "description": "Marco Silva 30-day guarantee."
+      },
+      {
+        "id": "coh_trial",
+        "name": "Trials this month",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_usage",
+        "name": "Usage-based billing",
+        "project_id": "1"
+      },
+      {
+        "id": "coh_webhooks",
+        "name": "Webhook publishers",
+        "project_id": "1"
+      }
+    ],
+    "dashboards": [
+      {
+        "id": "dash_billing",
+        "name": "Billing health",
+        "project_id": "1",
+        "description": "Northwind INV-4812 and TinyShop refunds."
+      },
+      {
+        "id": "dash_dns",
+        "name": "Custom hostnames",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_errors",
+        "name": "Error tracking",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_eu",
+        "name": "EU residency",
+        "project_id": "4"
+      },
+      {
+        "id": "dash_exec",
+        "name": "Weekly exec",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_growth",
+        "name": "Growth",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_incidents",
+        "name": "Incident board",
+        "project_id": "1",
+        "description": "Checkout reliability, Contoso SSO, INV-4812, fernworks CSV, Adatum DNS, LakeTech webhooks."
+      },
+      {
+        "id": "dash_keys",
+        "name": "API keys",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_mobile",
+        "name": "Mobile",
+        "project_id": "3"
+      },
+      {
+        "id": "dash_nps",
+        "name": "NPS",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_onboarding",
+        "name": "Onboarding",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_reliability",
+        "name": "Reliability",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_replay",
+        "name": "Replay privacy",
+        "project_id": "1"
+      },
+      {
+        "id": "dash_sso",
+        "name": "Enterprise SSO",
+        "project_id": "1",
+        "description": "Contoso contoso-eu and Fabrikam SCIM."
+      },
+      {
+        "id": "dash_staging",
+        "name": "Staging quality",
+        "project_id": "2"
+      },
+      {
+        "id": "dash_support",
+        "name": "Support joins",
+        "project_id": "1",
+        "description": "Joins Gmail INV-4812 threads to product flags."
+      },
+      {
+        "id": "dash_warehouse",
+        "name": "Warehouse",
+        "project_id": "6"
+      },
+      {
+        "id": "dash_webhooks",
+        "name": "Webhooks",
+        "project_id": "1"
+      }
+    ],
+    "experiments": [
+      {
+        "id": "exp_checkout",
+        "name": "Checkout reliability holdout",
+        "project_id": "1",
+        "description": "Holdout around acme-web pay-step 5xx."
+      },
+      {
+        "id": "exp_csv",
+        "name": "Async CSV export",
+        "project_id": "1",
+        "description": "fernworks-prod empty file regression."
+      },
+      {
+        "id": "exp_dark",
+        "name": "Dark mode default",
+        "project_id": "1"
+      },
+      {
+        "id": "exp_eu",
+        "name": "EU data residency banner",
+        "project_id": "4"
+      },
+      {
+        "id": "exp_keys",
+        "name": "API key overlap warning",
+        "project_id": "1",
+        "description": "BrightPath rotation UX."
+      },
+      {
+        "id": "exp_mobile",
+        "name": "Mobile capture consent",
+        "project_id": "3"
+      },
+      {
+        "id": "exp_nav",
+        "name": "New navigation IA",
+        "project_id": "1"
+      },
+      {
+        "id": "exp_nps",
+        "name": "NPS survey copy",
+        "project_id": "1"
+      },
+      {
+        "id": "exp_onboarding",
+        "name": "Onboarding checklist",
+        "project_id": "1"
+      },
+      {
+        "id": "exp_pricing",
+        "name": "Usage-based billing nudge",
+        "project_id": "1"
+      },
+      {
+        "id": "exp_replay",
+        "name": "Replay privacy mask",
+        "project_id": "1"
+      },
+      {
+        "id": "exp_sso",
+        "name": "Contoso SAML callback host",
+        "project_id": "1",
+        "description": "auth.acme.example vs api callback for contoso-eu."
+      }
+    ],
+    "feature_flags": [
+      {
+        "id": "101",
+        "key": "checkout_reliability",
+        "name": "Checkout reliability",
+        "active": true,
+        "project_id": "1",
+        "description": "Kill-switch and patched checkout flow after the reliability incident on acme-web. Correlates with GitHub acme/web#1, Sentry acme-web, Vercel acme-web."
+      },
+      {
+        "id": "102",
+        "key": "contoso_sso",
+        "name": "Contoso SSO",
+        "active": true,
+        "project_id": "1",
+        "description": "SAML callback for org slug contoso-eu. Mei Chen reported a 380-user login loop at auth.acme.example."
+      },
+      {
+        "id": "103",
+        "key": "billing_csv",
+        "name": "Billing CSV export",
+        "active": false,
+        "project_id": "1",
+        "description": "Fernworks-prod analytics CSV is downloading zero-byte files. Priya Nair. Related to INV-4812 board report."
+      },
+      {
+        "id": "104",
+        "key": "webhook_retry_backoff",
+        "name": "Webhook retry backoff",
+        "active": false,
+        "project_id": "1",
+        "description": "LakeTech / Ben Okafor asked for exponential backoff on hooks.acme.example."
+      },
+      {
+        "id": "105",
+        "key": "domain_verification_v2",
+        "name": "Domain verification v2",
+        "active": true,
+        "project_id": "1",
+        "description": "Adatum TXT acme-domain-verification=adatum-7f31. Owen Brooks."
+      },
+      {
+        "id": "106",
+        "key": "annual_plan_refunds",
+        "name": "Annual plan refunds",
+        "active": true,
+        "project_id": "1",
+        "description": "TinyShop 30-day guarantee. Marco Silva billing@tinyshop.example."
+      },
+      {
+        "id": "107",
+        "key": "api_key_overlap",
+        "name": "API key overlap",
+        "active": true,
+        "project_id": "1",
+        "description": "BrightPath second key during rotation. Sofia Marin."
+      },
+      {
+        "id": "108",
+        "key": "audit_log_scim",
+        "name": "Audit log SCIM events",
+        "active": false,
+        "project_id": "1",
+        "description": "Fabrikam SCIM group changes missing. Leila Haddad request ID req_7Q4K2."
+      },
+      {
+        "id": "109",
+        "key": "northwind_billing_portal",
+        "name": "Northwind billing portal",
+        "active": false,
+        "project_id": "1",
+        "description": "Dana Whitfield / INV-4812 duplicate $1,240 charges."
+      },
+      {
+        "id": "110",
+        "key": "new_nav_ia",
+        "name": "New navigation IA",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "111",
+        "key": "dark_mode",
+        "name": "Dark mode",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "112",
+        "key": "ai_session_summaries",
+        "name": "AI session summaries",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "113",
+        "key": "usage_alerts_v2",
+        "name": "Usage alerts v2",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "114",
+        "key": "scim_group_sync",
+        "name": "SCIM group sync",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "115",
+        "key": "checkout_express_pay",
+        "name": "Checkout express pay",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "116",
+        "key": "invoice_pdf_v3",
+        "name": "Invoice PDF v3",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "117",
+        "key": "adatum_custom_hostname",
+        "name": "Adatum custom hostname",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "118",
+        "key": "laketech_webhook_log",
+        "name": "LakeTech webhook delivery log",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "119",
+        "key": "tinyshop_pause",
+        "name": "TinyShop workspace pause",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "120",
+        "key": "brightpath_second_key",
+        "name": "BrightPath second API key",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "121",
+        "key": "fabrikam_scim_export",
+        "name": "Fabrikam SCIM export",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "122",
+        "key": "onboarding_checklist",
+        "name": "Onboarding checklist",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "123",
+        "key": "maintenance_banner",
+        "name": "Maintenance banner",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "124",
+        "key": "eu_data_residency",
+        "name": "EU data residency",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "125",
+        "key": "session_recording_sample",
+        "name": "Session recording sample",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "126",
+        "key": "feature_flag_payloads",
+        "name": "Feature flag payloads",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "127",
+        "key": "experiment_holdout",
+        "name": "Experiment holdout",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "128",
+        "key": "product_analytics_core",
+        "name": "Product analytics core",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "129",
+        "key": "replay_privacy_mask",
+        "name": "Replay privacy mask",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "130",
+        "key": "error_tracking_beta",
+        "name": "Error tracking beta",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "131",
+        "key": "data_warehouse_sync",
+        "name": "Data warehouse sync",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "132",
+        "key": "slack_alerts",
+        "name": "Slack alerts",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "133",
+        "key": "teams_alerts",
+        "name": "Teams alerts",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "134",
+        "key": "sso_enforced",
+        "name": "SSO enforced",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "135",
+        "key": "saml_strict",
+        "name": "SAML strict",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "136",
+        "key": "okta_preview",
+        "name": "Okta preview",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "137",
+        "key": "billing_usage_based",
+        "name": "Billing usage based",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "138",
+        "key": "seat_overage_nudge",
+        "name": "Seat overage nudge",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "139",
+        "key": "export_async",
+        "name": "Async exports",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "140",
+        "key": "csv_column_order",
+        "name": "CSV column order",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "141",
+        "key": "dashboard_templates",
+        "name": "Dashboard templates",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "142",
+        "key": "insight_alerts",
+        "name": "Insight alerts",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "143",
+        "key": "cohort_realtime",
+        "name": "Realtime cohorts",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "144",
+        "key": "mobile_replay",
+        "name": "Mobile replay",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "145",
+        "key": "android_capture",
+        "name": "Android capture",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "146",
+        "key": "ios_capture",
+        "name": "iOS capture",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "147",
+        "key": "surveys_nps",
+        "name": "NPS surveys",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "148",
+        "key": "surveys_pmf",
+        "name": "PMF surveys",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "149",
+        "key": "billing_credits",
+        "name": "Billing credits",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "150",
+        "key": "multi_product_nav",
+        "name": "Multi product nav",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "151",
+        "key": "command_palette",
+        "name": "Command palette",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "152",
+        "key": "sidebar_pinning",
+        "name": "Sidebar pinning",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "153",
+        "key": "saved_views_v2",
+        "name": "Saved views v2",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "154",
+        "key": "shared_dashboards",
+        "name": "Shared dashboards",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "155",
+        "key": "public_insight_links",
+        "name": "Public insight links",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "156",
+        "key": "flag_scheduling",
+        "name": "Flag scheduling",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "157",
+        "key": "flag_dependencies",
+        "name": "Flag dependencies",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "158",
+        "key": "experiment_sequential",
+        "name": "Sequential experiments",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "159",
+        "key": "warehouse_bigquery",
+        "name": "Warehouse BigQuery",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "160",
+        "key": "warehouse_snowflake",
+        "name": "Warehouse Snowflake",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "161",
+        "key": "warehouse_redshift",
+        "name": "Warehouse Redshift",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "162",
+        "key": "cdp_webhooks",
+        "name": "CDP webhooks",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "163",
+        "key": "cdp_segment",
+        "name": "CDP Segment",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "164",
+        "key": "error_autogroup",
+        "name": "Error autogroup",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "165",
+        "key": "replay_skip_idle",
+        "name": "Replay skip idle",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "166",
+        "key": "mobile_crash_lite",
+        "name": "Mobile crash lite",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "167",
+        "key": "survey_branching",
+        "name": "Survey branching",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "168",
+        "key": "heatmap_sample",
+        "name": "Heatmap sample",
+        "active": true,
+        "project_id": "1"
+      },
+      {
+        "id": "169",
+        "key": "toolbar_v3",
+        "name": "Toolbar v3",
+        "active": false,
+        "project_id": "1"
+      },
+      {
+        "id": "170",
+        "key": "growth_exp_001",
+        "name": "Growth experiment 001",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Helix Bio workspace theming."
+      },
+      {
+        "id": "171",
+        "key": "growth_exp_002",
+        "name": "Growth experiment 002",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Orbiter workspace theming."
+      },
+      {
+        "id": "172",
+        "key": "growth_exp_003",
+        "name": "Growth experiment 003",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Globex workspace theming."
+      },
+      {
+        "id": "173",
+        "key": "growth_exp_004",
+        "name": "Growth experiment 004",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Initech workspace theming."
+      },
+      {
+        "id": "174",
+        "key": "growth_exp_005",
+        "name": "Growth experiment 005",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Pioneer Freight workspace theming."
+      },
+      {
+        "id": "175",
+        "key": "growth_exp_006",
+        "name": "Growth experiment 006",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Redwood Labs workspace theming."
+      },
+      {
+        "id": "176",
+        "key": "growth_exp_007",
+        "name": "Growth experiment 007",
+        "active": true,
+        "project_id": "2",
+        "description": "Haystack experiment for Cobalt Health workspace theming."
+      },
+      {
+        "id": "177",
+        "key": "growth_exp_008",
+        "name": "Growth experiment 008",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Meadow Supply workspace theming."
+      },
+      {
+        "id": "178",
+        "key": "growth_exp_009",
+        "name": "Growth experiment 009",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Quartz Analytics workspace theming."
+      },
+      {
+        "id": "179",
+        "key": "growth_exp_010",
+        "name": "Growth experiment 010",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Atlas Civic workspace theming."
+      },
+      {
+        "id": "180",
+        "key": "growth_exp_011",
+        "name": "Growth experiment 011",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Harbor Bank workspace theming."
+      },
+      {
+        "id": "181",
+        "key": "growth_exp_012",
+        "name": "Growth experiment 012",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Kiln Studio workspace theming."
+      },
+      {
+        "id": "182",
+        "key": "growth_exp_013",
+        "name": "Growth experiment 013",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Lumen Schools workspace theming."
+      },
+      {
+        "id": "183",
+        "key": "growth_exp_014",
+        "name": "Growth experiment 014",
+        "active": true,
+        "project_id": "2",
+        "description": "Haystack experiment for Sienna Retail workspace theming."
+      },
+      {
+        "id": "184",
+        "key": "growth_exp_015",
+        "name": "Growth experiment 015",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Vector Robotics workspace theming."
+      },
+      {
+        "id": "185",
+        "key": "growth_exp_016",
+        "name": "Growth experiment 016",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Waypoint Travel workspace theming."
+      },
+      {
+        "id": "186",
+        "key": "growth_exp_017",
+        "name": "Growth experiment 017",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Nimbus Weather workspace theming."
+      },
+      {
+        "id": "187",
+        "key": "growth_exp_018",
+        "name": "Growth experiment 018",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Pebble Pay workspace theming."
+      },
+      {
+        "id": "188",
+        "key": "growth_exp_019",
+        "name": "Growth experiment 019",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Canyon Insurance workspace theming."
+      },
+      {
+        "id": "189",
+        "key": "growth_exp_020",
+        "name": "Growth experiment 020",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Driftwood Media workspace theming."
+      },
+      {
+        "id": "190",
+        "key": "growth_exp_021",
+        "name": "Growth experiment 021",
+        "active": false,
+        "project_id": "2",
+        "description": "Haystack experiment for Northstar Logistics workspace theming."
+      },
+      {
+        "id": "191",
+        "key": "growth_exp_022",
+        "name": "Growth experiment 022",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Umbrella Labs workspace theming."
+      },
+      {
+        "id": "192",
+        "key": "growth_exp_023",
+        "name": "Growth experiment 023",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Soylent Corp workspace theming."
+      },
+      {
+        "id": "193",
+        "key": "growth_exp_024",
+        "name": "Growth experiment 024",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Hooli workspace theming."
+      },
+      {
+        "id": "194",
+        "key": "growth_exp_025",
+        "name": "Growth experiment 025",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Massive Dynamic workspace theming."
+      },
+      {
+        "id": "195",
+        "key": "growth_exp_026",
+        "name": "Growth experiment 026",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Aperture Science workspace theming."
+      },
+      {
+        "id": "196",
+        "key": "growth_exp_027",
+        "name": "Growth experiment 027",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Black Mesa workspace theming."
+      },
+      {
+        "id": "197",
+        "key": "growth_exp_028",
+        "name": "Growth experiment 028",
+        "active": true,
+        "project_id": "2",
+        "description": "Haystack experiment for Cyberdyne Systems workspace theming."
+      },
+      {
+        "id": "198",
+        "key": "growth_exp_029",
+        "name": "Growth experiment 029",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Tyrell Corporation workspace theming."
+      },
+      {
+        "id": "199",
+        "key": "growth_exp_030",
+        "name": "Growth experiment 030",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Weyland-Yutani workspace theming."
+      },
+      {
+        "id": "200",
+        "key": "growth_exp_031",
+        "name": "Growth experiment 031",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Nakatomi Trading workspace theming."
+      },
+      {
+        "id": "201",
+        "key": "growth_exp_032",
+        "name": "Growth experiment 032",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for InGen workspace theming."
+      },
+      {
+        "id": "202",
+        "key": "growth_exp_033",
+        "name": "Growth experiment 033",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Vandelay Industries workspace theming."
+      },
+      {
+        "id": "203",
+        "key": "growth_exp_034",
+        "name": "Growth experiment 034",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Dunder Mifflin workspace theming."
+      },
+      {
+        "id": "204",
+        "key": "growth_exp_035",
+        "name": "Growth experiment 035",
+        "active": true,
+        "project_id": "2",
+        "description": "Haystack experiment for Bluth Company workspace theming."
+      },
+      {
+        "id": "205",
+        "key": "growth_exp_036",
+        "name": "Growth experiment 036",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Sterling Cooper workspace theming."
+      },
+      {
+        "id": "206",
+        "key": "growth_exp_037",
+        "name": "Growth experiment 037",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Pied Piper workspace theming."
+      },
+      {
+        "id": "207",
+        "key": "growth_exp_038",
+        "name": "Growth experiment 038",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Raviga Capital workspace theming."
+      },
+      {
+        "id": "208",
+        "key": "growth_exp_039",
+        "name": "Growth experiment 039",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Prestige Worldwide workspace theming."
+      },
+      {
+        "id": "209",
+        "key": "growth_exp_040",
+        "name": "Growth experiment 040",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Los Pollos Hermanos workspace theming."
+      },
+      {
+        "id": "210",
+        "key": "growth_exp_041",
+        "name": "Growth experiment 041",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Helix Bio workspace theming."
+      },
+      {
+        "id": "211",
+        "key": "growth_exp_042",
+        "name": "Growth experiment 042",
+        "active": false,
+        "project_id": "2",
+        "description": "Haystack experiment for Orbiter workspace theming."
+      },
+      {
+        "id": "212",
+        "key": "growth_exp_043",
+        "name": "Growth experiment 043",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Globex workspace theming."
+      },
+      {
+        "id": "213",
+        "key": "growth_exp_044",
+        "name": "Growth experiment 044",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Initech workspace theming."
+      },
+      {
+        "id": "214",
+        "key": "growth_exp_045",
+        "name": "Growth experiment 045",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Pioneer Freight workspace theming."
+      },
+      {
+        "id": "215",
+        "key": "growth_exp_046",
+        "name": "Growth experiment 046",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Redwood Labs workspace theming."
+      },
+      {
+        "id": "216",
+        "key": "growth_exp_047",
+        "name": "Growth experiment 047",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Cobalt Health workspace theming."
+      },
+      {
+        "id": "217",
+        "key": "growth_exp_048",
+        "name": "Growth experiment 048",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Meadow Supply workspace theming."
+      },
+      {
+        "id": "218",
+        "key": "growth_exp_049",
+        "name": "Growth experiment 049",
+        "active": true,
+        "project_id": "2",
+        "description": "Haystack experiment for Quartz Analytics workspace theming."
+      },
+      {
+        "id": "219",
+        "key": "growth_exp_050",
+        "name": "Growth experiment 050",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Atlas Civic workspace theming."
+      },
+      {
+        "id": "220",
+        "key": "growth_exp_051",
+        "name": "Growth experiment 051",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Harbor Bank workspace theming."
+      },
+      {
+        "id": "221",
+        "key": "growth_exp_052",
+        "name": "Growth experiment 052",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Kiln Studio workspace theming."
+      },
+      {
+        "id": "222",
+        "key": "growth_exp_053",
+        "name": "Growth experiment 053",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Lumen Schools workspace theming."
+      },
+      {
+        "id": "223",
+        "key": "growth_exp_054",
+        "name": "Growth experiment 054",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Sienna Retail workspace theming."
+      },
+      {
+        "id": "224",
+        "key": "growth_exp_055",
+        "name": "Growth experiment 055",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Vector Robotics workspace theming."
+      },
+      {
+        "id": "225",
+        "key": "growth_exp_056",
+        "name": "Growth experiment 056",
+        "active": true,
+        "project_id": "2",
+        "description": "Haystack experiment for Waypoint Travel workspace theming."
+      },
+      {
+        "id": "226",
+        "key": "growth_exp_057",
+        "name": "Growth experiment 057",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Nimbus Weather workspace theming."
+      },
+      {
+        "id": "227",
+        "key": "growth_exp_058",
+        "name": "Growth experiment 058",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Pebble Pay workspace theming."
+      },
+      {
+        "id": "228",
+        "key": "growth_exp_059",
+        "name": "Growth experiment 059",
+        "active": true,
+        "project_id": "1",
+        "description": "Haystack experiment for Canyon Insurance workspace theming."
+      },
+      {
+        "id": "229",
+        "key": "growth_exp_060",
+        "name": "Growth experiment 060",
+        "active": false,
+        "project_id": "1",
+        "description": "Haystack experiment for Driftwood Media workspace theming."
+      }
+    ],
+    "insights": [
+      {
+        "id": "ins_adatum_dns",
+        "name": "Adatum domain verification",
+        "project_id": "1",
+        "description": "TXT acme-domain-verification=adatum-7f31 pending then verified. Owen Brooks."
+      },
+      {
+        "id": "ins_brightpath",
+        "name": "BrightPath API key overlap",
+        "project_id": "1",
+        "description": "Sofia Marin rotated keys with overlap."
+      },
+      {
+        "id": "ins_checkout_funnel",
+        "name": "Checkout reliability funnel",
+        "project_id": "1",
+        "description": "Drop-off after pay on acme-web during the checkout reliability incident."
+      },
+      {
+        "id": "ins_contoso_sso",
+        "name": "Contoso SSO login failures",
+        "project_id": "1",
+        "description": "Failed SAML callbacks for contoso-eu (380 users)."
+      },
+      {
+        "id": "ins_csv_empty",
+        "name": "Fernworks empty CSV exports",
+        "project_id": "1",
+        "description": "analytics pipeline in fernworks-prod returning zero-byte CSVs. Priya Nair."
+      },
+      {
+        "id": "ins_fabrikam",
+        "name": "Fabrikam SCIM audit gaps",
+        "project_id": "1",
+        "description": "Group membership changes missing. req_7Q4K2."
+      },
+      {
+        "id": "ins_inv4812",
+        "name": "INV-4812 duplicate charges",
+        "project_id": "1",
+        "description": "Northwind Traders billed twice $1,240 for invoice INV-4812. Dana Whitfield."
+      },
+      {
+        "id": "ins_ops_001",
+        "name": "Weekly active workspaces",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_002",
+        "name": "Signup completion",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_003",
+        "name": "API 5xx rate",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_004",
+        "name": "Checkout p95 latency",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_005",
+        "name": "Staging smoke checks",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_006",
+        "name": "Flag evaluation volume",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_007",
+        "name": "Session replay count",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_008",
+        "name": "Mobile crash-free",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_009",
+        "name": "NPS trailing 30d",
+        "project_id": "2"
+      },
+      {
+        "id": "ins_ops_010",
+        "name": "Seat overage",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_011",
+        "name": "SSO adoption",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_012",
+        "name": "CSV export duration",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_013",
+        "name": "Webhook p99",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_014",
+        "name": "Invoice PDF render",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_015",
+        "name": "Onboarding checklist completion",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_016",
+        "name": "Dark mode share",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_017",
+        "name": "EU traffic share",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_018",
+        "name": "Warehouse sync lag",
+        "project_id": "2"
+      },
+      {
+        "id": "ins_ops_019",
+        "name": "Survey response rate",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_020",
+        "name": "Heatmap coverage",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_021",
+        "name": "Command palette usage",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_022",
+        "name": "Saved view reuse",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_023",
+        "name": "Public link clicks",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_024",
+        "name": "Toolbar opens",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_025",
+        "name": "Android capture consent",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_026",
+        "name": "iOS capture consent",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_027",
+        "name": "Slack alert volume",
+        "project_id": "2"
+      },
+      {
+        "id": "ins_ops_028",
+        "name": "Teams alert volume",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_029",
+        "name": "Holdout assignment",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_030",
+        "name": "Experiment exposure",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_031",
+        "name": "Billing credits issued",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_032",
+        "name": "Trial conversion",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_033",
+        "name": "Churn risk score",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_034",
+        "name": "Power user ratio",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_035",
+        "name": "Mobile-only share",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_036",
+        "name": "Enterprise seat growth",
+        "project_id": "2"
+      },
+      {
+        "id": "ins_ops_037",
+        "name": "Custom hostname count",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_ops_038",
+        "name": "SAML failure ratio",
+        "project_id": "1"
+      },
+      {
+        "id": "ins_tinyshop",
+        "name": "TinyShop refund conversions",
+        "project_id": "1",
+        "description": "Annual Pro canceled under 30-day guarantee. Marco Silva."
+      },
+      {
+        "id": "ins_webhook_fail",
+        "name": "LakeTech webhook failures",
+        "project_id": "1",
+        "description": "Failed webhook deliveries Ben Okafor asked to retry."
+      }
+    ],
+    "persons": [
+      {
+        "id": "person_adatum",
+        "distinct_id": "owen@adatum.example",
+        "email": "owen@adatum.example",
+        "name": "Owen Brooks",
+        "project_id": "1",
+        "properties": {
+          "company": "Adatum",
+          "needle": "adatum-7f31"
+        }
+      },
+      {
+        "id": "person_aperture",
+        "distinct_id": "caroline@aperture.example",
+        "email": "caroline@aperture.example",
+        "name": "Caroline Johnson",
+        "project_id": "1",
+        "properties": {
+          "company": "Aperture Science"
+        }
+      },
+      {
+        "id": "person_atlas",
+        "distinct_id": "nina@atlascivic.example",
+        "email": "nina@atlascivic.example",
+        "name": "Nina Brooks",
+        "project_id": "1",
+        "properties": {
+          "company": "Atlas Civic"
+        }
+      },
+      {
+        "id": "person_blackmesa",
+        "distinct_id": "gordon@blackmesa.example",
+        "email": "gordon@blackmesa.example",
+        "name": "Gordon Freeman",
+        "project_id": "1",
+        "properties": {
+          "company": "Black Mesa"
+        }
+      },
+      {
+        "id": "person_bluth",
+        "distinct_id": "george@bluth.example",
+        "email": "george@bluth.example",
+        "name": "George Michael",
+        "project_id": "1",
+        "properties": {
+          "company": "Bluth Company"
+        }
+      },
+      {
+        "id": "person_brightpath",
+        "distinct_id": "sofia@brightpath.example",
+        "email": "sofia@brightpath.example",
+        "name": "Sofia Marin",
+        "project_id": "1",
+        "properties": {
+          "company": "BrightPath",
+          "needle": "api-keys"
+        }
+      },
+      {
+        "id": "person_canyon",
+        "distinct_id": "reese@canyoninsurance.example",
+        "email": "reese@canyoninsurance.example",
+        "name": "Reese Patel",
+        "project_id": "1",
+        "properties": {
+          "company": "Canyon Insurance"
+        }
+      },
+      {
+        "id": "person_cobalt",
+        "distinct_id": "jules@cobalthealth.example",
+        "email": "jules@cobalthealth.example",
+        "name": "Jules Okonkwo",
+        "project_id": "1",
+        "properties": {
+          "company": "Cobalt Health"
+        }
+      },
+      {
+        "id": "person_contoso",
+        "distinct_id": "mei.chen@contoso.example",
+        "email": "mei.chen@contoso.example",
+        "name": "Mei Chen",
+        "project_id": "1",
+        "properties": {
+          "company": "Contoso",
+          "needle": "contoso-eu"
+        }
+      },
+      {
+        "id": "person_cyberdyne",
+        "distinct_id": "miles@cyberdyne.example",
+        "email": "miles@cyberdyne.example",
+        "name": "Miles Dyson",
+        "project_id": "1",
+        "properties": {
+          "company": "Cyberdyne Systems"
+        }
+      },
+      {
+        "id": "person_driftwood",
+        "distinct_id": "skye@driftwoodmedia.example",
+        "email": "skye@driftwoodmedia.example",
+        "name": "Skye Nguyen",
+        "project_id": "1",
+        "properties": {
+          "company": "Driftwood Media"
+        }
+      },
+      {
+        "id": "person_dunder",
+        "distinct_id": "pam@dundermifflin.example",
+        "email": "pam@dundermifflin.example",
+        "name": "Pam Beesly",
+        "project_id": "1",
+        "properties": {
+          "company": "Dunder Mifflin"
+        }
+      },
+      {
+        "id": "person_fabrikam",
+        "distinct_id": "leila@fabrikam.example",
+        "email": "leila@fabrikam.example",
+        "name": "Leila Haddad",
+        "project_id": "1",
+        "properties": {
+          "company": "Fabrikam",
+          "needle": "req_7Q4K2"
+        }
+      },
+      {
+        "id": "person_fernworks",
+        "distinct_id": "priya@fernworks.example",
+        "email": "priya@fernworks.example",
+        "name": "Priya Nair",
+        "project_id": "1",
+        "properties": {
+          "company": "Fernworks",
+          "needle": "fernworks-prod"
+        }
+      },
+      {
+        "id": "person_globex",
+        "distinct_id": "rita@globex.example",
+        "email": "rita@globex.example",
+        "name": "Rita Cole",
+        "project_id": "1",
+        "properties": {
+          "company": "Globex"
+        }
+      },
+      {
+        "id": "person_harbor",
+        "distinct_id": "eli@harborbank.example",
+        "email": "eli@harborbank.example",
+        "name": "Eli Cho",
+        "project_id": "1",
+        "properties": {
+          "company": "Harbor Bank"
+        }
+      },
+      {
+        "id": "person_helix",
+        "distinct_id": "noah@helixbio.example",
+        "email": "noah@helixbio.example",
+        "name": "Noah Patel",
+        "project_id": "1",
+        "properties": {
+          "company": "Helix Bio"
+        }
+      },
+      {
+        "id": "person_hooli",
+        "distinct_id": "gavin@hooli.example",
+        "email": "gavin@hooli.example",
+        "name": "Gavin Belson",
+        "project_id": "1",
+        "properties": {
+          "company": "Hooli"
+        }
+      },
+      {
+        "id": "person_ingen",
+        "distinct_id": "john@ingen.example",
+        "email": "john@ingen.example",
+        "name": "John Hammond",
+        "project_id": "1",
+        "properties": {
+          "company": "InGen"
+        }
+      },
+      {
+        "id": "person_initech",
+        "distinct_id": "peter@initech.example",
+        "email": "peter@initech.example",
+        "name": "Peter Gibbons",
+        "project_id": "1",
+        "properties": {
+          "company": "Initech"
+        }
+      },
+      {
+        "id": "person_kiln",
+        "distinct_id": "avery@kilnstudio.example",
+        "email": "avery@kilnstudio.example",
+        "name": "Avery Shaw",
+        "project_id": "1",
+        "properties": {
+          "company": "Kiln Studio"
+        }
+      },
+      {
+        "id": "person_laketech",
+        "distinct_id": "ben@laketech.example",
+        "email": "ben@laketech.example",
+        "name": "Ben Okafor",
+        "project_id": "1",
+        "properties": {
+          "company": "LakeTech",
+          "needle": "webhooks"
+        }
+      },
+      {
+        "id": "person_lospollos",
+        "distinct_id": "gus@lospollos.example",
+        "email": "gus@lospollos.example",
+        "name": "Gustavo Fring",
+        "project_id": "1",
+        "properties": {
+          "company": "Los Pollos Hermanos"
+        }
+      },
+      {
+        "id": "person_lumen",
+        "distinct_id": "jordan@lumenschools.example",
+        "email": "jordan@lumenschools.example",
+        "name": "Jordan Pike",
+        "project_id": "1",
+        "properties": {
+          "company": "Lumen Schools"
+        }
+      },
+      {
+        "id": "person_massive",
+        "distinct_id": "nina@massivedynamic.example",
+        "email": "nina@massivedynamic.example",
+        "name": "Nina Sharp",
+        "project_id": "1",
+        "properties": {
+          "company": "Massive Dynamic"
+        }
+      },
+      {
+        "id": "person_meadow",
+        "distinct_id": "harper@meadowsupply.example",
+        "email": "harper@meadowsupply.example",
+        "name": "Harper Diaz",
+        "project_id": "1",
+        "properties": {
+          "company": "Meadow Supply"
+        }
+      },
+      {
+        "id": "person_nakatomi",
+        "distinct_id": "holly@nakatomi.example",
+        "email": "holly@nakatomi.example",
+        "name": "Holly Gennaro",
+        "project_id": "1",
+        "properties": {
+          "company": "Nakatomi Trading"
+        }
+      },
+      {
+        "id": "person_nimbus",
+        "distinct_id": "quinn@nimbusweather.example",
+        "email": "quinn@nimbusweather.example",
+        "name": "Quinn Park",
+        "project_id": "1",
+        "properties": {
+          "company": "Nimbus Weather"
+        }
+      },
+      {
+        "id": "person_northstar",
+        "distinct_id": "pat@northstarlogistics.example",
+        "email": "pat@northstarlogistics.example",
+        "name": "Pat Yoon",
+        "project_id": "1",
+        "properties": {
+          "company": "Northstar Logistics"
+        }
+      },
+      {
+        "id": "person_northwind",
+        "distinct_id": "dana@northwind.example",
+        "email": "dana@northwind.example",
+        "name": "Dana Whitfield",
+        "project_id": "1",
+        "properties": {
+          "company": "Northwind Traders",
+          "needle": "INV-4812"
+        }
+      },
+      {
+        "id": "person_orbiter",
+        "distinct_id": "theo@orbiter.example",
+        "email": "theo@orbiter.example",
+        "name": "Theo Kane",
+        "project_id": "1",
+        "properties": {
+          "company": "Orbiter"
+        }
+      },
+      {
+        "id": "person_pebble",
+        "distinct_id": "drew@pebblepay.example",
+        "email": "drew@pebblepay.example",
+        "name": "Drew Santos",
+        "project_id": "1",
+        "properties": {
+          "company": "Pebble Pay"
+        }
+      },
+      {
+        "id": "person_piedpiper",
+        "distinct_id": "richard@piedpiper.example",
+        "email": "richard@piedpiper.example",
+        "name": "Richard Hendricks",
+        "project_id": "1",
+        "properties": {
+          "company": "Pied Piper"
+        }
+      },
+      {
+        "id": "person_pioneer",
+        "distinct_id": "amina@pioneerfreight.example",
+        "email": "amina@pioneerfreight.example",
+        "name": "Amina Sol",
+        "project_id": "1",
+        "properties": {
+          "company": "Pioneer Freight"
+        }
+      },
+      {
+        "id": "person_prestige",
+        "distinct_id": "brennan@prestigeworldwide.example",
+        "email": "brennan@prestigeworldwide.example",
+        "name": "Brennan Huff",
+        "project_id": "1",
+        "properties": {
+          "company": "Prestige Worldwide"
+        }
+      },
+      {
+        "id": "person_quartz",
+        "distinct_id": "sam@quartzanalytics.example",
+        "email": "sam@quartzanalytics.example",
+        "name": "Sam Rivera",
+        "project_id": "1",
+        "properties": {
+          "company": "Quartz Analytics"
+        }
+      },
+      {
+        "id": "person_raviga",
+        "distinct_id": "laurie@raviga.example",
+        "email": "laurie@raviga.example",
+        "name": "Laurie Bream",
+        "project_id": "1",
+        "properties": {
+          "company": "Raviga Capital"
+        }
+      },
+      {
+        "id": "person_redwood",
+        "distinct_id": "chris@redwoodlabs.example",
+        "email": "chris@redwoodlabs.example",
+        "name": "Chris Lang",
+        "project_id": "1",
+        "properties": {
+          "company": "Redwood Labs"
+        }
+      },
+      {
+        "id": "person_sienna",
+        "distinct_id": "casey@siennaretail.example",
+        "email": "casey@siennaretail.example",
+        "name": "Casey Moon",
+        "project_id": "1",
+        "properties": {
+          "company": "Sienna Retail"
+        }
+      },
+      {
+        "id": "person_soylent",
+        "distinct_id": "green@soylent.example",
+        "email": "green@soylent.example",
+        "name": "Green Reed",
+        "project_id": "1",
+        "properties": {
+          "company": "Soylent Corp"
+        }
+      },
+      {
+        "id": "person_sterling",
+        "distinct_id": "peggy@sterlingcooper.example",
+        "email": "peggy@sterlingcooper.example",
+        "name": "Peggy Olson",
+        "project_id": "1",
+        "properties": {
+          "company": "Sterling Cooper"
+        }
+      },
+      {
+        "id": "person_tinyshop",
+        "distinct_id": "marco@tinyshop.example",
+        "email": "marco@tinyshop.example",
+        "name": "Marco Silva",
+        "project_id": "1",
+        "properties": {
+          "company": "TinyShop",
+          "needle": "30-day"
+        }
+      },
+      {
+        "id": "person_tyrell",
+        "distinct_id": "eldon@tyrell.example",
+        "email": "eldon@tyrell.example",
+        "name": "Eldon Tyrell",
+        "project_id": "1",
+        "properties": {
+          "company": "Tyrell Corporation"
+        }
+      },
+      {
+        "id": "person_umbrella",
+        "distinct_id": "chris@umbrellalabs.example",
+        "email": "chris@umbrellalabs.example",
+        "name": "Chris Redfield",
+        "project_id": "1",
+        "properties": {
+          "company": "Umbrella Labs"
+        }
+      },
+      {
+        "id": "person_vandelay",
+        "distinct_id": "art@vandelay.example",
+        "email": "art@vandelay.example",
+        "name": "Art Vandelay",
+        "project_id": "1",
+        "properties": {
+          "company": "Vandelay Industries"
+        }
+      },
+      {
+        "id": "person_vector",
+        "distinct_id": "riley@vectorrobotics.example",
+        "email": "riley@vectorrobotics.example",
+        "name": "Riley Chen",
+        "project_id": "1",
+        "properties": {
+          "company": "Vector Robotics"
+        }
+      },
+      {
+        "id": "person_waypoint",
+        "distinct_id": "morgan@waypointtravel.example",
+        "email": "morgan@waypointtravel.example",
+        "name": "Morgan Ellis",
+        "project_id": "1",
+        "properties": {
+          "company": "Waypoint Travel"
+        }
+      },
+      {
+        "id": "person_weyland",
+        "distinct_id": "carter@weyland.example",
+        "email": "carter@weyland.example",
+        "name": "Carter Burke",
+        "project_id": "1",
+        "properties": {
+          "company": "Weyland-Yutani"
+        }
+      }
+    ],
+    "projects": [
+      {
+        "id": "1",
+        "name": "Acme Production",
+        "organization_id": "org_acme"
+      },
+      {
+        "id": "2",
+        "name": "Acme Staging",
+        "organization_id": "org_acme"
+      },
+      {
+        "id": "3",
+        "name": "Acme Mobile",
+        "organization_id": "org_acme"
+      },
+      {
+        "id": "4",
+        "name": "Acme EU",
+        "organization_id": "org_acme",
+        "description": "EU residency; Contoso contoso-eu identities."
+      },
+      {
+        "id": "5",
+        "name": "Acme Billing",
+        "organization_id": "org_acme",
+        "description": "INV-4812 / Northwind ledger analytics."
+      },
+      {
+        "id": "6",
+        "name": "Acme Warehouse",
+        "organization_id": "org_acme",
+        "description": "fernworks-prod CSV pipeline."
+      }
+    ]
+  }
+}

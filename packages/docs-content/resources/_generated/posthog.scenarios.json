@@ -1,0 +1,23 @@
+{
+  "integration": "posthog",
+  "scenarios": [
+    {
+      "id": "posthog.acme-flags.v1",
+      "counts": {
+        "cohorts": 20,
+        "dashboards": 18,
+        "experiments": 12,
+        "feature_flags": 129,
+        "insights": 47,
+        "persons": 48,
+        "projects": 6
+      }
+    },
+    {
+      "id": "posthog.minimal.v1",
+      "counts": {
+        "feature_flags": 0
+      }
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/mailchimp"
 	"github.com/dumbmachine/fabricate/resources/mailgun"
 	"github.com/dumbmachine/fabricate/resources/pipedrive"
+	"github.com/dumbmachine/fabricate/resources/posthog"
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
 )
@@ -32,6 +33,7 @@ func Registry() *httpresource.Registry {
 		mailchimp.NewResource(),
 		mailgun.NewResource(),
 		pipedrive.NewResource(),
+		posthog.NewResource(),
 		resend.NewResource(),
 		sendgrid.NewResource(),
 	)
