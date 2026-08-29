@@ -1,0 +1,76 @@
+---
+title: Vercel
+description: Projects, deployments, domains, and teams.
+sidebar:
+  icon: https://logos.composio.dev/api/vercel
+---
+
+Projects, deployments, domains, and teams. Local Vercel v1 that keeps
+project state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Vercel v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.vercel.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_VERCEL_TOKEN" \
+      "$FAB_VERCEL_URL/v10/projects"'
+```
+
+The service is named `vercel` in the example manifest, so the variables are
+`FAB_VERCEL_URL` and `FAB_VERCEL_TOKEN`.
+
+The response is the Acme project list:
+
+<CommandOutput id="vercel-list-projects" showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Vercel URLs. This one-paste check
+calls Vercel's production hostname. Omit `$FAB_VERCEL_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.vercel.com/v10/projects
+```
+
+Fabricate handles `api.vercel.com` locally. Other hosts are forwarded unchanged.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="vercel"
+  descriptions={{
+    "vercel.minimal.v1": "Empty Vercel state for a clean test.",
+    "vercel.acme-projects.v1": "Acme frontend estate: projects, deployments, and domains on `team_acme`. Needles: `acme-web` checkout reliability, Contoso SSO / `acme-auth`, INV-4812 billing, fernworks export, Adatum DNS, LakeTech hooks.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Vercel check ran against the Acme Vercel
+environment with curl:
+
+<IntegrationCompatibility resource="vercel" />
+
+## Supported operations
+
+<SupportedOperations resource="vercel" />

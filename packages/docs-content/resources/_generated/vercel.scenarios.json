@@ -1,0 +1,19 @@
+{
+  "integration": "vercel",
+  "scenarios": [
+    {
+      "id": "vercel.acme-projects.v1",
+      "counts": {
+        "deployments": 56,
+        "domains": 33,
+        "projects": 28
+      }
+    },
+    {
+      "id": "vercel.minimal.v1",
+      "counts": {
+        "projects": 0
+      }
+    }
+  ]
+}
