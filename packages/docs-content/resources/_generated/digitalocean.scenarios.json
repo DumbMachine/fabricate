@@ -1,0 +1,20 @@
+{
+  "integration": "digitalocean",
+  "scenarios": [
+    {
+      "id": "digitalocean.acme-droplets.v1",
+      "counts": {
+        "domains": 10,
+        "droplets": 26,
+        "keys": 8,
+        "volumes": 26
+      }
+    },
+    {
+      "id": "digitalocean.minimal.v1",
+      "counts": {
+        "droplets": 0
+      }
+    }
+  ]
+}

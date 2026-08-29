@@ -1,0 +1,3960 @@
+{
+  "integration": "digitalocean",
+  "api": "DigitalOcean v1",
+  "operations": [
+    {
+      "method": "PUT",
+      "path": "/\u003cupload_url\u003e",
+      "operationId": "inference_upload_batch_file",
+      "summary": "Upload a Batch Inference Input File"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/chat/completions",
+      "operationId": "agentInference_create_chat_completion",
+      "summary": "Create a model response for the given chat conversation"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/async-invoke",
+      "operationId": "inference_create_async_invoke",
+      "summary": "Generate Image, Audio, or Text-to-Speech Using fal Models"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/batches",
+      "operationId": "inference_list_batches",
+      "summary": "List Batch Inference Jobs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/batches",
+      "operationId": "inference_create_batch",
+      "summary": "Create a Batch Inference Job"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/batches/files",
+      "operationId": "inference_create_batch_file",
+      "summary": "Create a Batch Inference Input File"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/batches/{batch_id}",
+      "operationId": "inference_get_batch",
+      "summary": "Retrieve a Batch Inference Job"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/batches/{batch_id}/cancel",
+      "operationId": "inference_cancel_batch",
+      "summary": "Cancel a Batch Inference Job"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/batches/{batch_id}/results",
+      "operationId": "inference_get_batch_results",
+      "summary": "Get Batch Inference Results Download Links"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "operationId": "inference_create_chat_completion",
+      "summary": "Create a model response for the given chat conversation"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/embeddings",
+      "operationId": "inference_create_embedding",
+      "summary": "Create embedding"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/images/generations",
+      "operationId": "inference_create_image",
+      "summary": "Generate images from text prompts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages",
+      "operationId": "inference_create_messages",
+      "summary": "Create the next assistant message"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/models",
+      "operationId": "inference_list_models",
+      "summary": "List available models"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/responses",
+      "operationId": "inference_create_response",
+      "summary": "Send Prompt to a Model Using the Responses API"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/1-clicks",
+      "operationId": "oneClicks_list",
+      "summary": "List 1-Click Applications"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/1-clicks/kubernetes",
+      "operationId": "oneClicks_install_kubernetes",
+      "summary": "Install Kubernetes 1-Click Applications"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account",
+      "operationId": "account_get",
+      "summary": "Get User Information"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/keys",
+      "operationId": "sshKeys_list",
+      "summary": "List All SSH Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/keys",
+      "operationId": "sshKeys_create",
+      "summary": "Create a New SSH Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/keys/{ssh_key_identifier}",
+      "operationId": "sshKeys_get",
+      "summary": "Retrieve an Existing SSH Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/account/keys/{ssh_key_identifier}",
+      "operationId": "sshKeys_update",
+      "summary": "Update an SSH Key's Name"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/account/keys/{ssh_key_identifier}",
+      "operationId": "sshKeys_delete",
+      "summary": "Delete an SSH Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/actions",
+      "operationId": "actions_list",
+      "summary": "List All Actions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/actions/{action_id}",
+      "operationId": "actions_get",
+      "summary": "Retrieve an Existing Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/add-ons/apps",
+      "operationId": "addons_get_app",
+      "summary": "List Available Add-On Applications"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/add-ons/apps/{app_slug}/metadata",
+      "operationId": "addons_get_app_metadata",
+      "summary": "Get Metadata for an Add-On Application"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/add-ons/saas",
+      "operationId": "addons_list",
+      "summary": "List all Add-On Resources"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/add-ons/saas",
+      "operationId": "addons_create",
+      "summary": "Create/Provision a New Add-on Resource"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/add-ons/saas/{resource_uuid}",
+      "operationId": "addons_get",
+      "summary": "Get details on an Add-On Resource"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/add-ons/saas/{resource_uuid}",
+      "operationId": "addons_patch",
+      "summary": "Update the name for an Add-On Resource"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/add-ons/saas/{resource_uuid}",
+      "operationId": "addons_delete",
+      "summary": "Delete/Deprovision an Add-on Resource"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/add-ons/saas/{resource_uuid}/plan",
+      "operationId": "addons_patch_plan",
+      "summary": "Update the plan for an Add-On Resource"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps",
+      "operationId": "apps_list",
+      "summary": "List All Apps"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps",
+      "operationId": "apps_create",
+      "summary": "Create a New App"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/metrics/bandwidth_daily",
+      "operationId": "apps_list_metrics_bandwidth_daily",
+      "summary": "Retrieve Multiple Apps' Daily Bandwidth Metrics"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/propose",
+      "operationId": "apps_validate_appSpec",
+      "summary": "Propose an App Spec"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/regions",
+      "operationId": "apps_list_regions",
+      "summary": "List App Regions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/tiers/instance_sizes",
+      "operationId": "apps_list_instanceSizes",
+      "summary": "List Instance Sizes"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/tiers/instance_sizes/{slug}",
+      "operationId": "apps_get_instanceSize",
+      "summary": "Retrieve an Instance Size"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/alerts",
+      "operationId": "apps_list_alerts",
+      "summary": "List all app alerts"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/alerts/{alert_id}/destinations",
+      "operationId": "apps_assign_alertDestinations",
+      "summary": "Update destinations for alerts"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/components/{component_name}/exec",
+      "operationId": "apps_get_exec_active_deployment",
+      "summary": "Retrieve Exec URL"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/components/{component_name}/logs",
+      "operationId": "apps_get_logs_active_deployment",
+      "summary": "Retrieve Active Deployment Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/deployments",
+      "operationId": "apps_list_deployments",
+      "summary": "List App Deployments"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/deployments",
+      "operationId": "apps_create_deployment",
+      "summary": "Create an App Deployment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/deployments/{deployment_id}",
+      "operationId": "apps_get_deployment",
+      "summary": "Retrieve an App Deployment"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/deployments/{deployment_id}/cancel",
+      "operationId": "apps_cancel_deployment",
+      "summary": "Cancel a Deployment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/deployments/{deployment_id}/components/{component_name}/exec",
+      "operationId": "apps_get_exec",
+      "summary": "Retrieve Exec URL for Deployment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/deployments/{deployment_id}/components/{component_name}/logs",
+      "operationId": "apps_get_logs",
+      "summary": "Retrieve Deployment Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/deployments/{deployment_id}/logs",
+      "operationId": "apps_get_logs_aggregate",
+      "summary": "Retrieve Aggregate Deployment Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/events",
+      "operationId": "apps_list_events",
+      "summary": "List App Events"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/events/{event_id}",
+      "operationId": "apps_get_event",
+      "summary": "Get an Event"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/events/{event_id}/cancel",
+      "operationId": "apps_cancel_event",
+      "summary": "Cancel an Event"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/events/{event_id}/logs",
+      "operationId": "apps_get_event_logs",
+      "summary": "Retrieve Event Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/health",
+      "operationId": "apps_get_health",
+      "summary": "Retrieve App Health"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/instances",
+      "operationId": "apps_get_instances",
+      "summary": "Retrieve App Instances"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/job-invocations",
+      "operationId": "apps_list_job_invocations",
+      "summary": "List Job Invocations"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/job-invocations/{job_invocation_id}",
+      "operationId": "apps_get_job_invocation",
+      "summary": "Get Job Invocations"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/job-invocations/{job_invocation_id}/cancel",
+      "operationId": "apps_cancel_job_invocation",
+      "summary": "Cancel Job Invocation"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/jobs/{job_name}/invocations/{job_invocation_id}/logs",
+      "operationId": "apps_get_job_invocation_logs",
+      "summary": "Retrieve Job Invocation Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/logs",
+      "operationId": "apps_get_logs_active_deployment_aggregate",
+      "summary": "Retrieve Active Deployment Aggregate Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{app_id}/metrics/bandwidth_daily",
+      "operationId": "apps_get_metrics_bandwidth_daily",
+      "summary": "Retrieve App Daily Bandwidth Metrics"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/restart",
+      "operationId": "apps_restart",
+      "summary": "Restart an App"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/rollback",
+      "operationId": "apps_create_rollback",
+      "summary": "Rollback App"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/rollback/commit",
+      "operationId": "apps_commit_rollback",
+      "summary": "Commit App Rollback"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/rollback/revert",
+      "operationId": "apps_revert_rollback",
+      "summary": "Revert App Rollback"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/apps/{app_id}/rollback/validate",
+      "operationId": "apps_validate_rollback",
+      "summary": "Validate App Rollback"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/apps/{id}",
+      "operationId": "apps_get",
+      "summary": "Retrieve an Existing App"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/apps/{id}",
+      "operationId": "apps_update",
+      "summary": "Update an App"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/apps/{id}",
+      "operationId": "apps_delete",
+      "summary": "Delete an App"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/{account_urn}/insights/{start_date}/{end_date}",
+      "operationId": "billingInsights_list",
+      "summary": "List Billing Insights"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/byoip_prefixes",
+      "operationId": "byoipPrefixes_list",
+      "summary": "List BYOIP Prefixes"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/byoip_prefixes",
+      "operationId": "byoipPrefixes_create",
+      "summary": "Create a BYOIP Prefix"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/byoip_prefixes/{byoip_prefix_uuid}",
+      "operationId": "byoipPrefixes_get",
+      "summary": "Get a BYOIP Prefix"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/byoip_prefixes/{byoip_prefix_uuid}",
+      "operationId": "byoipPrefixes_patch",
+      "summary": "Update a BYOIP Prefix"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/byoip_prefixes/{byoip_prefix_uuid}",
+      "operationId": "byoipPrefixes_delete",
+      "summary": "Delete a BYOIP Prefix"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/byoip_prefixes/{byoip_prefix_uuid}/ips",
+      "operationId": "byoipPrefixes_list_resources",
+      "summary": "List BYOIP Prefix Resources"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/cdn/endpoints",
+      "operationId": "cdn_list_endpoints",
+      "summary": "List All CDN Endpoints"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/cdn/endpoints",
+      "operationId": "cdn_create_endpoint",
+      "summary": "Create a New CDN Endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/cdn/endpoints/{cdn_id}",
+      "operationId": "cdn_get_endpoint",
+      "summary": "Retrieve an Existing CDN Endpoint"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/cdn/endpoints/{cdn_id}",
+      "operationId": "cdn_update_endpoints",
+      "summary": "Update a CDN Endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/cdn/endpoints/{cdn_id}",
+      "operationId": "cdn_delete_endpoint",
+      "summary": "Delete a CDN Endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/cdn/endpoints/{cdn_id}/cache",
+      "operationId": "cdn_purge_cache",
+      "summary": "Purge the Cache for an Existing CDN Endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/certificates",
+      "operationId": "certificates_list",
+      "summary": "List All Certificates"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/certificates",
+      "operationId": "certificates_create",
+      "summary": "Create a New Certificate"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/certificates/{certificate_id}",
+      "operationId": "certificates_get",
+      "summary": "Retrieve an Existing Certificate"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/certificates/{certificate_id}",
+      "operationId": "certificates_delete",
+      "summary": "Delete a Certificate"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/balance",
+      "operationId": "balance_get",
+      "summary": "Get Customer Balance"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/billing_history",
+      "operationId": "billingHistory_list",
+      "summary": "List Billing History"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/invoices",
+      "operationId": "invoices_list",
+      "summary": "List All Invoices"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/invoices/{invoice_uuid}",
+      "operationId": "invoices_get_byUUID",
+      "summary": "Retrieve an Invoice by UUID"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/invoices/{invoice_uuid}/csv",
+      "operationId": "invoices_get_csvByUUID",
+      "summary": "Retrieve an Invoice CSV by UUID"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/invoices/{invoice_uuid}/pdf",
+      "operationId": "invoices_get_pdfByUUID",
+      "summary": "Retrieve an Invoice PDF by UUID"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/customers/my/invoices/{invoice_uuid}/summary",
+      "operationId": "invoices_get_summaryByUUID",
+      "summary": "Retrieve an Invoice Summary by UUID"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases",
+      "operationId": "databases_list_clusters",
+      "summary": "List All Database Clusters"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases",
+      "operationId": "databases_create_cluster",
+      "summary": "Create a New Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/metrics/credentials",
+      "operationId": "databases_get_cluster_metrics_credentials",
+      "summary": "Retrieve Database Clusters' Metrics Endpoint Credentials"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/metrics/credentials",
+      "operationId": "databases_update_cluster_metrics_credentials",
+      "summary": "Update Database Clusters' Metrics Endpoint Credentials"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/options",
+      "operationId": "databases_list_options",
+      "summary": "List Database Options"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}",
+      "operationId": "databases_get_cluster",
+      "summary": "Retrieve an Existing Database Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}",
+      "operationId": "databases_destroy_cluster",
+      "summary": "Destroy a Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/autoscale",
+      "operationId": "databases_get_autoscale",
+      "summary": "Retrieve Autoscale Configuration for a Database Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/autoscale",
+      "operationId": "databases_update_autoscale",
+      "summary": "Configure Autoscale Settings for a Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/backups",
+      "operationId": "databases_list_backups",
+      "summary": "List Backups for a Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/ca",
+      "operationId": "databases_get_ca",
+      "summary": "Retrieve the Public Certificate"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/config",
+      "operationId": "databases_get_config",
+      "summary": "Retrieve an Existing Database Cluster Configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/databases/{database_cluster_uuid}/config",
+      "operationId": "databases_patch_config",
+      "summary": "Update the Database Configuration for an Existing Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/dbs",
+      "operationId": "databases_list",
+      "summary": "List All Databases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/dbs",
+      "operationId": "databases_add",
+      "summary": "Add a New Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/dbs/{database_name}",
+      "operationId": "databases_get",
+      "summary": "Retrieve an Existing Database"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/dbs/{database_name}",
+      "operationId": "databases_delete",
+      "summary": "Delete a Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/do_settings",
+      "operationId": "databases_get_do_settings",
+      "summary": "Retrieve DO Settings for a Database Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/do_settings",
+      "operationId": "databases_update_do_settings",
+      "summary": "Update DO Settings for a Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/events",
+      "operationId": "databases_list_events_logs",
+      "summary": "List all Events Logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/eviction_policy",
+      "operationId": "databases_get_evictionPolicy",
+      "summary": "Retrieve the Eviction Policy for a Caching or Valkey Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/eviction_policy",
+      "operationId": "databases_update_evictionPolicy",
+      "summary": "Configure the Eviction Policy for a Caching or Valkey Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/firewall",
+      "operationId": "databases_list_firewall_rules",
+      "summary": "List Firewall Rules (Trusted Sources) for a Database Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/firewall",
+      "operationId": "databases_update_firewall_rules",
+      "summary": "Update Firewall Rules (Trusted Sources) for a Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/indexes",
+      "operationId": "databases_list_opeasearch_indexes",
+      "summary": "List Indexes for a OpenSearch Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/indexes/{index_name}",
+      "operationId": "databases_delete_opensearch_index",
+      "summary": "Delete Index for OpenSearch Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/install_update",
+      "operationId": "databases_install_update",
+      "summary": "Start Database Maintenance"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/logsink",
+      "operationId": "databases_list_logsink",
+      "summary": "List Logsinks for a Database Cluster"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/logsink",
+      "operationId": "databases_create_logsink",
+      "summary": "Create Logsink for a Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/logsink/{logsink_id}",
+      "operationId": "databases_get_logsink",
+      "summary": "Get Logsink for a Database Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/logsink/{logsink_id}",
+      "operationId": "databases_update_logsink",
+      "summary": "Update Logsink for a Database Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/logsink/{logsink_id}",
+      "operationId": "databases_delete_logsink",
+      "summary": "Delete Logsink for a Database Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/maintenance",
+      "operationId": "databases_update_maintenanceWindow",
+      "summary": "Configure a Database Cluster's Maintenance Window"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/migrate",
+      "operationId": "databases_update_region",
+      "summary": "Migrate a Database Cluster to a New Region"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/online-migration",
+      "operationId": "databases_get_migrationStatus",
+      "summary": "Retrieve the Status of an Online Migration"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/online-migration",
+      "operationId": "databases_update_onlineMigration",
+      "summary": "Start an Online Migration"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/online-migration/{migration_id}",
+      "operationId": "databases_delete_onlineMigration",
+      "summary": "Stop an Online Migration"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/pools",
+      "operationId": "databases_list_connectionPools",
+      "summary": "List Connection Pools (PostgreSQL)"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/pools",
+      "operationId": "databases_add_connectionPool",
+      "summary": "Add a New Connection Pool (PostgreSQL)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/pools/{pool_name}",
+      "operationId": "databases_get_connectionPool",
+      "summary": "Retrieve Existing Connection Pool (PostgreSQL)"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/pools/{pool_name}",
+      "operationId": "databases_update_connectionPool",
+      "summary": "Update Connection Pools (PostgreSQL)"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/pools/{pool_name}",
+      "operationId": "databases_delete_connectionPool",
+      "summary": "Delete a Connection Pool (PostgreSQL)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/replicas",
+      "operationId": "databases_list_replicas",
+      "summary": "List All Read-only Replicas"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/replicas",
+      "operationId": "databases_create_replica",
+      "summary": "Create a Read-only Replica"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/replicas/{replica_name}",
+      "operationId": "databases_get_replica",
+      "summary": "Retrieve an Existing Read-only Replica"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/replicas/{replica_name}",
+      "operationId": "databases_destroy_replica",
+      "summary": "Destroy a Read-only Replica"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/replicas/{replica_name}/promote",
+      "operationId": "databases_promote_replica",
+      "summary": "Promote a Read-only Replica to become a Primary Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/resize",
+      "operationId": "databases_update_clusterSize",
+      "summary": "Resize a Database Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry",
+      "operationId": "databases_list_kafka_schemas",
+      "summary": "List Schemas for Kafka Cluster"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry",
+      "operationId": "databases_create_kafka_schema",
+      "summary": "Create Schema Registry for Kafka Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/config",
+      "operationId": "databases_get_kafka_schema_config",
+      "summary": "Retrieve Schema Registry Configuration for a kafka Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/config",
+      "operationId": "databases_update_kafka_schema_config",
+      "summary": "Update Schema Registry Configuration for a kafka Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/config/{subject_name}",
+      "operationId": "databases_get_kafka_schema_subject_config",
+      "summary": "Retrieve Schema Registry Configuration for a Subject of kafka Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/config/{subject_name}",
+      "operationId": "databases_update_kafka_schema_subject_config",
+      "summary": "Update Schema Registry Configuration for a Subject of kafka Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/{subject_name}",
+      "operationId": "databases_get_kafka_schema",
+      "summary": "Get a Kafka Schema by Subject Name"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/{subject_name}",
+      "operationId": "databases_delete_kafka_schema",
+      "summary": "Delete a Kafka Schema by Subject Name"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/schema-registry/{subject_name}/versions/{version}",
+      "operationId": "databases_get_kafka_schema_version",
+      "summary": "Get Kafka Schema by Subject Version"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/sql_mode",
+      "operationId": "databases_get_sql_mode",
+      "summary": "Retrieve the SQL Modes for a MySQL Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/sql_mode",
+      "operationId": "databases_update_sql_mode",
+      "summary": "Update SQL Mode for a Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/topics",
+      "operationId": "databases_list_kafka_topics",
+      "summary": "List Topics for a Kafka Cluster"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/topics",
+      "operationId": "databases_create_kafka_topic",
+      "summary": "Create Topic for a Kafka Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/topics/{topic_name}",
+      "operationId": "databases_get_kafka_topic",
+      "summary": "Get Topic for a Kafka Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/topics/{topic_name}",
+      "operationId": "databases_update_kafka_topic",
+      "summary": "Update Topic for a Kafka Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/topics/{topic_name}",
+      "operationId": "databases_delete_kafka_topic",
+      "summary": "Delete Topic for a Kafka Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/upgrade",
+      "operationId": "databases_update_major_version",
+      "summary": "Upgrade Major Version for a Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/users",
+      "operationId": "databases_list_users",
+      "summary": "List all Database Users"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/users",
+      "operationId": "databases_add_user",
+      "summary": "Add a Database User"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/databases/{database_cluster_uuid}/users/{username}",
+      "operationId": "databases_get_user",
+      "summary": "Retrieve an Existing Database User"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/databases/{database_cluster_uuid}/users/{username}",
+      "operationId": "databases_update_user",
+      "summary": "Update a Database User"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/databases/{database_cluster_uuid}/users/{username}",
+      "operationId": "databases_delete_user",
+      "summary": "Remove a Database User"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/databases/{database_cluster_uuid}/users/{username}/reset_auth",
+      "operationId": "databases_reset_auth",
+      "summary": "Reset a Database User's Password or Authentication Method"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences",
+      "operationId": "dedicatedInferences_list",
+      "summary": "List Dedicated Inferences"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/dedicated-inferences",
+      "operationId": "dedicatedInferences_create",
+      "summary": "Create a Dedicated Inference"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/gpu-model-config",
+      "operationId": "dedicatedInferences_get_gpu_model_config",
+      "summary": "Get Dedicated Inference GPU Model Config"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/sizes",
+      "operationId": "dedicatedInferences_list_sizes",
+      "summary": "List Dedicated Inference Sizes"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}",
+      "operationId": "dedicatedInferences_get",
+      "summary": "Get a Dedicated Inference"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}",
+      "operationId": "dedicatedInferences_patch",
+      "summary": "Update a Dedicated Inference"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}",
+      "operationId": "dedicatedInferences_delete",
+      "summary": "Delete a Dedicated Inference"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}/accelerators",
+      "operationId": "dedicatedInferences_list_accelerators",
+      "summary": "List Dedicated Inference Accelerators"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}/accelerators/{accelerator_id}",
+      "operationId": "dedicatedInferences_get_accelerator",
+      "summary": "Get a Dedicated Inference Accelerator"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}/ca",
+      "operationId": "dedicatedInferences_get_ca",
+      "summary": "Get Dedicated Inference CA Certificate"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}/tokens",
+      "operationId": "dedicatedInferences_list_tokens",
+      "summary": "List Dedicated Inference Tokens"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}/tokens",
+      "operationId": "dedicatedInferences_create_tokens",
+      "summary": "Create a Dedicated Inference Token"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/dedicated-inferences/{dedicated_inference_id}/tokens/{token_id}",
+      "operationId": "dedicatedInferences_delete_tokens",
+      "summary": "Revoke a Dedicated Inference Token"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/domains",
+      "operationId": "domains_list",
+      "summary": "List All Domains"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/domains",
+      "operationId": "domains_create",
+      "summary": "Create a New Domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/domains/{domain_name}",
+      "operationId": "domains_get",
+      "summary": "Retrieve an Existing Domain"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/domains/{domain_name}",
+      "operationId": "domains_delete",
+      "summary": "Delete a Domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/domains/{domain_name}/records",
+      "operationId": "domains_list_records",
+      "summary": "List All Domain Records"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/domains/{domain_name}/records",
+      "operationId": "domains_create_record",
+      "summary": "Create a New Domain Record"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/domains/{domain_name}/records/{domain_record_id}",
+      "operationId": "domains_get_record",
+      "summary": "Retrieve an Existing Domain Record"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/domains/{domain_name}/records/{domain_record_id}",
+      "operationId": "domains_update_record",
+      "summary": "Update a Domain Record"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/domains/{domain_name}/records/{domain_record_id}",
+      "operationId": "domains_patch_record",
+      "summary": "Update a Domain Record"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/domains/{domain_name}/records/{domain_record_id}",
+      "operationId": "domains_delete_record",
+      "summary": "Delete a Domain Record"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets",
+      "operationId": "droplets_list",
+      "summary": "List All Droplets"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/droplets",
+      "operationId": "droplets_create",
+      "summary": "Create a New Droplet"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/droplets",
+      "operationId": "droplets_destroy_byTag",
+      "summary": "Deleting Droplets by Tag"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/droplets/actions",
+      "operationId": "dropletActions_post_byTag",
+      "summary": "Acting on Tagged Droplets"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/autoscale",
+      "operationId": "autoscalepools_list",
+      "summary": "List All Autoscale Pools"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/droplets/autoscale",
+      "operationId": "autoscalepools_create",
+      "summary": "Create a New Autoscale Pool"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/autoscale/{autoscale_pool_id}",
+      "operationId": "autoscalepools_get",
+      "summary": "Retrieve an Existing Autoscale Pool"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/droplets/autoscale/{autoscale_pool_id}",
+      "operationId": "autoscalepools_update",
+      "summary": "Update Autoscale Pool"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/droplets/autoscale/{autoscale_pool_id}",
+      "operationId": "autoscalepools_delete",
+      "summary": "Delete autoscale pool"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/droplets/autoscale/{autoscale_pool_id}/dangerous",
+      "operationId": "autoscalepools_delete_dangerous",
+      "summary": "Delete autoscale pool and resources"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/autoscale/{autoscale_pool_id}/history",
+      "operationId": "autoscalepools_list_history",
+      "summary": "List history events"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/autoscale/{autoscale_pool_id}/members",
+      "operationId": "autoscalepools_list_members",
+      "summary": "List members"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/backups/policies",
+      "operationId": "droplets_list_backup_policies",
+      "summary": "List Backup Policies for All Existing Droplets"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/backups/supported_policies",
+      "operationId": "droplets_list_supported_backup_policies",
+      "summary": "List Supported Droplet Backup Policies"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}",
+      "operationId": "droplets_get",
+      "summary": "Retrieve an Existing Droplet"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/droplets/{droplet_id}",
+      "operationId": "droplets_destroy",
+      "summary": "Delete an Existing Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/actions",
+      "operationId": "dropletActions_list",
+      "summary": "List Actions for a Droplet"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/droplets/{droplet_id}/actions",
+      "operationId": "dropletActions_post",
+      "summary": "Initiate a Droplet Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/actions/{action_id}",
+      "operationId": "dropletActions_get",
+      "summary": "Retrieve a Droplet Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/backups",
+      "operationId": "droplets_list_backups",
+      "summary": "List Backups for a Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/backups/policy",
+      "operationId": "droplets_get_backup_policy",
+      "summary": "Retrieve the Backup Policy for an Existing Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/destroy_with_associated_resources",
+      "operationId": "droplets_list_associatedResources",
+      "summary": "List Associated Resources for a Droplet"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/droplets/{droplet_id}/destroy_with_associated_resources/dangerous",
+      "operationId": "droplets_destroy_withAssociatedResourcesDangerous",
+      "summary": "Destroy a Droplet and All of its Associated Resources (Dangerous)"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/droplets/{droplet_id}/destroy_with_associated_resources/retry",
+      "operationId": "droplets_destroy_retryWithAssociatedResources",
+      "summary": "Retry a Droplet Destroy with Associated Resources Request"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/droplets/{droplet_id}/destroy_with_associated_resources/selective",
+      "operationId": "droplets_destroy_withAssociatedResourcesSelective",
+      "summary": "Selectively Destroy a Droplet and its Associated Resources"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/destroy_with_associated_resources/status",
+      "operationId": "droplets_get_DestroyAssociatedResourcesStatus",
+      "summary": "Check Status of a Droplet Destroy with Associated Resources Request"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/firewalls",
+      "operationId": "droplets_list_firewalls",
+      "summary": "List all Firewalls Applied to a Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/kernels",
+      "operationId": "droplets_list_kernels",
+      "summary": "List All Available Kernels for a Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/neighbors",
+      "operationId": "droplets_list_neighbors",
+      "summary": "List Neighbors for a Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/droplets/{droplet_id}/snapshots",
+      "operationId": "droplets_list_snapshots",
+      "summary": "List Snapshots for a Droplet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/firewalls",
+      "operationId": "firewalls_list",
+      "summary": "List All Firewalls"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/firewalls",
+      "operationId": "firewalls_create",
+      "summary": "Create a New Firewall"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/firewalls/{firewall_id}",
+      "operationId": "firewalls_get",
+      "summary": "Retrieve an Existing Firewall"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/firewalls/{firewall_id}",
+      "operationId": "firewalls_update",
+      "summary": "Update a Firewall"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/firewalls/{firewall_id}",
+      "operationId": "firewalls_delete",
+      "summary": "Delete a Firewall"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/firewalls/{firewall_id}/droplets",
+      "operationId": "firewalls_assign_droplets",
+      "summary": "Add Droplets to a Firewall"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/firewalls/{firewall_id}/droplets",
+      "operationId": "firewalls_delete_droplets",
+      "summary": "Remove Droplets from a Firewall"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/firewalls/{firewall_id}/rules",
+      "operationId": "firewalls_add_rules",
+      "summary": "Add Rules to a Firewall"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/firewalls/{firewall_id}/rules",
+      "operationId": "firewalls_delete_rules",
+      "summary": "Remove Rules from a Firewall"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/firewalls/{firewall_id}/tags",
+      "operationId": "firewalls_add_tags",
+      "summary": "Add Tags to a Firewall"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/firewalls/{firewall_id}/tags",
+      "operationId": "firewalls_delete_tags",
+      "summary": "Remove Tags from a Firewall"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/floating_ips",
+      "operationId": "floatingIPs_list",
+      "summary": "List All Floating IPs"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/floating_ips",
+      "operationId": "floatingIPs_create",
+      "summary": "Create a New Floating IP"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/floating_ips/{floating_ip}",
+      "operationId": "floatingIPs_get",
+      "summary": "Retrieve an Existing Floating IP"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/floating_ips/{floating_ip}",
+      "operationId": "floatingIPs_delete",
+      "summary": "Delete a Floating IP"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/floating_ips/{floating_ip}/actions",
+      "operationId": "floatingIPsAction_list",
+      "summary": "List All Actions for a Floating IP"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/floating_ips/{floating_ip}/actions",
+      "operationId": "floatingIPsAction_post",
+      "summary": "Initiate a Floating IP Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/floating_ips/{floating_ip}/actions/{action_id}",
+      "operationId": "floatingIPsAction_get",
+      "summary": "Retrieve an Existing Floating IP Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/functions/namespaces",
+      "operationId": "functions_list_namespaces",
+      "summary": "List Namespaces"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/functions/namespaces",
+      "operationId": "functions_create_namespace",
+      "summary": "Create Namespace"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/functions/namespaces/{namespace_id}",
+      "operationId": "functions_get_namespace",
+      "summary": "Get Namespace"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/functions/namespaces/{namespace_id}",
+      "operationId": "functions_delete_namespace",
+      "summary": "Delete Namespace"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/functions/namespaces/{namespace_id}/keys",
+      "operationId": "functionsAccessKey_list",
+      "summary": "List Namespace Access Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/functions/namespaces/{namespace_id}/keys",
+      "operationId": "functionsAccessKey_create",
+      "summary": "Create a Namespace Access Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/functions/namespaces/{namespace_id}/keys/{key_id}",
+      "operationId": "functionsAccessKey_update",
+      "summary": "Update a Namespace Access Key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/functions/namespaces/{namespace_id}/keys/{key_id}",
+      "operationId": "functionsAccessKey_delete",
+      "summary": "Delete a Namespace Access Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/functions/namespaces/{namespace_id}/triggers",
+      "operationId": "functions_list_triggers",
+      "summary": "List Triggers"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/functions/namespaces/{namespace_id}/triggers",
+      "operationId": "functions_create_trigger",
+      "summary": "Create Trigger"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/functions/namespaces/{namespace_id}/triggers/{trigger_name}",
+      "operationId": "functions_get_trigger",
+      "summary": "Get Trigger"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/functions/namespaces/{namespace_id}/triggers/{trigger_name}",
+      "operationId": "functions_update_trigger",
+      "summary": "Update Trigger"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/functions/namespaces/{namespace_id}/triggers/{trigger_name}",
+      "operationId": "functions_delete_trigger",
+      "summary": "Delete Trigger"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/agents",
+      "operationId": "genai_list_agents",
+      "summary": "List Agents"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents",
+      "operationId": "genai_create_agent",
+      "summary": "Create an Agent"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/api_keys",
+      "operationId": "genai_list_agent_api_keys",
+      "summary": "List Agent API Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/api_keys",
+      "operationId": "genai_create_agent_api_key",
+      "summary": "Create an Agent API Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/api_keys/{api_key_uuid}",
+      "operationId": "genai_update_agent_api_key",
+      "summary": "Update API Key for an Agent"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/api_keys/{api_key_uuid}",
+      "operationId": "genai_delete_agent_api_key",
+      "summary": "Delete API Key for an Agent"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/api_keys/{api_key_uuid}/regenerate",
+      "operationId": "genai_regenerate_agent_api_key",
+      "summary": "Regenerate API Key for an Agent"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/functions",
+      "operationId": "genai_attach_agent_function",
+      "summary": "Add Function Route to an Agent"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/functions/{function_uuid}",
+      "operationId": "genai_update_agent_function",
+      "summary": "Update Function Route for an Agent"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/functions/{function_uuid}",
+      "operationId": "genai_detach_agent_function",
+      "summary": "Delete Function Route for an Agent"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/guardrails",
+      "operationId": "genai_attach_agent_guardrails",
+      "summary": "Attach Guardrails to an Agent"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/guardrails/{guardrail_uuid}",
+      "operationId": "genai_detach_agent_guardrail",
+      "summary": "Detach a Guardrail from an Agent"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/knowledge_bases",
+      "operationId": "genai_attach_knowledge_bases",
+      "summary": "Attach Knowledge Bases to an Agent"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/knowledge_bases/{knowledge_base_uuid}",
+      "operationId": "genai_attach_knowledge_base",
+      "summary": "Attach Knowledge Base to an Agent"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/agents/{agent_uuid}/knowledge_bases/{knowledge_base_uuid}",
+      "operationId": "genai_detach_knowledge_base",
+      "summary": "Detach Knowledge Base from an Agent"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/agents/{parent_agent_uuid}/child_agents/{child_agent_uuid}",
+      "operationId": "genai_attach_agent",
+      "summary": "Add Agent Route to an Agent"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{parent_agent_uuid}/child_agents/{child_agent_uuid}",
+      "operationId": "genai_update_attached_agent",
+      "summary": "Update Agent Route for an Agent"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/agents/{parent_agent_uuid}/child_agents/{child_agent_uuid}",
+      "operationId": "genai_detach_agent",
+      "summary": "Delete Agent Route for an Agent"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/agents/{uuid}",
+      "operationId": "genai_get_agent",
+      "summary": "Retrieve an Existing Agent"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{uuid}",
+      "operationId": "genai_update_agent",
+      "summary": "Update an Agent"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/agents/{uuid}",
+      "operationId": "genai_delete_agent",
+      "summary": "Delete an Agent"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/agents/{uuid}/child_agents",
+      "operationId": "genai_get_agent_children",
+      "summary": "View Agent Routes"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{uuid}/deployment_visibility",
+      "operationId": "genai_update_agent_deployment_visibility",
+      "summary": "Update Agent Status"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/agents/{uuid}/usage",
+      "operationId": "genai_get_agent_usage",
+      "summary": "Get Agent Usage"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/agents/{uuid}/versions",
+      "operationId": "genai_list_agent_versions",
+      "summary": "List Agent Versions"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/agents/{uuid}/versions",
+      "operationId": "genai_rollback_to_agent_version",
+      "summary": "Rollback to Agent Version"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/anthropic/keys",
+      "operationId": "genai_list_anthropic_api_keys",
+      "summary": "List Anthropic API Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/anthropic/keys",
+      "operationId": "genai_create_anthropic_api_key",
+      "summary": "Create Anthropic API Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/anthropic/keys/{api_key_uuid}",
+      "operationId": "genai_get_anthropic_api_key",
+      "summary": "Get Anthropic API Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/anthropic/keys/{api_key_uuid}",
+      "operationId": "genai_update_anthropic_api_key",
+      "summary": "Update Anthropic API Key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/anthropic/keys/{api_key_uuid}",
+      "operationId": "genai_delete_anthropic_api_key",
+      "summary": "Delete Anthropic API Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/anthropic/keys/{uuid}/agents",
+      "operationId": "genai_list_agents_by_anthropic_key",
+      "summary": "List agents by Anthropic key"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/custom_evaluation_metrics",
+      "operationId": "genai_create_custom_evaluation_metric",
+      "summary": "Create Custom Evaluation Metric"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/custom_evaluation_metrics/{metric_uuid}",
+      "operationId": "genai_update_custom_evaluation_metric",
+      "summary": "Update Custom Evaluation Metric"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/custom_evaluation_metrics/{metric_uuid}",
+      "operationId": "genai_delete_custom_evaluation_metric",
+      "summary": "Delete Custom Evaluation Metric"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/custom_models",
+      "operationId": "genai_list_custom_models",
+      "summary": "List Custom Models"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/custom_models/import",
+      "operationId": "genai_import_custom_model",
+      "summary": "Import Custom Model"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/custom_models/{uuid}",
+      "operationId": "genai_get_custom_model",
+      "summary": "Get Custom Model"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/custom_models/{uuid}",
+      "operationId": "genai_delete_custom_model",
+      "summary": "Delete Custom Model"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/gen-ai/custom_models/{uuid}/metadata",
+      "operationId": "genai_update_custom_model_metadata",
+      "summary": "Update Custom Model Metadata"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_datasets",
+      "operationId": "genai_list_evaluation_datasets",
+      "summary": "List Evaluation Datasets"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/evaluation_datasets",
+      "operationId": "genai_create_evaluation_dataset",
+      "summary": "Create Evaluation Dataset"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/evaluation_datasets/file_upload_presigned_urls",
+      "operationId": "genai_create_evaluation_dataset_file_upload_presigned_urls",
+      "summary": "Create Presigned URLs for Evaluation Dataset File Upload"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/evaluation_datasets/{dataset_uuid}",
+      "operationId": "genai_delete_evaluation_dataset",
+      "summary": "Delete Evaluation Dataset"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_datasets/{dataset_uuid}/download_url",
+      "operationId": "genai_get_evaluation_dataset_download_url",
+      "summary": "Get Download URL for Evaluation Dataset"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_metrics",
+      "operationId": "genai_list_evaluation_metrics",
+      "summary": "List Evaluation Metrics"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/evaluation_runs",
+      "operationId": "genai_run_evaluation_test_case",
+      "summary": "Run an Evaluation Test Case"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_runs/{evaluation_run_uuid}",
+      "operationId": "genai_get_evaluation_run",
+      "summary": "Retrieve Information About an Existing Evaluation Run"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_runs/{evaluation_run_uuid}/results",
+      "operationId": "genai_get_evaluation_run_results",
+      "summary": "Retrieve Results of an Evaluation Run"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_runs/{evaluation_run_uuid}/results/{prompt_id}",
+      "operationId": "genai_get_evaluation_run_prompt_results",
+      "summary": "Retrieve Results of an Evaluation Run Prompt"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_test_cases",
+      "operationId": "genai_list_evaluation_test_cases",
+      "summary": "List Evaluation Test Cases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/evaluation_test_cases",
+      "operationId": "genai_create_evaluation_test_case",
+      "summary": "Create Evaluation Test Case."
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_test_cases/{evaluation_test_case_uuid}/evaluation_runs",
+      "operationId": "genai_list_evaluation_runs_by_test_case",
+      "summary": "List Evaluation Runs by Test Case"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/evaluation_test_cases/{test_case_uuid}",
+      "operationId": "genai_get_evaluation_test_case",
+      "summary": "Retrieve Information About an Existing Evaluation Test Case"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/evaluation_test_cases/{test_case_uuid}",
+      "operationId": "genai_update_evaluation_test_case",
+      "summary": "Update an Evaluation Test Case."
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/indexing_jobs",
+      "operationId": "genai_list_indexing_jobs",
+      "summary": "List Indexing Jobs for a Knowledge Base"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/indexing_jobs",
+      "operationId": "genai_create_indexing_job",
+      "summary": "Start Indexing Job for a Knowledge Base"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/indexing_jobs/{indexing_job_uuid}/data_sources",
+      "operationId": "genai_list_indexing_job_data_sources",
+      "summary": "List Data Sources for Indexing Job for a Knowledge Base"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/indexing_jobs/{indexing_job_uuid}/details_signed_url",
+      "operationId": "genai_get_indexing_job_details_signed_url",
+      "summary": "Get Signed URL for Indexing Job Details"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/indexing_jobs/{uuid}",
+      "operationId": "genai_get_indexing_job",
+      "summary": "Retrieve Status of Indexing Job for a Knowledge Base"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/indexing_jobs/{uuid}/cancel",
+      "operationId": "genai_cancel_indexing_job",
+      "summary": "Cancel Indexing Job for a Knowledge Base"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/knowledge_bases",
+      "operationId": "genai_list_knowledge_bases",
+      "summary": "List Knowledge Bases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/knowledge_bases",
+      "operationId": "genai_create_knowledge_base",
+      "summary": "Create a Knowledge Base"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/knowledge_bases/data_sources/file_upload_presigned_urls",
+      "operationId": "genai_create_data_source_file_upload_presigned_urls",
+      "summary": "Create Presigned URLs for Data Source File Upload"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/data_sources",
+      "operationId": "genai_list_knowledge_base_data_sources",
+      "summary": "List Data Sources for a Knowledge Base"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/data_sources",
+      "operationId": "genai_create_knowledge_base_data_source",
+      "summary": "Add Data Source to a Knowledge Base"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/data_sources/{data_source_uuid}",
+      "operationId": "genai_update_knowledge_base_data_source",
+      "summary": "Update Data Source options"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/data_sources/{data_source_uuid}",
+      "operationId": "genai_delete_knowledge_base_data_source",
+      "summary": "Delete a Data Source from a Knowledge Base"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/indexing_jobs",
+      "operationId": "genai_list_indexing_jobs_by_knowledge_base",
+      "summary": "List Indexing Jobs for a Knowledge Base"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/knowledge_bases/{uuid}",
+      "operationId": "genai_get_knowledge_base",
+      "summary": "Retrieve Information About an Existing Knowledge Base"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/knowledge_bases/{uuid}",
+      "operationId": "genai_update_knowledge_base",
+      "summary": "Update a Knowledge Base"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/knowledge_bases/{uuid}",
+      "operationId": "genai_delete_knowledge_base",
+      "summary": "Delete a Knowledge Base"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/model_evaluation/datasets/file_upload_presigned_urls",
+      "operationId": "genai_create_model_eval_dataset_upload_presigned_urls",
+      "summary": "Create Presigned URLs for Model Evaluation Dataset File Upload"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/model_evaluation_metrics",
+      "operationId": "genai_list_model_evaluation_metrics",
+      "summary": "List Model Evaluation Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/model_evaluation_presets",
+      "operationId": "genai_list_model_evaluation_presets",
+      "summary": "List Model Evaluation Presets"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/model_evaluation_presets/{eval_preset_uuid}",
+      "operationId": "genai_get_model_evaluation_preset",
+      "summary": "Retrieve Model Evaluation Preset"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/model_evaluation_presets/{eval_preset_uuid}",
+      "operationId": "genai_delete_model_evaluation_preset",
+      "summary": "Delete Model Evaluation Preset"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/model_evaluation_runs",
+      "operationId": "genai_list_model_evaluation_runs",
+      "summary": "List Model Evaluation Runs"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/model_evaluation_runs",
+      "operationId": "genai_create_model_evaluation_run",
+      "summary": "Create Model Evaluation Run"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/model_evaluation_runs/{eval_run_uuid}",
+      "operationId": "genai_get_model_evaluation_run",
+      "summary": "Retrieve Model Evaluation Run"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/gen-ai/model_evaluation_runs/{eval_run_uuid}",
+      "operationId": "genai_update_model_evaluation_run",
+      "summary": "Update Model Evaluation Run"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/model_evaluation_runs/{eval_run_uuid}",
+      "operationId": "genai_delete_model_evaluation_run",
+      "summary": "Delete Model Evaluation Run"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/model_evaluation_runs/{eval_run_uuid}/cancel",
+      "operationId": "genai_cancel_model_evaluation_run",
+      "summary": "Cancel Model Evaluation Run"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/model_evaluation_runs/{eval_run_uuid}/results/download_url",
+      "operationId": "genai_get_model_evaluation_run_results_download_url",
+      "summary": "Get Download URL for Model Evaluation Run Results"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models",
+      "operationId": "genai_list_models",
+      "summary": "List Available Models"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/api_keys",
+      "operationId": "genai_list_model_api_keys",
+      "summary": "List Model API Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/models/api_keys",
+      "operationId": "genai_create_model_api_key",
+      "summary": "Create a Model API Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/models/api_keys/{api_key_uuid}",
+      "operationId": "genai_update_model_api_key",
+      "summary": "Update API Key for a Model"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/models/api_keys/{api_key_uuid}",
+      "operationId": "genai_delete_model_api_key",
+      "summary": "Delete API Key for a Model"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/models/api_keys/{api_key_uuid}/regenerate",
+      "operationId": "genai_regenerate_model_api_key",
+      "summary": "Regenerate API Key for a Model"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/catalog",
+      "operationId": "genai_list_model_catalog",
+      "summary": "List Model Catalog"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/catalog/{id}",
+      "operationId": "genai_get_model_catalog_card",
+      "summary": "Get Model Catalog Card"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/routers",
+      "operationId": "genai_list_model_routers",
+      "summary": "List Model Routers"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/models/routers",
+      "operationId": "genai_create_model_router",
+      "summary": "Create a Model Router"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/routers/presets",
+      "operationId": "genai_list_model_router_presets",
+      "summary": "List Model Router Presets"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/routers/tasks/presets",
+      "operationId": "genai_list_model_router_task_presets",
+      "summary": "List Model Router Task Presets"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/models/routers/{uuid}",
+      "operationId": "genai_get_model_router",
+      "summary": "Retrieve an Existing Model Router"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/models/routers/{uuid}",
+      "operationId": "genai_update_model_router",
+      "summary": "Update a Model Router"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/models/routers/{uuid}",
+      "operationId": "genai_delete_model_router",
+      "summary": "Delete a Model Router"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/oauth2/dropbox/tokens",
+      "operationId": "genai_create_oauth2_dropbox_tokens",
+      "summary": "Get Oauth2 Dropbox Tokens"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/oauth2/url",
+      "operationId": "genai_get_oauth2_url",
+      "summary": "Get Oauth2 URL"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/openai/keys",
+      "operationId": "genai_list_openai_api_keys",
+      "summary": "List OpenAI API Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/openai/keys",
+      "operationId": "genai_create_openai_api_key",
+      "summary": "Create OpenAI API Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/openai/keys/{api_key_uuid}",
+      "operationId": "genai_get_openai_api_key",
+      "summary": "Get OpenAI API Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/openai/keys/{api_key_uuid}",
+      "operationId": "genai_update_openai_api_key",
+      "summary": "Update OpenAI API Key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/openai/keys/{api_key_uuid}",
+      "operationId": "genai_delete_openai_api_key",
+      "summary": "Delete OpenAI API Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/openai/keys/{uuid}/agents",
+      "operationId": "genai_list_agents_by_openai_key",
+      "summary": "List agents by OpenAI key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/regions",
+      "operationId": "genai_list_datacenter_regions",
+      "summary": "List Datacenter Regions"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/scheduled-indexing",
+      "operationId": "genai_create_scheduled_indexing",
+      "summary": "Create scheduled indexing for knowledge base"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/scheduled-indexing/knowledge-base/{knowledge_base_uuid}",
+      "operationId": "genai_get_scheduled_indexing",
+      "summary": "Get Scheduled Indexing for Knowledge Base"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/scheduled-indexing/{uuid}",
+      "operationId": "genai_delete_scheduled_indexing",
+      "summary": "Delete Scheduled Indexing"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/workspaces",
+      "operationId": "genai_list_workspaces",
+      "summary": "List Workspaces"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/gen-ai/workspaces",
+      "operationId": "genai_create_workspace",
+      "summary": "Create a Workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/workspaces/{workspace_uuid}",
+      "operationId": "genai_get_workspace",
+      "summary": "Retrieve an Existing Workspace"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/workspaces/{workspace_uuid}",
+      "operationId": "genai_update_workspace",
+      "summary": "Update a Workspace"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/gen-ai/workspaces/{workspace_uuid}",
+      "operationId": "genai_delete_workspace",
+      "summary": "Delete a Workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/workspaces/{workspace_uuid}/agents",
+      "operationId": "genai_list_agents_by_workspace",
+      "summary": "List agents by Workspace"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/gen-ai/workspaces/{workspace_uuid}/agents",
+      "operationId": "genai_update_agents_workspace",
+      "summary": "Move Agents to a Workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/gen-ai/workspaces/{workspace_uuid}/evaluation_test_cases",
+      "operationId": "genai_list_evaluation_test_cases_by_workspace",
+      "summary": "List Evaluation Test Cases by Workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/images",
+      "operationId": "images_list",
+      "summary": "List All Images"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/images",
+      "operationId": "images_create_custom",
+      "summary": "Create a Custom Image"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/images/{image_id}",
+      "operationId": "images_get",
+      "summary": "Retrieve an Existing Image"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/images/{image_id}",
+      "operationId": "images_update",
+      "summary": "Update an Image"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/images/{image_id}",
+      "operationId": "images_delete",
+      "summary": "Delete an Image"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/images/{image_id}/account_transfer",
+      "operationId": "images_post_account_transfer_create",
+      "summary": "Initiate an Image Account Transfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/images/{image_id}/account_transfer/accept",
+      "operationId": "images_post_account_transfer_accept",
+      "summary": "Accept an Image Account Transfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/images/{image_id}/account_transfer/cancel",
+      "operationId": "images_post_account_transfer_cancel",
+      "summary": "Cancel an Image Account Transfer"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/images/{image_id}/account_transfer/decline",
+      "operationId": "images_post_account_transfer_decline",
+      "summary": "Decline an Image Account Transfer"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/images/{image_id}/actions",
+      "operationId": "imageActions_list",
+      "summary": "List All Actions for an Image"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/images/{image_id}/actions",
+      "operationId": "imageActions_post",
+      "summary": "Initiate an Image Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/images/{image_id}/actions/{action_id}",
+      "operationId": "imageActions_get",
+      "summary": "Retrieve an Existing Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters",
+      "operationId": "kubernetes_list_clusters",
+      "summary": "List All Kubernetes Clusters"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/clusters",
+      "operationId": "kubernetes_create_cluster",
+      "summary": "Create a New Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}",
+      "operationId": "kubernetes_get_cluster",
+      "summary": "Retrieve an Existing Kubernetes Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/kubernetes/clusters/{cluster_id}",
+      "operationId": "kubernetes_update_cluster",
+      "summary": "Update a Kubernetes Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/clusters/{cluster_id}",
+      "operationId": "kubernetes_delete_cluster",
+      "summary": "Delete a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/clusterlint",
+      "operationId": "kubernetes_get_clusterLintResults",
+      "summary": "Fetch Clusterlint Diagnostics for a Kubernetes Cluster"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/clusterlint",
+      "operationId": "kubernetes_run_clusterLint",
+      "summary": "Run Clusterlint Checks on a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/credentials",
+      "operationId": "kubernetes_get_credentials",
+      "summary": "Retrieve Credentials for a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/destroy_with_associated_resources",
+      "operationId": "kubernetes_list_associatedResources",
+      "summary": "List Associated Resources for Cluster Deletion"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/destroy_with_associated_resources/dangerous",
+      "operationId": "kubernetes_destroy_associatedResourcesDangerous",
+      "summary": "Delete a Cluster and All of its Associated Resources (Dangerous)"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/destroy_with_associated_resources/selective",
+      "operationId": "kubernetes_destroy_associatedResourcesSelective",
+      "summary": "Selectively Delete a Cluster and its Associated Resources"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/kubeconfig",
+      "operationId": "kubernetes_get_kubeconfig",
+      "summary": "Retrieve the kubeconfig for a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools",
+      "operationId": "kubernetes_list_nodePools",
+      "summary": "List All Node Pools in a Kubernetes Clusters"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools",
+      "operationId": "kubernetes_add_nodePool",
+      "summary": "Add a Node Pool to a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools/{node_pool_id}",
+      "operationId": "kubernetes_get_nodePool",
+      "summary": "Retrieve a Node Pool for a Kubernetes Cluster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools/{node_pool_id}",
+      "operationId": "kubernetes_update_nodePool",
+      "summary": "Update a Node Pool in a Kubernetes Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools/{node_pool_id}",
+      "operationId": "kubernetes_delete_nodePool",
+      "summary": "Delete a Node Pool in a Kubernetes Cluster"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools/{node_pool_id}/nodes/{node_id}",
+      "operationId": "kubernetes_delete_node",
+      "summary": "Delete a Node in a Kubernetes Cluster"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/node_pools/{node_pool_id}/recycle",
+      "operationId": "kubernetes_recycle_node_pool",
+      "summary": "Recycle a Kubernetes Node Pool"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/status_messages",
+      "operationId": "kubernetes_get_status_messages",
+      "summary": "Fetch Status Messages for a Kubernetes Cluster"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/upgrade",
+      "operationId": "kubernetes_upgrade_cluster",
+      "summary": "Upgrade a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/upgrades",
+      "operationId": "kubernetes_get_availableUpgrades",
+      "summary": "Retrieve Available Upgrades for an Existing Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/clusters/{cluster_id}/user",
+      "operationId": "kubernetes_get_clusterUser",
+      "summary": "Retrieve User Information for a Kubernetes Cluster"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/kubernetes/options",
+      "operationId": "kubernetes_list_options",
+      "summary": "List Available Regions, Node Sizes, and Versions of Kubernetes"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/registries",
+      "operationId": "kubernetes_add_registries",
+      "summary": "Add Container Registries to Kubernetes Clusters"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/registries",
+      "operationId": "kubernetes_remove_registries",
+      "summary": "Remove Container Registries from Kubernetes Clusters"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/kubernetes/registry",
+      "operationId": "kubernetes_add_registry",
+      "summary": "Add Container Registry to Kubernetes Clusters"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/kubernetes/registry",
+      "operationId": "kubernetes_remove_registry",
+      "summary": "Remove Container Registry from Kubernetes Clusters"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/load_balancers",
+      "operationId": "loadBalancers_list",
+      "summary": "List All Load Balancers"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/load_balancers",
+      "operationId": "loadBalancers_create",
+      "summary": "Create a New Load Balancer"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/load_balancers/{lb_id}",
+      "operationId": "loadBalancers_get",
+      "summary": "Retrieve an Existing Load Balancer"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/load_balancers/{lb_id}",
+      "operationId": "loadBalancers_update",
+      "summary": "Update a Load Balancer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/load_balancers/{lb_id}",
+      "operationId": "loadBalancers_delete",
+      "summary": "Delete a Load Balancer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/load_balancers/{lb_id}/cache",
+      "operationId": "loadBalancers_delete_cache",
+      "summary": "Delete a Global Load Balancer CDN Cache"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/load_balancers/{lb_id}/droplets",
+      "operationId": "loadBalancers_add_droplets",
+      "summary": "Add Droplets to a Load Balancer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/load_balancers/{lb_id}/droplets",
+      "operationId": "loadBalancers_remove_droplets",
+      "summary": "Remove Droplets from a Load Balancer"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/load_balancers/{lb_id}/forwarding_rules",
+      "operationId": "loadBalancers_add_forwardingRules",
+      "summary": "Add Forwarding Rules to a Load Balancer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/load_balancers/{lb_id}/forwarding_rules",
+      "operationId": "loadBalancers_remove_forwardingRules",
+      "summary": "Remove Forwarding Rules from a Load Balancer"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/alerts",
+      "operationId": "monitoring_list_alertPolicy",
+      "summary": "List Alert Policies"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/monitoring/alerts",
+      "operationId": "monitoring_create_alertPolicy",
+      "summary": "Create Alert Policy"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/alerts/{alert_uuid}",
+      "operationId": "monitoring_get_alertPolicy",
+      "summary": "Retrieve an Existing Alert Policy"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/monitoring/alerts/{alert_uuid}",
+      "operationId": "monitoring_update_alertPolicy",
+      "summary": "Update an Alert Policy"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/monitoring/alerts/{alert_uuid}",
+      "operationId": "monitoring_delete_alertPolicy",
+      "summary": "Delete an Alert Policy"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/apps/cpu_percentage",
+      "operationId": "monitoring_get_appCPUPercentageMetrics",
+      "summary": "Get App CPU Percentage Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/apps/memory_percentage",
+      "operationId": "monitoring_get_appMemoryPercentageMetrics",
+      "summary": "Get App Memory Percentage Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/apps/restart_count",
+      "operationId": "monitoring_get_appRestartCountMetrics.yml",
+      "summary": "Get App Restart Count Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/cpu_usage",
+      "operationId": "monitoring_get_database_mysql_cpu_usage",
+      "summary": "Get Database MySQL CPU Usage Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/disk_usage",
+      "operationId": "monitoring_get_database_mysql_disk_usage",
+      "summary": "Get Database MySQL Disk Usage Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/index_vs_sequential_reads",
+      "operationId": "monitoring_get_database_mysql_index_vs_sequential_reads",
+      "summary": "Get Database MySQL Index vs Sequential Reads Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/load",
+      "operationId": "monitoring_get_database_mysql_load",
+      "summary": "Get Database MySQL Load Average Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/memory_usage",
+      "operationId": "monitoring_get_database_mysql_memory_usage",
+      "summary": "Get Database MySQL Memory Usage Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/op_rates",
+      "operationId": "monitoring_get_database_mysql_op_rates",
+      "summary": "Get Database MySQL Operations Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/schema_latency",
+      "operationId": "monitoring_get_database_mysql_schema_latency",
+      "summary": "Get Database MySQL Schema Latency Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/schema_throughput",
+      "operationId": "monitoring_get_database_mysql_schema_throughput",
+      "summary": "Get Database MySQL Schema Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/threads_active",
+      "operationId": "monitoring_get_database_mysql_threads_active",
+      "summary": "Get Database MySQL Threads Active Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/threads_connected",
+      "operationId": "monitoring_get_database_mysql_threads_connected",
+      "summary": "Get Database MySQL Threads Connected Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/database/mysql/threads_created_rate",
+      "operationId": "monitoring_get_database_mysql_threads_created_rate",
+      "summary": "Get Database MySQL Threads Created Rate Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/bandwidth",
+      "operationId": "monitoring_get_dropletBandwidthMetrics",
+      "summary": "Get Droplet Bandwidth Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/cpu",
+      "operationId": "monitoring_get_DropletCpuMetrics",
+      "summary": "Get Droplet CPU Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/filesystem_free",
+      "operationId": "monitoring_get_dropletFilesystemFreeMetrics",
+      "summary": "Get Droplet Filesystem Free Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/filesystem_size",
+      "operationId": "monitoring_get_dropletFilesystemSizeMetrics",
+      "summary": "Get Droplet Filesystem Size Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/load_1",
+      "operationId": "monitoring_get_dropletLoad1Metrics",
+      "summary": "Get Droplet Load1 Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/load_15",
+      "operationId": "monitoring_get_dropletLoad15Metrics",
+      "summary": "Get Droplet Load15 Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/load_5",
+      "operationId": "monitoring_get_dropletLoad5Metrics",
+      "summary": "Get Droplet Load5 Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/memory_available",
+      "operationId": "monitoring_get_dropletMemoryAvailableMetrics",
+      "summary": "Get Droplet Available Memory Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/memory_cached",
+      "operationId": "monitoring_get_dropletMemoryCachedMetrics",
+      "summary": "Get Droplet Cached Memory Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/memory_free",
+      "operationId": "monitoring_get_dropletMemoryFreeMetrics",
+      "summary": "Get Droplet Free Memory Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet/memory_total",
+      "operationId": "monitoring_get_dropletMemoryTotalMetrics",
+      "summary": "Get Droplet Total Memory Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet_autoscale/current_cpu_utilization",
+      "operationId": "monitoring_get_droplet_autoscale_current_cpu_utilization.yml",
+      "summary": "Get Droplet Autoscale Pool Current Average CPU utilization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet_autoscale/current_instances",
+      "operationId": "monitoring_get_droplet_autoscale_current_instances",
+      "summary": "Get Droplet Autoscale Pool Current Size"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet_autoscale/current_memory_utilization",
+      "operationId": "monitoring_get_droplet_autoscale_current_memory_utilization",
+      "summary": "Get Droplet Autoscale Pool Current Average Memory utilization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet_autoscale/target_cpu_utilization",
+      "operationId": "monitoring_get_droplet_autoscale_target_cpu_utilization",
+      "summary": "Get Droplet Autoscale Pool Target Average CPU utilization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet_autoscale/target_instances",
+      "operationId": "monitoring_get_droplet_autoscale_target_instances",
+      "summary": "Get Droplet Autoscale Pool Target Size"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/droplet_autoscale/target_memory_utilization",
+      "operationId": "monitoring_get_droplet_autoscale_target_memory_utilization",
+      "summary": "Get Droplet Autoscale Pool Target Average Memory utilization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_connections",
+      "operationId": "monitoring_get_lb_droplets_connections",
+      "summary": "Get Load Balancer Droplets Active Connections Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_downtime",
+      "operationId": "monitoring_get_lb_droplets_downtime",
+      "summary": "Get Load Balancer Droplets Downtime Status Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_health_checks",
+      "operationId": "monitoring_get_lb_droplets_health_checks",
+      "summary": "Get Load Balancer Droplets Health Check Status Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_response_time_50p",
+      "operationId": "monitoring_get_lb_droplets_http_response_time_50p",
+      "summary": "Get Load Balancer Droplets 50th Percentile HTTP Response Time Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_response_time_95p",
+      "operationId": "monitoring_get_lb_droplets_http_response_time_95p",
+      "summary": "Get Load Balancer Droplets 95th Percentile HTTP Response Time Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_response_time_99p",
+      "operationId": "monitoring_get_lb_droplets_http_response_time_99p",
+      "summary": "Get Load Balancer Droplets 99th Percentile HTTP Response Time Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_response_time_avg",
+      "operationId": "monitoring_get_lb_droplets_http_response_time_avg",
+      "summary": "Get Load Balancer Droplets Average HTTP Response Time Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_responses",
+      "operationId": "monitoring_get_lb_droplets_http_responses",
+      "summary": "Get Load Balancer Droplets HTTP Rate Of Response Code Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_50p",
+      "operationId": "monitoring_get_lb_droplets_http_session_duration_50p",
+      "summary": "Get Load Balancer Droplets 50th Percentile HTTP Session Duration Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_95p",
+      "operationId": "monitoring_get_lb_droplets_http_session_duration_95p",
+      "summary": "Get Load Balancer Droplets 95th Percentile HTTP Session Duration Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_avg",
+      "operationId": "monitoring_get_lb_droplets_http_session_duration_avg",
+      "summary": "Get Load Balancer Droplets Average HTTP Session Duration Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/droplets_queue_size",
+      "operationId": "monitoring_get_lb_droplets_queue_size",
+      "summary": "Get Load Balancer Droplets Queue Size Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_connections_current",
+      "operationId": "monitoring_get_lb_frontend_connections_current",
+      "summary": "Get Load Balancer Frontend Total Current Active Connections Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_connections_limit",
+      "operationId": "monitoring_get_lb_frontend_connections_limit",
+      "summary": "Get Load Balancer Frontend Max Connections Limit Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_cpu_utilization",
+      "operationId": "monitoring_get_lb_frontend_cpu_utilization",
+      "summary": "Get Load Balancer Frontend Average Percentage CPU Utilization Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_firewall_dropped_bytes",
+      "operationId": "monitoring_get_lb_frontend_firewall_dropped_bytes",
+      "summary": "Get Load Balancer Frontend Firewall Dropped Bytes Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_firewall_dropped_packets",
+      "operationId": "monitoring_get_lb_frontend_firewall_dropped_packets",
+      "summary": "Get Load Balancer Frontend Firewall Dropped Packets Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_http_requests_per_second",
+      "operationId": "monitoring_get_lb_frontend_http_requests_per_second",
+      "summary": "Get Load Balancer Frontend HTTP Requests Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_http_responses",
+      "operationId": "monitoring_get_lb_frontend_http_responses",
+      "summary": "Get Load Balancer Frontend HTTP Rate Of Response Code Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_network_throughput_http",
+      "operationId": "monitoring_get_lb_frontend_network_throughput_http",
+      "summary": "Get Load Balancer Frontend HTTP Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_network_throughput_tcp",
+      "operationId": "monitoring_get_lb_frontend_network_throughput_tcp",
+      "summary": "Get Load Balancer Frontend TCP Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_network_throughput_udp",
+      "operationId": "monitoring_get_lb_frontend_network_throughput_udp",
+      "summary": "Get Load Balancer Frontend UDP Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_nlb_tcp_network_throughput",
+      "operationId": "monitoring_get_lb_frontend_nlb_tcp_network_throughput",
+      "summary": "Get Network Load Balancer Frontend TCP Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_nlb_udp_network_throughput",
+      "operationId": "monitoring_get_lb_frontend_nlb_udp_network_throughput",
+      "summary": "Get Network Load Balancer Frontend UDP Throughput Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_tls_connections_current",
+      "operationId": "monitoring_get_lb_frontend_tls_connections_current",
+      "summary": "Get Load Balancer Frontend Current TLS Connections Rate Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_tls_connections_exceeding_rate_limit",
+      "operationId": "monitoring_get_lb_frontend_tls_connections_exceeding_rate_limit",
+      "summary": "Get Load Balancer Frontend Closed TLS Connections For Exceeded Rate Limit Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/metrics/load_balancer/frontend_tls_connections_limit",
+      "operationId": "monitoring_get_lb_frontend_tls_connections_limit",
+      "summary": "Get Load Balancer Frontend Max TLS Connections Limit Metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/sinks",
+      "operationId": "monitoring_list_sinks",
+      "summary": "Lists all sinks"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/monitoring/sinks",
+      "operationId": "monitoring_create_sink",
+      "summary": "Create Sink"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/sinks/destinations",
+      "operationId": "monitoring_list_destinations",
+      "summary": "List Logging Destinations"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/monitoring/sinks/destinations",
+      "operationId": "monitoring_create_destination",
+      "summary": "Create Logging Destination"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/sinks/destinations/{destination_uuid}",
+      "operationId": "monitoring_get_destination",
+      "summary": "Get Logging Destination"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/monitoring/sinks/destinations/{destination_uuid}",
+      "operationId": "monitoring_update_destination",
+      "summary": "Update Logging Destination"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/monitoring/sinks/destinations/{destination_uuid}",
+      "operationId": "monitoring_delete_destination",
+      "summary": "Delete Logging Destination"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/monitoring/sinks/{sink_uuid}",
+      "operationId": "monitoring_get_sink",
+      "summary": "Get Sink"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/monitoring/sinks/{sink_uuid}",
+      "operationId": "monitoring_delete_sink",
+      "summary": "Delete Sink"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/nfs",
+      "operationId": "nfs_list",
+      "summary": "List NFS shares per region"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/nfs",
+      "operationId": "nfs_create",
+      "summary": "Create a new NFS share"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/nfs/access_points/{access_point_id}",
+      "operationId": "nfs_get_access_point",
+      "summary": "Get an NFS access point"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/nfs/access_points/{access_point_id}",
+      "operationId": "nfs_delete_access_point",
+      "summary": "Delete an NFS access point"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/nfs/shares/{share_id}/access_points",
+      "operationId": "nfs_list_access_points",
+      "summary": "List NFS access points for a share"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/nfs/shares/{share_id}/access_points",
+      "operationId": "nfs_create_access_point",
+      "summary": "Create an NFS access point"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/nfs/snapshots",
+      "operationId": "nfs_list_snapshot",
+      "summary": "List NFS snapshots per region"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/nfs/snapshots/{nfs_snapshot_id}",
+      "operationId": "nfs_get_snapshot",
+      "summary": "Get an NFS snapshot by ID"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/nfs/snapshots/{nfs_snapshot_id}",
+      "operationId": "nfs_delete_snapshot",
+      "summary": "Delete an NFS snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/nfs/{nfs_id}",
+      "operationId": "nfs_get",
+      "summary": "Get an NFS share"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/nfs/{nfs_id}",
+      "operationId": "nfs_delete",
+      "summary": "Delete an NFS share"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/nfs/{nfs_id}/actions",
+      "operationId": "nfs_create_action",
+      "summary": "Initiate an NFS action"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/organizations/team",
+      "operationId": "organizations_create_team",
+      "summary": "Create a Team in an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/organizations/teams",
+      "operationId": "organizations_list_teams",
+      "summary": "List Teams in an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/partner_network_connect/attachments",
+      "operationId": "partnerAttachments_list",
+      "summary": "List all partner attachments"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/partner_network_connect/attachments",
+      "operationId": "partnerAttachments_create",
+      "summary": "Create a new partner attachment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}",
+      "operationId": "partnerAttachments_get",
+      "summary": "Retrieve an existing partner attachment"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}",
+      "operationId": "partnerAttachments_patch",
+      "summary": "Update an existing partner attachment"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}",
+      "operationId": "partnerAttachments_delete",
+      "summary": "Delete an existing partner attachment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}/bgp_auth_key",
+      "operationId": "partnerAttachments_get_bgp_auth_key",
+      "summary": "Get current BGP auth key for the partner attachment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}/remote_routes",
+      "operationId": "partnerAttachments_list_remote_routes",
+      "summary": "List remote routes for a partner attachment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}/service_key",
+      "operationId": "partnerAttachments_get_service_key",
+      "summary": "Get the current service key for the partner attachment"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/partner_network_connect/attachments/{pa_id}/service_key",
+      "operationId": "partnerAttachments_create_service_key",
+      "summary": "Regenerate the service key for the partner attachment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects",
+      "operationId": "projects_list",
+      "summary": "List All Projects"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/projects",
+      "operationId": "projects_create",
+      "summary": "Create a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/default",
+      "operationId": "projects_get_default",
+      "summary": "Retrieve the Default Project"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/projects/default",
+      "operationId": "projects_update_default",
+      "summary": "Update the Default Project"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/projects/default",
+      "operationId": "projects_patch_default",
+      "summary": "Patch the Default Project"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/default/resources",
+      "operationId": "projects_list_resources_default",
+      "summary": "List Default Project Resources"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/projects/default/resources",
+      "operationId": "projects_assign_resources_default",
+      "summary": "Assign Resources to Default Project"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/{project_id}",
+      "operationId": "projects_get",
+      "summary": "Retrieve an Existing Project"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/projects/{project_id}",
+      "operationId": "projects_update",
+      "summary": "Update a Project"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/projects/{project_id}",
+      "operationId": "projects_patch",
+      "summary": "Patch a Project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/projects/{project_id}",
+      "operationId": "projects_delete",
+      "summary": "Delete an Existing Project"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/{project_id}/resources",
+      "operationId": "projects_list_resources",
+      "summary": "List Project Resources"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/projects/{project_id}/resources",
+      "operationId": "projects_assign_resources",
+      "summary": "Assign Resources to a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/regions",
+      "operationId": "regions_list",
+      "summary": "List All Data Center Regions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries",
+      "operationId": "registries_list",
+      "summary": "List All Container Registries"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registries",
+      "operationId": "registries_create",
+      "summary": "Create Container Registry"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/options",
+      "operationId": "registries_get_options",
+      "summary": "List Registry Options (Subscription Tiers and Available Regions)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/subscription",
+      "operationId": "registries_get_subscription",
+      "summary": "Get Subscription Information"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registries/subscription",
+      "operationId": "registries_update_subscription",
+      "summary": "Update Subscription Tier"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registries/validate-name",
+      "operationId": "registries_validate_name",
+      "summary": "Validate a Container Registry Name"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}",
+      "operationId": "registries_get",
+      "summary": "Get a Container Registry By Name"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registries/{registry_name}",
+      "operationId": "registries_delete",
+      "summary": "Delete Container Registry By Name"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}/docker-credentials",
+      "operationId": "registries_get_dockerCredentials",
+      "summary": "Get Docker Credentials By Registry Name"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}/garbage-collection",
+      "operationId": "registries_get_garbageCollection",
+      "summary": "Get Active Garbage Collection"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registries/{registry_name}/garbage-collection",
+      "operationId": "registries_run_garbageCollection",
+      "summary": "Start Garbage Collection"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/registries/{registry_name}/garbage-collection/{garbage_collection_uuid}",
+      "operationId": "registries_update_garbageCollection",
+      "summary": "Update Garbage Collection"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}/garbage-collections",
+      "operationId": "registries_list_garbageCollections",
+      "summary": "List Garbage Collections"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registries/{registry_name}/repositories/{repository_name}",
+      "operationId": "registries_delete_repository",
+      "summary": "Delete Container Registry Repository"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}/repositories/{repository_name}/digests",
+      "operationId": "registries_list_repositoryManifests",
+      "summary": "List All Container Registry Repository Manifests"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registries/{registry_name}/repositories/{repository_name}/digests/{manifest_digest}",
+      "operationId": "registries_delete_repositoryManifest",
+      "summary": "Delete Container Registry Repository Manifest"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}/repositories/{repository_name}/tags",
+      "operationId": "registries_list_repositoryTags",
+      "summary": "List All Container Registry Repository Tags"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registries/{registry_name}/repositories/{repository_name}/tags/{repository_tag}",
+      "operationId": "registries_delete_repositoryTag",
+      "summary": "Delete Container Registry Repository Tag"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registries/{registry_name}/repositoriesV2",
+      "operationId": "registries_list_repositoriesV2",
+      "summary": "List All Container Registry Repositories (V2)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry",
+      "operationId": "registry_get",
+      "summary": "Get Container Registry Information"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registry",
+      "operationId": "registry_create",
+      "summary": "Create Container Registry"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registry",
+      "operationId": "registry_delete",
+      "summary": "Delete Container Registry"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/docker-credentials",
+      "operationId": "registry_get_dockerCredentials",
+      "summary": "Get Docker Credentials for Container Registry"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/options",
+      "operationId": "registry_get_options",
+      "summary": "List Registry Options (Subscription Tiers and Available Regions)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/subscription",
+      "operationId": "registry_get_subscription",
+      "summary": "Get Subscription"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registry/subscription",
+      "operationId": "registry_update_subscription",
+      "summary": "Update Subscription Tier"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registry/validate-name",
+      "operationId": "registry_validate_name",
+      "summary": "Validate a Container Registry Name"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/{registry_name}/garbage-collection",
+      "operationId": "registry_get_garbageCollection",
+      "summary": "Get Active Garbage Collection"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/registry/{registry_name}/garbage-collection",
+      "operationId": "registry_run_garbageCollection",
+      "summary": "Start Garbage Collection"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/registry/{registry_name}/garbage-collection/{garbage_collection_uuid}",
+      "operationId": "registry_update_garbageCollection",
+      "summary": "Update Garbage Collection"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/{registry_name}/garbage-collections",
+      "operationId": "registry_list_garbageCollections",
+      "summary": "List Garbage Collections"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/{registry_name}/repositories",
+      "operationId": "registry_list_repositories",
+      "summary": "List All Container Registry Repositories"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/{registry_name}/repositories/{repository_name}/digests",
+      "operationId": "registry_list_repositoryManifests",
+      "summary": "List All Container Registry Repository Manifests"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registry/{registry_name}/repositories/{repository_name}/digests/{manifest_digest}",
+      "operationId": "registry_delete_repositoryManifest",
+      "summary": "Delete Container Registry Repository Manifest"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/{registry_name}/repositories/{repository_name}/tags",
+      "operationId": "registry_list_repositoryTags",
+      "summary": "List All Container Registry Repository Tags"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/registry/{registry_name}/repositories/{repository_name}/tags/{repository_tag}",
+      "operationId": "registry_delete_repositoryTag",
+      "summary": "Delete Container Registry Repository Tag"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/registry/{registry_name}/repositoriesV2",
+      "operationId": "registry_list_repositoriesV2",
+      "summary": "List All Container Registry Repositories (V2)"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reports/droplet_neighbors_ids",
+      "operationId": "droplets_list_neighborsIds",
+      "summary": "List All Droplet Neighbors"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reserved_ips",
+      "operationId": "reservedIPs_list",
+      "summary": "List All Reserved IPs"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/reserved_ips",
+      "operationId": "reservedIPs_create",
+      "summary": "Create a New Reserved IP"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reserved_ips/{reserved_ip}",
+      "operationId": "reservedIPs_get",
+      "summary": "Retrieve an Existing Reserved IP"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/reserved_ips/{reserved_ip}",
+      "operationId": "reservedIPs_delete",
+      "summary": "Delete a Reserved IP"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reserved_ips/{reserved_ip}/actions",
+      "operationId": "reservedIPsActions_list",
+      "summary": "List All Actions for a Reserved IP"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/reserved_ips/{reserved_ip}/actions",
+      "operationId": "reservedIPsActions_post",
+      "summary": "Initiate a Reserved IP Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reserved_ips/{reserved_ip}/actions/{action_id}",
+      "operationId": "reservedIPsActions_get",
+      "summary": "Retrieve an Existing Reserved IP Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reserved_ipv6",
+      "operationId": "reservedIPv6_list",
+      "summary": "List All Reserved IPv6s"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/reserved_ipv6",
+      "operationId": "reservedIPv6_create",
+      "summary": "Create a New Reserved IPv6"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/reserved_ipv6/{reserved_ipv6}",
+      "operationId": "reservedIPv6_get",
+      "summary": "Retrieve an Existing Reserved IPv6"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/reserved_ipv6/{reserved_ipv6}",
+      "operationId": "reservedIPv6_delete",
+      "summary": "Delete a Reserved IPv6"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/reserved_ipv6/{reserved_ipv6}/actions",
+      "operationId": "reservedIPv6Actions_post",
+      "summary": "Initiate a Reserved IPv6 Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/security/scans",
+      "operationId": "security_list_scans",
+      "summary": "List Scans"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/security/scans",
+      "operationId": "security_create_scan",
+      "summary": "Create Scan"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/security/scans/latest",
+      "operationId": "security_get_latest_scan",
+      "summary": "Get Latest Scan"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/security/scans/rules",
+      "operationId": "security_create_scan_rule",
+      "summary": "Create Scan Rule"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/security/scans/{scan_id}",
+      "operationId": "security_get_scan",
+      "summary": "Get Scan"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/security/scans/{scan_id}/findings/{finding_uuid}/affected_resources",
+      "operationId": "security_list_scan_finding_affected_resources",
+      "summary": "List Finding Affected Resources"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/security/settings",
+      "operationId": "security_list_settings",
+      "summary": "List Settings"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/security/settings/plan",
+      "operationId": "security_update_settings_plan",
+      "summary": "Update Plan"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/security/settings/suppressions",
+      "operationId": "security_create_suppression",
+      "summary": "Create Suppression"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/security/settings/suppressions/{suppression_uuid}",
+      "operationId": "security_delete_suppression",
+      "summary": "Delete Suppression"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sizes",
+      "operationId": "sizes_list",
+      "summary": "List All Droplet Sizes"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/snapshots",
+      "operationId": "snapshots_list",
+      "summary": "List All Snapshots"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/snapshots/{snapshot_id}",
+      "operationId": "snapshots_get",
+      "summary": "Retrieve an Existing Snapshot"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/snapshots/{snapshot_id}",
+      "operationId": "snapshots_delete",
+      "summary": "Delete a Snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/spaces/keys",
+      "operationId": "spacesKey_list",
+      "summary": "List Spaces Access Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/spaces/keys",
+      "operationId": "spacesKey_create",
+      "summary": "Create a New Spaces Access Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/spaces/keys/{access_key}",
+      "operationId": "spacesKey_get",
+      "summary": "Get a Spaces Access Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/spaces/keys/{access_key}",
+      "operationId": "spacesKey_update",
+      "summary": "Update Spaces Access Keys"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/spaces/keys/{access_key}",
+      "operationId": "spacesKey_patch",
+      "summary": "Update Spaces Access Keys"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/spaces/keys/{access_key}",
+      "operationId": "spacesKey_delete",
+      "summary": "Delete a Spaces Access Key"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/tags",
+      "operationId": "tags_list",
+      "summary": "List All Tags"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/tags",
+      "operationId": "tags_create",
+      "summary": "Create a New Tag"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/tags/{tag_id}",
+      "operationId": "tags_get",
+      "summary": "Retrieve a Tag"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/tags/{tag_id}",
+      "operationId": "tags_delete",
+      "summary": "Delete a Tag"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/tags/{tag_id}/resources",
+      "operationId": "tags_assign_resources",
+      "summary": "Tag a Resource"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/tags/{tag_id}/resources",
+      "operationId": "tags_unassign_resources",
+      "summary": "Untag a Resource"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/uptime/checks",
+      "operationId": "uptime_list_checks",
+      "summary": "List All Checks"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/uptime/checks",
+      "operationId": "uptime_create_check",
+      "summary": "Create a New Check"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/uptime/checks/{check_id}",
+      "operationId": "uptime_get_check",
+      "summary": "Retrieve an Existing Check"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/uptime/checks/{check_id}",
+      "operationId": "uptime_update_check",
+      "summary": "Update a Check"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/uptime/checks/{check_id}",
+      "operationId": "uptime_delete_check",
+      "summary": "Delete a Check"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/uptime/checks/{check_id}/alerts",
+      "operationId": "uptime_list_alerts",
+      "summary": "List All Alerts"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/uptime/checks/{check_id}/alerts",
+      "operationId": "uptime_create_alert",
+      "summary": "Create a New Alert"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/uptime/checks/{check_id}/alerts/{alert_id}",
+      "operationId": "uptime_get_alert",
+      "summary": "Retrieve an Existing Alert"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/uptime/checks/{check_id}/alerts/{alert_id}",
+      "operationId": "uptime_update_alert",
+      "summary": "Update an Alert"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/uptime/checks/{check_id}/alerts/{alert_id}",
+      "operationId": "uptime_delete_alert",
+      "summary": "Delete an Alert"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/uptime/checks/{check_id}/state",
+      "operationId": "uptime_get_checkState",
+      "summary": "Retrieve Check State"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vector-databases",
+      "operationId": "vectorDatabases_list",
+      "summary": "List All Vector Databases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vector-databases",
+      "operationId": "vectorDatabases_create",
+      "summary": "Create a New Vector Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vector-databases/{id}",
+      "operationId": "vectorDatabases_get",
+      "summary": "Retrieve an Existing Vector Database"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vector-databases/{id}",
+      "operationId": "vectorDatabases_update",
+      "summary": "Update a Vector Database"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vector-databases/{id}",
+      "operationId": "vectorDatabases_delete",
+      "summary": "Delete a Vector Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vector-databases/{id}/backups",
+      "operationId": "vectorDatabases_list_backups",
+      "summary": "List Backups for a Vector Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vector-databases/{id}/backups/{backup_id}/restore",
+      "operationId": "vectorDatabases_get_restore_status",
+      "summary": "Retrieve the Status of a Restore"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vector-databases/{id}/backups/{backup_id}/restore",
+      "operationId": "vectorDatabases_post_restore_backup",
+      "summary": "Restore a Vector Database from a Backup"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vector-databases/{id}/credentials",
+      "operationId": "vectorDatabases_get_credentials",
+      "summary": "Retrieve Admin Credentials for a Vector Database"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vector-databases/{id}/resize",
+      "operationId": "vectorDatabases_post_resize",
+      "summary": "Resize a Vector Database"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vector-databases/{id}/tags",
+      "operationId": "vectorDatabases_update_tags",
+      "summary": "Update Tags on a Vector Database"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/volumes",
+      "operationId": "volumes_list",
+      "summary": "List All Block Storage Volumes"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/volumes",
+      "operationId": "volumes_create",
+      "summary": "Create a New Block Storage Volume"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/volumes",
+      "operationId": "volumes_delete_byName",
+      "summary": "Delete a Block Storage Volume by Name"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/volumes/actions",
+      "operationId": "volumeActions_post",
+      "summary": "Initiate A Block Storage Action By Volume Name"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/volumes/snapshots/{snapshot_id}",
+      "operationId": "volumeSnapshots_get_byId",
+      "summary": "Retrieve an Existing Volume Snapshot"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/volumes/snapshots/{snapshot_id}",
+      "operationId": "volumeSnapshots_delete_byId",
+      "summary": "Delete a Volume Snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/volumes/{volume_id}",
+      "operationId": "volumes_get",
+      "summary": "Retrieve an Existing Block Storage Volume"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/volumes/{volume_id}",
+      "operationId": "volumes_delete",
+      "summary": "Delete a Block Storage Volume"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/volumes/{volume_id}/actions",
+      "operationId": "volumeActions_list",
+      "summary": "List All Actions for a Volume"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/volumes/{volume_id}/actions",
+      "operationId": "volumeActions_post_byId",
+      "summary": "Initiate A Block Storage Action By Volume Id"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/volumes/{volume_id}/actions/{action_id}",
+      "operationId": "volumeActions_get",
+      "summary": "Retrieve an Existing Volume Action"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/volumes/{volume_id}/snapshots",
+      "operationId": "volumeSnapshots_list",
+      "summary": "List Snapshots for a Volume"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/volumes/{volume_id}/snapshots",
+      "operationId": "volumeSnapshots_create",
+      "summary": "Create Snapshot from a Volume"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpc_nat_gateways",
+      "operationId": "vpcnatgateways_list",
+      "summary": "List All VPC NAT Gateways"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vpc_nat_gateways",
+      "operationId": "vpcnatgateways_create",
+      "summary": "Create a New VPC NAT Gateway"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpc_nat_gateways/{id}",
+      "operationId": "vpcnatgateways_get",
+      "summary": "Retrieve an Existing VPC NAT Gateway"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vpc_nat_gateways/{id}",
+      "operationId": "vpcnatgateways_update",
+      "summary": "Update VPC NAT Gateway"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vpc_nat_gateways/{id}",
+      "operationId": "vpcnatgateways_delete",
+      "summary": "Delete VPC NAT Gateway"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpc_peerings",
+      "operationId": "vpcPeerings_list",
+      "summary": "List All VPC Peerings"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vpc_peerings",
+      "operationId": "vpcPeerings_create",
+      "summary": "Create a New VPC Peering"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpc_peerings/{vpc_peering_id}",
+      "operationId": "vpcPeerings_get",
+      "summary": "Retrieve an Existing VPC Peering"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/vpc_peerings/{vpc_peering_id}",
+      "operationId": "vpcPeerings_patch",
+      "summary": "Update a VPC peering"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vpc_peerings/{vpc_peering_id}",
+      "operationId": "vpcPeerings_delete",
+      "summary": "Delete a VPC peering"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpcs",
+      "operationId": "vpcs_list",
+      "summary": "List All VPCs"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vpcs",
+      "operationId": "vpcs_create",
+      "summary": "Create a New VPC"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpcs/{vpc_id}",
+      "operationId": "vpcs_get",
+      "summary": "Retrieve an Existing VPC"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vpcs/{vpc_id}",
+      "operationId": "vpcs_update",
+      "summary": "Update a VPC"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/vpcs/{vpc_id}",
+      "operationId": "vpcs_patch",
+      "summary": "Partially Update a VPC"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vpcs/{vpc_id}",
+      "operationId": "vpcs_delete",
+      "summary": "Delete a VPC"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpcs/{vpc_id}/members",
+      "operationId": "vpcs_list_members",
+      "summary": "List the Member Resources of a VPC"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vpcs/{vpc_id}/peerings",
+      "operationId": "vpcs_list_peerings",
+      "summary": "List the Peerings of a VPC"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vpcs/{vpc_id}/peerings",
+      "operationId": "vpcs_create_peerings",
+      "summary": "Create a Peering with a VPC"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/vpcs/{vpc_id}/peerings/{vpc_peering_id}",
+      "operationId": "vpcs_patch_peerings",
+      "summary": "Update a VPC Peering"
+    }
+  ]
+}
