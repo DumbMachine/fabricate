@@ -22,3 +22,6 @@ apps/landing/dist/
 # JavaScript dependencies
 node_modules/
 .pnpm-store/
+
+# Example app build output
+examples/**/target/

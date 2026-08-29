@@ -1,45 +1,125 @@
 ---
 title: Introduction
-description: Run your app against disposable, provider-shaped local services with known data.
+description: Wrap your app around a local Gmail, HubSpot, or Intercom with known data, then throw the sandbox away.
 ---
 
-Fabricate lets you test the code that talks to outside systems without relying
-on a shared test account, hand-written HTTP stubs, or the real provider. It
-starts local services that speak a provider-shaped API, loads a known starting
-state, runs your application, then tears everything down when the command
+Fabricate is an API sandbox for the services your product already talks to.
+Wrap a command: it gets a local Gmail, HubSpot, Intercom, or Asana with known
+data, your app talks to it as usual, and the sandbox is gone when the command
 exits.
 
-For example, run an email workflow against a seeded Gmail support inbox, let
-the workflow search, label, and send mail, and run it again from the exact same
-inbox. The shipped Gmail scenario seeds 28 handcrafted support messages; a
-default list returns 27 because one phishing message is in spam/trash.
+You keep your test runner, your agent, and the official SDK. Fabricate is
+the world those tools run against.
 
-## What Fabricate is for
+## Try it
 
-- **Integration tests:** exercise API calls, authentication, reads, and writes
-  against a repeatable provider state in CI.
-- **Local development:** reproduce a support-inbox or data condition without
-  changing a real account or coordinating a shared test tenant.
-- **Agent and workflow QA:** give an agent a safe, inspectable external system
-  to work with, then start the next attempt from the same baseline.
-- **Provider SDK compatibility:** keep an SDK's production hostname through
-  Fabricate's opt-in, process-scoped proxy when changing its base URL is not
-  possible.
+Install [`fab`](/getting-started) first. Then paste this. No repository clone
+or environment file.
 
-Fabricate does not replace your test runner, agent harness, application, or
-provider SDK. It provides the disposable systems those tools need to talk to.
+```bash
+fab run acme-gmail -- \
+  sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+    "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages?maxResults=1"'
+```
 
-## The model
+```json
+{
+  "messages": [
+    {"id": "msg-0028", "threadId": "thr-refund"}
+  ],
+  "nextPageToken": "1",
+  "resultSizeEstimate": 27
+}
+```
+
+That is the Acme support inbox: 28 handcrafted messages, one of them in
+spam/trash, so a default list reports 27. `fab run` started Gmail, handed the
+command a URL and a token, and removed the state afterward. Run it again and
+`msg-0028` is back.
+
+Python, Node, and Rust clients that wrap the same way live in
+[`examples/`](https://github.com/DumbMachine/fabricate/tree/main/examples).
+
+## Why teams use it
+
+| You are building | What you run against |
+| --- | --- |
+| Mail, CRM, helpdesk, or billing as a core feature | A known Gmail, HubSpot, or Intercom in every test |
+| An agent that files, replies, and updates records | A messy tenant that resets after each eval |
+| A team of engineers and CI jobs | Per-run sandboxes, not a shared QA inbox |
+| A feature that needs HubSpot today | The wrap command, no ticket to finance or the vendor |
+
+### Test integrations that are the product
+
+If the product *is* mail, CRM, helpdesk, or billing, the connector is not a
+side channel you can stub with `{"ok": true}`. Users judge you on search,
+labels, deal stages, and whether a send actually lands.
+
+Fabricate gives those tests the same API your SDK already uses, with a
+known tenant. Wrap `npm test` or `pytest` with `fab run acme-gmail` and
+every run sees the same inbox. The [Gmail](/resources/integrations/gmail),
+[HubSpot](/resources/integrations/hubspot), and
+[Asana](/resources/integrations/asana) pages list what each API can do;
+the [example apps](https://github.com/DumbMachine/fabricate/tree/main/examples)
+are the same wrap with application code.
+
+### Put agents in the world customers actually live in
+
+Customers do not live in a sanitary CRM. They have duplicates, stalled
+deals, two people with the same name, an invoice in mail that the board never
+closed, and a chat thread that disagrees with the ticket.
+
+If you evaluate an agent against an empty HubSpot, you learn whether it can
+create a deal. You do not learn whether it refunds INV-4812 twice, emails
+the wrong Mei Chen, or closes a conversation before reading the Gmail thread.
+
+[Acme Support Desk](/resources/environments/acme-support-desk) is one company
+across Gmail, Intercom, Asana, and HubSpot. Records join on purpose. Some of
+them conflict on purpose. That is the dataset to score an agent that promised
+to do real work after the user clicked **Connect Gmail**.
+
+### Give every engineer their own sandbox
+
+A five-person team shipping a Gmail feature does not need five Workspace
+inboxes, a shared QA HubSpot that someone reset at 4pm, and a rotation for
+who may send mail this week.
+
+Each `fab run` is its own sandbox. Engineers do not share a tenant. Parallel
+CI jobs do not fight over the same deal. A new hire runs the same command on
+day one.
+
+### Ship without a vendor test tenant
+
+A "real" HubSpot sandbox, Intercom workspace, or Gmail add-on test user is
+often a ticket: billing, legal, a partner manager, a two-day wait. The PR is
+a 20-line sync.
+
+Wrap the app locally. Nobody has to provision the account. The vendor does
+not have to approve a developer tenant. The next engineer is not blocked on
+someone else's queue.
+
+### Let the agent write, then rewind
+
+The products that matter now connect to Gmail or HubSpot and then *act*:
+draft and send, label the thread, patch the deal, comment on the task. That
+is only testable if those writes are real API calls, inspectable, and
+reversible.
+
+The agent can send mail and close a deal. `fab logs` shows the redacted
+trace. The next run starts from the same baseline, so an eval score means
+the same thing on the next attempt.
+
+## The words we use
 
 <div class="environment-model" role="img" aria-label="An environment contains services. Each service combines a provider resource and a scenario. The Acme Support Desk environment has Gmail, HubSpot, and Intercom services.">
   <section class="environment-model__environment">
     <p class="environment-model__kind">Environment</p>
     <h3>support-test</h3>
-    <p class="environment-model__description">One disposable lifecycle.</p>
+    <p class="environment-model__description">One disposable sandbox.</p>
     <section class="environment-model__service">
       <p class="environment-model__kind">Service</p>
       <h4>support-mail</h4>
-      <p class="environment-model__description">A simple gmail environment with mails at Acme Corp.</p>
+      <p class="environment-model__description">Acme Corp support inbox.</p>
       <div class="environment-model__parts">
         <div class="environment-model__part">
           <img class="environment-model__provider-icon" src="https://logos.composio.dev/api/gmail" width="20" height="20" alt="Gmail" />
@@ -77,52 +157,27 @@ provider SDK. It provides the disposable systems those tools need to talk to.
   </section>
 </div>
 
-- **Environment = `fn(services)`:** the disposable lifecycle and isolation
-  boundary for everything your command needs.
-- **Service = `fn(resource, scenario)`:** one named provider instance, such as
-  a support-mail Gmail service started from a chosen dataset.
-- **Resource:** the provider-shaped API implementation, such as Gmail today;
-  Stripe, GitHub, or another provider can use the same model.
-- **Scenario:** versioned data and the initial state for a service—such as a
-  Gmail support inbox, or conceptually Stripe data for a Duolingo app versus a
-  Netflix app.
+- **Environment** — the sandbox. One lifecycle for everything the command
+  needs.
+- **Service** — one named provider in that sandbox, such as `support-mail`.
+- **Resource** — which API that service speaks: Gmail, HubSpot, Asana,
+  Intercom.
+- **Scenario** — the starting data. Acme's support inbox is a different world
+  from an empty mailbox.
 
-The scenario is the baseline, not a scripted sequence of mock responses. The
-service starts from that baseline, your application can change it normally,
-and the next run starts clean again.
+The scenario is a baseline, not a script of fake responses. Your app can
+interact with it, change it, like the real product. The next run starts from the same baseline.
 
-## The first useful run
+## Direct URL or `--proxy`?
 
-Install [`fab`](/getting-started) first. Then paste this command; it downloads
-the checked-in Gmail environment and lists its seeded inbox. No repository
-clone or environment file is required.
+If your app can take a base URL, use the URL and token Fabricate injects.
+That is the default.
 
-```bash
-fab run acme-gmail -- \
-    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
-      "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"'
-```
+If the official SDK already calls `gmail.googleapis.com`, add `--proxy`.
+Fabricate intercepts those hosts for that process only. Use a direct URL when
+the client pins certificates or ignores proxy settings.
 
-`fab run` starts the `support-mail` service, injects
-`FAB_SUPPORT_MAIL_URL` and `FAB_SUPPORT_MAIL_TOKEN` into the wrapped command,
-and removes the service state afterward. See the [Gmail integration](/resources/integrations/gmail)
-for the seeded response and proxy example.
-
-## Direct URL or transparent proxy?
-
-Use the **direct URL** when your application can point its client at a local
-base URL. It is the default and simplest option: use the URL and token that
-Fabricate injects into the process.
-
-Use the **transparent proxy** when an SDK must keep its normal provider
-hostname. Add `--proxy` to `fab run`; Fabricate sets proxy and CA variables
-only for the wrapped process, routes the provider hosts declared by the
-environment to local services, and replaces `Authorization` on those hosts
-with the ephemeral token. Direct examples send `$FAB_*_TOKEN`; proxy examples
-do not. Other hosts pass through by default; strict environments can set
-`proxy.unknown_hosts: reject`.
-
-Continue with [Getting started](/getting-started) to install the CLI, or open
-the [agent and workflow QA guide](/guides/agent-workflows) to connect a worker.
-The [Gmail integration](/resources/integrations/gmail) has runnable API
-examples for both connection modes.
+[Getting started](/getting-started) has the wrap commands.
+[Example apps](https://github.com/DumbMachine/fabricate/tree/main/examples)
+show both modes. [Agent and workflow QA](/guides/agent-workflows) is for
+workers and local agents.

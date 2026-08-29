@@ -91,6 +91,8 @@ routed hosts:
 fab run acme-gmail --proxy -- npm test
 ```
 
+Runnable sample apps (Python, Node, Rust) live in [`examples/`](examples/).
+
 Inspect the catalog before you wrap anything:
 
 ```bash

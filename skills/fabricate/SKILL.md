@@ -18,5 +18,9 @@ exact passthrough hosts.
 Inspect the newest redacted request trace with `fab logs <environment> --cat`.
 Use `--all` to list retained runs.
 
+Runnable sample apps live in `examples/`. Wrap them with
+`fab-dev run <environment> -- ...` (or `fab` from a release). See
+`examples/README.md`.
+
 Do not use `fab create gmail`, `engine: httpmock`, or `MOCK_SERVICE`; those
 belong to the removed implementation.
