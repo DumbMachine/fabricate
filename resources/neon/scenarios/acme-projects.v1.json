@@ -1,0 +1,501 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "neon.acme-projects.v1",
+  "$resource": "neon",
+  "$resourceVersion": "v1",
+  "state": {
+    "branches": [
+      {
+        "id": "br_acme-analytics_dev",
+        "project_id": "acme-analytics",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-analytics_main",
+        "project_id": "acme-analytics",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-billing_dev",
+        "project_id": "acme-billing",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-billing_incident",
+        "project_id": "acme-billing",
+        "name": "incident-2026-08-26",
+        "default": false
+      },
+      {
+        "id": "br_acme-billing_main",
+        "project_id": "acme-billing",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-dev_dev",
+        "project_id": "acme-dev",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-dev_main",
+        "project_id": "acme-dev",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-dns_dev",
+        "project_id": "acme-dns",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-dns_main",
+        "project_id": "acme-dns",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-eu_dev",
+        "project_id": "acme-eu",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-eu_main",
+        "project_id": "acme-eu",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-keys_dev",
+        "project_id": "acme-keys",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-keys_main",
+        "project_id": "acme-keys",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-ml_dev",
+        "project_id": "acme-ml",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-ml_main",
+        "project_id": "acme-ml",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-mobile_dev",
+        "project_id": "acme-mobile",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-mobile_main",
+        "project_id": "acme-mobile",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-prod_dev",
+        "project_id": "acme-prod",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-prod_incident",
+        "project_id": "acme-prod",
+        "name": "incident-2026-08-26",
+        "default": false
+      },
+      {
+        "id": "br_acme-prod_main",
+        "project_id": "acme-prod",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-replay_dev",
+        "project_id": "acme-replay",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-replay_main",
+        "project_id": "acme-replay",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-sandbox_dev",
+        "project_id": "acme-sandbox",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-sandbox_main",
+        "project_id": "acme-sandbox",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-scim_dev",
+        "project_id": "acme-scim",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-scim_main",
+        "project_id": "acme-scim",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-sso_dev",
+        "project_id": "acme-sso",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-sso_incident",
+        "project_id": "acme-sso",
+        "name": "incident-2026-08-26",
+        "default": false
+      },
+      {
+        "id": "br_acme-sso_main",
+        "project_id": "acme-sso",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-staging_dev",
+        "project_id": "acme-staging",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-staging_main",
+        "project_id": "acme-staging",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-warehouse_dev",
+        "project_id": "acme-warehouse",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-warehouse_main",
+        "project_id": "acme-warehouse",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_acme-webhooks_dev",
+        "project_id": "acme-webhooks",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_acme-webhooks_main",
+        "project_id": "acme-webhooks",
+        "name": "main",
+        "default": true
+      },
+      {
+        "id": "br_tinyshop-archive_dev",
+        "project_id": "tinyshop-archive",
+        "name": "dev",
+        "default": false
+      },
+      {
+        "id": "br_tinyshop-archive_main",
+        "project_id": "tinyshop-archive",
+        "name": "main",
+        "default": true
+      }
+    ],
+    "endpoints": [
+      {
+        "id": "ep_acme-analytics_rw",
+        "project_id": "acme-analytics",
+        "branch_id": "br_acme-analytics_main",
+        "type": "read_write",
+        "host": "acme-analytics-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-billing_rw",
+        "project_id": "acme-billing",
+        "branch_id": "br_acme-billing_main",
+        "type": "read_write",
+        "host": "acme-billing-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-dev_rw",
+        "project_id": "acme-dev",
+        "branch_id": "br_acme-dev_main",
+        "type": "read_write",
+        "host": "acme-dev-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-dns_rw",
+        "project_id": "acme-dns",
+        "branch_id": "br_acme-dns_main",
+        "type": "read_write",
+        "host": "acme-dns-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-eu_rw",
+        "project_id": "acme-eu",
+        "branch_id": "br_acme-eu_main",
+        "type": "read_write",
+        "host": "acme-eu-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-keys_rw",
+        "project_id": "acme-keys",
+        "branch_id": "br_acme-keys_main",
+        "type": "read_write",
+        "host": "acme-keys-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-ml_rw",
+        "project_id": "acme-ml",
+        "branch_id": "br_acme-ml_main",
+        "type": "read_write",
+        "host": "acme-ml-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-mobile_rw",
+        "project_id": "acme-mobile",
+        "branch_id": "br_acme-mobile_main",
+        "type": "read_write",
+        "host": "acme-mobile-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-prod_rw",
+        "project_id": "acme-prod",
+        "branch_id": "br_acme-prod_main",
+        "type": "read_write",
+        "host": "acme-prod-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-replay_rw",
+        "project_id": "acme-replay",
+        "branch_id": "br_acme-replay_main",
+        "type": "read_write",
+        "host": "acme-replay-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-sandbox_rw",
+        "project_id": "acme-sandbox",
+        "branch_id": "br_acme-sandbox_main",
+        "type": "read_write",
+        "host": "acme-sandbox-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-scim_rw",
+        "project_id": "acme-scim",
+        "branch_id": "br_acme-scim_main",
+        "type": "read_write",
+        "host": "acme-scim-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-sso_rw",
+        "project_id": "acme-sso",
+        "branch_id": "br_acme-sso_main",
+        "type": "read_write",
+        "host": "acme-sso-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-staging_rw",
+        "project_id": "acme-staging",
+        "branch_id": "br_acme-staging_main",
+        "type": "read_write",
+        "host": "acme-staging-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-warehouse_rw",
+        "project_id": "acme-warehouse",
+        "branch_id": "br_acme-warehouse_main",
+        "type": "read_write",
+        "host": "acme-warehouse-rw.neon.tech"
+      },
+      {
+        "id": "ep_acme-webhooks_rw",
+        "project_id": "acme-webhooks",
+        "branch_id": "br_acme-webhooks_main",
+        "type": "read_write",
+        "host": "acme-webhooks-rw.neon.tech"
+      },
+      {
+        "id": "ep_tinyshop-archive_rw",
+        "project_id": "tinyshop-archive",
+        "branch_id": "br_tinyshop-archive_main",
+        "type": "read_write",
+        "host": "tinyshop-archive-rw.neon.tech"
+      }
+    ],
+    "projects": [
+      {
+        "id": "acme-analytics",
+        "name": "acme-analytics",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-08-20T10:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "fernworks-prod CSV pipeline; empty exports. Priya Nair."
+      },
+      {
+        "id": "acme-billing",
+        "name": "acme-billing",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-07-01T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "Northwind INV-4812 ledger. Dana Whitfield."
+      },
+      {
+        "id": "acme-dev",
+        "name": "acme-dev",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-05-01T09:00:00Z",
+        "updated_at": "2026-08-20T12:00:00Z"
+      },
+      {
+        "id": "acme-dns",
+        "name": "acme-dns",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-07-20T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "Adatum TXT acme-domain-verification=adatum-7f31."
+      },
+      {
+        "id": "acme-eu",
+        "name": "acme-eu",
+        "region_id": "aws-eu-central-1",
+        "pg_version": 16,
+        "created_at": "2026-02-01T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "acme-keys",
+        "name": "acme-keys",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-05-12T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "BrightPath overlapping API keys."
+      },
+      {
+        "id": "acme-ml",
+        "name": "acme-ml",
+        "region_id": "aws-us-west-2",
+        "pg_version": 16,
+        "created_at": "2026-08-08T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "acme-mobile",
+        "name": "acme-mobile",
+        "region_id": "aws-us-west-2",
+        "pg_version": 16,
+        "created_at": "2026-03-01T09:00:00Z",
+        "updated_at": "2026-08-18T12:00:00Z"
+      },
+      {
+        "id": "acme-prod",
+        "name": "acme-prod",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-08-01T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "Checkout and billing; INV-4812 rows. Checkout reliability incident."
+      },
+      {
+        "id": "acme-replay",
+        "name": "acme-replay",
+        "region_id": "aws-us-west-2",
+        "pg_version": 16,
+        "created_at": "2026-08-05T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "acme-sandbox",
+        "name": "acme-sandbox",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-01-15T09:00:00Z",
+        "updated_at": "2026-08-10T12:00:00Z"
+      },
+      {
+        "id": "acme-scim",
+        "name": "acme-scim",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-06-01T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "Fabrikam SCIM. req_7Q4K2."
+      },
+      {
+        "id": "acme-sso",
+        "name": "acme-sso",
+        "region_id": "aws-eu-central-1",
+        "pg_version": 16,
+        "created_at": "2026-06-12T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "Contoso contoso-eu identities. Mei Chen, 380 users."
+      },
+      {
+        "id": "acme-staging",
+        "name": "acme-staging",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-08-10T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "acme-warehouse",
+        "name": "acme-warehouse",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-04-15T09:00:00Z",
+        "updated_at": "2026-08-22T12:00:00Z"
+      },
+      {
+        "id": "acme-webhooks",
+        "name": "acme-webhooks",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-08-02T09:00:00Z",
+        "updated_at": "2026-08-26T12:00:00Z",
+        "description": "LakeTech delivery log. Ben Okafor."
+      },
+      {
+        "id": "tinyshop-archive",
+        "name": "tinyshop-archive",
+        "region_id": "aws-us-east-2",
+        "pg_version": 16,
+        "created_at": "2026-08-12T09:00:00Z",
+        "updated_at": "2026-08-20T12:00:00Z",
+        "description": "TinyShop 30-day refund archive. Marco Silva."
+      }
+    ]
+  }
+}

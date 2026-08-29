@@ -1,0 +1,19 @@
+{
+  "integration": "neon",
+  "scenarios": [
+    {
+      "id": "neon.acme-projects.v1",
+      "counts": {
+        "branches": 37,
+        "endpoints": 17,
+        "projects": 17
+      }
+    },
+    {
+      "id": "neon.minimal.v1",
+      "counts": {
+        "projects": 0
+      }
+    }
+  ]
+}

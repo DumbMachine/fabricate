@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "neon.minimal.v1",
+  "$resource": "neon",
+  "$resourceVersion": "v1",
+  "state": {
+    "projects": []
+  }
+}

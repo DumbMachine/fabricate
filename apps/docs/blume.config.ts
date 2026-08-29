@@ -141,6 +141,11 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/cloudflare",
               },
               {
+                label: "Neon",
+                href: "/resources/integrations/neon",
+                icon: "https://logos.composio.dev/api/neon",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
