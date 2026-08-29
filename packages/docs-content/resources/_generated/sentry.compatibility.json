@@ -1,0 +1,44 @@
+{
+  "api": "Sentry API",
+  "environment": {
+    "label": "Acme Sentry",
+    "manifest": "environments/acme-sentry.yaml",
+    "messages": 3
+  },
+  "integration": "sentry",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List projects",
+    "write": "Create a project",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-08-27T14:49:02.335Z",
+  "testedCommit": "f031bf6df2d749b9bb5116418246a03f5f14b0a4"
+}

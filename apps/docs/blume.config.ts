@@ -141,6 +141,11 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/cloudflare",
               },
               {
+                label: "Sentry",
+                href: "/resources/integrations/sentry",
+                icon: "https://logos.composio.dev/api/sentry",
+              },
+              {
                 label: "GitHub (planned)",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
