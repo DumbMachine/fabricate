@@ -184,6 +184,45 @@
   margin: 1.5rem 0;
 }
 
+/* Inline company-style pills used in support copy. Keep them phrasing-level
+   so they sit in a sentence without inheriting prose link underlines. */
+a.link-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38em;
+  vertical-align: middle;
+  margin: 0 0.12em;
+  padding: 0.14em 0.58em 0.14em 0.28em;
+  border: 1px solid color-mix(in srgb, var(--fabricate-text) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fabricate-text) 8%, transparent);
+  color: var(--fabricate-text);
+  font-size: 0.86em;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.prose a.link-badge:hover {
+  background: color-mix(in srgb, var(--fabricate-text) 14%, transparent);
+  border-color: color-mix(in srgb, var(--fabricate-text) 24%, transparent);
+  color: var(--fabricate-text);
+  text-decoration: none;
+}
+
+a.link-badge svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+a.link-badge svg[data-icon="cal"] {
+  width: 22px;
+  height: 11px;
+}
+
 .docs-screenshot img {
   display: block;
   width: 100%;

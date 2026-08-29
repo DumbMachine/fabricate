@@ -180,6 +180,10 @@ export default defineConfig({
         ],
       },
       {
+        label: "Support",
+        items: [{ label: "Support", href: "/support" }],
+      },
+      {
         // `root` marks this as the /cli tab's sidebar section. Blume renders
         // its children only while that tab is active.
         label: "CLI",
