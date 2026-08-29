@@ -1,0 +1,76 @@
+---
+title: Exa
+description: Search, contents, answers, and research tasks.
+sidebar:
+  icon: https://logos.composio.dev/api/exa
+---
+
+Search, contents, answers, and research tasks. Local Exa v1 that keeps
+research-task state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Exa v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.exa.ai` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_EXA_TOKEN" \
+      "$FAB_EXA_URL/research/v0/tasks"'
+```
+
+The service is named `exa` in the example manifest, so the variables are
+`FAB_EXA_URL` and `FAB_EXA_TOKEN`.
+
+The response is the Acme research task list:
+
+<CommandOutput id="exa-list-tasks" showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Exa URLs. This one-paste check
+calls Exa's production hostname. Omit `$FAB_EXA_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.exa.ai/research/v0/tasks
+```
+
+Fabricate handles `api.exa.ai` locally. Other hosts are forwarded unchanged.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="exa"
+  descriptions={{
+    "exa.minimal.v1": "Empty Exa state for a clean test.",
+    "exa.acme-tasks.v1": "Research-task haystack. Needles: checkout reliability, Contoso SSO, INV-4812 / Northwind, fernworks CSV, Adatum TXT, LakeTech backoff, TinyShop refund, BrightPath keys, Fabrikam `req_7Q4K2`.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Exa check ran against the Acme Exa
+environment with curl:
+
+<IntegrationCompatibility resource="exa" />
+
+## Supported operations
+
+<SupportedOperations resource="exa" />

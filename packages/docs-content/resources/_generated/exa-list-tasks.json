@@ -1,0 +1,307 @@
+{
+  "id": "exa-list-tasks",
+  "title": "List seeded research tasks",
+  "environment": {
+    "label": "Acme Exa",
+    "manifest": "environments/acme-exa.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-exa.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.exa.ai/research/v0/tasks",
+  "output": [
+    {
+      "id": "task_adatum",
+      "instructions": "Domain verification TXT delays acme-domain-verification=adatum-7f31",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_billing",
+      "instructions": "Summarize public coverage of invoice INV-4812 disputes",
+      "model": "exa-research",
+      "query": "Northwind Traders Dana Whitfield $1,240",
+      "status": "completed"
+    },
+    {
+      "id": "task_checkout",
+      "instructions": "What caused the checkout reliability incident?",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_csv",
+      "instructions": "Research empty CSV export incidents like fernworks-prod",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_01",
+      "instructions": "Competitor status page patterns",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_02",
+      "instructions": "EU data residency questionnaires",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_03",
+      "instructions": "Okta SAML clock skew",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_04",
+      "instructions": "CSV timezone column conventions",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_05",
+      "instructions": "NPS vs PMF surveys",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_06",
+      "instructions": "p95 checkout budgets",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_07",
+      "instructions": "Session replay PII masking",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_08",
+      "instructions": "Seat overage email copy",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_09",
+      "instructions": "Terraform drift detection",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_10",
+      "instructions": "Neon branch expiry norms",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_11",
+      "instructions": "Vercel preview auth",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_12",
+      "instructions": "Cloudflare custom hostname limits",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_13",
+      "instructions": "KV eviction behavior",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_14",
+      "instructions": "Worker subrequest caps",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_15",
+      "instructions": "Stripe tax ID collection",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_16",
+      "instructions": "DigitalOcean droplet disk alerts",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_17",
+      "instructions": "Sentry issue grouping",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_18",
+      "instructions": "Figma webhook 410 handling",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_19",
+      "instructions": "Val Town cron reliability",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_20",
+      "instructions": "GitHub CODEOWNERS patterns",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_21",
+      "instructions": "HubSpot deal stage hygiene",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_22",
+      "instructions": "Gmail support-label taxonomy",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_23",
+      "instructions": "Asana custom fields",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_24",
+      "instructions": "WAF false positives on /login",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_25",
+      "instructions": "SCIM group push storms",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_26",
+      "instructions": "API key last-used UX",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_27",
+      "instructions": "Public insight robots.txt",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_28",
+      "instructions": "Warehouse late-arriving facts",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_29",
+      "instructions": "BigQuery quota incidents",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_fill_30",
+      "instructions": "Snowflake key-pair rotation",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_fill_31",
+      "instructions": "Breakpoint for heatmap sampling",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_hooks",
+      "instructions": "Best practices for webhook exponential backoff (LakeTech)",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_keys",
+      "instructions": "API key overlap during rotation BrightPath",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_refund",
+      "instructions": "SaaS 30-day guarantee refund timelines TinyShop",
+      "model": "exa-research",
+      "status": "completed"
+    },
+    {
+      "id": "task_scim",
+      "instructions": "SCIM audit logs missing group changes req_7Q4K2",
+      "model": "exa-research",
+      "status": "running"
+    },
+    {
+      "id": "task_sso",
+      "instructions": "Find write-ups of Contoso SSO login loops",
+      "model": "exa-research",
+      "query": "contoso-eu 380 users SAML",
+      "status": "running"
+    }
+  ],
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:3c89c38a8bad326c529aa5056085d61417b14ca0cb2f76ba3e5112052e29e6d4",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:88bd4645954970ba3a3219e4006a0f56653b7a2ece326be41ab01c55fc70e948"
+      },
+      {
+        "path": "environments/acme-exa.yaml",
+        "digest": "sha256:2f26ff8d75b5c5d9e0fc65a099e204cf9b20b02e1dc4af90088a5e0b6240ade5"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/exa-list-tasks.json",
+        "digest": "sha256:9ae895d944267d4fca1ffdea115657857bc9281e6948d1966131a4e5a5c3bf63"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/asana",
+        "digest": "sha256:106aa032b5e464b393b68d82b3c3c82359c4e4b3e80d9fa25e4fdb68009e728b"
+      },
+      {
+        "path": "resources/exa",
+        "digest": "sha256:2add07c8cfbc7a3bacd8daf404ae687abb0e52a2e925e45c038141ae12a70654"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:da7d9821ce14f4120d503c09971f0f4eed3ab56f76a0addb5dbf285ac75a8459"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:0a480a8abf00d0ef377b2bb5f2464affbb4bb26521183d3fc18c8ae6ae527545"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
+      }
+    ]
+  }
+}
