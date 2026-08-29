@@ -1,0 +1,21 @@
+{
+  "integration": "cloudflare",
+  "scenarios": [
+    {
+      "id": "cloudflare.acme-zones.v1",
+      "counts": {
+        "accounts": 2,
+        "dns_records": 213,
+        "namespaces": 12,
+        "scripts": 16,
+        "zones": 68
+      }
+    },
+    {
+      "id": "cloudflare.minimal.v1",
+      "counts": {
+        "zones": 0
+      }
+    }
+  ]
+}

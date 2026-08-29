@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -16,23 +19,26 @@ jobs:
         with:
           fetch-depth: 0
       - id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            docs_examples:
-              - 'cmd/docsexamples/**'
-              - 'internal/docsexamples/**'
-              - 'packages/docs-content/resources/_examples/**'
-              - 'resources/**'
-              - 'environments/**'
-              - 'environment/**'
-              - 'engine/http/**'
-              - 'httpresource/**'
-              - 'requestlog/**'
-              - 'scenario/**'
-              - 'cli/run.go'
-              - 'Makefile'
-              - '.github/workflows/ci.yml'
+        name: Detect docs-examples path changes
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$base" ]; then
+            base="${{ github.event.before }}"
+          fi
+          if [ -z "$base" ] || [ "$(printf '%s' "$base" | tr -d '0')" = "" ]; then
+            echo "docs_examples=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          docs_examples=false
+          while IFS= read -r line; do
+            case "$line" in
+              cmd/docsexamples/*|internal/docsexamples/*|packages/docs-content/resources/_examples/*|resources/*|environments/*|environment/*|engine/http/*|httpresource/*|requestlog/*|scenario/*|cli/run.go|Makefile|.github/workflows/ci.yml)
+                docs_examples=true
+                break
+                ;;
+            esac
+          done < <(git diff --name-only --no-renames --relative "$base"...HEAD)
+          echo "docs_examples=$docs_examples" >> "$GITHUB_OUTPUT"
       - id: matrix
         name: Select changed conformance resources
         run: |
@@ -69,7 +75,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: end-to-end smoke (real containers)
+      - name: end-to-end smoke (real CLI)
         run: go test -tags e2e -count=1 -timeout 15m -v ./e2e/...
 
   conformance:
@@ -116,4 +122,4 @@ jobs:
             make docs-examples DOCS_EXAMPLES_FLAGS="--since-ref $base"
           fi
       - name: Command snapshots are current
-        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json' ':(exclude)packages/docs-content/resources/_generated/*.operations.json'
+        run: git diff --exit-code -- packages/docs-content/resources/_generated ':(exclude)packages/docs-content/resources/_generated/*.compatibility.json' ':(exclude)packages/docs-content/resources/_generated/*.operations.json' ':(exclude)packages/docs-content/resources/_generated/*.scenarios.json'

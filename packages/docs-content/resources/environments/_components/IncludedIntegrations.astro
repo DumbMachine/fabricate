@@ -1,4 +1,6 @@
 ---
+import {formatScenarioCounts, loadScenarioCatalog, scenarioFacts} from "../../_components/generated";
+
 interface IncludedService {
   data: string;
   href: string;
@@ -14,6 +16,8 @@ const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
 const logo = (resource: string, theme?: "dark") =>
   `https://logos.composio.dev/api/${resource}${theme === "dark" ? "?theme=dark" : ""}`;
 const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBase}${href.startsWith("/") ? href : `/${href}`}`);
+const countsFor = (entry: IncludedService) =>
+  formatScenarioCounts(scenarioFacts(loadScenarioCatalog(entry.resource), entry.scenario));
 ---
 
 <section class="included not-prose" aria-label="Included integrations">
@@ -40,27 +44,31 @@ const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBa
       </tr>
     </thead>
     <tbody>
-      {services.map((entry) => (
-        <tr>
-          <th scope="row">
-            <a class="service" href={toDocsHref(entry.href)}>
-              <span class="icon">
-                <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt="" />
-                <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
-              </span>
-              <span class="service-copy">
-                <span class="service-label">{entry.label}</span>
-                <span class="service-name">{entry.service}</span>
-              </span>
-            </a>
-          </th>
-          <td>
-            <p class="scenario-id" title="Select to copy">{entry.scenario}</p>
-            <p class="summary">{entry.summary}</p>
-            <p class="data">{entry.data}</p>
-          </td>
-        </tr>
-      ))}
+      {services.map((entry) => {
+        const counts = countsFor(entry);
+        return (
+          <tr>
+            <th scope="row">
+              <a class="service" href={toDocsHref(entry.href)}>
+                <span class="icon">
+                  <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt="" />
+                  <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
+                </span>
+                <span class="service-copy">
+                  <span class="service-label">{entry.label}</span>
+                  <span class="service-name">{entry.service}</span>
+                </span>
+              </a>
+            </th>
+            <td>
+              <p class="scenario-id" title="Select to copy">{entry.scenario}</p>
+              <p class="summary">{entry.summary}</p>
+              {counts ? <p class="counts">{counts}</p> : null}
+              <p class="data">{entry.data}</p>
+            </td>
+          </tr>
+        );
+      })}
     </tbody>
   </table>
 </section>
@@ -181,6 +189,7 @@ const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBa
   .service-name,
   .scenario-id,
   .summary,
+  .counts,
   .data {
     background: transparent !important;
     border: 0 !important;
@@ -207,6 +216,11 @@ const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBa
     color: var(--fabricate-text);
     font: 500 .9rem/1.4 var(--fabricate-font-sans);
     margin: 0;
+  }
+  .counts {
+    color: var(--fabricate-text-secondary);
+    font: 500 .78rem/1.4 var(--fabricate-font-mono);
+    margin: .2rem 0 0;
   }
   .data {
     color: var(--fabricate-text-muted);

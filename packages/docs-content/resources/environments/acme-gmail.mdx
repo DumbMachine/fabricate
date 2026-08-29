@@ -19,7 +19,7 @@ Its manifest identifier is `acme-gmail`.
       href: "/resources/integrations/gmail",
       service: "support-mail",
       scenario: "gmail.acme-corp.v1",
-      summary: "A populated Acme support inbox with 28 messages, labels, and threads.",
+      summary: "A populated Acme support inbox with labels and threads.",
       data: "Billing, SSO, refund, CSV export, webhook, and key-rotation threads, including INV-4812.",
     },
   ]}
@@ -27,10 +27,11 @@ Its manifest identifier is `acme-gmail`.
 
 ## Scenario data
 
-`gmail.acme-corp.v1` seeds 12 handcrafted messages across support threads,
-including double charges, SSO outages, refunds, CSV exports, webhooks, and API
-key rotation. It gives an inbox workflow realistic threads and labels to search
-and change instead of an empty mailbox.
+`gmail.acme-corp.v1` seeds support threads for double charges, SSO outages,
+refunds, CSV exports, webhooks, and API key rotation, plus one phishing
+message in spam/trash. A default message list hides that last one. It gives
+an inbox workflow realistic threads and labels to search and change instead of
+an empty mailbox.
 
 The scenario is the initial state. Your application can change messages,
 threads, and labels during its run; the next run begins from the original Acme
@@ -46,5 +47,9 @@ service, and list the seeded messages. You do not need to clone Fabricate.
 
 <CommandOutput id="gmail-list-messages" />
 
-`--proxy` keeps Gmail’s normal hostname. See [Gmail](/resources/integrations/gmail)
-for direct-URL integration and proxy setup.
+Gmail's default list omits spam and trash, so `resultSizeEstimate` is one less
+than the seeded message count.
+
+`--proxy` keeps Gmail’s normal hostname and supplies the local token. See
+[Gmail](/resources/integrations/gmail) for direct-URL integration and proxy
+setup.
