@@ -1,0 +1,76 @@
+---
+title: Stripe
+description: Customers, invoices, charges, subscriptions, and payment intents.
+sidebar:
+  icon: https://logos.composio.dev/api/stripe
+---
+
+Customers, invoices, charges, subscriptions, and payment intents. Local
+Stripe v1 that keeps billing state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Stripe v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.stripe.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-stripe.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_STRIPE_TOKEN" \
+      "$FAB_STRIPE_URL/v1/customers"'
+```
+
+The service is named `stripe` in the example manifest, so the variables are
+`FAB_STRIPE_URL` and `FAB_STRIPE_TOKEN`.
+
+The response is the Acme customer list:
+
+<CommandOutput id="stripe-list-customers" showCommand={false} />
+
+### Start it through the proxy
+
+Use this when your app uses the normal Stripe URLs. This one-paste check
+calls Stripe's production hostname. Omit `$FAB_STRIPE_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-stripe.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.stripe.com/v1/customers
+```
+
+Fabricate handles `api.stripe.com` locally. Other hosts are forwarded unchanged.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="stripe"
+  descriptions={{
+    "stripe.minimal.v1": "Empty Stripe state for a clean test.",
+    "stripe.acme-customers.v1": "Acme billing ledger: customers, invoices, charges, subscriptions, products. Needles: Northwind `cus_northwind` / INV-4812 ($1,240 duplicate), Contoso 380 seats, TinyShop 30-day refund, Fabrikam SCIM.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Stripe check ran against the Acme Stripe
+environment with curl:
+
+<IntegrationCompatibility resource="stripe" />
+
+## Supported operations
+
+<SupportedOperations resource="stripe" />
