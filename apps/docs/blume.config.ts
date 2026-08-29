@@ -141,7 +141,7 @@ export default defineConfig({
                 icon: "https://logos.composio.dev/api/cloudflare",
               },
               {
-                label: "GitHub (planned)",
+                label: "GitHub",
                 href: "/resources/integrations/github",
                 icon: "https://logos.composio.dev/api/github",
               },

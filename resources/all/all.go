@@ -10,6 +10,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/attio"
 	"github.com/dumbmachine/fabricate/resources/close"
 	"github.com/dumbmachine/fabricate/resources/cloudflare"
+	"github.com/dumbmachine/fabricate/resources/github"
 	"github.com/dumbmachine/fabricate/resources/gmail"
 	"github.com/dumbmachine/fabricate/resources/hubspot"
 	"github.com/dumbmachine/fabricate/resources/intercom"
@@ -26,6 +27,7 @@ func Registry() *httpresource.Registry {
 		attio.NewResource(),
 		close.NewResource(),
 		cloudflare.NewResource(),
+		github.NewResource(),
 		gmail.NewResource(),
 		hubspot.NewResource(),
 		intercom.NewResource(),

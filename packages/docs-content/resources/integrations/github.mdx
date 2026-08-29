@@ -1,52 +1,77 @@
 ---
-title: GitHub (planned)
-description: A deliberately bounded GitHub REST API resource for repository metadata and collaboration.
+title: GitHub
+description: Repositories, organizations, issues, and pull requests.
 sidebar:
   icon: https://logos.composio.dev/api/github
 ---
 
-> **Planned, not available yet.** This page defines the intended first GitHub
-> surface. It does not describe a runnable Fabricate resource or environment.
+Repositories, organizations, issues, and pull requests. Local GitHub v1 that
+keeps repository state across requests.
 
-Fabricate's GitHub integration will focus on the information an agent needs to
-understand engineering work: repository metadata, issues, pull requests,
-reviews, comments, and check status. It will not try to emulate a Git server.
+## Integration
 
-## Intended first surface
+| | Details |
+| --- | --- |
+| API | GitHub v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.github.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
-- Organizations and repositories: identity, visibility, default branch,
-  topics, and repository settings that explain the work.
-- Collaboration: issues, labels, pull requests, requested reviewers, reviews,
-  review comments, and issue comments.
-- Delivery status: read-only commit metadata and check/status results attached
-  to a pull request or commit.
+### Start it with a direct URL
 
-This makes workflows such as “find the PR for this Jira ticket, explain why it
-is blocked, and tell the owning Slack channel” testable without inventing a
-repository filesystem or CI runtime.
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
-## Deliberately outside the first surface
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GITHUB_TOKEN" \
+      "$FAB_GITHUB_URL/repos/acme/web/issues"'
+```
 
-- Git smart HTTP, clone, fetch, push, SSH, or a working tree.
-- Creating branches, commits, trees, blobs, or files.
-- Pull-request merges, branch protection administration, forks, and template
-  repositories.
-- Actions execution, workflow jobs, artifacts, deployments, releases, package
-  publishing, webhooks, and upload endpoints.
-- GraphQL.
+The service is named `github` in the example manifest, so the variables are
+`FAB_GITHUB_URL` and `FAB_GITHUB_TOKEN`.
 
-Repository mutation is a separate future contract. A valid implementation must
-preserve the real Git relationship between refs, commits, trees, and blobs, and
-must reset that state atomically with the scenario. It will not be added as
-isolated file-write routes.
+The response is the Acme issue list:
 
-## Contract and validation
+<CommandOutput id="github-list-issues" showCommand={false} />
 
-The resource will use a curated subset of GitHub's official REST OpenAPI
-description, pinned to a GitHub REST API version. The full description is an
-operation inventory—not Fabricate's supported surface. Direct and transparent
-proxy conformance will run through `@octokit/rest` for the selected operations.
+### Start it through the proxy
 
-The first engineering environment will combine this bounded GitHub resource
-with Jira and Slack. Its scenario will have a small, fixed set of linked work:
-a repository, a pull request, its ticket, reviews, comments, and check status.
+Use this when your app uses the normal GitHub URLs. This one-paste check
+calls GitHub's production hostname. Omit `$FAB_GITHUB_TOKEN`; the proxy replaces `Authorization` on that host with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-github.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.github.com/repos/acme/web/issues
+```
+
+Fabricate handles `api.github.com` locally. Other hosts are forwarded unchanged.
+Git object routes (blobs, trees, commits, refs, and smart HTTP) are not served.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="github"
+  descriptions={{
+    "github.minimal.v1": "Empty GitHub state for a clean test.",
+    "github.acme-issues.v1": "Busy `acme/*` org: repos, issues, and pulls. Needles on `acme/web`: checkout reliability (#1), Contoso SSO, INV-4812, plus fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop, BrightPath, Fabrikam `req_7Q4K2`.",
+  }}
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest GitHub check ran against the Acme GitHub
+environment with curl:
+
+<IntegrationCompatibility resource="github" />
+
+## Supported operations
+
+<SupportedOperations resource="github" />
