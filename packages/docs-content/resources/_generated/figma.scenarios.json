@@ -1,0 +1,17 @@
+{
+  "integration": "figma",
+  "scenarios": [
+    {
+      "id": "figma.acme-webhooks.v1",
+      "counts": {
+        "webhooks": 28
+      }
+    },
+    {
+      "id": "figma.minimal.v1",
+      "counts": {
+        "webhooks": 0
+      }
+    }
+  ]
+}
