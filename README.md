@@ -9,6 +9,12 @@
 </p>
 
 <p align="center">
+  <a href="https://fabricate.dmach.in/">
+    <img src="https://img.shields.io/badge/services-12-e8ff6a?labelColor=171812&style=flat-square" alt="12 services">
+  </a>
+</p>
+
+<p align="center">
   <a href="https://fabricate.dmach.in/">Website</a>
   ·
   <a href="https://fabricate.dmach.in/docs">Docs</a>

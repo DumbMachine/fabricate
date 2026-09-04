@@ -46,12 +46,18 @@ const services = [
   ["Attio", "attio"],
   ["Mailgun", "mailgun"],
   ["Close", "close"],
+];
+
+const upcomingServices = [
   ["GitHub", "github"],
   ["Microsoft Teams", "microsoft_teams"],
   ["Slack", "slack"],
   ["Stripe", "stripe"],
   ["Linear", "linear"],
 ];
+
+const serviceCount = services.length;
+const showcase = [...services, ...upcomingServices];
 
 const useCases = [
   {
@@ -102,6 +108,7 @@ const faqs = [
     <section class="hero grid-stage" aria-labelledby="hero-title">
       <div class="grid-lines" aria-hidden="true"></div>
       <div class="container hero-content">
+        <p class="hero-count">{serviceCount} services</p>
         <h1 id="hero-title">API Sandboxes<br />to test your agents.</h1>
         <p class="hero-copy">
           Create environments with real, stateful data to test your integrations
@@ -117,7 +124,14 @@ const faqs = [
         </div>
       </div>
       <div class="service-strip">
-        <div class="service-belt" aria-label="Services supported by Fabricate">
+        <div
+          class="service-belt"
+          aria-label={`${serviceCount} services supported by Fabricate`}
+        >
+          <div class="service-count" aria-hidden="true">
+            <strong>{serviceCount}</strong>
+            <span>services</span>
+          </div>
           <div class="service-marquee">
             <div class="service-track">
               {
@@ -126,7 +140,7 @@ const faqs = [
                     class="service-set"
                     aria-hidden={duplicate ? "true" : undefined}
                   >
-                    {services.map(([name, icon]) => (
+                    {showcase.map(([name, icon]) => (
                       <li class="service">
                         <img
                           class="service-icon"

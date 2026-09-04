@@ -189,9 +189,25 @@ h2 em {
    padding-bottom: clamp(2rem, 5vh, 3.5rem);
 }
 
+.hero-count {
+   display: inline-flex;
+   align-items: baseline;
+   gap: .45rem;
+   margin: 0;
+   padding: .42rem .72rem .4rem;
+   border: 1px solid var(--ink);
+   background: var(--lime);
+   box-shadow: 3px 3px 0 var(--ink);
+   font-family: ui-monospace, monospace;
+   font-size: .72rem;
+   font-weight: 800;
+   letter-spacing: .08em;
+   text-transform: uppercase;
+}
+
 .hero h1 {
    max-width: 900px;
-   margin: 1rem 0 1.25rem;
+   margin: .9rem 0 1.25rem;
    font-size: clamp(4.25rem, 9vw, 9.5rem);
 }
 
@@ -312,6 +328,35 @@ h2 em {
    background: var(--lime);
    border-top: 1px solid var(--ink);
    border-bottom: 1px solid var(--ink);
+}
+
+.service-count {
+   display: flex;
+   flex: none;
+   flex-direction: column;
+   justify-content: center;
+   gap: .22rem;
+   min-width: 5.4rem;
+   padding: 0 .95rem;
+   border-right: 1px solid var(--ink);
+   background: var(--ink);
+   color: var(--lime);
+   font-family: ui-monospace, monospace;
+   line-height: 1;
+   text-transform: uppercase;
+   z-index: 1;
+}
+
+.service-count strong {
+   font-size: 1.2rem;
+   font-weight: 950;
+   letter-spacing: -.04em;
+}
+
+.service-count span {
+   font-size: .52rem;
+   font-weight: 800;
+   letter-spacing: .14em;
 }
 
 .service-marquee {
@@ -1588,6 +1633,15 @@ footer a {
    .hero-stamp-controlled span,
    .hero-stamp-controlled small {
       font-size: .3rem;
+   }
+
+   .service-count {
+      min-width: 4.7rem;
+      padding: 0 .75rem;
+   }
+
+   .service-count strong {
+      font-size: 1.05rem;
    }
 
    .service {
