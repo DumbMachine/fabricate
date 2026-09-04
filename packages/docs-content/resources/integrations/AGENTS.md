@@ -28,6 +28,7 @@ Implemented integration pages use this order:
    URL, transparent proxy), then start commands.
 3. `## Scenarios` — `<ResourceScenarios resource="<id>" />`. Optional
    `descriptions` add qualitative copy; counts come from the generated catalog.
+   Then `<ScenarioPeek />` for the populated Acme scenario.
 4. `## Compatibility verification`
 5. `## Supported operations`
 
@@ -81,7 +82,8 @@ recapture and commit the snapshots. CI fails if they drifted.
   `make docs-operations gmail asana` limits to named resources.
   Empty path stubs are omitted. Do not list operations or scenario counts by
   hand. Render `<SupportedOperations resource="<id>" />` and
-  `<ResourceScenarios resource="<id>" />`.
+  `<ResourceScenarios resource="<id>" />`. Implemented pages also render
+  `<ScenarioPeek />` for the populated scenario.
 - Compatibility reports: each resource owns `resources/<id>/conformance/` with
   `curl.sh`, `sdk.json`, or both. `make conformance` runs every client that
   exists and writes `<id>.compatibility.json`; `make conformance gmail asana`

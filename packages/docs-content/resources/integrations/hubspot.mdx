@@ -125,6 +125,17 @@ settings. In that case, use the direct URL.
   }}
 />
 
+Peek at the committed Acme pipeline. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="hubspot"
+  scenario="acme-pipeline.v1"
+  collection="contacts"
+/>
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application

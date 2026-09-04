@@ -62,6 +62,17 @@ Fabricate handles `api.cloudflare.com` locally. Other hosts are forwarded unchan
   }}
 />
 
+Peek at the committed Acme zones. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="cloudflare"
+  scenario="acme-zones.v1"
+  collection="zones"
+/>
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application
