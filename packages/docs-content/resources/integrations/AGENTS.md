@@ -44,6 +44,11 @@ files at build time; it never starts environments.
 ```mdx
 <CommandOutput id="<example-id>" showCommand={false} />
 <ResourceScenarios resource="<integration>" />
+<ScenarioPeek
+  resource="<integration>"
+  scenario="<file-without-json>"
+  collection="<optional-collection>"
+/>
 <IntegrationCompatibility resource="<integration>" />
 <SupportedOperations resource="<integration>" />
 ```
@@ -61,6 +66,14 @@ recapture and commit the snapshots. CI fails if they drifted.
   fails if none match. Use `showCommand={false}` when the page already has a
   copyable command block. Force selected examples with
   `make docs-examples DOCS_EXAMPLES_FLAGS=--all`.
+- Scenario peeks: `<ScenarioPeek />` is a Blume island in `apps/docs/islands`.
+  Pass `resource` plus `scenario` (filename without `.json`, with or without
+  the resource prefix). It fetches that JSON in the browser, renders
+  whatever collections the scenario document seeds, and caps rows (`limit`,
+  default 25). Missing files, slow fetches, and invalid JSON get a skeleton,
+  timeout, and retry. The inline table is a preview; Expand opens a sheet
+  with sorting. Do not inline scenario documents into the page, and do not
+  special-case a service in the island.
 - Operations catalogs: `make docs-operations` walks the official resource
   registry and writes `<id>.operations.json` from each compiled OpenAPI
   contract, plus `<id>.scenarios.json` from catalog scenario state (top-level
