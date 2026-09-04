@@ -8,9 +8,14 @@
     "check": "node ../site/scripts/mode.mjs docs check"
   },
   "dependencies": {
-    "blume": "1.4.3"
+    "@tanstack/react-table": "^9.2.3",
+    "blume": "1.4.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5"
   }
 }
