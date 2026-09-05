@@ -24,13 +24,21 @@ Implemented integration pages use this order:
 1. Frontmatter `description` and the opening sentence: named entities from the
    compiled surface, so coverage is visible at a glance. Do not start with
    “A reproducible … API” or “Fabricate ships …”.
-2. `## Integration`: properties (API version, auth, `ProviderHosts`, direct
+2. `<ResourceCoverage resource="<id>" />` immediately after the heading, so
+   scenario and endpoint counts are visible before the body copy. Planned
+   pages use `<ResourceCoverage planned />`.
+3. `## Integration`: properties (API version, auth, `ProviderHosts`, direct
    URL, transparent proxy), then start commands.
-3. `## Scenarios` — `<ResourceScenarios resource="<id>" />`. Optional
+4. `## Scenarios` — `<ResourceScenarios resource="<id>" />`. Optional
    `descriptions` add qualitative copy; counts come from the generated catalog.
    Then `<ScenarioPeek />` for the populated Acme scenario.
-4. `## Compatibility verification`
-5. `## Supported operations`
+5. `## Compatibility verification`
+6. `## Supported operations`
+
+The Integrations sidebar starts with **All** (`index.mdx`), which renders
+`<IntegrationsCatalog />`. That grid is the catalog of every service: a large
+icon, title, and scenario and API counts from the generated snapshots. Do not
+hand-build a service card list on that page.
 
 Planned pages (GitHub, Shopify) are not runnable resources. Do not invent an
 entity list or integration table for them.
@@ -44,6 +52,7 @@ files at build time; it never starts environments.
 
 ```mdx
 <CommandOutput id="<example-id>" showCommand={false} />
+<ResourceCoverage resource="<integration>" />
 <ResourceScenarios resource="<integration>" />
 <ScenarioPeek
   resource="<integration>"
@@ -52,6 +61,7 @@ files at build time; it never starts environments.
 />
 <IntegrationCompatibility resource="<integration>" />
 <SupportedOperations resource="<integration>" />
+<IntegrationsCatalog />
 ```
 
 Do not import `_generated/*.json` from the page. The components read those
@@ -83,7 +93,9 @@ recapture and commit the snapshots. CI fails if they drifted.
   Empty path stubs are omitted. Do not list operations or scenario counts by
   hand. Render `<SupportedOperations resource="<id>" />` and
   `<ResourceScenarios resource="<id>" />`. Implemented pages also render
-  `<ScenarioPeek />` for the populated scenario.
+  `<ScenarioPeek />` for the populated scenario. Heading badges and the All
+  catalog also read those snapshots through `<ResourceCoverage />` and
+  `<IntegrationsCatalog />`.
 - Compatibility reports: each resource owns `resources/<id>/conformance/` with
   `curl.sh`, `sdk.json`, or both. `make conformance` runs every client that
   exists and writes `<id>.compatibility.json`; `make conformance gmail asana`

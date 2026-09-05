@@ -130,6 +130,10 @@
   color: var(--fabricate-text-secondary);
 }
 
+.prose>.resource-coverage {
+  margin-top: 0.15rem;
+}
+
 [data-blume-nav-tree] p {
   color: var(--fabricate-text-muted);
   font-size: 12px;
