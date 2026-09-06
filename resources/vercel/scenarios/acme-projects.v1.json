@@ -1,0 +1,813 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "vercel.acme-projects.v1",
+  "$resource": "vercel",
+  "$resourceVersion": "v1",
+  "state": {
+    "deployments": [
+      {
+        "id": "dpl_prj_acme_admin_preview",
+        "name": "acme-admin",
+        "url": "acme-admin-git-main-acme.vercel.app",
+        "projectId": "prj_acme_admin",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_admin_prod",
+        "name": "acme-admin",
+        "url": "acme-admin.vercel.app",
+        "projectId": "prj_acme_admin",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_api_preview",
+        "name": "acme-api",
+        "url": "acme-api-git-main-acme.vercel.app",
+        "projectId": "prj_acme_api",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_api_prod",
+        "name": "acme-api",
+        "url": "acme-api.vercel.app",
+        "projectId": "prj_acme_api",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_auth_preview",
+        "name": "acme-auth",
+        "url": "acme-auth-git-main-acme.vercel.app",
+        "projectId": "prj_acme_auth",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_auth_prod",
+        "name": "acme-auth",
+        "url": "acme-auth.vercel.app",
+        "projectId": "prj_acme_auth",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_billing_preview",
+        "name": "acme-billing",
+        "url": "acme-billing-git-main-acme.vercel.app",
+        "projectId": "prj_acme_billing",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_billing_prod",
+        "name": "acme-billing",
+        "url": "acme-billing.vercel.app",
+        "projectId": "prj_acme_billing",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_blog_preview",
+        "name": "acme-blog",
+        "url": "acme-blog-git-main-acme.vercel.app",
+        "projectId": "prj_acme_blog",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_blog_prod",
+        "name": "acme-blog",
+        "url": "acme-blog.vercel.app",
+        "projectId": "prj_acme_blog",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_careers_preview",
+        "name": "acme-careers",
+        "url": "acme-careers-git-main-acme.vercel.app",
+        "projectId": "prj_acme_careers",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_careers_prod",
+        "name": "acme-careers",
+        "url": "acme-careers.vercel.app",
+        "projectId": "prj_acme_careers",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_changelog_preview",
+        "name": "acme-changelog",
+        "url": "acme-changelog-git-main-acme.vercel.app",
+        "projectId": "prj_acme_changelog",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_changelog_prod",
+        "name": "acme-changelog",
+        "url": "acme-changelog.vercel.app",
+        "projectId": "prj_acme_changelog",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_checkout_preview",
+        "name": "acme-checkout",
+        "url": "acme-checkout-git-main-acme.vercel.app",
+        "projectId": "prj_acme_checkout",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_checkout_prod",
+        "name": "acme-checkout",
+        "url": "acme-checkout.vercel.app",
+        "projectId": "prj_acme_checkout",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_docs_preview",
+        "name": "acme-docs",
+        "url": "acme-docs-git-main-acme.vercel.app",
+        "projectId": "prj_acme_docs",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_docs_prod",
+        "name": "acme-docs",
+        "url": "acme-docs.vercel.app",
+        "projectId": "prj_acme_docs",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_edge_preview",
+        "name": "acme-edge",
+        "url": "acme-edge-git-main-acme.vercel.app",
+        "projectId": "prj_acme_edge",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_edge_prod",
+        "name": "acme-edge",
+        "url": "acme-edge.vercel.app",
+        "projectId": "prj_acme_edge",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_hooks_preview",
+        "name": "acme-hooks",
+        "url": "acme-hooks-git-main-acme.vercel.app",
+        "projectId": "prj_acme_hooks",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_hooks_prod",
+        "name": "acme-hooks",
+        "url": "acme-hooks.vercel.app",
+        "projectId": "prj_acme_hooks",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_legal_preview",
+        "name": "acme-legal",
+        "url": "acme-legal-git-main-acme.vercel.app",
+        "projectId": "prj_acme_legal",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_legal_prod",
+        "name": "acme-legal",
+        "url": "acme-legal.vercel.app",
+        "projectId": "prj_acme_legal",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_marketing_preview",
+        "name": "acme-marketing",
+        "url": "acme-marketing-git-main-acme.vercel.app",
+        "projectId": "prj_acme_marketing",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_marketing_prod",
+        "name": "acme-marketing",
+        "url": "acme-marketing.vercel.app",
+        "projectId": "prj_acme_marketing",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_mobile_preview",
+        "name": "acme-mobile-web",
+        "url": "acme-mobile-web-git-main-acme.vercel.app",
+        "projectId": "prj_acme_mobile",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_mobile_prod",
+        "name": "acme-mobile-web",
+        "url": "acme-mobile-web.vercel.app",
+        "projectId": "prj_acme_mobile",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_og_preview",
+        "name": "acme-og-image",
+        "url": "acme-og-image-git-main-acme.vercel.app",
+        "projectId": "prj_acme_og",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_og_prod",
+        "name": "acme-og-image",
+        "url": "acme-og-image.vercel.app",
+        "projectId": "prj_acme_og",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_playground_preview",
+        "name": "acme-playground",
+        "url": "acme-playground-git-main-acme.vercel.app",
+        "projectId": "prj_acme_playground",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_playground_prod",
+        "name": "acme-playground",
+        "url": "acme-playground.vercel.app",
+        "projectId": "prj_acme_playground",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_preview_preview",
+        "name": "acme-preview",
+        "url": "acme-preview-git-main-acme.vercel.app",
+        "projectId": "prj_acme_preview",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_preview_prod",
+        "name": "acme-preview",
+        "url": "acme-preview.vercel.app",
+        "projectId": "prj_acme_preview",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_status_preview",
+        "name": "acme-status",
+        "url": "acme-status-git-main-acme.vercel.app",
+        "projectId": "prj_acme_status",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_status_prod",
+        "name": "acme-status",
+        "url": "acme-status.vercel.app",
+        "projectId": "prj_acme_status",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_storybook_preview",
+        "name": "acme-storybook",
+        "url": "acme-storybook-git-main-acme.vercel.app",
+        "projectId": "prj_acme_storybook",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_storybook_prod",
+        "name": "acme-storybook",
+        "url": "acme-storybook.vercel.app",
+        "projectId": "prj_acme_storybook",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_surveys_preview",
+        "name": "acme-surveys",
+        "url": "acme-surveys-git-main-acme.vercel.app",
+        "projectId": "prj_acme_surveys",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_surveys_prod",
+        "name": "acme-surveys",
+        "url": "acme-surveys.vercel.app",
+        "projectId": "prj_acme_surveys",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_acme_web_preview",
+        "name": "acme-web",
+        "url": "acme-web-git-main-acme.vercel.app",
+        "projectId": "prj_acme_web",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_acme_web_prod",
+        "name": "acme-web",
+        "url": "acme-web.vercel.app",
+        "projectId": "prj_acme_web",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_adatum_dns_preview",
+        "name": "adatum-dns-check",
+        "url": "adatum-dns-check-git-main-acme.vercel.app",
+        "projectId": "prj_adatum_dns",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_adatum_dns_prod",
+        "name": "adatum-dns-check",
+        "url": "adatum-dns-check.vercel.app",
+        "projectId": "prj_adatum_dns",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_brightpath_keys_preview",
+        "name": "brightpath-keys",
+        "url": "brightpath-keys-git-main-acme.vercel.app",
+        "projectId": "prj_brightpath_keys",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_brightpath_keys_prod",
+        "name": "brightpath-keys",
+        "url": "brightpath-keys.vercel.app",
+        "projectId": "prj_brightpath_keys",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_contoso_sso_preview",
+        "name": "contoso-sso-preview",
+        "url": "contoso-sso-preview-git-main-acme.vercel.app",
+        "projectId": "prj_contoso_sso",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_contoso_sso_prod",
+        "name": "contoso-sso-preview",
+        "url": "contoso-sso-preview.vercel.app",
+        "projectId": "prj_contoso_sso",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_fabrikam_scim_preview",
+        "name": "fabrikam-scim",
+        "url": "fabrikam-scim-git-main-acme.vercel.app",
+        "projectId": "prj_fabrikam_scim",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_fabrikam_scim_prod",
+        "name": "fabrikam-scim",
+        "url": "fabrikam-scim.vercel.app",
+        "projectId": "prj_fabrikam_scim",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_fernworks_export_preview",
+        "name": "fernworks-export",
+        "url": "fernworks-export-git-main-acme.vercel.app",
+        "projectId": "prj_fernworks_export",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_fernworks_export_prod",
+        "name": "fernworks-export",
+        "url": "fernworks-export.vercel.app",
+        "projectId": "prj_fernworks_export",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_northwind_portal_preview",
+        "name": "northwind-portal",
+        "url": "northwind-portal-git-main-acme.vercel.app",
+        "projectId": "prj_northwind_portal",
+        "readyState": "READY",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_northwind_portal_prod",
+        "name": "northwind-portal",
+        "url": "northwind-portal.vercel.app",
+        "projectId": "prj_northwind_portal",
+        "readyState": "READY",
+        "target": "production"
+      },
+      {
+        "id": "dpl_prj_tinyshop_pause_preview",
+        "name": "tinyshop-pause",
+        "url": "tinyshop-pause-git-main-acme.vercel.app",
+        "projectId": "prj_tinyshop_pause",
+        "readyState": "ERROR",
+        "target": "preview"
+      },
+      {
+        "id": "dpl_prj_tinyshop_pause_prod",
+        "name": "tinyshop-pause",
+        "url": "tinyshop-pause.vercel.app",
+        "projectId": "prj_tinyshop_pause",
+        "readyState": "READY",
+        "target": "production"
+      }
+    ],
+    "domains": [
+      {
+        "id": "dom_adatum",
+        "name": "adatum.acme.example",
+        "projectId": "prj_adatum_dns"
+      },
+      {
+        "id": "dom_apex",
+        "name": "acme.example",
+        "projectId": "prj_acme_web"
+      },
+      {
+        "id": "dom_auth",
+        "name": "auth.acme.example",
+        "projectId": "prj_acme_auth"
+      },
+      {
+        "id": "dom_checkout",
+        "name": "checkout.acme.example",
+        "projectId": "prj_acme_checkout"
+      },
+      {
+        "id": "dom_hooks",
+        "name": "hooks.acme.example",
+        "projectId": "prj_acme_hooks"
+      },
+      {
+        "id": "dom_prj_acme_admin",
+        "name": "acme-admin.acme.example",
+        "projectId": "prj_acme_admin"
+      },
+      {
+        "id": "dom_prj_acme_api",
+        "name": "acme-api.acme.example",
+        "projectId": "prj_acme_api"
+      },
+      {
+        "id": "dom_prj_acme_auth",
+        "name": "acme-auth.acme.example",
+        "projectId": "prj_acme_auth"
+      },
+      {
+        "id": "dom_prj_acme_billing",
+        "name": "acme-billing.acme.example",
+        "projectId": "prj_acme_billing"
+      },
+      {
+        "id": "dom_prj_acme_blog",
+        "name": "acme-blog.acme.example",
+        "projectId": "prj_acme_blog"
+      },
+      {
+        "id": "dom_prj_acme_careers",
+        "name": "acme-careers.acme.example",
+        "projectId": "prj_acme_careers"
+      },
+      {
+        "id": "dom_prj_acme_changelog",
+        "name": "acme-changelog.acme.example",
+        "projectId": "prj_acme_changelog"
+      },
+      {
+        "id": "dom_prj_acme_checkout",
+        "name": "acme-checkout.acme.example",
+        "projectId": "prj_acme_checkout"
+      },
+      {
+        "id": "dom_prj_acme_docs",
+        "name": "acme-docs.acme.example",
+        "projectId": "prj_acme_docs"
+      },
+      {
+        "id": "dom_prj_acme_edge",
+        "name": "acme-edge.acme.example",
+        "projectId": "prj_acme_edge"
+      },
+      {
+        "id": "dom_prj_acme_hooks",
+        "name": "acme-hooks.acme.example",
+        "projectId": "prj_acme_hooks"
+      },
+      {
+        "id": "dom_prj_acme_legal",
+        "name": "acme-legal.acme.example",
+        "projectId": "prj_acme_legal"
+      },
+      {
+        "id": "dom_prj_acme_marketing",
+        "name": "acme-marketing.acme.example",
+        "projectId": "prj_acme_marketing"
+      },
+      {
+        "id": "dom_prj_acme_mobile",
+        "name": "acme-mobile-web.acme.example",
+        "projectId": "prj_acme_mobile"
+      },
+      {
+        "id": "dom_prj_acme_og",
+        "name": "acme-og-image.acme.example",
+        "projectId": "prj_acme_og"
+      },
+      {
+        "id": "dom_prj_acme_playground",
+        "name": "acme-playground.acme.example",
+        "projectId": "prj_acme_playground"
+      },
+      {
+        "id": "dom_prj_acme_preview",
+        "name": "acme-preview.acme.example",
+        "projectId": "prj_acme_preview"
+      },
+      {
+        "id": "dom_prj_acme_status",
+        "name": "acme-status.acme.example",
+        "projectId": "prj_acme_status"
+      },
+      {
+        "id": "dom_prj_acme_storybook",
+        "name": "acme-storybook.acme.example",
+        "projectId": "prj_acme_storybook"
+      },
+      {
+        "id": "dom_prj_acme_surveys",
+        "name": "acme-surveys.acme.example",
+        "projectId": "prj_acme_surveys"
+      },
+      {
+        "id": "dom_prj_acme_web",
+        "name": "acme-web.acme.example",
+        "projectId": "prj_acme_web"
+      },
+      {
+        "id": "dom_prj_adatum_dns",
+        "name": "adatum-dns-check.acme.example",
+        "projectId": "prj_adatum_dns"
+      },
+      {
+        "id": "dom_prj_brightpath_keys",
+        "name": "brightpath-keys.acme.example",
+        "projectId": "prj_brightpath_keys"
+      },
+      {
+        "id": "dom_prj_contoso_sso",
+        "name": "contoso-sso-preview.acme.example",
+        "projectId": "prj_contoso_sso"
+      },
+      {
+        "id": "dom_prj_fabrikam_scim",
+        "name": "fabrikam-scim.acme.example",
+        "projectId": "prj_fabrikam_scim"
+      },
+      {
+        "id": "dom_prj_fernworks_export",
+        "name": "fernworks-export.acme.example",
+        "projectId": "prj_fernworks_export"
+      },
+      {
+        "id": "dom_prj_northwind_portal",
+        "name": "northwind-portal.acme.example",
+        "projectId": "prj_northwind_portal"
+      },
+      {
+        "id": "dom_prj_tinyshop_pause",
+        "name": "tinyshop-pause.acme.example",
+        "projectId": "prj_tinyshop_pause"
+      }
+    ],
+    "projects": [
+      {
+        "id": "prj_acme_admin",
+        "name": "acme-admin",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_api",
+        "name": "acme-api",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "createdAt": 1755770400000,
+        "updatedAt": 1756192800000,
+        "description": "SAML callback host for Contoso SSO."
+      },
+      {
+        "id": "prj_acme_auth",
+        "name": "acme-auth",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "auth.acme.example Contoso callback."
+      },
+      {
+        "id": "prj_acme_billing",
+        "name": "acme-billing",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "INV-4812 receipts and Northwind portal."
+      },
+      {
+        "id": "prj_acme_blog",
+        "name": "acme-blog",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_careers",
+        "name": "acme-careers",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_changelog",
+        "name": "acme-changelog",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_checkout",
+        "name": "acme-checkout",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "Patched checkout host."
+      },
+      {
+        "id": "prj_acme_docs",
+        "name": "acme-docs",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "createdAt": 1755856800000,
+        "updatedAt": 1756192800000
+      },
+      {
+        "id": "prj_acme_edge",
+        "name": "acme-edge",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_hooks",
+        "name": "acme-hooks",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "LakeTech webhook ingress."
+      },
+      {
+        "id": "prj_acme_legal",
+        "name": "acme-legal",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_marketing",
+        "name": "acme-marketing",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_mobile",
+        "name": "acme-mobile-web",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_og",
+        "name": "acme-og-image",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_playground",
+        "name": "acme-playground",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_preview",
+        "name": "acme-preview",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_status",
+        "name": "acme-status",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_storybook",
+        "name": "acme-storybook",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_surveys",
+        "name": "acme-surveys",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_acme_web",
+        "name": "acme-web",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "createdAt": 1755684000000,
+        "updatedAt": 1756192800000,
+        "description": "Checkout reliability incident surface."
+      },
+      {
+        "id": "prj_adatum_dns",
+        "name": "adatum-dns-check",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "TXT acme-domain-verification=adatum-7f31."
+      },
+      {
+        "id": "prj_brightpath_keys",
+        "name": "brightpath-keys",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      },
+      {
+        "id": "prj_contoso_sso",
+        "name": "contoso-sso-preview",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "contoso-eu SAML preview."
+      },
+      {
+        "id": "prj_fabrikam_scim",
+        "name": "fabrikam-scim",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "req_7Q4K2 audit export."
+      },
+      {
+        "id": "prj_fernworks_export",
+        "name": "fernworks-export",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "Priya Nair CSV export debug app."
+      },
+      {
+        "id": "prj_northwind_portal",
+        "name": "northwind-portal",
+        "accountId": "team_acme",
+        "framework": "nextjs",
+        "description": "Northwind billing portal for INV-4812."
+      },
+      {
+        "id": "prj_tinyshop_pause",
+        "name": "tinyshop-pause",
+        "accountId": "team_acme",
+        "framework": "nextjs"
+      }
+    ]
+  }
+}

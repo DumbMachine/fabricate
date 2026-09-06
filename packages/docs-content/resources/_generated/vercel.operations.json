@@ -1,0 +1,2392 @@
+{
+  "integration": "vercel",
+  "api": "Vercel v1",
+  "operations": [
+    {
+      "method": "PATCH",
+      "path": "/aliases/{id}/protection-bypass",
+      "operationId": "patchUrlProtectionBypass",
+      "summary": "Update the protection bypass for a URL"
+    },
+    {
+      "method": "POST",
+      "path": "/api-keys",
+      "operationId": "createApiKeys"
+    },
+    {
+      "method": "GET",
+      "path": "/domains/records/{recordId}",
+      "operationId": "getDomainsRecordsByRecordId"
+    },
+    {
+      "method": "PUT",
+      "path": "/domains/{domain}/records",
+      "operationId": "replaceDomainsByDomainRecords"
+    },
+    {
+      "method": "PUT",
+      "path": "/projects/transfer-request/{code}",
+      "operationId": "acceptProjectTransferRequest",
+      "summary": "Accept project transfer request"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{idOrName}/transfer-request",
+      "operationId": "createProjectTransferRequest",
+      "summary": "Create project transfer request"
+    },
+    {
+      "method": "POST",
+      "path": "/speed-insights/toggle",
+      "operationId": "createSpeedInsightsToggle"
+    },
+    {
+      "method": "POST",
+      "path": "/storage/stores/blob",
+      "operationId": "createStorageStoresBlob",
+      "summary": "Create a Blob store"
+    },
+    {
+      "method": "DELETE",
+      "path": "/storage/stores/blob/{id}",
+      "operationId": "deleteStorageStoresBlobById",
+      "summary": "Delete a Blob store"
+    },
+    {
+      "method": "GET",
+      "path": "/storage/stores/{id}",
+      "operationId": "getStorageStoresById",
+      "summary": "Get a store"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/access-groups",
+      "operationId": "listAccessGroups",
+      "summary": "List access groups for a team, project or member"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/access-groups",
+      "operationId": "createAccessGroup",
+      "summary": "Creates an access group"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/access-groups/{accessGroupIdOrName}/projects",
+      "operationId": "createAccessGroupProject",
+      "summary": "Create an access group project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/access-groups/{accessGroupIdOrName}/projects/{projectId}",
+      "operationId": "readAccessGroupProject",
+      "summary": "Reads an access group project"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/access-groups/{accessGroupIdOrName}/projects/{projectId}",
+      "operationId": "updateAccessGroupProject",
+      "summary": "Update an access group project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/access-groups/{accessGroupIdOrName}/projects/{projectId}",
+      "operationId": "deleteAccessGroupProject",
+      "summary": "Delete an access group project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/access-groups/{idOrName}",
+      "operationId": "readAccessGroup",
+      "summary": "Reads an access group"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/access-groups/{idOrName}",
+      "operationId": "updateAccessGroup",
+      "summary": "Update an access group"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/access-groups/{idOrName}",
+      "operationId": "deleteAccessGroup",
+      "summary": "Deletes an access group"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/access-groups/{idOrName}/members",
+      "operationId": "listAccessGroupMembers",
+      "summary": "List members of an access group"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/access-groups/{idOrName}/projects",
+      "operationId": "listAccessGroupProjects",
+      "summary": "List projects of an access group"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/ai-gateway/rules",
+      "operationId": "listAiGatewayRules",
+      "summary": "List rules"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai-gateway/rules",
+      "operationId": "createAiGatewayRule",
+      "summary": "Create rule"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/ai-gateway/rules",
+      "operationId": "updateAiGatewayRule",
+      "summary": "Update rule"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/ai-gateway/rules",
+      "operationId": "deleteAiGatewayRule",
+      "summary": "Delete rule"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/ai-gateway/virtual-model-configs",
+      "operationId": "getAiGatewayVirtualModelConfig",
+      "summary": "Get virtual model config"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai-gateway/virtual-model-configs",
+      "operationId": "createAiGatewayVirtualModelConfig",
+      "summary": "Create virtual model config"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/ai-gateway/virtual-model-configs",
+      "operationId": "updateAiGatewayVirtualModelConfig",
+      "summary": "Update virtual model config"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/ai-gateway/virtual-model-configs",
+      "operationId": "deleteAiGatewayVirtualModelConfig",
+      "summary": "Delete virtual model config"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/ai-gateway/virtual-model-configs/list",
+      "operationId": "listAiGatewayVirtualModelConfigs",
+      "summary": "List virtual model configs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/billing/buy",
+      "operationId": "buyCredits",
+      "summary": "Purchase credits"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/charges",
+      "operationId": "listBillingCharges",
+      "summary": "List FOCUS billing charges"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/billing/contract-commitments",
+      "operationId": "listContractCommitments",
+      "summary": "List FOCUS contract commitments"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/bulk-redirects",
+      "operationId": "getRedirects",
+      "summary": "Gets project-level redirects."
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/bulk-redirects",
+      "operationId": "stageRedirects",
+      "summary": "Stages new redirects for a project."
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/bulk-redirects",
+      "operationId": "editRedirect",
+      "summary": "Edit a project-level redirect."
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/bulk-redirects",
+      "operationId": "deleteRedirects",
+      "summary": "Delete project-level redirects."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/bulk-redirects/restore",
+      "operationId": "restoreRedirects",
+      "summary": "Restore staged project-level redirects to their production version."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/bulk-redirects/versions",
+      "operationId": "getVersions",
+      "summary": "Get the version history for a project's redirects."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/bulk-redirects/versions",
+      "operationId": "updateVersion",
+      "summary": "Promote a staging version to production or restore a previous production version."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connect/authorize/{connector}",
+      "operationId": "createConnectorAuthorizationRequest",
+      "summary": "Create a Connect authorization request"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connect/connectors",
+      "operationId": "createConnector",
+      "summary": "Create a connector"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/connect/networks",
+      "operationId": "listNetworks",
+      "summary": "List Secure Compute networks"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connect/networks",
+      "operationId": "createNetwork",
+      "summary": "Create a Secure Compute network"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/connect/networks/{networkId}",
+      "operationId": "readNetwork",
+      "summary": "Read a Secure Compute network"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/connect/networks/{networkId}",
+      "operationId": "updateNetwork",
+      "summary": "Update a Secure Compute network"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/connect/networks/{networkId}",
+      "operationId": "deleteNetwork",
+      "summary": "Delete a Secure Compute network"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connect/token/{connector}",
+      "operationId": "getConnectorToken",
+      "summary": "Get a Connect token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/deployments/{deploymentId}/checks",
+      "operationId": "getAllChecks",
+      "summary": "Retrieve a list of all checks"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/deployments/{deploymentId}/checks",
+      "operationId": "createCheck",
+      "summary": "Creates a new Check"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/deployments/{deploymentId}/checks/{checkId}",
+      "operationId": "getCheck",
+      "summary": "Get a single check"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/deployments/{deploymentId}/checks/{checkId}",
+      "operationId": "updateCheck",
+      "summary": "Update a check"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/deployments/{deploymentId}/checks/{checkId}/rerequest",
+      "operationId": "rerequestCheck",
+      "summary": "Rerequest a check"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/deployments/{deploymentId}/feature-flags",
+      "operationId": "getDeploymentFeatureFlags",
+      "summary": "Retrieve the feature flags of a deployment"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/deployments/{deploymentId}/integrations/{integrationConfigurationId}/resources/{resourceId}/actions/{action}",
+      "operationId": "update-integration-deployment-action",
+      "summary": "Update deployment integration action"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/domains/records/{recordId}",
+      "operationId": "updateRecord",
+      "summary": "Update an existing DNS record"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/domains/{domain}/project-domains",
+      "operationId": "getDomainProjectDomains",
+      "summary": "List Project Domains by Apex Domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/drains",
+      "operationId": "getDrains",
+      "summary": "Retrieve a list of all Drains"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/drains",
+      "operationId": "createDrain",
+      "summary": "Create a new Drain"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/drains/test",
+      "operationId": "testDrain",
+      "summary": "Validate Drain delivery configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/drains/{id}",
+      "operationId": "getDrain",
+      "summary": "Find a Drain by id"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/drains/{id}",
+      "operationId": "updateDrain",
+      "summary": "Update an existing Drain"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/drains/{id}",
+      "operationId": "deleteDrain",
+      "summary": "Delete a drain"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/edge-cache/dangerously-delete-by-src-images",
+      "operationId": "dangerouslyDeleteBySrcImages",
+      "summary": "Dangerously delete by source image"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/edge-cache/dangerously-delete-by-tags",
+      "operationId": "dangerouslyDeleteByTags",
+      "summary": "Dangerously delete by tag"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/edge-cache/invalidate-by-src-images",
+      "operationId": "invalidateBySrcImages",
+      "summary": "Invalidate by source image"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/edge-cache/invalidate-by-tags",
+      "operationId": "invalidateByTags",
+      "summary": "Invalidate by tag"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/env",
+      "operationId": "listSharedEnvVariable",
+      "summary": "Lists all Shared Environment Variables for a team"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/env",
+      "operationId": "createSharedEnvVariable",
+      "summary": "Create one or more shared environment variables"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/env",
+      "operationId": "updateSharedEnvVariable",
+      "summary": "Updates one or more shared environment variables"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/env",
+      "operationId": "deleteSharedEnvVariable",
+      "summary": "Delete one or more Env Var"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/env/{id}",
+      "operationId": "getSharedEnvVar",
+      "summary": "Retrieve the decrypted value of a Shared Environment Variable by id."
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/env/{id}/unlink/{projectId}",
+      "operationId": "unlinkSharedEnvVariable",
+      "summary": "Disconnects a shared environment variable for a given project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/types",
+      "operationId": "listEventTypes",
+      "summary": "List Event Types"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config",
+      "operationId": "getEdgeConfigs",
+      "summary": "Get Global Configs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/global-config",
+      "operationId": "createEdgeConfig",
+      "summary": "Create a Global Config"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}",
+      "operationId": "getEdgeConfig",
+      "summary": "Get a Global Config"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/global-config/{edgeConfigId}",
+      "operationId": "updateEdgeConfig",
+      "summary": "Update a Global Config"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/global-config/{edgeConfigId}",
+      "operationId": "deleteEdgeConfig",
+      "summary": "Delete a Global Config"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/backups",
+      "operationId": "getEdgeConfigBackups",
+      "summary": "Get Global Config backups"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}",
+      "operationId": "getEdgeConfigBackup",
+      "summary": "Get Global Config backup"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/global-config/{edgeConfigId}/backups/{edgeConfigBackupVersionId}/restore",
+      "operationId": "restoreEdgeConfigBackup",
+      "summary": "Restore Global Config backup"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/item/{edgeConfigItemKey}",
+      "operationId": "getEdgeConfigItem",
+      "summary": "Get a Global Config item"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/items",
+      "operationId": "getEdgeConfigItems",
+      "summary": "Get Global Config items"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/global-config/{edgeConfigId}/items",
+      "operationId": "patchEdgeConfigItems",
+      "summary": "Update Global Config items in batch"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/schema",
+      "operationId": "getEdgeConfigSchema",
+      "summary": "Get Global Config schema"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/global-config/{edgeConfigId}/schema",
+      "operationId": "patchEdgeConfigSchema",
+      "summary": "Update Global Config schema"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/global-config/{edgeConfigId}/schema",
+      "operationId": "deleteEdgeConfigSchema",
+      "summary": "Delete a Global Config's schema"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/global-config/{edgeConfigId}/token",
+      "operationId": "createEdgeConfigToken",
+      "summary": "Create a Global Config token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/token/{token}",
+      "operationId": "getEdgeConfigToken",
+      "summary": "Get Global Config token meta data"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/global-config/{edgeConfigId}/tokens",
+      "operationId": "getEdgeConfigTokens",
+      "summary": "Get all tokens of a Global Config"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/global-config/{edgeConfigId}/tokens",
+      "operationId": "deleteEdgeConfigTokens",
+      "summary": "Delete one or more Global Config tokens"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/installations/{integrationConfigurationId}",
+      "operationId": "update-installation",
+      "summary": "Update Installation"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/installations/{integrationConfigurationId}/account",
+      "operationId": "get-account-info",
+      "summary": "Get Account Information"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/billing",
+      "operationId": "submit-billing-data",
+      "summary": "Submit Billing Data"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/billing/balance",
+      "operationId": "submit-prepayment-balances",
+      "summary": "Submit Prepayment Balances"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/billing/finalize",
+      "operationId": "finalize-installation",
+      "summary": "Finalize Installation"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/billing/invoices",
+      "operationId": "submit-invoice",
+      "summary": "Submit Invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}",
+      "operationId": "get-invoice",
+      "summary": "Get Invoice"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId}/actions",
+      "operationId": "update-invoice",
+      "summary": "Invoice Actions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/credentials/revoke",
+      "operationId": "revoke-installation-credential",
+      "summary": "Revoke Installation Credential"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/credentials/rotate",
+      "operationId": "rotate-installation-credential",
+      "summary": "Rotate Installation Credential"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/events",
+      "operationId": "create-event",
+      "summary": "Create Event"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/installations/{integrationConfigurationId}/member/{memberId}",
+      "operationId": "get-member",
+      "summary": "Get Member Information"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/installations/{integrationConfigurationId}/products/{integrationProductIdOrSlug}/resources/{resourceId}/secrets",
+      "operationId": "update-resource-secrets",
+      "summary": "Deprecated: true. Update Resource Secrets (Deprecated)"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/installations/{integrationConfigurationId}/resources",
+      "operationId": "get-integration-resources",
+      "summary": "Get Integration Resources"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}",
+      "operationId": "get-integration-resource",
+      "summary": "Get Integration Resource"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}",
+      "operationId": "import-resource",
+      "summary": "Import Resource"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}",
+      "operationId": "update-resource",
+      "summary": "Update Resource"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}",
+      "operationId": "delete-integration-resource",
+      "summary": "Delete Integration Resource"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config",
+      "operationId": "getInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig",
+      "summary": "Get the data of a user-provided Global Config"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config",
+      "operationId": "replaceInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig",
+      "summary": "Push data into a user-provided Global Config"
+    },
+    {
+      "method": "HEAD",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/global-config",
+      "operationId": "headInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationGlobalConfig",
+      "summary": "Get the data of a user-provided Global Config"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items",
+      "operationId": "createInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItems",
+      "summary": "Create one or multiple experimentation items"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}",
+      "operationId": "updateInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId",
+      "summary": "Patch an existing experimentation item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/experimentation/items/{itemId}",
+      "operationId": "deleteInstallationsByIntegrationConfigurationIdResourcesByResourceIdExperimentationItemsByItemId",
+      "summary": "Delete an existing experimentation item"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/installations/{integrationConfigurationId}/resources/{resourceId}/secrets",
+      "operationId": "update-resource-secrets-by-id",
+      "summary": "Update Resource Secrets"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/integrations/configuration/{id}",
+      "operationId": "getConfiguration",
+      "summary": "Retrieve an integration configuration"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/integrations/configuration/{id}",
+      "operationId": "deleteConfiguration",
+      "summary": "Delete an integration configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/integrations/configuration/{id}/products",
+      "operationId": "getConfigurationProducts",
+      "summary": "List products for integration configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/integrations/configurations",
+      "operationId": "getConfigurations",
+      "summary": "Get configurations for the authenticated user or team"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/integrations/git-namespaces",
+      "operationId": "gitNamespaces",
+      "summary": "List git namespaces by provider"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/integrations/installations/{integrationConfigurationId}/resources/{resourceId}/connections",
+      "operationId": "connectIntegrationResourceToProject",
+      "summary": "Connect integration resource to project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/integrations/integration/{integrationIdOrSlug}/products/{productIdOrSlug}/plans",
+      "operationId": "getBillingPlans",
+      "summary": "List integration billing plans"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/integrations/log-drains/{id}",
+      "operationId": "deleteIntegrationLogDrain",
+      "summary": "Deletes the Integration log drain with the provided `id` (deprecated)"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/integrations/search-repo",
+      "operationId": "searchRepo",
+      "summary": "List git repositories linked to namespace by provider"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/integrations/sso/token",
+      "operationId": "exchange-sso-token",
+      "summary": "SSO Token Exchange"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/kms/issuers",
+      "operationId": "listKmsIssuers",
+      "summary": "List issuers"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers",
+      "operationId": "createKmsIssuer",
+      "summary": "Create an issuer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/kms/issuers/{issuerId}",
+      "operationId": "getKmsIssuer",
+      "summary": "Get an issuer"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/kms/issuers/{issuerId}",
+      "operationId": "updateKmsIssuer",
+      "summary": "Update an issuer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/kms/issuers/{issuerId}",
+      "operationId": "deleteKmsIssuer",
+      "summary": "Delete an issuer"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers/{issuerId}/keys",
+      "operationId": "createKmsSigningKey",
+      "summary": "Create a signing key"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers/{issuerId}/keys/{keyId}/activate",
+      "operationId": "activateKmsSigningKey",
+      "summary": "Activate a signing key"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers/{issuerId}/keys/{keyId}/revoke",
+      "operationId": "revokeKmsSigningKey",
+      "summary": "Revoke a signing key"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers/{issuerId}/policies",
+      "operationId": "createKmsIssuerPolicy",
+      "summary": "Create an issuer policy"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/kms/issuers/{issuerId}/policies/{kind}/{policyKey}",
+      "operationId": "updateKmsIssuerPolicy",
+      "summary": "Update an issuer policy"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/kms/issuers/{issuerId}/policies/{kind}/{policyKey}",
+      "operationId": "deleteKmsIssuerPolicy",
+      "summary": "Delete an issuer policy"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers/{issuerId}/sign/message",
+      "operationId": "signKmsMessage",
+      "summary": "Sign a message"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/kms/issuers/{issuerId}/sign/token",
+      "operationId": "signKmsToken",
+      "summary": "Sign a token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/log-drains",
+      "operationId": "getAllLogDrains",
+      "summary": "Retrieves a list of all the Log Drains (deprecated)"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/log-drains",
+      "operationId": "createConfigurableLogDrain",
+      "summary": "Creates a Configurable Log Drain (deprecated)"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/log-drains/{id}",
+      "operationId": "getConfigurableLogDrain",
+      "summary": "Retrieves a Configurable Log Drain (deprecated)"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/log-drains/{id}",
+      "operationId": "deleteConfigurableLogDrain",
+      "summary": "Deletes a Configurable Log Drain (deprecated)"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/microfrontends/group",
+      "operationId": "createMicrofrontendsGroupWithApplications",
+      "summary": "Create a microfrontends group with applications"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/microfrontends/groups",
+      "operationId": "getMicrofrontendsGroups",
+      "summary": "List microfrontends groups"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/microfrontends/groups/{groupId}/projects",
+      "operationId": "getMicrofrontendsInGroup",
+      "summary": "List projects in a microfrontends group"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/microfrontends/projects/{projectIdOrName}/production-mfe-config",
+      "operationId": "getMicrofrontendsConfigForProject",
+      "summary": "Get microfrontends config for a project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/microfrontends/{deploymentId}/config",
+      "operationId": "getMicrofrontendsConfig",
+      "summary": "Get microfrontends config for a deployment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/observability/manage/configuration/projects",
+      "operationId": "getObservabilityConfigurationProjects",
+      "summary": "Lists disabled Observability Plus projects"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/observability/manage/configuration/projects/{projectIdOrName}",
+      "operationId": "updateObservabilityConfigurationProject",
+      "summary": "Updates a disabled Observability Plus project setting"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/traces",
+      "operationId": "getProjectTrace",
+      "summary": "Get a project trace by request ID"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/traces/session",
+      "operationId": "createTraceSession",
+      "summary": "Create a trace session token for a deployment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/avatar",
+      "operationId": "uploadProjectAvatar",
+      "summary": "Upload a project avatar"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/domains/{domain}/move",
+      "operationId": "moveProjectDomain",
+      "summary": "Move a project domain"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{idOrName}/env",
+      "operationId": "batchRemoveProjectEnv",
+      "summary": "Batch remove environment variables"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{idOrName}/env/{id}",
+      "operationId": "getProjectEnv",
+      "summary": "Retrieve the decrypted value of an environment variable of a project by id"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{idOrName}/members",
+      "operationId": "getProjectMembers",
+      "summary": "List project members"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/members",
+      "operationId": "addProjectMember",
+      "summary": "Adds a new member to a project."
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{idOrName}/members/{uid}",
+      "operationId": "removeProjectMember",
+      "summary": "Remove a Project Member"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{idOrName}/protection-bypass",
+      "operationId": "updateProjectProtectionBypass",
+      "summary": "Update Protection Bypass for Automation"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{idOrName}/rolling-release",
+      "operationId": "getRollingRelease",
+      "summary": "Get the active rolling release information for a project"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/rolling-release/approve-stage",
+      "operationId": "approveRollingReleaseStage",
+      "summary": "Update the active rolling release to the next stage for a project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{idOrName}/rolling-release/billing",
+      "operationId": "getRollingReleaseBillingStatus",
+      "summary": "Get rolling release billing status"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/rolling-release/complete",
+      "operationId": "completeRollingRelease",
+      "summary": "Complete the rolling release for the project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{idOrName}/rolling-release/config",
+      "operationId": "getRollingReleaseConfig",
+      "summary": "Get rolling release configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{idOrName}/rolling-release/config",
+      "operationId": "updateRollingReleaseConfig",
+      "summary": "Update the rolling release settings for the project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{idOrName}/rolling-release/config",
+      "operationId": "deleteRollingReleaseConfig",
+      "summary": "Delete rolling release configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/rolling-release/start",
+      "operationId": "startRollingRelease",
+      "summary": "Start a rolling release for the project"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{idOrName}/shared-connect-links",
+      "operationId": "updateStaticIps",
+      "summary": "Configures Static IPs for a project"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{idOrName}/token",
+      "operationId": "getProjectToken",
+      "summary": "Generate a project OIDC token"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/flags",
+      "operationId": "listFlags",
+      "summary": "List flags"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/flags",
+      "operationId": "createFlag",
+      "summary": "Create a flag"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}",
+      "operationId": "getFlag",
+      "summary": "Get a flag"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}",
+      "operationId": "updateFlag",
+      "summary": "Update a flag"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}",
+      "operationId": "deleteFlag",
+      "summary": "Delete a flag"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/flags/{flagIdOrSlug}/versions",
+      "operationId": "listFlagVersions",
+      "summary": "List flag versions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/sdk-keys",
+      "operationId": "getSdkKeys",
+      "summary": "Get all SDK keys"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/sdk-keys",
+      "operationId": "createSdkKey",
+      "summary": "Create an SDK key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/sdk-keys/{hashKey}",
+      "operationId": "deleteSdkKey",
+      "summary": "Delete an SDK key"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/segments",
+      "operationId": "listFlagSegments",
+      "summary": "List segments"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/segments",
+      "operationId": "createFlagSegment",
+      "summary": "Create a segment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}",
+      "operationId": "getFlagSegment",
+      "summary": "Get a segment"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}",
+      "operationId": "updateFlagSegment",
+      "summary": "Update a segment"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/segments/{segmentIdOrSlug}",
+      "operationId": "deleteFlagSegment",
+      "summary": "Delete a segment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/settings",
+      "operationId": "getFlagSettings",
+      "summary": "Get project flag settings"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{projectIdOrName}/feature-flags/settings",
+      "operationId": "updateFlagSettings",
+      "summary": "Update project flag settings"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectId}/deployments/{deploymentId}/runtime-logs",
+      "operationId": "getRuntimeLogs",
+      "summary": "Get logs for a deployment"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{projectId}/microfrontends",
+      "operationId": "updateMicrofrontends",
+      "summary": "Update the microfrontends settings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/pause",
+      "operationId": "pauseProject",
+      "summary": "Pause a project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectId}/promote/aliases",
+      "operationId": "listPromoteAliases",
+      "summary": "Gets a list of aliases with status for the current promote"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/rollback/{deploymentId}",
+      "operationId": "requestRollback",
+      "summary": "Point production traffic to a previous production deployment by ID"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{projectId}/rollback/{deploymentId}/update-description",
+      "operationId": "updateProjectsByProjectIdRollbackByDeploymentIdUpdateDescription",
+      "summary": "Updates the description for a rollback"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectId}/routes",
+      "operationId": "getRoutes",
+      "summary": "Get project routing rules"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/routes",
+      "operationId": "addRoute",
+      "summary": "Add a routing rule"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/projects/{projectId}/routes",
+      "operationId": "stageRoutes",
+      "summary": "Stage routing rules"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/projects/{projectId}/routes",
+      "operationId": "deleteRoutes",
+      "summary": "Delete routing rules"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/routes/generate",
+      "operationId": "generateRoute",
+      "summary": "Generate a routing rule from natural language"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{projectId}/routes/versions",
+      "operationId": "getRouteVersions",
+      "summary": "Get routing rule version history"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/routes/versions",
+      "operationId": "updateRouteVersions",
+      "summary": "Promote, restore, or discard a routing rule version"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/projects/{projectId}/routes/{routeId}",
+      "operationId": "editRoute",
+      "summary": "Edit a routing rule"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/unpause",
+      "operationId": "unpauseProject",
+      "summary": "Unpause a project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/query/web-analytics/events/aggregate",
+      "operationId": "aggregateEvents",
+      "summary": "Aggregates custom events"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/query/web-analytics/events/count",
+      "operationId": "countEvents",
+      "summary": "Counts custom events"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/query/web-analytics/visits/aggregate",
+      "operationId": "aggregatePageviews",
+      "summary": "Aggregates page views"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/query/web-analytics/visits/count",
+      "operationId": "countPageviews",
+      "summary": "Counts page views"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/registrar/domains/availability",
+      "operationId": "getBulkAvailability",
+      "summary": "Get availability for multiple domains"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/registrar/domains/buy",
+      "operationId": "buyDomains",
+      "summary": "Buy multiple domains"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/domains/{domain}/auth-code",
+      "operationId": "getDomainAuthCode",
+      "summary": "Get the auth code for a domain"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/registrar/domains/{domain}/auto-renew",
+      "operationId": "updateDomainAutoRenew",
+      "summary": "Update auto-renew for a domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/domains/{domain}/availability",
+      "operationId": "getDomainAvailability",
+      "summary": "Get availability for a domain"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/registrar/domains/{domain}/buy",
+      "operationId": "buySingleDomain",
+      "summary": "Buy a domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/domains/{domain}/contact-info/schema",
+      "operationId": "getContactInfoSchema",
+      "summary": "Get contact info schema"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/domains/{domain}/contact-verification",
+      "operationId": "getDomainContactVerification",
+      "summary": "Get contact verification status for a domain"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/registrar/domains/{domain}/nameservers",
+      "operationId": "updateDomainNameservers",
+      "summary": "Update nameservers for a domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/domains/{domain}/price",
+      "operationId": "getDomainPrice",
+      "summary": "Get price data for a domain"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/registrar/domains/{domain}/renew",
+      "operationId": "renewDomain",
+      "summary": "Renew a domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/domains/{domain}/transfer",
+      "operationId": "getDomainTransferIn",
+      "summary": "Get a domain's transfer status"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/registrar/domains/{domain}/transfer",
+      "operationId": "transferInDomain",
+      "summary": "Transfer-in a domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/orders/{orderId}",
+      "operationId": "getOrder",
+      "summary": "Get a domain order"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/tlds/supported",
+      "operationId": "getSupportedTlds",
+      "summary": "Get supported TLDs"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/tlds/{tld}",
+      "operationId": "getTld",
+      "summary": "Get TLD"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/registrar/tlds/{tld}/price",
+      "operationId": "getTldPrice",
+      "summary": "Get TLD price data"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/security/attack-mode",
+      "operationId": "updateAttackChallengeMode",
+      "summary": "Update Attack Challenge mode"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/security/firewall/attack-status",
+      "operationId": "getActiveAttackStatus",
+      "summary": "Read active attack data"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/security/firewall/bypass",
+      "operationId": "getBypassIp",
+      "summary": "Read System Bypass"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/security/firewall/bypass",
+      "operationId": "addBypassIp",
+      "summary": "Create System Bypass Rule"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/security/firewall/bypass",
+      "operationId": "removeBypassIp",
+      "summary": "Remove System Bypass Rule"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/security/firewall/config",
+      "operationId": "getSecurityFirewallConfig",
+      "summary": "Returns activated WAF config"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/security/firewall/config",
+      "operationId": "putFirewallConfig",
+      "summary": "Put Firewall Configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/security/firewall/config",
+      "operationId": "updateFirewallConfig",
+      "summary": "Update Firewall Configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/security/firewall/config/generate-rule",
+      "operationId": "generateFirewallRule",
+      "summary": "Generate a firewall rule from natural language"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/security/firewall/config/{configVersion}",
+      "operationId": "getFirewallConfig",
+      "summary": "Read Firewall Configuration"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/security/firewall/config/{configVersion}",
+      "operationId": "deleteSecurityFirewallConfigByConfigVersion",
+      "summary": "Returns activated WAF config"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/security/firewall/config/{configVersion}/activate",
+      "operationId": "createSecurityFirewallConfigByConfigVersionActivate",
+      "summary": "Returns activated WAF config"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/security/firewall/events",
+      "operationId": "getSecurityFirewallEvents",
+      "summary": "Read Firewall Actions by Project"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/storage/stores/integration/direct",
+      "operationId": "createIntegrationStoreDirect",
+      "summary": "Create integration store (free and paid plans)"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/teams",
+      "operationId": "createTeam",
+      "summary": "Create a Team"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/teams/{teamId}",
+      "operationId": "deleteTeam",
+      "summary": "Delete a Team"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/teams/{teamId}/dsync-roles",
+      "operationId": "postTeamDsyncRoles",
+      "summary": "Update Team Directory Sync Role Mappings"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{teamId}/feature-flags/flags",
+      "operationId": "listTeamFlags",
+      "summary": "List all flags for a team"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{teamId}/feature-flags/settings",
+      "operationId": "listTeamFlagSettings",
+      "summary": "List team project flag settings"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/teams/{teamId}/invites/{inviteId}",
+      "operationId": "deleteTeamInviteCode",
+      "summary": "Delete a Team invite code"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/teams/{teamId}/members/teams/join",
+      "operationId": "joinTeam",
+      "summary": "Join a team"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/teams/{teamId}/members/{uid}",
+      "operationId": "updateTeamMember",
+      "summary": "Update a Team Member"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/teams/{teamId}/members/{uid}",
+      "operationId": "removeTeamMember",
+      "summary": "Remove a Team Member"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/teams/{teamId}/microfrontends/{groupId}",
+      "operationId": "updateMicrofrontendsGroup",
+      "summary": "Update a microfrontends group"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/teams/{teamId}/microfrontends/{groupId}",
+      "operationId": "deleteMicrofrontendsGroup",
+      "summary": "Delete a microfrontends group"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/teams/{teamId}/request",
+      "operationId": "requestAccessToTeam",
+      "summary": "Request access to a team"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{teamId}/request/{userId}",
+      "operationId": "getTeamAccessRequest",
+      "summary": "Get access request status"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/user",
+      "operationId": "requestDelete",
+      "summary": "Delete User Account"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository",
+      "operationId": "listRepositories",
+      "summary": "List repositories"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/vcr/repository",
+      "operationId": "createRepository",
+      "summary": "Create a repository"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository/{idOrName}",
+      "operationId": "getRepository",
+      "summary": "Get a repository"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/vcr/repository/{idOrName}",
+      "operationId": "deleteRepository",
+      "summary": "Delete a repository"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository/{idOrName}/images",
+      "operationId": "listRepositoryImages",
+      "summary": "List repository images"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository/{idOrName}/images/{imageIdOrDigest}",
+      "operationId": "getRepositoryImage",
+      "summary": "Get a repository image"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/vcr/repository/{idOrName}/images/{imageId}",
+      "operationId": "deleteRepositoryImage",
+      "summary": "Delete a repository image"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository/{idOrName}/permissions",
+      "operationId": "listRepositoryPermissions",
+      "summary": "List repository permissions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/vcr/repository/{idOrName}/permissions",
+      "operationId": "addRepositoryPermission",
+      "summary": "Add a repository permission"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/vcr/repository/{idOrName}/permissions",
+      "operationId": "removeRepositoryPermission",
+      "summary": "Remove a repository permission"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/vcr/repository/{idOrName}/permissions/all",
+      "operationId": "clearRepositoryPermissions",
+      "summary": "Clear all repository permissions"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository/{idOrName}/tags",
+      "operationId": "listRepositoryTags",
+      "summary": "List repository tags"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vcr/repository/{idOrName}/tags/{tag}",
+      "operationId": "getRepositoryTag",
+      "summary": "Get a repository tag"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/webhooks",
+      "operationId": "getWebhooks",
+      "summary": "Get a list of webhooks"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/webhooks",
+      "operationId": "createWebhook",
+      "summary": "Creates a webhook"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/webhooks/{id}",
+      "operationId": "getWebhook",
+      "summary": "Get a webhook"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/webhooks/{id}",
+      "operationId": "deleteWebhook",
+      "summary": "Deletes a webhook"
+    },
+    {
+      "method": "GET",
+      "path": "/v10/projects",
+      "operationId": "getProjects",
+      "summary": "Retrieve a list of projects"
+    },
+    {
+      "method": "POST",
+      "path": "/v10/projects/{idOrName}/domains",
+      "operationId": "addProjectDomain",
+      "summary": "Add a domain to a project"
+    },
+    {
+      "method": "GET",
+      "path": "/v10/projects/{idOrName}/env",
+      "operationId": "filterProjectEnvs",
+      "summary": "Retrieve the environment variables of a project by id or name"
+    },
+    {
+      "method": "POST",
+      "path": "/v10/projects/{idOrName}/env",
+      "operationId": "createProjectEnv",
+      "summary": "Create one or more environment variables"
+    },
+    {
+      "method": "POST",
+      "path": "/v10/projects/{projectId}/promote/{deploymentId}",
+      "operationId": "requestPromote",
+      "summary": "Point production traffic to a given deployment"
+    },
+    {
+      "method": "POST",
+      "path": "/v11/projects",
+      "operationId": "createProject",
+      "summary": "Create a new project"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v12/deployments/{id}/cancel",
+      "operationId": "cancelDeployment",
+      "summary": "Cancel a deployment"
+    },
+    {
+      "method": "POST",
+      "path": "/v13/deployments",
+      "operationId": "createDeployment",
+      "summary": "Create a new deployment"
+    },
+    {
+      "method": "GET",
+      "path": "/v13/deployments/{idOrUrl}",
+      "operationId": "getDeployment",
+      "summary": "Get a deployment by ID or URL"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v13/deployments/{id}",
+      "operationId": "deleteDeployment",
+      "summary": "Delete a Deployment"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/",
+      "operationId": "getRoot",
+      "summary": "Check registry API version support"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/aliases/{aliasId}",
+      "operationId": "deleteAlias",
+      "summary": "Delete an Alias"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/deployments/{deploymentId}/check-runs",
+      "operationId": "listDeploymentCheckRuns",
+      "summary": "List check runs for a deployment"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/deployments/{deploymentId}/check-runs",
+      "operationId": "createDeploymentCheckRun",
+      "summary": "Create a check run"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/deployments/{deploymentId}/check-runs/{checkRunId}",
+      "operationId": "getDeploymentCheckRun",
+      "summary": "Get a check run"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/deployments/{deploymentId}/check-runs/{checkRunId}",
+      "operationId": "updateDeploymentCheckRun",
+      "summary": "Update a check run"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/deployments/{id}/aliases",
+      "operationId": "listDeploymentAliases",
+      "summary": "List Deployment Aliases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/deployments/{id}/aliases",
+      "operationId": "assignAlias",
+      "summary": "Assign an Alias"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/domains/{domain}/records",
+      "operationId": "createRecord",
+      "summary": "Create a DNS record"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/domains/{domain}/records/{recordId}",
+      "operationId": "removeRecord",
+      "summary": "Delete a DNS record"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/files",
+      "operationId": "uploadFile",
+      "summary": "Upload Deployment Files"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/integrations/log-drains",
+      "operationId": "getIntegrationLogDrains",
+      "summary": "Retrieves a list of Integration log drains (deprecated)"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/integrations/log-drains",
+      "operationId": "createLogDrain",
+      "summary": "Creates a new Integration Log Drain (deprecated)"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/observability/query",
+      "operationId": "createObservabilityQuery"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/observability/schema",
+      "operationId": "getObservabilitySchema"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/observability/schema/{metricId}",
+      "operationId": "getObservabilitySchemaByMetricId"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/{projectIdOrName}/checks",
+      "operationId": "listProjectChecks",
+      "summary": "List all checks for a project"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/projects/{projectIdOrName}/checks",
+      "operationId": "createProjectCheck",
+      "summary": "Create a check"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/{projectIdOrName}/checks/{checkId}",
+      "operationId": "getProjectCheck",
+      "summary": "Get a check"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/projects/{projectIdOrName}/checks/{checkId}",
+      "operationId": "updateProjectCheck",
+      "summary": "Update a check"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/projects/{projectIdOrName}/checks/{checkId}",
+      "operationId": "deleteProjectCheck",
+      "summary": "Delete a check"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/{projectIdOrName}/checks/{checkId}/runs",
+      "operationId": "listCheckRuns",
+      "summary": "List runs for a check"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/projects/{projectIdOrName}/feature-flags/flags",
+      "operationId": "listFlagsV2",
+      "summary": "List flags"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes",
+      "operationId": "listSandboxes",
+      "summary": "List sandboxes"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes",
+      "operationId": "createSandboxesV2",
+      "summary": "Create a named sandbox"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/drives",
+      "operationId": "listDrives",
+      "summary": "List drives"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/drives/{name}",
+      "operationId": "getOrCreateDrive",
+      "summary": "Get or create a drive"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/sandboxes/drives/{name}",
+      "operationId": "deleteDrive",
+      "summary": "Delete a drive"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/sessions",
+      "operationId": "listSessions",
+      "summary": "List sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/sessions/{sessionId}",
+      "operationId": "getSession",
+      "summary": "Get a session"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/sessions/{sessionId}/cmd",
+      "operationId": "listSessionCommands",
+      "summary": "List commands"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/cmd",
+      "operationId": "runSessionCommand",
+      "summary": "Execute a command"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}",
+      "operationId": "getSessionCommand",
+      "summary": "Get a command"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/kill",
+      "operationId": "killSessionCommand",
+      "summary": "Kill a command"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/sessions/{sessionId}/cmd/{cmdId}/logs",
+      "operationId": "getSessionCommandLogs",
+      "summary": "Stream command logs"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/extend-timeout",
+      "operationId": "extendSessionTimeout",
+      "summary": "Extend session timeout"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/fs/mkdir",
+      "operationId": "createSessionDirectory",
+      "summary": "Create a directory"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/fs/read",
+      "operationId": "readSessionFile",
+      "summary": "Read a file"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/fs/write",
+      "operationId": "writeSessionFiles",
+      "summary": "Write files"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/network-policy",
+      "operationId": "updateSessionNetworkPolicy",
+      "summary": "Update network policy"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/snapshot",
+      "operationId": "createSandboxesSessionsBySessionIdSnapshotV2",
+      "summary": "Create a snapshot"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/sessions/{sessionId}/stop",
+      "operationId": "stopSession",
+      "summary": "Stop a session"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/snapshots",
+      "operationId": "listSessionSnapshots",
+      "summary": "List snapshots"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/snapshots/{snapshotId}",
+      "operationId": "getSessionSnapshot",
+      "summary": "Get a snapshot"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/sandboxes/snapshots/{snapshotId}",
+      "operationId": "deleteSessionSnapshot",
+      "summary": "Delete a snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/sandboxes/{name}",
+      "operationId": "getNamedSandbox",
+      "summary": "Get a named sandbox"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/sandboxes/{name}",
+      "operationId": "updateSandbox",
+      "summary": "Update a sandbox"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/sandboxes/{name}",
+      "operationId": "deleteSandbox",
+      "summary": "Delete a sandbox"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/sandboxes/{name}/fork",
+      "operationId": "createSandboxesByNameForkV2",
+      "summary": "Fork a named sandbox"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/teams",
+      "operationId": "getTeams",
+      "summary": "List all teams"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/teams/{teamId}",
+      "operationId": "getTeam",
+      "summary": "Get a Team"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/teams/{teamId}",
+      "operationId": "patchTeam",
+      "summary": "Update a Team"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/teams/{teamId}/feature-flags/flags",
+      "operationId": "listTeamFlagsV2",
+      "summary": "List all flags for a team"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/teams/{teamId}/members",
+      "operationId": "inviteUserToTeam",
+      "summary": "Invite a user"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/user",
+      "operationId": "getAuthUser",
+      "summary": "Get the User"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/",
+      "operationId": "createByTeamSlugByProjectSlugByRepositoryNameBlobsUploads",
+      "summary": "Start a blob upload"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}",
+      "operationId": "getByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+      "summary": "Get blob upload status"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}",
+      "operationId": "replaceByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+      "summary": "Complete a blob upload"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}",
+      "operationId": "updateByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+      "summary": "Upload a blob chunk"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/uploads/{uuid}",
+      "operationId": "deleteByTeamSlugByProjectSlugByRepositoryNameBlobsUploadsByUuid",
+      "summary": "Cancel a blob upload"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}",
+      "operationId": "getByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest",
+      "summary": "Download a blob"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}",
+      "operationId": "deleteByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest",
+      "summary": "Delete a blob"
+    },
+    {
+      "method": "HEAD",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/blobs/{digest}",
+      "operationId": "headByTeamSlugByProjectSlugByRepositoryNameBlobsByDigest",
+      "summary": "Check if a blob exists"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}",
+      "operationId": "getByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+      "summary": "Pull an image manifest"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}",
+      "operationId": "replaceByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+      "summary": "Push an image manifest"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}",
+      "operationId": "deleteByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+      "summary": "Delete an image manifest"
+    },
+    {
+      "method": "HEAD",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/manifests/{reference}",
+      "operationId": "headByTeamSlugByProjectSlugByRepositoryNameManifestsByReference",
+      "summary": "Check if a manifest exists"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/{teamSlug}/{projectSlug}/{repositoryName}/tags/list",
+      "operationId": "getByTeamSlugByProjectSlugByRepositoryNameTagsList",
+      "summary": "List image tags"
+    },
+    {
+      "method": "GET",
+      "path": "/v3/deployments/{idOrUrl}/events",
+      "operationId": "getDeploymentEvents",
+      "summary": "Get deployment events"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v3/domains/{domain}",
+      "operationId": "patchDomain",
+      "summary": "Update or move apex domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v3/events",
+      "operationId": "listUserEvents",
+      "summary": "List User Events"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/sandboxes",
+      "operationId": "createSandboxesV3",
+      "summary": "Create a named sandbox"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/sandboxes/sessions/{sessionId}/snapshot",
+      "operationId": "createSandboxesSessionsBySessionIdSnapshotV3",
+      "summary": "Create a snapshot"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/sandboxes/{name}/fork",
+      "operationId": "createSandboxesByNameForkV3",
+      "summary": "Fork a named sandbox"
+    },
+    {
+      "method": "GET",
+      "path": "/v3/teams/{teamId}/members",
+      "operationId": "getTeamMembers",
+      "summary": "List team members"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/user/tokens",
+      "operationId": "createAuthToken",
+      "summary": "Create an Auth Token"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v3/user/tokens/{tokenId}",
+      "operationId": "deleteAuthToken",
+      "summary": "Delete an authentication token"
+    },
+    {
+      "method": "GET",
+      "path": "/v4/aliases",
+      "operationId": "listAliases",
+      "summary": "List aliases"
+    },
+    {
+      "method": "GET",
+      "path": "/v4/aliases/{idOrAlias}",
+      "operationId": "getAlias",
+      "summary": "Get an Alias"
+    },
+    {
+      "method": "POST",
+      "path": "/v4/sandboxes",
+      "operationId": "createSandboxesV4",
+      "summary": "Create a named sandbox"
+    },
+    {
+      "method": "GET",
+      "path": "/v5/domains",
+      "operationId": "getDomains",
+      "summary": "List all the domains"
+    },
+    {
+      "method": "GET",
+      "path": "/v5/domains/{domain}",
+      "operationId": "getDomain",
+      "summary": "Get Information for a Single Domain"
+    },
+    {
+      "method": "GET",
+      "path": "/v5/domains/{domain}/records",
+      "operationId": "getRecords",
+      "summary": "List existing DNS records"
+    },
+    {
+      "method": "GET",
+      "path": "/v5/user/tokens/{tokenId}",
+      "operationId": "getAuthToken",
+      "summary": "Get Auth Token Metadata"
+    },
+    {
+      "method": "GET",
+      "path": "/v6/deployments/{id}/files",
+      "operationId": "listDeploymentFiles",
+      "summary": "List Deployment Files"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v6/domains/{domain}",
+      "operationId": "deleteDomain",
+      "summary": "Remove a domain by name"
+    },
+    {
+      "method": "GET",
+      "path": "/v6/domains/{domain}/config",
+      "operationId": "getDomainConfig",
+      "summary": "Get a Domain's configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/v6/user/tokens",
+      "operationId": "listAuthTokens",
+      "summary": "List Auth Tokens"
+    },
+    {
+      "method": "GET",
+      "path": "/v7/deployments",
+      "operationId": "getDeployments",
+      "summary": "List deployments"
+    },
+    {
+      "method": "POST",
+      "path": "/v7/domains",
+      "operationId": "createOrTransferDomain",
+      "summary": "Add an existing domain to the Vercel platform"
+    },
+    {
+      "method": "POST",
+      "path": "/v8/artifacts",
+      "operationId": "artifactQuery",
+      "summary": "Query information about an artifact"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v8/artifacts",
+      "operationId": "deleteAllArtifacts",
+      "summary": "Delete all cache artifacts"
+    },
+    {
+      "method": "POST",
+      "path": "/v8/artifacts/events",
+      "operationId": "recordEvents",
+      "summary": "Record an artifacts cache usage event"
+    },
+    {
+      "method": "GET",
+      "path": "/v8/artifacts/status",
+      "operationId": "status",
+      "summary": "Get status of Remote Caching for this principal"
+    },
+    {
+      "method": "GET",
+      "path": "/v8/artifacts/{hash}",
+      "operationId": "downloadArtifact",
+      "summary": "Download a cache artifact"
+    },
+    {
+      "method": "PUT",
+      "path": "/v8/artifacts/{hash}",
+      "operationId": "uploadArtifact",
+      "summary": "Upload a cache artifact"
+    },
+    {
+      "method": "HEAD",
+      "path": "/v8/artifacts/{hash}",
+      "operationId": "artifactExists",
+      "summary": "Check if a cache artifact exists"
+    },
+    {
+      "method": "GET",
+      "path": "/v8/certs",
+      "operationId": "getCerts",
+      "summary": "Get certs"
+    },
+    {
+      "method": "POST",
+      "path": "/v8/certs",
+      "operationId": "issueCert",
+      "summary": "Issue a new cert"
+    },
+    {
+      "method": "PUT",
+      "path": "/v8/certs",
+      "operationId": "uploadCert",
+      "summary": "Upload a cert"
+    },
+    {
+      "method": "GET",
+      "path": "/v8/certs/{id}",
+      "operationId": "getCertById",
+      "summary": "Get cert by id"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v8/certs/{id}",
+      "operationId": "removeCert",
+      "summary": "Remove cert"
+    },
+    {
+      "method": "GET",
+      "path": "/v8/deployments/{id}/files/{fileId}",
+      "operationId": "getDeploymentFileContents",
+      "summary": "Get Deployment File Contents"
+    },
+    {
+      "method": "POST",
+      "path": "/v9/domains/{domain}/claim",
+      "operationId": "claimDomainOwnership",
+      "summary": "Claim Domain Ownership"
+    },
+    {
+      "method": "GET",
+      "path": "/v9/domains/{domain}/verification",
+      "operationId": "getDomainVerificationRecord",
+      "summary": "Get Domain Verification Record"
+    },
+    {
+      "method": "GET",
+      "path": "/v9/projects/{idOrName}",
+      "operationId": "getProject",
+      "summary": "Find a project by id or name"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v9/projects/{idOrName}",
+      "operationId": "updateProject",
+      "summary": "Update an existing project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v9/projects/{idOrName}",
+      "operationId": "deleteProject",
+      "summary": "Delete a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/v9/projects/{idOrName}/custom-environments",
+      "operationId": "getProjectsByIdOrNameCustomEnvironments",
+      "summary": "Retrieve custom environments"
+    },
+    {
+      "method": "POST",
+      "path": "/v9/projects/{idOrName}/custom-environments",
+      "operationId": "createCustomEnvironment",
+      "summary": "Create a custom environment for the current project."
+    },
+    {
+      "method": "GET",
+      "path": "/v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}",
+      "operationId": "getCustomEnvironment",
+      "summary": "Retrieve a custom environment"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}",
+      "operationId": "updateCustomEnvironment",
+      "summary": "Update a custom environment"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v9/projects/{idOrName}/custom-environments/{environmentSlugOrId}",
+      "operationId": "removeCustomEnvironment",
+      "summary": "Remove a custom environment"
+    },
+    {
+      "method": "GET",
+      "path": "/v9/projects/{idOrName}/domains",
+      "operationId": "getProjectDomains",
+      "summary": "Retrieve project domains by project by id or name"
+    },
+    {
+      "method": "GET",
+      "path": "/v9/projects/{idOrName}/domains/{domain}",
+      "operationId": "getProjectDomain",
+      "summary": "Get a project domain"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v9/projects/{idOrName}/domains/{domain}",
+      "operationId": "updateProjectDomain",
+      "summary": "Update a project domain"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v9/projects/{idOrName}/domains/{domain}",
+      "operationId": "removeProjectDomain",
+      "summary": "Remove a domain from a project"
+    },
+    {
+      "method": "POST",
+      "path": "/v9/projects/{idOrName}/domains/{domain}/verify",
+      "operationId": "verifyProjectDomain",
+      "summary": "Verify project domain"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v9/projects/{idOrName}/env/{id}",
+      "operationId": "editProjectEnv",
+      "summary": "Edit an environment variable"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v9/projects/{idOrName}/env/{id}",
+      "operationId": "removeProjectEnv",
+      "summary": "Remove an environment variable"
+    },
+    {
+      "method": "POST",
+      "path": "/web/insights/toggle",
+      "operationId": "createWebInsightsToggle"
+    }
+  ]
+}

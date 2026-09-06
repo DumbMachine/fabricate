@@ -1,0 +1,250 @@
+{
+  "id": "vercel-list-projects",
+  "title": "List seeded projects",
+  "environment": {
+    "label": "Acme Vercel",
+    "manifest": "environments/acme-vercel.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vercel.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.vercel.com/v10/projects",
+  "output": [
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_admin",
+      "name": "acme-admin"
+    },
+    {
+      "accountId": "team_acme",
+      "createdAt": 1755770400000,
+      "description": "SAML callback host for Contoso SSO.",
+      "framework": "nextjs",
+      "id": "prj_acme_api",
+      "name": "acme-api",
+      "updatedAt": 1756192800000
+    },
+    {
+      "accountId": "team_acme",
+      "description": "auth.acme.example Contoso callback.",
+      "framework": "nextjs",
+      "id": "prj_acme_auth",
+      "name": "acme-auth"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "INV-4812 receipts and Northwind portal.",
+      "framework": "nextjs",
+      "id": "prj_acme_billing",
+      "name": "acme-billing"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_blog",
+      "name": "acme-blog"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_careers",
+      "name": "acme-careers"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_changelog",
+      "name": "acme-changelog"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "Patched checkout host.",
+      "framework": "nextjs",
+      "id": "prj_acme_checkout",
+      "name": "acme-checkout"
+    },
+    {
+      "accountId": "team_acme",
+      "createdAt": 1755856800000,
+      "framework": "nextjs",
+      "id": "prj_acme_docs",
+      "name": "acme-docs",
+      "updatedAt": 1756192800000
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_edge",
+      "name": "acme-edge"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "LakeTech webhook ingress.",
+      "framework": "nextjs",
+      "id": "prj_acme_hooks",
+      "name": "acme-hooks"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_legal",
+      "name": "acme-legal"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_marketing",
+      "name": "acme-marketing"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_mobile",
+      "name": "acme-mobile-web"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_og",
+      "name": "acme-og-image"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_playground",
+      "name": "acme-playground"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_preview",
+      "name": "acme-preview"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_status",
+      "name": "acme-status"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_storybook",
+      "name": "acme-storybook"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_acme_surveys",
+      "name": "acme-surveys"
+    },
+    {
+      "accountId": "team_acme",
+      "createdAt": 1755684000000,
+      "description": "Checkout reliability incident surface.",
+      "framework": "nextjs",
+      "id": "prj_acme_web",
+      "name": "acme-web",
+      "updatedAt": 1756192800000
+    },
+    {
+      "accountId": "team_acme",
+      "description": "TXT acme-domain-verification=adatum-7f31.",
+      "framework": "nextjs",
+      "id": "prj_adatum_dns",
+      "name": "adatum-dns-check"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_brightpath_keys",
+      "name": "brightpath-keys"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "contoso-eu SAML preview.",
+      "framework": "nextjs",
+      "id": "prj_contoso_sso",
+      "name": "contoso-sso-preview"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "req_7Q4K2 audit export.",
+      "framework": "nextjs",
+      "id": "prj_fabrikam_scim",
+      "name": "fabrikam-scim"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "Priya Nair CSV export debug app.",
+      "framework": "nextjs",
+      "id": "prj_fernworks_export",
+      "name": "fernworks-export"
+    },
+    {
+      "accountId": "team_acme",
+      "description": "Northwind billing portal for INV-4812.",
+      "framework": "nextjs",
+      "id": "prj_northwind_portal",
+      "name": "northwind-portal"
+    },
+    {
+      "accountId": "team_acme",
+      "framework": "nextjs",
+      "id": "prj_tinyshop_pause",
+      "name": "tinyshop-pause"
+    }
+  ],
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:e408be6eef887d918bbf648dc1a9a6600dde1a43705b9eef6175614847b664df",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:88bd4645954970ba3a3219e4006a0f56653b7a2ece326be41ab01c55fc70e948"
+      },
+      {
+        "path": "environments/acme-vercel.yaml",
+        "digest": "sha256:fef5ca48aa0ea3e978f66a59a8c3c640624ab01f449f378e49355798a94ef817"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/vercel-list-projects.json",
+        "digest": "sha256:0316a1008fb9fe7e8a483f3aeaa72a47927b2fe6f60572711457ef66086388e0"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/asana",
+        "digest": "sha256:106aa032b5e464b393b68d82b3c3c82359c4e4b3e80d9fa25e4fdb68009e728b"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:da7d9821ce14f4120d503c09971f0f4eed3ab56f76a0addb5dbf285ac75a8459"
+      },
+      {
+        "path": "resources/hubspot",
+        "digest": "sha256:0a480a8abf00d0ef377b2bb5f2464affbb4bb26521183d3fc18c8ae6ae527545"
+      },
+      {
+        "path": "resources/vercel",
+        "digest": "sha256:5b57b30d6bfabe439f02bfa413ae864cf25e6e780fcf645549bc77f6652c034b"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
+      }
+    ]
+  }
+}
