@@ -10,7 +10,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "close", label: "Close"},
   {id: "cloudflare", label: "Cloudflare"},
   {id: "gmail", label: "Gmail"},
-  {id: "github", label: "GitHub", planned: true},
+  {id: "github", label: "GitHub"},
   {id: "hubspot", label: "HubSpot"},
   {id: "intercom", label: "Intercom"},
   {id: "mailchimp", label: "Mailchimp"},

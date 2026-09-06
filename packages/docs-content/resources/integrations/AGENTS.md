@@ -40,7 +40,7 @@ The Integrations sidebar starts with **All** (`index.mdx`), which renders
 icon, title, and scenario and API counts from the generated snapshots. Do not
 hand-build a service card list on that page.
 
-Planned pages (GitHub, Shopify) are not runnable resources. Do not invent an
+Planned pages (Shopify) are not runnable resources. Do not invent an
 entity list or integration table for them.
 
 ## Generated page artifacts

@@ -1,0 +1,1228 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "github.acme-issues.v1",
+  "$resource": "github",
+  "$resourceVersion": "v1",
+  "state": {
+    "issues": [
+      {
+        "id": "1",
+        "number": "1",
+        "title": "Checkout reliability",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/1",
+        "owner": "acme",
+        "repo": "web",
+        "body": "Pay step 5xx on acme-web. Correlates with PostHog checkout_reliability, Sentry acme-web, Vercel acme-web, OpenAI resp_checkout."
+      },
+      {
+        "id": "10",
+        "number": "10",
+        "title": "Bump next to 15.5",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/10",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "11",
+        "number": "11",
+        "title": "Docs typo on SSO page",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/11",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "12",
+        "number": "12",
+        "title": "Flaky checkout e2e",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/12",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "13",
+        "number": "13",
+        "title": "Add EU residency note",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/13",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "14",
+        "number": "14",
+        "title": "Terraform drift in staging",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/14",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "15",
+        "number": "15",
+        "title": "Mobile crash on empty invoice list",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/15",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "16",
+        "number": "16",
+        "title": "Rate limit 429 burst",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/16",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "17",
+        "number": "17",
+        "title": "Stale CDN cache on status page",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/17",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "18",
+        "number": "18",
+        "title": "Missing span on SAML callback",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/18",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "19",
+        "number": "19",
+        "title": "Log redaction for tokens",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/19",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "2",
+        "number": "2",
+        "title": "Contoso SSO login loop",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/2",
+        "owner": "acme",
+        "repo": "web",
+        "body": "Mei Chen / 380 users / org slug contoso-eu looping at auth.acme.example SAML callback."
+      },
+      {
+        "id": "20",
+        "number": "20",
+        "title": "Neon branch reset runbook",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/20",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "21",
+        "number": "21",
+        "title": "Vercel preview auth bypass",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/21",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "22",
+        "number": "22",
+        "title": "Droplet disk 80%",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/22",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "23",
+        "number": "23",
+        "title": "Worker timeout 30s",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/23",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "24",
+        "number": "24",
+        "title": "Invoice PDF font subset",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/24",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "25",
+        "number": "25",
+        "title": "NPS survey copy",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/25",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "26",
+        "number": "26",
+        "title": "Dark mode contrast",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/26",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "27",
+        "number": "27",
+        "title": "Onboarding empty state",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/27",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "28",
+        "number": "28",
+        "title": "SCIM retry storm",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/28",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "29",
+        "number": "29",
+        "title": "Okta clock skew",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/29",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "3",
+        "number": "3",
+        "title": "INV-4812 receipt mismatch",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/3",
+        "owner": "acme",
+        "repo": "web",
+        "body": "Dana Whitfield, Northwind Traders charged twice $1,240 for invoice INV-4812. Stripe cus_northwind."
+      },
+      {
+        "id": "30",
+        "number": "30",
+        "title": "Webhook signature test",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/30",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "31",
+        "number": "31",
+        "title": "CSV timezone columns",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/31",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "32",
+        "number": "32",
+        "title": "Seat overage email",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/32",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "33",
+        "number": "33",
+        "title": "Maintenance banner Aug 29",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/33",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "34",
+        "number": "34",
+        "title": "p95 checkout regression",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/34",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "35",
+        "number": "35",
+        "title": "Replay masking PII",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/35",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "36",
+        "number": "36",
+        "title": "Android capture consent",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/36",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "37",
+        "number": "37",
+        "title": "iOS capture consent",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/37",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "38",
+        "number": "38",
+        "title": "Dashboard share links",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/38",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "39",
+        "number": "39",
+        "title": "Cohort backfill",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/39",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "4",
+        "number": "4",
+        "title": "CSV export downloads an empty file",
+        "state": "open",
+        "html_url": "https://github.com/acme/analytics/issues/4",
+        "owner": "acme",
+        "repo": "analytics",
+        "body": "Priya Nair / fernworks-prod. PostHog flag billing_csv is off."
+      },
+      {
+        "id": "40",
+        "number": "40",
+        "title": "Feature flag payload size",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/40",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "41",
+        "number": "41",
+        "title": "Holdout assignment",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/41",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "42",
+        "number": "42",
+        "title": "Slack alert mute",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/42",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "43",
+        "number": "43",
+        "title": "Teams alert mute",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/43",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "44",
+        "number": "44",
+        "title": "Edge cache key collision",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/44",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "45",
+        "number": "45",
+        "title": "OG image font load",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/45",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "46",
+        "number": "46",
+        "title": "Storybook a11y",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/46",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "47",
+        "number": "47",
+        "title": "SDK retry jitter",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/47",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "48",
+        "number": "48",
+        "title": "Go SDK context cancel",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/48",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "49",
+        "number": "49",
+        "title": "K8s PDB for billing",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/49",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "5",
+        "number": "5",
+        "title": "Domain verification TXT still pending for adatum.example",
+        "state": "closed",
+        "html_url": "https://github.com/acme/api/issues/5",
+        "owner": "acme",
+        "repo": "api",
+        "body": "Owen Brooks, TXT acme-domain-verification=adatum-7f31. Cloudflare record dns_adatum_txt."
+      },
+      {
+        "id": "50",
+        "number": "50",
+        "title": "Status page incident template",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/50",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "51",
+        "number": "51",
+        "title": "Figma webhook 410",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/51",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "52",
+        "number": "52",
+        "title": "Val Town cron drift",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/52",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "53",
+        "number": "53",
+        "title": "Exa research quota",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/53",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "54",
+        "number": "54",
+        "title": "OpenAI response store TTL",
+        "state": "closed",
+        "html_url": "https://github.com/acme/web/issues/54",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "55",
+        "number": "55",
+        "title": "Stripe tax ID missing",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/55",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "56",
+        "number": "56",
+        "title": "HubSpot deal stage drift",
+        "state": "open",
+        "html_url": "https://github.com/acme/design/issues/56",
+        "owner": "acme",
+        "repo": "design"
+      },
+      {
+        "id": "57",
+        "number": "57",
+        "title": "Gmail label sync",
+        "state": "closed",
+        "html_url": "https://github.com/acme/status/issues/57",
+        "owner": "acme",
+        "repo": "status"
+      },
+      {
+        "id": "58",
+        "number": "58",
+        "title": "Asana custom field",
+        "state": "open",
+        "html_url": "https://github.com/acme/edge/issues/58",
+        "owner": "acme",
+        "repo": "edge"
+      },
+      {
+        "id": "59",
+        "number": "59",
+        "title": "Intercom assignment",
+        "state": "open",
+        "html_url": "https://github.com/acme/auth/issues/59",
+        "owner": "acme",
+        "repo": "auth"
+      },
+      {
+        "id": "6",
+        "number": "6",
+        "title": "Retry failed webhooks with exponential backoff",
+        "state": "open",
+        "html_url": "https://github.com/acme/workers/issues/6",
+        "owner": "acme",
+        "repo": "workers",
+        "body": "Ben Okafor / LakeTech. hooks.acme.example / val acme-webhooks."
+      },
+      {
+        "id": "60",
+        "number": "60",
+        "title": "Custom hostname limit",
+        "state": "closed",
+        "html_url": "https://github.com/acme/sdk-js/issues/60",
+        "owner": "acme",
+        "repo": "sdk-js"
+      },
+      {
+        "id": "61",
+        "number": "61",
+        "title": "WAF false positive login",
+        "state": "open",
+        "html_url": "https://github.com/acme/sdk-go/issues/61",
+        "owner": "acme",
+        "repo": "sdk-go"
+      },
+      {
+        "id": "62",
+        "number": "62",
+        "title": "KV namespace eviction",
+        "state": "open",
+        "html_url": "https://github.com/acme/runbooks/issues/62",
+        "owner": "acme",
+        "repo": "runbooks"
+      },
+      {
+        "id": "63",
+        "number": "63",
+        "title": "Worker subrequest cap",
+        "state": "closed",
+        "html_url": "https://github.com/acme/infra-k8s/issues/63",
+        "owner": "acme",
+        "repo": "infra-k8s"
+      },
+      {
+        "id": "64",
+        "number": "64",
+        "title": "Preview deployment password",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/64",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "65",
+        "number": "65",
+        "title": "Branch expiry 14d",
+        "state": "open",
+        "html_url": "https://github.com/acme/api/issues/65",
+        "owner": "acme",
+        "repo": "api"
+      },
+      {
+        "id": "66",
+        "number": "66",
+        "title": "Read replica lag",
+        "state": "closed",
+        "html_url": "https://github.com/acme/docs/issues/66",
+        "owner": "acme",
+        "repo": "docs"
+      },
+      {
+        "id": "67",
+        "number": "67",
+        "title": "Connection pool wait",
+        "state": "open",
+        "html_url": "https://github.com/acme/billing/issues/67",
+        "owner": "acme",
+        "repo": "billing"
+      },
+      {
+        "id": "68",
+        "number": "68",
+        "title": "Survey branching logic",
+        "state": "open",
+        "html_url": "https://github.com/acme/analytics/issues/68",
+        "owner": "acme",
+        "repo": "analytics"
+      },
+      {
+        "id": "69",
+        "number": "69",
+        "title": "Heatmap sample rate",
+        "state": "closed",
+        "html_url": "https://github.com/acme/terraform/issues/69",
+        "owner": "acme",
+        "repo": "terraform"
+      },
+      {
+        "id": "7",
+        "number": "7",
+        "title": "Annual Pro refund under 30-day guarantee",
+        "state": "closed",
+        "html_url": "https://github.com/acme/billing/issues/7",
+        "owner": "acme",
+        "repo": "billing",
+        "body": "Marco Silva TinyShop billing@tinyshop.example. Stripe cus_tinyshop."
+      },
+      {
+        "id": "70",
+        "number": "70",
+        "title": "Toolbar z-index",
+        "state": "open",
+        "html_url": "https://github.com/acme/mobile/issues/70",
+        "owner": "acme",
+        "repo": "mobile"
+      },
+      {
+        "id": "71",
+        "number": "71",
+        "title": "Command palette shortcut",
+        "state": "open",
+        "html_url": "https://github.com/acme/workers/issues/71",
+        "owner": "acme",
+        "repo": "workers"
+      },
+      {
+        "id": "72",
+        "number": "72",
+        "title": "Saved view permissions",
+        "state": "closed",
+        "html_url": "https://github.com/acme/design/issues/72",
+        "owner": "acme",
+        "repo": "design"
+      },
+      {
+        "id": "73",
+        "number": "73",
+        "title": "Public insight robots",
+        "state": "open",
+        "html_url": "https://github.com/acme/status/issues/73",
+        "owner": "acme",
+        "repo": "status"
+      },
+      {
+        "id": "74",
+        "number": "74",
+        "title": "Warehouse late arriving",
+        "state": "open",
+        "html_url": "https://github.com/acme/edge/issues/74",
+        "owner": "acme",
+        "repo": "edge"
+      },
+      {
+        "id": "75",
+        "number": "75",
+        "title": "BigQuery quota",
+        "state": "closed",
+        "html_url": "https://github.com/acme/auth/issues/75",
+        "owner": "acme",
+        "repo": "auth"
+      },
+      {
+        "id": "76",
+        "number": "76",
+        "title": "Snowflake key pair",
+        "state": "open",
+        "html_url": "https://github.com/acme/sdk-js/issues/76",
+        "owner": "acme",
+        "repo": "sdk-js"
+      },
+      {
+        "id": "77",
+        "number": "77",
+        "title": "Redshift vacuum",
+        "state": "open",
+        "html_url": "https://github.com/acme/sdk-go/issues/77",
+        "owner": "acme",
+        "repo": "sdk-go"
+      },
+      {
+        "id": "78",
+        "number": "78",
+        "title": "Segment destination filter",
+        "state": "closed",
+        "html_url": "https://github.com/acme/runbooks/issues/78",
+        "owner": "acme",
+        "repo": "runbooks"
+      },
+      {
+        "id": "79",
+        "number": "79",
+        "title": "CDP webhook 401",
+        "state": "open",
+        "html_url": "https://github.com/acme/infra-k8s/issues/79",
+        "owner": "acme",
+        "repo": "infra-k8s"
+      },
+      {
+        "id": "8",
+        "number": "8",
+        "title": "Overlap API keys during rotation",
+        "state": "closed",
+        "html_url": "https://github.com/acme/api/issues/8",
+        "owner": "acme",
+        "repo": "api",
+        "body": "Sofia Marin BrightPath. PostHog api_key_overlap."
+      },
+      {
+        "id": "80",
+        "number": "80",
+        "title": "Error autogroup noise",
+        "state": "open",
+        "html_url": "https://github.com/acme/web/issues/80",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "81",
+        "number": "81",
+        "title": "Replay skip idle",
+        "state": "closed",
+        "html_url": "https://github.com/acme/api/issues/81",
+        "owner": "acme",
+        "repo": "api"
+      },
+      {
+        "id": "82",
+        "number": "82",
+        "title": "Mobile crash lite",
+        "state": "open",
+        "html_url": "https://github.com/acme/docs/issues/82",
+        "owner": "acme",
+        "repo": "docs"
+      },
+      {
+        "id": "83",
+        "number": "83",
+        "title": "NPS detractor routing",
+        "state": "open",
+        "html_url": "https://github.com/acme/billing/issues/83",
+        "owner": "acme",
+        "repo": "billing"
+      },
+      {
+        "id": "84",
+        "number": "84",
+        "title": "Annual plan proration",
+        "state": "closed",
+        "html_url": "https://github.com/acme/analytics/issues/84",
+        "owner": "acme",
+        "repo": "analytics"
+      },
+      {
+        "id": "85",
+        "number": "85",
+        "title": "Usage overage invoice",
+        "state": "open",
+        "html_url": "https://github.com/acme/terraform/issues/85",
+        "owner": "acme",
+        "repo": "terraform"
+      },
+      {
+        "id": "86",
+        "number": "86",
+        "title": "SSO IdP-initiated",
+        "state": "open",
+        "html_url": "https://github.com/acme/mobile/issues/86",
+        "owner": "acme",
+        "repo": "mobile"
+      },
+      {
+        "id": "87",
+        "number": "87",
+        "title": "SCIM group push",
+        "state": "closed",
+        "html_url": "https://github.com/acme/workers/issues/87",
+        "owner": "acme",
+        "repo": "workers"
+      },
+      {
+        "id": "88",
+        "number": "88",
+        "title": "API key last-used",
+        "state": "open",
+        "html_url": "https://github.com/acme/design/issues/88",
+        "owner": "acme",
+        "repo": "design"
+      },
+      {
+        "id": "89",
+        "number": "89",
+        "title": "Audit log export",
+        "state": "open",
+        "html_url": "https://github.com/acme/status/issues/89",
+        "owner": "acme",
+        "repo": "status"
+      },
+      {
+        "id": "9",
+        "number": "9",
+        "title": "Audit log missing SCIM group changes",
+        "state": "open",
+        "html_url": "https://github.com/acme/api/issues/9",
+        "owner": "acme",
+        "repo": "api",
+        "body": "Leila Haddad Fabrikam request ID req_7Q4K2."
+      },
+      {
+        "id": "90",
+        "number": "90",
+        "title": "Breakglass SSH",
+        "state": "closed",
+        "html_url": "https://github.com/acme/edge/issues/90",
+        "owner": "acme",
+        "repo": "edge"
+      },
+      {
+        "id": "91",
+        "number": "91",
+        "title": "EU DPA questionnaire",
+        "state": "open",
+        "html_url": "https://github.com/acme/auth/issues/91",
+        "owner": "acme",
+        "repo": "auth"
+      }
+    ],
+    "pulls": [
+      {
+        "id": "101",
+        "number": "101",
+        "title": "Fix checkout reliability pay step",
+        "state": "open",
+        "owner": "acme",
+        "repo": "web",
+        "body": "Pairs with issue 1 and PostHog checkout_reliability."
+      },
+      {
+        "id": "102",
+        "number": "102",
+        "title": "Patch Contoso SAML callback host",
+        "state": "open",
+        "owner": "acme",
+        "repo": "api",
+        "body": "contoso-eu / auth.acme.example."
+      },
+      {
+        "id": "103",
+        "number": "103",
+        "title": "Refund duplicate INV-4812 charge",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "billing",
+        "body": "Northwind $1,240."
+      },
+      {
+        "id": "104",
+        "number": "104",
+        "title": "Fix fernworks-prod empty CSV",
+        "state": "open",
+        "owner": "acme",
+        "repo": "analytics"
+      },
+      {
+        "id": "105",
+        "number": "105",
+        "title": "Manual DNS recheck for Adatum TXT",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "api"
+      },
+      {
+        "id": "106",
+        "number": "106",
+        "title": "Webhook exponential backoff",
+        "state": "open",
+        "owner": "acme",
+        "repo": "workers"
+      },
+      {
+        "id": "107",
+        "number": "107",
+        "title": "TinyShop 30-day refund path",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "billing"
+      },
+      {
+        "id": "108",
+        "number": "108",
+        "title": "BrightPath key overlap docs",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "api"
+      },
+      {
+        "id": "109",
+        "number": "109",
+        "title": "Fabrikam SCIM audit events",
+        "state": "open",
+        "owner": "acme",
+        "repo": "api"
+      },
+      {
+        "id": "201",
+        "number": "201",
+        "title": "chore: dependabot npm",
+        "state": "open",
+        "owner": "acme",
+        "repo": "status"
+      },
+      {
+        "id": "202",
+        "number": "202",
+        "title": "docs: status page runbook",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "edge"
+      },
+      {
+        "id": "203",
+        "number": "203",
+        "title": "infra: neon branch expiry",
+        "state": "open",
+        "owner": "acme",
+        "repo": "auth"
+      },
+      {
+        "id": "204",
+        "number": "204",
+        "title": "mobile: empty invoice list",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "sdk-js"
+      },
+      {
+        "id": "205",
+        "number": "205",
+        "title": "api: rate limit headers",
+        "state": "open",
+        "owner": "acme",
+        "repo": "sdk-go"
+      },
+      {
+        "id": "206",
+        "number": "206",
+        "title": "billing: 30-day guarantee path",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "runbooks"
+      },
+      {
+        "id": "207",
+        "number": "207",
+        "title": "web: dark mode contrast",
+        "state": "open",
+        "owner": "acme",
+        "repo": "infra-k8s"
+      },
+      {
+        "id": "208",
+        "number": "208",
+        "title": "workers: timeout 30s",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "web"
+      },
+      {
+        "id": "209",
+        "number": "209",
+        "title": "terraform: staging drift",
+        "state": "open",
+        "owner": "acme",
+        "repo": "api"
+      },
+      {
+        "id": "210",
+        "number": "210",
+        "title": "edge: cache key",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "docs"
+      },
+      {
+        "id": "211",
+        "number": "211",
+        "title": "auth: okta clock skew",
+        "state": "open",
+        "owner": "acme",
+        "repo": "billing"
+      },
+      {
+        "id": "212",
+        "number": "212",
+        "title": "sdk-js: retry jitter",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "analytics"
+      },
+      {
+        "id": "213",
+        "number": "213",
+        "title": "sdk-go: context cancel",
+        "state": "open",
+        "owner": "acme",
+        "repo": "terraform"
+      },
+      {
+        "id": "214",
+        "number": "214",
+        "title": "runbooks: checkout 5xx",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "mobile"
+      },
+      {
+        "id": "215",
+        "number": "215",
+        "title": "infra-k8s: billing PDB",
+        "state": "open",
+        "owner": "acme",
+        "repo": "workers"
+      },
+      {
+        "id": "216",
+        "number": "216",
+        "title": "design: checkout pay step",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "design"
+      },
+      {
+        "id": "217",
+        "number": "217",
+        "title": "status: incident template",
+        "state": "open",
+        "owner": "acme",
+        "repo": "status"
+      },
+      {
+        "id": "218",
+        "number": "218",
+        "title": "docs: scim audit",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "edge"
+      },
+      {
+        "id": "219",
+        "number": "219",
+        "title": "analytics: csv timezone",
+        "state": "open",
+        "owner": "acme",
+        "repo": "auth"
+      },
+      {
+        "id": "220",
+        "number": "220",
+        "title": "web: command palette",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "sdk-js"
+      },
+      {
+        "id": "221",
+        "number": "221",
+        "title": "api: last-used keys",
+        "state": "open",
+        "owner": "acme",
+        "repo": "sdk-go"
+      },
+      {
+        "id": "222",
+        "number": "222",
+        "title": "workers: kv eviction",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "runbooks"
+      },
+      {
+        "id": "223",
+        "number": "223",
+        "title": "billing: usage overage",
+        "state": "open",
+        "owner": "acme",
+        "repo": "infra-k8s"
+      },
+      {
+        "id": "224",
+        "number": "224",
+        "title": "mobile: crash lite",
+        "state": "closed",
+        "owner": "acme",
+        "repo": "web"
+      }
+    ],
+    "repos": [
+      {
+        "id": "analytics",
+        "name": "analytics",
+        "full_name": "acme/analytics",
+        "owner": "acme",
+        "description": "CSV export pipeline; fernworks-prod empty files.",
+        "private": true
+      },
+      {
+        "id": "api",
+        "name": "api",
+        "full_name": "acme/api",
+        "owner": "acme",
+        "description": "Public API and SAML callbacks for Contoso SSO.",
+        "private": true
+      },
+      {
+        "id": "auth",
+        "name": "auth",
+        "full_name": "acme/auth",
+        "owner": "acme",
+        "description": "auth.acme.example Contoso callback.",
+        "private": true
+      },
+      {
+        "id": "billing",
+        "name": "billing",
+        "full_name": "acme/billing",
+        "owner": "acme",
+        "description": "Invoices including INV-4812 Northwind double charge.",
+        "private": true
+      },
+      {
+        "id": "design",
+        "name": "design",
+        "full_name": "acme/design",
+        "owner": "acme",
+        "private": true
+      },
+      {
+        "id": "docs",
+        "name": "docs",
+        "full_name": "acme/docs",
+        "owner": "acme",
+        "private": false
+      },
+      {
+        "id": "edge",
+        "name": "edge",
+        "full_name": "acme/edge",
+        "owner": "acme",
+        "private": true
+      },
+      {
+        "id": "infra-k8s",
+        "name": "infra-k8s",
+        "full_name": "acme/infra-k8s",
+        "owner": "acme",
+        "private": true
+      },
+      {
+        "id": "mobile",
+        "name": "mobile",
+        "full_name": "acme/mobile",
+        "owner": "acme",
+        "private": true
+      },
+      {
+        "id": "runbooks",
+        "name": "runbooks",
+        "full_name": "acme/runbooks",
+        "owner": "acme",
+        "private": true
+      },
+      {
+        "id": "sdk-go",
+        "name": "sdk-go",
+        "full_name": "acme/sdk-go",
+        "owner": "acme",
+        "private": false
+      },
+      {
+        "id": "sdk-js",
+        "name": "sdk-js",
+        "full_name": "acme/sdk-js",
+        "owner": "acme",
+        "private": false
+      },
+      {
+        "id": "status",
+        "name": "status",
+        "full_name": "acme/status",
+        "owner": "acme",
+        "private": false
+      },
+      {
+        "id": "terraform",
+        "name": "terraform",
+        "full_name": "acme/terraform",
+        "owner": "acme",
+        "private": true
+      },
+      {
+        "id": "web",
+        "name": "web",
+        "full_name": "acme/web",
+        "owner": "acme",
+        "description": "Checkout and dashboard. Checkout reliability incident.",
+        "private": false
+      },
+      {
+        "id": "workers",
+        "name": "workers",
+        "full_name": "acme/workers",
+        "owner": "acme",
+        "description": "Cloudflare workers and webhook retry jobs.",
+        "private": true
+      }
+    ]
+  }
+}

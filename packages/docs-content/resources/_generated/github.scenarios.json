@@ -1,0 +1,19 @@
+{
+  "integration": "github",
+  "scenarios": [
+    {
+      "id": "github.acme-issues.v1",
+      "counts": {
+        "issues": 91,
+        "pulls": 33,
+        "repos": 16
+      }
+    },
+    {
+      "id": "github.minimal.v1",
+      "counts": {
+        "issues": 0
+      }
+    }
+  ]
+}

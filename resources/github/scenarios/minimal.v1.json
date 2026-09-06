@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "github.minimal.v1",
+  "$resource": "github",
+  "$resourceVersion": "v1",
+  "state": {
+    "issues": []
+  }
+}
