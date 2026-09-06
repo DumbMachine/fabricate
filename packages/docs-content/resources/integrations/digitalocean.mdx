@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/digitalocean
 ---
 
+<ResourceCoverage resource="digitalocean" />
+
 Droplets, databases, apps, Kubernetes, and monitoring. Local DigitalOcean v1
 that keeps droplet state across requests.
 
@@ -60,6 +62,17 @@ Fabricate handles `api.digitalocean.com` locally. Other hosts are forwarded unch
     "digitalocean.minimal.v1": "Empty DigitalOcean state for a clean test.",
     "digitalocean.acme-droplets.v1": "Acme compute estate: droplets, volumes, SSH keys, and domains. Needles: `acme-web` checkout reliability, Contoso SSO API, INV-4812 billing, fernworks analytics, Adatum DNS, LakeTech hooks.",
   }}
+/>
+
+Peek at the committed Acme droplets. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="digitalocean"
+  scenario="acme-droplets.v1"
+  collection="droplets"
 />
 
 ## Compatibility verification
