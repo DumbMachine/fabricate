@@ -1,0 +1,330 @@
+{
+  "integration": "figma",
+  "api": "Figma v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/activity_logs",
+      "operationId": "getActivityLogs",
+      "summary": "Get activity logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/ai_usage/daily",
+      "operationId": "getAiUsageDaily",
+      "summary": "Get daily AI credit usage"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/analytics/libraries/{file_key}/component/actions",
+      "operationId": "getLibraryAnalyticsComponentActions",
+      "summary": "Get library analytics component action data."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/analytics/libraries/{file_key}/component/usages",
+      "operationId": "getLibraryAnalyticsComponentUsages",
+      "summary": "Get library analytics component usage data."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/analytics/libraries/{file_key}/style/actions",
+      "operationId": "getLibraryAnalyticsStyleActions",
+      "summary": "Get library analytics style action data."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/analytics/libraries/{file_key}/style/usages",
+      "operationId": "getLibraryAnalyticsStyleUsages",
+      "summary": "Get library analytics style usage data."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/analytics/libraries/{file_key}/variable/actions",
+      "operationId": "getLibraryAnalyticsVariableActions",
+      "summary": "Get library analytics variable action data."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/analytics/libraries/{file_key}/variable/usages",
+      "operationId": "getLibraryAnalyticsVariableUsages",
+      "summary": "Get library analytics variable usage data."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/component_sets/{key}",
+      "operationId": "getComponentSet",
+      "summary": "Get component set"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/components/{key}",
+      "operationId": "getComponent",
+      "summary": "Get component"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/dev_resources",
+      "operationId": "postDevResources",
+      "summary": "Create dev resources"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/dev_resources",
+      "operationId": "putDevResources",
+      "summary": "Update dev resources"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/developer_logs",
+      "operationId": "getDeveloperLogs",
+      "summary": "Get developer logs"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}",
+      "operationId": "getFile",
+      "summary": "Get file JSON"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/comments",
+      "operationId": "getComments",
+      "summary": "Get comments in a file"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/files/{file_key}/comments",
+      "operationId": "postComment",
+      "summary": "Add a comment to a file"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/files/{file_key}/comments/{comment_id}",
+      "operationId": "deleteComment",
+      "summary": "Delete a comment"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/comments/{comment_id}/reactions",
+      "operationId": "getCommentReactions",
+      "summary": "Get reactions for a comment"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/files/{file_key}/comments/{comment_id}/reactions",
+      "operationId": "postCommentReaction",
+      "summary": "Add a reaction to a comment"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/files/{file_key}/comments/{comment_id}/reactions",
+      "operationId": "deleteCommentReaction",
+      "summary": "Delete a reaction"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/component_sets",
+      "operationId": "getFileComponentSets",
+      "summary": "Get file component sets"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/components",
+      "operationId": "getFileComponents",
+      "summary": "Get file components"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/dev_resources",
+      "operationId": "getDevResources",
+      "summary": "Get dev resources"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/files/{file_key}/dev_resources/{dev_resource_id}",
+      "operationId": "deleteDevResource",
+      "summary": "Delete dev resource"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/images",
+      "operationId": "getImageFills",
+      "summary": "Get image fills"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/meta",
+      "operationId": "getFileMeta",
+      "summary": "Get file metadata"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/nodes",
+      "operationId": "getFileNodes",
+      "summary": "Get file JSON for specific nodes"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/styles",
+      "operationId": "getFileStyles",
+      "summary": "Get file styles"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/files/{file_key}/variables",
+      "operationId": "postVariables",
+      "summary": "Create/modify/delete variables"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/variables/local",
+      "operationId": "getLocalVariables",
+      "summary": "Get local variables"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/variables/published",
+      "operationId": "getPublishedVariables",
+      "summary": "Get published variables"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/{file_key}/versions",
+      "operationId": "getFileVersions",
+      "summary": "Get versions of a file"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/images/{file_key}",
+      "operationId": "getImages",
+      "summary": "Render images of file nodes"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/me",
+      "operationId": "getMe",
+      "summary": "Get current user"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/oembed",
+      "operationId": "getOEmbed",
+      "summary": "Get oEmbed data"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payments",
+      "operationId": "getPayments",
+      "summary": "Get payments"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{project_id}/files",
+      "operationId": "getProjectFiles",
+      "summary": "[Deprecated] Get files in a project"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/projects/{project_id}/meta",
+      "operationId": "getProjectMeta",
+      "summary": "[Deprecated] Get project metadata"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/styles/{key}",
+      "operationId": "getStyle",
+      "summary": "Get style"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{team_id}/component_sets",
+      "operationId": "getTeamComponentSets",
+      "summary": "Get team component sets"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{team_id}/components",
+      "operationId": "getTeamComponents",
+      "summary": "Get team components"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{team_id}/projects",
+      "operationId": "getTeamProjects",
+      "summary": "[Deprecated] Get projects in a team"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/teams/{team_id}/styles",
+      "operationId": "getTeamStyles",
+      "summary": "Get team styles"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/folders/{folder_id}/files",
+      "operationId": "getFolderFiles",
+      "summary": "Get files in a folder"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/folders/{folder_id}/folders",
+      "operationId": "getFolderFolders",
+      "summary": "Get subfolders in a folder"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/folders/{folder_id}/meta",
+      "operationId": "getFolderMeta",
+      "summary": "Get folder metadata"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/teams/{team_id}/folders",
+      "operationId": "getTeamFolders",
+      "summary": "Get top-level folders in a team"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/teams/{team_id}/webhooks",
+      "operationId": "getTeamWebhooks",
+      "summary": "[Deprecated] Get team webhooks"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/webhooks",
+      "operationId": "getWebhooks",
+      "summary": "Get webhooks by context or plan"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/webhooks",
+      "operationId": "postWebhook",
+      "summary": "Create a webhook"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/webhooks/{webhook_id}",
+      "operationId": "getWebhook",
+      "summary": "Get a webhook"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/webhooks/{webhook_id}",
+      "operationId": "putWebhook",
+      "summary": "Update a webhook"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/webhooks/{webhook_id}",
+      "operationId": "deleteWebhook",
+      "summary": "Delete a webhook"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/webhooks/{webhook_id}/requests",
+      "operationId": "getWebhookRequests",
+      "summary": "Get webhook requests"
+    }
+  ]
+}
