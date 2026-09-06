@@ -18,6 +18,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/pipedrive"
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
+	"github.com/dumbmachine/fabricate/resources/valtown"
 )
 
 func Registry() *httpresource.Registry {
@@ -34,6 +35,7 @@ func Registry() *httpresource.Registry {
 		pipedrive.NewResource(),
 		resend.NewResource(),
 		sendgrid.NewResource(),
+		valtown.NewResource(),
 	)
 	if err != nil {
 		panic(fmt.Sprintf("official HTTP resource registry: %v", err))

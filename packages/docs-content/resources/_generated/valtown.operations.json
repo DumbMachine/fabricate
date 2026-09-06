@@ -1,0 +1,266 @@
+{
+  "integration": "valtown",
+  "api": "Val Town v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/alias/{username}",
+      "operationId": "aliasUsername"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/blob",
+      "operationId": "v1blobsList"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/blob/{key}",
+      "operationId": "v1blobsGet"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/blob/{key}",
+      "operationId": "v1blobsStore"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/blob/{key}",
+      "operationId": "v1blobsDelete"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/email",
+      "operationId": "emailsSend"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/me",
+      "operationId": "meGet"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sqlite/batch",
+      "operationId": "sqliteBatch"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sqlite/execute",
+      "operationId": "sqliteExecute"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/telemetry/logs",
+      "operationId": "logList"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/telemetry/traces",
+      "operationId": "traceList"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{user_id}",
+      "operationId": "usersGet"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/alias/vals/{username}/{val_name}",
+      "operationId": "aliasVal2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/blob",
+      "operationId": "v2blobsList"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/blob/{key}",
+      "operationId": "v2blobsGet"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/blob/{key}",
+      "operationId": "v2blobsStore"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/blob/{key}",
+      "operationId": "v2blobsDelete"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/files/{file_id}",
+      "operationId": "queryValFileById"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/me/vals",
+      "operationId": "meVals2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/orgs",
+      "operationId": "orgsList"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/orgs/{org_id}/memberships",
+      "operationId": "orgsMembershipsList"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals",
+      "operationId": "valsList2"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vals",
+      "operationId": "valsCreate2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}",
+      "operationId": "valsGet2"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vals/{val_id}",
+      "operationId": "projectsDelete2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}/branches",
+      "operationId": "branchesList2"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vals/{val_id}/branches",
+      "operationId": "branchesCreate2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}/branches/{branch_id}",
+      "operationId": "branchesGet2"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vals/{val_id}/branches/{branch_id}",
+      "operationId": "branchesDelete2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}/environment_variable_groups/",
+      "operationId": "valEnvironmentVariableGroupsList"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vals/{val_id}/environment_variable_groups/{group_id}",
+      "operationId": "valEnvironmentVariableGroupsAttach"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vals/{val_id}/environment_variable_groups/{group_id}",
+      "operationId": "valEnvironmentVariableGroupsDetach"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}/environment_variables/",
+      "operationId": "valEnvironmentVariablesList"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vals/{val_id}/environment_variables/",
+      "operationId": "valEnvironmentVariablesCreate"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vals/{val_id}/environment_variables/{key}",
+      "operationId": "valEnvironmentVariablesUpdate"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vals/{val_id}/environment_variables/{key}",
+      "operationId": "valEnvironmentVariablesDelete"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}/files",
+      "operationId": "valFilesGet2"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/vals/{val_id}/files",
+      "operationId": "filesCreate2"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/vals/{val_id}/files",
+      "operationId": "fileContentUpdate2"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/vals/{val_id}/files",
+      "operationId": "filesDelete2"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/vals/{val_id}/files/content",
+      "operationId": "filesContentGet2"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/connections/google-docs/token",
+      "operationId": "post_v3_connections_google_docs_token"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/connections/slack/token",
+      "operationId": "post_v3_connections_slack_token"
+    },
+    {
+      "method": "GET",
+      "path": "/v3/environment-variable-groups/",
+      "operationId": "environmentVariableGroupsList"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/environment-variable-groups/",
+      "operationId": "environmentVariableGroupsCreate"
+    },
+    {
+      "method": "PUT",
+      "path": "/v3/environment-variable-groups/{id}",
+      "operationId": "environmentVariableGroupsRename"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v3/environment-variable-groups/{id}",
+      "operationId": "environmentVariableGroupsDelete"
+    },
+    {
+      "method": "GET",
+      "path": "/v3/environment-variable-groups/{id}/environment-variables",
+      "operationId": "environmentVariableGroupsGet"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/environment-variable-groups/{id}/environment-variables",
+      "operationId": "environmentVariableGroupsCreateVariable"
+    },
+    {
+      "method": "POST",
+      "path": "/v3/environment-variable-groups/{id}/environment-variables/{key}",
+      "operationId": "environmentVariableGroupsUpsertVariable"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v3/environment-variable-groups/{id}/environment-variables/{key}",
+      "operationId": "environmentVariableGroupsVariableDelete"
+    },
+    {
+      "method": "GET",
+      "path": "/v3/val/viewer",
+      "operationId": "get_v3_val_viewer"
+    }
+  ]
+}

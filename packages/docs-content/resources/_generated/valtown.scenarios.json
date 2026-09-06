@@ -1,0 +1,17 @@
+{
+  "integration": "valtown",
+  "scenarios": [
+    {
+      "id": "valtown.acme-vals.v1",
+      "counts": {
+        "vals": 30
+      }
+    },
+    {
+      "id": "valtown.minimal.v1",
+      "counts": {
+        "vals": 0
+      }
+    }
+  ]
+}

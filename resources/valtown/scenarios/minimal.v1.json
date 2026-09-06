@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "valtown.minimal.v1",
+  "$resource": "valtown",
+  "$resourceVersion": "v1",
+  "state": {
+    "vals": []
+  }
+}

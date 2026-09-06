@@ -19,6 +19,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
   {id: "shopify", label: "Shopify", planned: true},
+  {id: "valtown", label: "Val Town"},
 ];
 
 export function composioLogo(id: string, theme?: "dark"): string {
