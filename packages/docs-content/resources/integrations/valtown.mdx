@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/valtown
 ---
 
+<ResourceCoverage resource="valtown" />
+
 Vals, blobs, and sqlite. Local Val Town v1 that keeps val state across
 requests.
 
@@ -60,6 +62,17 @@ Fabricate handles `api.val.town` locally. Other hosts are forwarded unchanged.
     "valtown.minimal.v1": "Empty Val Town state for a clean test.",
     "valtown.acme-vals.v1": "Acme val catalog. Needles: `acme-webhooks` (LakeTech retries), checkout canary, Contoso SAML debug, INV-4812 billing helper, fernworks CSV probe, Adatum DNS recheck, Fabrikam SCIM.",
   }}
+/>
+
+Peek at the committed Acme vals. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="valtown"
+  scenario="acme-vals.v1"
+  collection="vals"
 />
 
 ## Compatibility verification

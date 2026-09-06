@@ -1,0 +1,120 @@
+---
+import {composioLogo, integrations} from "../integrations/catalog";
+import {formatCountLabel, loadResourceCoverage} from "./generated";
+
+const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
+const toDocsHref = (href: string) => `${docsBase}${href}`;
+const cards = integrations
+  .slice()
+  .sort((left, right) => left.label.localeCompare(right.label))
+  .map((entry) => ({
+    ...entry,
+    coverage: entry.planned ? null : loadResourceCoverage(entry.id),
+    href: `/resources/integrations/${entry.id}`,
+  }));
+---
+
+<section class="catalog not-prose" aria-label="All integrations">
+  <ul class="grid">
+    {cards.map((card) => (
+      <li>
+        <a class:list={["card", card.planned && "card--planned"]} href={toDocsHref(card.href)}>
+          <img class="logo-light" src={composioLogo(card.id)} width="56" height="56" alt="" />
+          <img class="logo-dark" src={composioLogo(card.id, "dark")} width="56" height="56" alt="" />
+          <span class="copy">
+            <h2>{card.label}</h2>
+            {card.planned ? (
+              <span class="meta">Planned</span>
+            ) : (
+              <span class="meta">
+                {formatCountLabel(card.coverage?.scenarios ?? 0, "scenario", "scenarios")}
+                {" · "}
+                {formatCountLabel(card.coverage?.endpoints ?? 0, "endpoint", "endpoints")}
+              </span>
+            )}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .catalog {
+    margin: 1.1rem 0 2.4rem;
+  }
+  .grid {
+    display: grid;
+    column-gap: 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    row-gap: .35rem;
+  }
+  .grid > li {
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+  }
+  .card {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 14px;
+    color: inherit;
+    display: flex;
+    gap: .95rem;
+    min-width: 0;
+    padding: .7rem .75rem;
+    text-decoration: none;
+  }
+  .card:hover,
+  .card:focus-visible {
+    background: var(--fabricate-surface-raised);
+    outline: none;
+  }
+  .card--planned {
+    opacity: .72;
+  }
+  .logo-light,
+  .logo-dark {
+    border-radius: 12px;
+    flex: none;
+    height: 56px;
+    margin: 0;
+    max-width: none;
+    object-fit: contain;
+    width: 56px;
+  }
+  .logo-light { display: block; }
+  .logo-dark { display: none; }
+  :global(:root[data-theme="dark"]) .logo-light { display: none; }
+  :global(:root[data-theme="dark"]) .logo-dark { display: block; }
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: .18rem;
+    min-width: 0;
+  }
+  h2 {
+    color: var(--fabricate-text);
+    font: 650 1.02rem/1.2 var(--fabricate-font-sans);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .meta {
+    color: var(--fabricate-text-muted);
+    font: 400 .82rem/1.3 var(--fabricate-font-sans);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @media (max-width: 32rem) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
