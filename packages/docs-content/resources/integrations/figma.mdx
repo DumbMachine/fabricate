@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/figma
 ---
 
+<ResourceCoverage resource="figma" />
+
 Files, comments, webhooks, and teams. Local Figma v1 that keeps file and
 webhook state across requests.
 
@@ -60,6 +62,17 @@ Fabricate handles `api.figma.com` locally. Other hosts are forwarded unchanged.
     "figma.minimal.v1": "Empty Figma state for a clean test.",
     "figma.acme-webhooks.v1": "Team `team_acme` webhook catalog. Needles: `https://acme.example/hooks/files` (checkout reliability UI), Contoso SSO screens, INV-4812 receipts, fernworks CSV, LakeTech retries, Fabrikam SCIM.",
   }}
+/>
+
+Peek at the committed Acme webhooks. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="figma"
+  scenario="acme-webhooks.v1"
+  collection="webhooks"
 />
 
 ## Compatibility verification
