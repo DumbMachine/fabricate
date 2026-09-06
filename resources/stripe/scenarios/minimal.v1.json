@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "stripe.minimal.v1",
+  "$resource": "stripe",
+  "$resourceVersion": "v1",
+  "state": {
+    "customers": []
+  }
+}

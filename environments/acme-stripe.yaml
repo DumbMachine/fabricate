@@ -1,0 +1,23 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-stripe
+
+# Shared Acme SaaS world. stripe is the product surface under test; Gmail,
+# Asana, and HubSpot carry the same investigation needles (INV-4812, checkout
+# reliability, Contoso SSO, fernworks CSV, Adatum DNS, LakeTech webhooks,
+# TinyShop refund, BrightPath keys, Fabrikam SCIM) so agents can join facts
+# across services.
+services:
+  stripe:
+    resource: stripe
+    scenario: stripe.acme-customers.v1
+  support-mail:
+    resource: gmail
+    scenario: gmail.acme-corp.v1
+  board:
+    resource: asana
+    scenario: asana.acme-sprint.v1
+  crm:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1

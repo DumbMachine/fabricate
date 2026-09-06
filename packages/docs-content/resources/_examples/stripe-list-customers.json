@@ -1,0 +1,14 @@
+{
+  "id": "stripe-list-customers",
+  "title": "List seeded customers",
+  "environment": "environments/acme-stripe.yaml",
+  "environmentLabel": "Acme Stripe",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/stripe-list-customers.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-stripe.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.stripe.com/v1/customers",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.stripe.com/v1/customers"
+  ]
+}
