@@ -16,6 +16,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "mailchimp", label: "Mailchimp"},
   {id: "mailgun", label: "Mailgun"},
   {id: "pipedrive", label: "Pipedrive"},
+  {id: "posthog", label: "PostHog"},
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
   {id: "shopify", label: "Shopify", planned: true},
