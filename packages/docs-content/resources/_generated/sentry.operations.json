@@ -1,0 +1,1321 @@
+{
+  "integration": "sentry",
+  "api": "Sentry v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/",
+      "operationId": "listOrganizations",
+      "summary": "List Your Organizations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/",
+      "operationId": "getOrganization",
+      "summary": "Retrieve an Organization"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/",
+      "operationId": "updateOrganization",
+      "summary": "Update an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/config/integrations/",
+      "operationId": "getOrganizationConfigIntegrations",
+      "summary": "Get Integration Provider Information"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/dashboards/",
+      "operationId": "listOrganizationDashboards",
+      "summary": "List an Organization's Custom Dashboards"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/dashboards/",
+      "operationId": "createOrganizationDashboard",
+      "summary": "Create a New Dashboard for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/",
+      "operationId": "getOrganizationDashboard",
+      "summary": "Retrieve an Organization's Custom Dashboard"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/",
+      "operationId": "updateOrganizationDashboard",
+      "summary": "Edit an Organization's Custom Dashboard"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/",
+      "operationId": "deleteOrganizationDashboard",
+      "summary": "Delete an Organization's Custom Dashboard"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/detectors/",
+      "operationId": "listOrganizationDetectors",
+      "summary": "Fetch an Organization's Monitors"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/detectors/",
+      "operationId": "updateOrganizationDetectors",
+      "summary": "Mutate an Organization's Monitors"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/detectors/",
+      "operationId": "deleteOrganizationDetectors",
+      "summary": "Bulk Delete Monitors"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/",
+      "operationId": "getOrganizationDetector",
+      "summary": "Fetch a Monitor"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/",
+      "operationId": "updateOrganizationDetector",
+      "summary": "Update a Monitor by ID"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/",
+      "operationId": "deleteOrganizationDetector",
+      "summary": "Delete a Monitor"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/discover/saved/",
+      "operationId": "listOrganizationDiscoverSavedQueries",
+      "summary": "List an Organization's Discover Saved Queries"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/discover/saved/",
+      "operationId": "createOrganizationDiscoverSavedQuery",
+      "summary": "Create a New Saved Query"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/",
+      "operationId": "getOrganizationDiscoverSavedQuery",
+      "summary": "Retrieve an Organization's Discover Saved Query"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/",
+      "operationId": "updateOrganizationDiscoverSavedQuery",
+      "summary": "Edit an Organization's Discover Saved Query"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/",
+      "operationId": "deleteOrganizationDiscoverSavedQuery",
+      "summary": "Delete an Organization's Discover Saved Query"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/environments/",
+      "operationId": "listOrganizationEnvironments",
+      "summary": "List an Organization's Environments"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/eventids/{event_id}/",
+      "operationId": "resolveOrganizationEventId",
+      "summary": "Resolve an Event ID"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/events-timeseries/",
+      "operationId": "listOrganizationEventsTimeseries",
+      "summary": "Query Explore Events in Timeseries Format"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/events/",
+      "operationId": "listOrganizationEvents",
+      "summary": "Query Explore Events in Table Format"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/external-users/",
+      "operationId": "createOrganizationExternalUser",
+      "summary": "Create an External User"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/",
+      "operationId": "updateOrganizationExternalUser",
+      "summary": "Update an External User"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/",
+      "operationId": "deleteOrganizationExternalUser",
+      "summary": "Delete an External User"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/forwarding/",
+      "operationId": "listOrganizationForwarding",
+      "summary": "Retrieve Data Forwarders for an Organization"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/forwarding/",
+      "operationId": "createOrganizationForwarding",
+      "summary": "Create a Data Forwarder for an Organization"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/",
+      "operationId": "updateOrganizationForwarding",
+      "summary": "Update a Data Forwarder for an Organization"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/",
+      "operationId": "deleteOrganizationForwarding",
+      "summary": "Delete a Data Forwarder for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/integrations/",
+      "operationId": "listOrganizationIntegrations",
+      "summary": "List an Organization's Available Integrations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/",
+      "operationId": "getOrganizationIntegration",
+      "summary": "Retrieve an Integration for an Organization"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/",
+      "operationId": "deleteOrganizationIntegration",
+      "summary": "Delete an Integration for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/",
+      "operationId": "listOrganizationIssues",
+      "summary": "List an Organization's Issues"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/",
+      "operationId": "updateOrganizationIssues",
+      "summary": "Bulk Mutate an Organization's Issues"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/",
+      "operationId": "deleteOrganizationIssues",
+      "summary": "Bulk Remove an Organization's Issues"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/",
+      "operationId": "getOrganizationIssue",
+      "summary": "Retrieve an Issue"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/",
+      "operationId": "updateOrganizationIssue",
+      "summary": "Update an Issue"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/",
+      "operationId": "deleteOrganizationIssue",
+      "summary": "Remove an Issue"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/",
+      "operationId": "getOrganizationIssueAutofixState",
+      "summary": "Retrieve Seer Issue Fix State"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/",
+      "operationId": "startOrganizationIssueAutofix",
+      "summary": "Start Seer Issue Fix"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/",
+      "operationId": "listOrganizationIssueEvents",
+      "summary": "List an Issue's Events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/",
+      "operationId": "getOrganizationIssueEvent",
+      "summary": "Retrieve an Issue Event"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/",
+      "operationId": "listOrganizationIssueExternalIssues",
+      "summary": "Retrieve custom integration issue links for the given Sentry issue"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/",
+      "operationId": "listOrganizationIssueHashes",
+      "summary": "List an Issue's Hashes"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/",
+      "operationId": "Retrieve an Integration's Issue Config for an Issue"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/",
+      "operationId": "Create an External Issue and Link It to an Issue"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/",
+      "operationId": "Link an Existing External Issue to an Issue"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/",
+      "operationId": "Unlink an External Issue from an Issue"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/",
+      "operationId": "getOrganizationIssueTag",
+      "summary": "Retrieve Tag Details"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/",
+      "operationId": "listOrganizationIssueTagValues",
+      "summary": "List a Tag's Values for an Issue"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/",
+      "operationId": "listOrganizationMembers",
+      "summary": "List an Organization's Members"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/",
+      "operationId": "addOrganizationMember",
+      "summary": "Add a Member to an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/{member_id}/",
+      "operationId": "getOrganizationMember",
+      "summary": "Retrieve an Organization Member"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/{member_id}/",
+      "operationId": "updateOrganizationMember",
+      "summary": "Update an Organization Member's Roles"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/{member_id}/",
+      "operationId": "deleteOrganizationMember",
+      "summary": "Delete an Organization Member"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/",
+      "operationId": "addOrganizationMemberTeam",
+      "summary": "Add an Organization Member to a Team"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/",
+      "operationId": "updateOrganizationMemberTeam",
+      "summary": "Update an Organization Member's Team Role"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/",
+      "operationId": "deleteOrganizationMemberTeam",
+      "summary": "Delete an Organization Member from a Team"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/monitors/",
+      "operationId": "listOrganizationMonitors",
+      "summary": "Retrieve Monitors for an Organization"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/monitors/",
+      "operationId": "createOrganizationMonitor",
+      "summary": "Create a Monitor"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/",
+      "operationId": "getOrganizationMonitor",
+      "summary": "Retrieve a Monitor"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/",
+      "operationId": "updateOrganizationMonitor",
+      "summary": "Update a Monitor"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/",
+      "operationId": "deleteOrganizationMonitor",
+      "summary": "Delete a Monitor or Monitor Environments"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/",
+      "operationId": "listOrganizationMonitorCheckins",
+      "summary": "Retrieve Check-Ins for a Monitor"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/notifications/actions/",
+      "operationId": "listOrganizationNotificationsActions",
+      "summary": "List Spike Protection Notifications"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/notifications/actions/",
+      "operationId": "createOrganizationNotificationsAction",
+      "summary": "Create a Spike Protection Notification Action"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/",
+      "operationId": "getOrganizationNotificationsAction",
+      "summary": "Retrieve a Spike Protection Notification Action"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/",
+      "operationId": "updateOrganizationNotificationsAction",
+      "summary": "Update a Spike Protection Notification Action"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/",
+      "operationId": "deleteOrganizationNotificationsAction",
+      "summary": "Delete a Spike Protection Notification Action"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/latest-base/",
+      "operationId": "getOrganizationPreprodArtifactSnapshotLatestBase",
+      "summary": "Retrieve latest base Snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/",
+      "operationId": "getOrganizationPreprodArtifactSnapshot",
+      "summary": "Retrieve Snapshot details"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/",
+      "operationId": "deleteOrganizationPreprodArtifactSnapshot",
+      "summary": "Delete a Snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/images/{image_identifier}/",
+      "operationId": "getOrganizationPreprodArtifactSnapshotImage",
+      "summary": "Retrieve Snapshot image detail"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/install-details/",
+      "operationId": "getOrganizationPreprodArtifactInstallDetails",
+      "summary": "Retrieve install info for a given artifact"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/",
+      "operationId": "getOrganizationPreprodArtifactSizeAnalysis",
+      "summary": "Retrieve Size Analysis results for a given artifact"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/profiling/chunks/",
+      "operationId": "listOrganizationProfilingChunks",
+      "summary": "Retrieve Profile Chunks for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/profiling/flamegraph/",
+      "operationId": "getOrganizationProfilingFlamegraph",
+      "summary": "Retrieve a Flamegraph for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/project-keys/",
+      "operationId": "listOrganizationProjectKeys",
+      "summary": "List an Organization's Client Keys"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/projects/",
+      "operationId": "listOrganizationProjects",
+      "summary": "List an Organization's Projects"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/projects/",
+      "operationId": "createOrganizationProject",
+      "summary": "Create a Project for an Organization"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/",
+      "operationId": "createOrganizationProjectDetector",
+      "summary": "Create a Monitor for a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/relay_usage/",
+      "operationId": "listOrganizationRelayUsage",
+      "summary": "List an Organization's trusted Relays"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/",
+      "operationId": "listOrganizationReleaseThresholdStatuses",
+      "summary": "Retrieve Statuses of Release Thresholds (Alpha)"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/",
+      "operationId": "listOrganizationReleases",
+      "summary": "List an Organization's Releases"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/",
+      "operationId": "createOrganizationRelease",
+      "summary": "Create a New Release for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/",
+      "operationId": "getOrganizationRelease",
+      "summary": "Retrieve an Organization's Release"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/",
+      "operationId": "updateOrganizationRelease",
+      "summary": "Update an Organization's Release"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/",
+      "operationId": "deleteOrganizationRelease",
+      "summary": "Delete an Organization's Release"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/commitfiles/",
+      "operationId": "Retrieve Files Changed in a Release's Commits"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/",
+      "operationId": "listOrganizationReleaseCommits",
+      "summary": "List an Organization Release's Commits"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/",
+      "operationId": "listOrganizationReleaseDeploys",
+      "summary": "List a Release's Deploys"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/",
+      "operationId": "createOrganizationReleaseDeploy",
+      "summary": "Create a Deploy"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/",
+      "operationId": "listOrganizationReleaseFiles",
+      "summary": "List an Organization's Release Files"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/",
+      "operationId": "uploadOrganizationReleaseFile",
+      "summary": "Upload a New Organization Release File"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/",
+      "operationId": "getOrganizationReleaseFile",
+      "summary": "Retrieve an Organization Release's File"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/",
+      "operationId": "updateOrganizationReleaseFile",
+      "summary": "Update an Organization Release File"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/",
+      "operationId": "deleteOrganizationReleaseFile",
+      "summary": "Delete an Organization Release's File"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/replay-count/",
+      "operationId": "getOrganizationReplayCount",
+      "summary": "Retrieve a Count of Replays for a Given Issue or Transaction"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/replay-selectors/",
+      "operationId": "listOrganizationReplaySelectors",
+      "summary": "List an Organization's Selectors"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/replays/",
+      "operationId": "listOrganizationReplays",
+      "summary": "List an Organization's Replays"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/",
+      "operationId": "getOrganizationReplay",
+      "summary": "Retrieve a Replay Instance"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/repos/",
+      "operationId": "listOrganizationRepos",
+      "summary": "List an Organization's Repositories"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/",
+      "operationId": "listOrganizationRepoCommits",
+      "summary": "List a Repository's Commits"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups",
+      "operationId": "listOrganizationScimV2Groups",
+      "summary": "List an Organization's Paginated Teams"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups",
+      "operationId": "provisionOrganizationScimV2Group",
+      "summary": "Provision a New Team"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}",
+      "operationId": "getOrganizationScimV2Group",
+      "summary": "Query an Individual Team"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}",
+      "operationId": "updateOrganizationScimV2Group",
+      "summary": "Update a Team's Attributes"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}",
+      "operationId": "deleteOrganizationScimV2Group",
+      "summary": "Delete an Individual Team"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users",
+      "operationId": "listOrganizationScimV2Users",
+      "summary": "List an Organization's SCIM Members"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users",
+      "operationId": "provisionOrganizationScimV2User",
+      "summary": "Provision a New Organization Member"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}",
+      "operationId": "getOrganizationScimV2User",
+      "summary": "Query an Individual Organization Member"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}",
+      "operationId": "updateOrganizationScimV2User",
+      "summary": "Update an Organization Member's Attributes"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}",
+      "operationId": "deleteOrganizationScimV2User",
+      "summary": "Delete an Organization Member via SCIM"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/sentry-app-installations/",
+      "operationId": "List an Organization's Integration Platform Installations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/sentry-apps/",
+      "operationId": "listOrganizationSentryApps",
+      "summary": "Retrieve the custom integrations created by an organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/sessions/",
+      "operationId": "getOrganizationSessions",
+      "summary": "Retrieve Release Health Session Statistics"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/",
+      "operationId": "resolveOrganizationShortId",
+      "summary": "Resolve a Short ID"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/spike-protections/",
+      "operationId": "Enable Spike Protection"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/spike-protections/",
+      "operationId": "Disable Spike Protection"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/stats-summary/",
+      "operationId": "getOrganizationStatsSummary",
+      "summary": "Retrieve an Organization's Events Count by Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/stats_v2/",
+      "operationId": "listOrganizationStatsV2",
+      "summary": "Retrieve Event Counts for an Organization (v2)"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/tags/",
+      "operationId": "listOrganizationTags",
+      "summary": "List an Organization's Tags"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/teams/",
+      "operationId": "listOrganizationTeams",
+      "summary": "List an Organization's Teams"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/teams/",
+      "operationId": "createOrganizationTeam",
+      "summary": "Create a New Team"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/trace-items/attributes/",
+      "operationId": "listOrganizationTraceItemAttributes",
+      "summary": "List Trace Item Attributes"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/trace-items/stats/",
+      "operationId": "Retrieve Trace Item Statistics"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/trace-meta/{trace_id}/",
+      "operationId": "getOrganizationTraceMeta",
+      "summary": "Retrieve Trace Metadata"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/trace/{trace_id}/",
+      "operationId": "getOrganizationTrace",
+      "summary": "Retrieve a Trace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/user-teams/",
+      "operationId": "listOrganizationUserTeams",
+      "summary": "List a User's Teams for an Organization"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/",
+      "operationId": "listOrganizationWorkflows",
+      "summary": "Fetch Alerts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/",
+      "operationId": "createOrganizationWorkflow",
+      "summary": "Create an Alert for an Organization"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/",
+      "operationId": "updateOrganizationWorkflows",
+      "summary": "Mutate an Organization's Alerts"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/",
+      "operationId": "deleteOrganizationWorkflows",
+      "summary": "Bulk Delete Alerts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/",
+      "operationId": "getOrganizationWorkflow",
+      "summary": "Fetch an Alert"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/",
+      "operationId": "updateOrganizationWorkflow",
+      "summary": "Update an Alert by ID"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/",
+      "operationId": "deleteOrganizationWorkflow",
+      "summary": "Delete an Alert"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/",
+      "operationId": "getProject",
+      "summary": "Retrieve a Project"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/",
+      "operationId": "updateProject",
+      "summary": "Update a Project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/",
+      "operationId": "deleteProject",
+      "summary": "Delete a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/",
+      "operationId": "listProjectEnvironments",
+      "summary": "List a Project's Environments"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/",
+      "operationId": "Bulk Update Project Environments"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/",
+      "operationId": "getProjectEnvironment",
+      "summary": "Retrieve a Project Environment"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/",
+      "operationId": "updateProjectEnvironment",
+      "summary": "Update a Project Environment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/",
+      "operationId": "listProjectEvents",
+      "summary": "List a Project's Error Events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/",
+      "operationId": "getProjectEvent",
+      "summary": "Retrieve an Event for a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/",
+      "operationId": "listProjectEventAttachments",
+      "summary": "List an Event's Attachments"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/",
+      "operationId": "getProjectEventAttachment",
+      "summary": "Retrieve an Event Attachment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/",
+      "operationId": "getProjectEventSourceMapDebug",
+      "summary": "Get Debug Information Related to Source Maps for a Given Event"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/",
+      "operationId": "listProjectDebugFiles",
+      "summary": "List a Project's Debug Information Files"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/",
+      "operationId": "listProjectFilters",
+      "summary": "List a Project's Data Filters"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/{filter_id}/",
+      "operationId": "updateProjectFilter",
+      "summary": "Update an Inbound Data Filter"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/",
+      "operationId": "List a Project's Service Hooks"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/",
+      "operationId": "Register a New Service Hook"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/",
+      "operationId": "Retrieve a Service Hook"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/",
+      "operationId": "Update a Service Hook"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/",
+      "operationId": "Remove a Service Hook"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/",
+      "operationId": "List a Project's Issues"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/",
+      "operationId": "Bulk Mutate a List of Issues"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/",
+      "operationId": "Bulk Remove a List of Issues"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/",
+      "operationId": "listProjectKeys",
+      "summary": "List a Project's Client Keys"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/",
+      "operationId": "createProjectKey",
+      "summary": "Create a New Client Key"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/",
+      "operationId": "getProjectKey",
+      "summary": "Retrieve a Client Key"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/",
+      "operationId": "updateProjectKey",
+      "summary": "Update a Client Key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/",
+      "operationId": "deleteProjectKey",
+      "summary": "Delete a Client Key"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/members/",
+      "operationId": "listProjectMembers",
+      "summary": "List a Project's Organization Members"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/",
+      "operationId": "getProjectMonitor",
+      "summary": "Retrieve a Monitor for a Project"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/",
+      "operationId": "updateProjectMonitor",
+      "summary": "Update a Monitor for a Project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/",
+      "operationId": "deleteProjectMonitor",
+      "summary": "Delete a Monitor or Monitor Environments for a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/",
+      "operationId": "listProjectMonitorCheckins",
+      "summary": "Retrieve Check-Ins for a Monitor by Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/",
+      "operationId": "getProjectOwnership",
+      "summary": "Retrieve Ownership Configuration for a Project"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/",
+      "operationId": "updateProjectOwnership",
+      "summary": "Update Ownership Configuration for a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/",
+      "operationId": "getProjectPreprodSizeAnalysisStatusCheckRules",
+      "summary": "Retrieve Size Analysis status check rules for a project"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-checks/skip/",
+      "operationId": "createProjectPreprodSizeAnalysisSkippedStatusCheck",
+      "summary": "Create a skipped Size Analysis status check"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/",
+      "operationId": "getProjectPreprodSnapshotStatusCheckRules",
+      "summary": "Retrieve Snapshot status check rules for a project"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-checks/skip/",
+      "operationId": "createProjectPreprodSnapshotSkippedStatusCheck",
+      "summary": "Create a skipped Snapshot status check"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/",
+      "operationId": "getProjectInstallableBuildLatest",
+      "summary": "Get the latest installable build for a project"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/snapshots/",
+      "operationId": "uploadProjectPreprodArtifactSnapshot",
+      "summary": "Upload a Snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/profiling/profiles/{profile_id}/",
+      "operationId": "getProjectProfilingProfile",
+      "summary": "Retrieve a Profile"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/",
+      "operationId": "listProjectReleases",
+      "summary": "List a Project's Releases"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/",
+      "operationId": "listProjectReleaseCommits",
+      "summary": "List a Project Release's Commits"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/",
+      "operationId": "listProjectReleaseFiles",
+      "summary": "List a Project's Release Files"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/",
+      "operationId": "uploadProjectReleaseFile",
+      "summary": "Upload a New Project Release File"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/",
+      "operationId": "getProjectReleaseFile",
+      "summary": "Retrieve a Project Release's File"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/",
+      "operationId": "updateProjectReleaseFile",
+      "summary": "Update a Project Release File"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/",
+      "operationId": "deleteProjectReleaseFile",
+      "summary": "Delete a Project Release's File"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/",
+      "operationId": "listProjectReplayDeletionJobs",
+      "summary": "List Replay Batch-Deletion Jobs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/",
+      "operationId": "createProjectReplayDeletionJob",
+      "summary": "Create Replay Batch Deletion Job"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/{job_id}/",
+      "operationId": "getProjectReplayDeletionJob",
+      "summary": "Retrieve a Replay Batch-Deletion Job"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/",
+      "operationId": "deleteProjectReplay",
+      "summary": "Delete a Replay Instance"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/",
+      "operationId": "listProjectReplayClicks",
+      "summary": "List Clicked Nodes"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/",
+      "operationId": "listProjectReplayRecordingSegments",
+      "summary": "List Recording Segments"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/{segment_id}/",
+      "operationId": "getProjectReplayRecordingSegment",
+      "summary": "Retrieve a Recording Segment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/viewed-by/",
+      "operationId": "listProjectReplayViewedBy",
+      "summary": "List Users Who Have Viewed a Replay"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/",
+      "operationId": "linkProjectRepository",
+      "summary": "Link a Repository to a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/",
+      "operationId": "listProjectStats",
+      "summary": "Retrieve Event Counts for a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/",
+      "operationId": "listProjectSymbolSources",
+      "summary": "Retrieve a Project's Symbol Sources"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/",
+      "operationId": "addProjectSymbolSource",
+      "summary": "Add a Symbol Source to a Project"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/",
+      "operationId": "updateProjectSymbolSource",
+      "summary": "Update a Project's Symbol Source"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/",
+      "operationId": "deleteProjectSymbolSource",
+      "summary": "Delete a Symbol Source from a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/",
+      "operationId": "List a Tag's Values"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/",
+      "operationId": "listProjectTeams",
+      "summary": "List a Project's Teams"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/",
+      "operationId": "addProjectTeam",
+      "summary": "Add a Team to a Project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/",
+      "operationId": "deleteProjectTeam",
+      "summary": "Delete a Team from a Project"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/",
+      "operationId": "List a Project's User Feedback"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/",
+      "operationId": "Submit User Feedback"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/",
+      "operationId": "listProjectUsers",
+      "summary": "List a Project's Users"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/seer/models/",
+      "operationId": "listSeerModels",
+      "summary": "List Seer AI Models"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/sentry-app-installations/{uuid}/external-issues/",
+      "operationId": "Create or update an External Issue"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/sentry-app-installations/{uuid}/external-issues/{external_issue_id}/",
+      "operationId": "Delete an External Issue"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/sentry-apps/{sentry_app_id_or_slug}/",
+      "operationId": "getSentryApp",
+      "summary": "Retrieve a custom integration by ID or slug."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/sentry-apps/{sentry_app_id_or_slug}/",
+      "operationId": "updateSentryApp",
+      "summary": "Update an existing custom integration."
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/sentry-apps/{sentry_app_id_or_slug}/",
+      "operationId": "deleteSentryApp",
+      "summary": "Delete a custom integration."
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/",
+      "operationId": "getTeam",
+      "summary": "Retrieve a Team"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/",
+      "operationId": "updateTeam",
+      "summary": "Update a Team"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/",
+      "operationId": "deleteTeam",
+      "summary": "Delete a Team"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/",
+      "operationId": "createTeamExternalTeam",
+      "summary": "Create an External Team"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/",
+      "operationId": "updateTeamExternalTeam",
+      "summary": "Update an External Team"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/",
+      "operationId": "deleteTeamExternalTeam",
+      "summary": "Delete an External Team"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/",
+      "operationId": "listTeamMembers",
+      "summary": "List a Team's Members"
+    },
+    {
+      "method": "GET",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/",
+      "operationId": "listTeamProjects",
+      "summary": "List a Team's Projects"
+    },
+    {
+      "method": "POST",
+      "path": "/api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/",
+      "operationId": "createTeamProject",
+      "summary": "Create a New Project"
+    }
+  ]
+}

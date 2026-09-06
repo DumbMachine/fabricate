@@ -1,0 +1,19 @@
+{
+  "integration": "sentry",
+  "scenarios": [
+    {
+      "id": "sentry.acme-projects.v1",
+      "counts": {
+        "issues": 49,
+        "projects": 16,
+        "teams": 8
+      }
+    },
+    {
+      "id": "sentry.minimal.v1",
+      "counts": {
+        "projects": 0
+      }
+    }
+  ]
+}

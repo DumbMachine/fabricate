@@ -18,6 +18,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "pipedrive", label: "Pipedrive"},
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
+  {id: "sentry", label: "Sentry"},
   {id: "shopify", label: "Shopify", planned: true},
 ];
 
