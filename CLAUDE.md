@@ -15,6 +15,7 @@ requestlog/          durable redacted JSONL request traces
 resources/<id>/      OpenAPI, generated strict bindings, SQLite state, behavior
 resources/all/       single compile-time official-resource registry
 scenario/            strict immutable scenario envelope and digest
+examples/            sample Python, Node, and Rust apps that wrap with fab run
 environments/        runnable multi-service environment manifests
 profile/, profiles/  container-engine profile catalog only
 target/              Docker/Kubernetes provisioning for container engines

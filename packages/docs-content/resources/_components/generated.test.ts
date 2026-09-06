@@ -4,12 +4,15 @@ import path from "node:path";
 import {fileURLToPath} from "node:url";
 import test from "node:test";
 
+import {integrationSidebarItems} from "../integrations/catalog.ts";
 import {
   parseCommandExample,
   parseCompatibility,
   parseOperationsCatalog,
   parseScenarioCatalog,
+  formatCountLabel,
   formatScenarioCounts,
+  loadResourceCoverage,
   readGeneratedJSON,
 } from "./generated.ts";
 
@@ -98,4 +101,20 @@ test("readGeneratedJSON loads a committed snapshot", () => {
   assert.ok(catalog);
   assert.equal(catalog.integration, "gmail");
   assert.ok(catalog.operations.length > 0);
+});
+
+test("loadResourceCoverage reads scenario and endpoint counts", () => {
+  const coverage = loadResourceCoverage("gmail");
+  assert.ok(coverage);
+  assert.equal(coverage.scenarios, 2);
+  assert.equal(coverage.endpoints, 10);
+  assert.equal(formatCountLabel(coverage.endpoints, "endpoint", "endpoints"), "10 endpoints");
+  assert.equal(loadResourceCoverage("github"), null);
+});
+
+test("integration sidebar puts All first", () => {
+  const items = integrationSidebarItems();
+  assert.equal(items[0]?.label, "All");
+  assert.equal(items[0]?.href, "/resources/integrations");
+  assert.ok(items.some((item) => item.href === "/resources/integrations/gmail"));
 });

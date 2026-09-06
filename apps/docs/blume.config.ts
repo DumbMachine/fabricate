@@ -1,5 +1,7 @@
 import { defineConfig } from "blume";
 
+import {integrationSidebarItems} from "../../packages/docs-content/resources/integrations/catalog.ts";
+
 const fab = process.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const docsBase = process.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
 const isDevelopment = process.env.PUBLIC_FABRICATE_SITE_MODE === "development";
@@ -79,85 +81,7 @@ export default defineConfig({
             label: "Integrations",
             display: "group",
             collapsed: false,
-            items: [
-              {
-                label: "Gmail",
-                href: "/resources/integrations/gmail",
-                icon: "https://logos.composio.dev/api/gmail",
-              },
-              {
-                label: "Asana",
-                href: "/resources/integrations/asana",
-                icon: "https://logos.composio.dev/api/asana",
-              },
-              {
-                label: "HubSpot",
-                href: "/resources/integrations/hubspot",
-                icon: "https://logos.composio.dev/api/hubspot",
-              },
-              {
-                label: "Intercom",
-                href: "/resources/integrations/intercom",
-                icon: "https://logos.composio.dev/api/intercom",
-              },
-              {
-                label: "Attio",
-                href: "/resources/integrations/attio",
-                icon: "https://logos.composio.dev/api/attio",
-              },
-              {
-                label: "Pipedrive",
-                href: "/resources/integrations/pipedrive",
-                icon: "https://logos.composio.dev/api/pipedrive",
-              },
-              {
-                label: "Close",
-                href: "/resources/integrations/close",
-                icon: "https://logos.composio.dev/api/close",
-              },
-              {
-                label: "Resend",
-                href: "/resources/integrations/resend",
-                icon: "https://logos.composio.dev/api/resend",
-              },
-              {
-                label: "Mailgun",
-                href: "/resources/integrations/mailgun",
-                icon: "https://logos.composio.dev/api/mailgun",
-              },
-              {
-                label: "SendGrid",
-                href: "/resources/integrations/sendgrid",
-                icon: "https://logos.composio.dev/api/sendgrid",
-              },
-              {
-                label: "Mailchimp",
-                href: "/resources/integrations/mailchimp",
-                icon: "https://logos.composio.dev/api/mailchimp",
-              },
-              {
-                label: "Cloudflare",
-                href: "/resources/integrations/cloudflare",
-                icon: "https://logos.composio.dev/api/cloudflare",
-              },
-              {
-                label: "Vercel",
-                href: "/resources/integrations/vercel",
-                icon: "https://logos.composio.dev/api/vercel",
-              },
-              {
-                label: "GitHub (planned)",
-                href: "/resources/integrations/github",
-                icon: "https://logos.composio.dev/api/github",
-              },
-              {
-                label: "Shopify (planned)",
-                href: "/resources/integrations/shopify",
-                icon: "https://logos.composio.dev/api/shopify",
-              },
-            ]
-              // this is shamefull and needs to be fixed in the future
-              .sort((a, b) => a.label.localeCompare(b.label))
+            items: integrationSidebarItems(),
           },
           {
             label: "Environments",
@@ -183,6 +107,10 @@ export default defineConfig({
             ],
           },
         ],
+      },
+      {
+        label: "Support",
+        items: [{ label: "Support", href: "/support" }],
       },
       {
         // `root` marks this as the /cli tab's sidebar section. Blume renders
