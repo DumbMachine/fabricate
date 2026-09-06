@@ -55,6 +55,17 @@ Fabricate handles `api.attio.com` locally. Other hosts are forwarded unchanged.
   }}
 />
 
+Peek at the committed Acme workspace. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="attio"
+  scenario="acme-workspace.v1"
+  collection="records"
+/>
+
 ## Compatibility verification
 
 Fabricate works through any client that can reach an API: `curl`, application

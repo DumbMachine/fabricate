@@ -28,6 +28,7 @@ Implemented integration pages use this order:
    URL, transparent proxy), then start commands.
 3. `## Scenarios` — `<ResourceScenarios resource="<id>" />`. Optional
    `descriptions` add qualitative copy; counts come from the generated catalog.
+   Then `<ScenarioPeek />` for the populated Acme scenario.
 4. `## Compatibility verification`
 5. `## Supported operations`
 
@@ -44,6 +45,11 @@ files at build time; it never starts environments.
 ```mdx
 <CommandOutput id="<example-id>" showCommand={false} />
 <ResourceScenarios resource="<integration>" />
+<ScenarioPeek
+  resource="<integration>"
+  scenario="<file-without-json>"
+  collection="<optional-collection>"
+/>
 <IntegrationCompatibility resource="<integration>" />
 <SupportedOperations resource="<integration>" />
 ```
@@ -61,6 +67,14 @@ recapture and commit the snapshots. CI fails if they drifted.
   fails if none match. Use `showCommand={false}` when the page already has a
   copyable command block. Force selected examples with
   `make docs-examples DOCS_EXAMPLES_FLAGS=--all`.
+- Scenario peeks: `<ScenarioPeek />` is a Blume island in `apps/docs/islands`.
+  Pass `resource` plus `scenario` (filename without `.json`, with or without
+  the resource prefix). It fetches that JSON in the browser, renders
+  whatever collections the scenario document seeds, and caps rows (`limit`,
+  default 25). Missing files, slow fetches, and invalid JSON get a skeleton,
+  timeout, and retry. The inline table is a preview; Expand opens a sheet
+  with sorting. Do not inline scenario documents into the page, and do not
+  special-case a service in the island.
 - Operations catalogs: `make docs-operations` walks the official resource
   registry and writes `<id>.operations.json` from each compiled OpenAPI
   contract, plus `<id>.scenarios.json` from catalog scenario state (top-level
@@ -68,7 +82,8 @@ recapture and commit the snapshots. CI fails if they drifted.
   `make docs-operations gmail asana` limits to named resources.
   Empty path stubs are omitted. Do not list operations or scenario counts by
   hand. Render `<SupportedOperations resource="<id>" />` and
-  `<ResourceScenarios resource="<id>" />`.
+  `<ResourceScenarios resource="<id>" />`. Implemented pages also render
+  `<ScenarioPeek />` for the populated scenario.
 - Compatibility reports: each resource owns `resources/<id>/conformance/` with
   `curl.sh`, `sdk.json`, or both. `make conformance` runs every client that
   exists and writes `<id>.compatibility.json`; `make conformance gmail asana`
