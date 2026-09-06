@@ -6,234 +6,236 @@
     "manifest": "environments/acme-digitalocean.yaml"
   },
   "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-digitalocean.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.digitalocean.com/v2/droplets",
-  "output": [
-    {
-      "id": "droplet_analytics",
-      "name": "acme-analytics",
-      "region": "nyc3",
-      "size": "s-4vcpu-8gb",
-      "status": "active",
-      "tags": [
-        "fernworks-csv"
-      ]
-    },
-    {
-      "id": "droplet_api",
-      "name": "acme-api",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active",
-      "tags": [
-        "api",
-        "contoso-sso"
-      ]
-    },
-    {
-      "id": "droplet_auth",
-      "name": "acme-auth",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active",
-      "tags": [
-        "contoso-sso"
-      ]
-    },
-    {
-      "id": "droplet_backup",
-      "name": "acme-backup",
-      "region": "nyc3",
-      "size": "s-1vcpu-1gb",
-      "status": "off"
-    },
-    {
-      "id": "droplet_bastion",
-      "name": "acme-bastion",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_billing",
-      "name": "acme-billing",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active",
-      "tags": [
-        "inv-4812"
-      ]
-    },
-    {
-      "id": "droplet_checkout",
-      "name": "acme-checkout",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active",
-      "tags": [
-        "checkout-reliability"
-      ]
-    },
-    {
-      "id": "droplet_ci",
-      "name": "acme-ci",
-      "region": "nyc3",
-      "size": "s-2vcpu-4gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_dns",
-      "name": "acme-dns",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "active",
-      "tags": [
-        "adatum"
-      ]
-    },
-    {
-      "id": "droplet_eu",
-      "name": "acme-eu",
-      "region": "ams3",
-      "size": "s-2vcpu-2gb",
-      "status": "active",
-      "tags": [
-        "contoso-eu"
-      ]
-    },
-    {
-      "id": "droplet_hooks",
-      "name": "acme-hooks",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "active",
-      "tags": [
-        "laketech"
-      ]
-    },
-    {
-      "id": "droplet_keys",
-      "name": "acme-keys",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "active",
-      "tags": [
-        "brightpath"
-      ]
-    },
-    {
-      "id": "droplet_logs",
-      "name": "acme-logs",
-      "region": "nyc3",
-      "size": "s-2vcpu-4gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_metrics",
-      "name": "acme-metrics",
-      "region": "nyc3",
-      "size": "s-2vcpu-2gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_ml",
-      "name": "acme-ml",
-      "region": "sfo3",
-      "size": "s-4vcpu-8gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_nat",
-      "name": "acme-nat",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_queue",
-      "name": "acme-queue",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_redis",
-      "name": "acme-redis",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_sandbox",
-      "name": "acme-sandbox",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "off"
-    },
-    {
-      "id": "droplet_scim",
-      "name": "acme-scim",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active",
-      "tags": [
-        "fabrikam"
-      ]
-    },
-    {
-      "id": "droplet_search",
-      "name": "acme-search",
-      "region": "nyc3",
-      "size": "s-4vcpu-8gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_staging",
-      "name": "acme-staging",
-      "region": "nyc1",
-      "size": "s-2vcpu-2gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_status",
-      "name": "acme-status",
-      "region": "nyc3",
-      "size": "s-1vcpu-1gb",
-      "status": "active"
-    },
-    {
-      "id": "droplet_tinyshop",
-      "name": "tinyshop-archive",
-      "region": "nyc3",
-      "size": "s-1vcpu-1gb",
-      "status": "off",
-      "tags": [
-        "tinyshop"
-      ]
-    },
-    {
-      "id": "droplet_web",
-      "name": "acme-web",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "active",
-      "tags": [
-        "web",
-        "checkout-reliability"
-      ]
-    },
-    {
-      "id": "droplet_worker",
-      "name": "acme-worker",
-      "region": "nyc1",
-      "size": "s-1vcpu-1gb",
-      "status": "off",
-      "tags": [
-        "webhooks"
-      ]
-    }
-  ],
+  "output": {
+    "droplets": [
+      {
+        "id": "droplet_analytics",
+        "name": "acme-analytics",
+        "region": "nyc3",
+        "size": "s-4vcpu-8gb",
+        "status": "active",
+        "tags": [
+          "fernworks-csv"
+        ]
+      },
+      {
+        "id": "droplet_api",
+        "name": "acme-api",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active",
+        "tags": [
+          "api",
+          "contoso-sso"
+        ]
+      },
+      {
+        "id": "droplet_auth",
+        "name": "acme-auth",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active",
+        "tags": [
+          "contoso-sso"
+        ]
+      },
+      {
+        "id": "droplet_backup",
+        "name": "acme-backup",
+        "region": "nyc3",
+        "size": "s-1vcpu-1gb",
+        "status": "off"
+      },
+      {
+        "id": "droplet_bastion",
+        "name": "acme-bastion",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_billing",
+        "name": "acme-billing",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active",
+        "tags": [
+          "inv-4812"
+        ]
+      },
+      {
+        "id": "droplet_checkout",
+        "name": "acme-checkout",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active",
+        "tags": [
+          "checkout-reliability"
+        ]
+      },
+      {
+        "id": "droplet_ci",
+        "name": "acme-ci",
+        "region": "nyc3",
+        "size": "s-2vcpu-4gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_dns",
+        "name": "acme-dns",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "active",
+        "tags": [
+          "adatum"
+        ]
+      },
+      {
+        "id": "droplet_eu",
+        "name": "acme-eu",
+        "region": "ams3",
+        "size": "s-2vcpu-2gb",
+        "status": "active",
+        "tags": [
+          "contoso-eu"
+        ]
+      },
+      {
+        "id": "droplet_hooks",
+        "name": "acme-hooks",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "active",
+        "tags": [
+          "laketech"
+        ]
+      },
+      {
+        "id": "droplet_keys",
+        "name": "acme-keys",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "active",
+        "tags": [
+          "brightpath"
+        ]
+      },
+      {
+        "id": "droplet_logs",
+        "name": "acme-logs",
+        "region": "nyc3",
+        "size": "s-2vcpu-4gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_metrics",
+        "name": "acme-metrics",
+        "region": "nyc3",
+        "size": "s-2vcpu-2gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_ml",
+        "name": "acme-ml",
+        "region": "sfo3",
+        "size": "s-4vcpu-8gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_nat",
+        "name": "acme-nat",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_queue",
+        "name": "acme-queue",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_redis",
+        "name": "acme-redis",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_sandbox",
+        "name": "acme-sandbox",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "off"
+      },
+      {
+        "id": "droplet_scim",
+        "name": "acme-scim",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active",
+        "tags": [
+          "fabrikam"
+        ]
+      },
+      {
+        "id": "droplet_search",
+        "name": "acme-search",
+        "region": "nyc3",
+        "size": "s-4vcpu-8gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_staging",
+        "name": "acme-staging",
+        "region": "nyc1",
+        "size": "s-2vcpu-2gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_status",
+        "name": "acme-status",
+        "region": "nyc3",
+        "size": "s-1vcpu-1gb",
+        "status": "active"
+      },
+      {
+        "id": "droplet_tinyshop",
+        "name": "tinyshop-archive",
+        "region": "nyc3",
+        "size": "s-1vcpu-1gb",
+        "status": "off",
+        "tags": [
+          "tinyshop"
+        ]
+      },
+      {
+        "id": "droplet_web",
+        "name": "acme-web",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "active",
+        "tags": [
+          "web",
+          "checkout-reliability"
+        ]
+      },
+      {
+        "id": "droplet_worker",
+        "name": "acme-worker",
+        "region": "nyc1",
+        "size": "s-1vcpu-1gb",
+        "status": "off",
+        "tags": [
+          "webhooks"
+        ]
+      }
+    ]
+  },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:f9f6f585a1c9f1c52613d9ca1ff1891885799cb4492d4891434de05291a3da4e",
+    "digest": "sha256:b2325bed4b5a6c4d286b33cb7c40c45ca21c2cbe13b317c44f484556f72e9ef7",
     "roots": [
       {
         "path": "cli/run.go",
@@ -253,7 +255,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+        "digest": "sha256:92cfde6e04e185db121b95c6fdddf6e00e450fc88f5edb3d1dd35a329d255dae"
       },
       {
         "path": "packages/docs-content/resources/_examples/digitalocean-list-droplets.json",

@@ -144,7 +144,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:7ec1cb1e08dc305143d39535f05d93eaf429ea62f3c207d599b7e9f56e235014",
+    "digest": "sha256:34b1e3fa058801630ce13e99a597736a468a1ad431250ad8c12d10dba4ee20ec",
     "roots": [
       {
         "path": "cli/run.go",
@@ -164,7 +164,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+        "digest": "sha256:92cfde6e04e185db121b95c6fdddf6e00e450fc88f5edb3d1dd35a329d255dae"
       },
       {
         "path": "packages/docs-content/resources/_examples/acme-go-to-market-inv-4812.json",

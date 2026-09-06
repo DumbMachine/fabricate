@@ -121,7 +121,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:30cf8026d5143eab86b01a03dd3d8252f03a2a7e4b643d3a354134d3cefc6b9e",
+    "digest": "sha256:44ad2d31f1e2e8a4f94100623eeea92f8e86153b9ef98461afbbe87adecf25be",
     "roots": [
       {
         "path": "cli/run.go",
@@ -141,7 +141,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+        "digest": "sha256:92cfde6e04e185db121b95c6fdddf6e00e450fc88f5edb3d1dd35a329d255dae"
       },
       {
         "path": "packages/docs-content/resources/_examples/acme-support-desk-inv-4812.json",
