@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/posthog
 ---
 
+<ResourceCoverage resource="posthog" />
+
 Feature flags, insights, dashboards, cohorts, and experiments. Local PostHog
 v1 that keeps project state across requests.
 
@@ -60,6 +62,17 @@ Fabricate handles `us.posthog.com` locally. Other hosts are forwarded unchanged.
     "posthog.minimal.v1": "Empty PostHog state for a clean test.",
     "posthog.acme-flags.v1": "Acme production analytics: ~120 flags, insights, dashboards, cohorts, experiments, and persons. Needles: `checkout_reliability`, Contoso SSO / `contoso-eu`, INV-4812 / Northwind, fernworks CSV, Adatum DNS, LakeTech webhooks, TinyShop refund, BrightPath keys, Fabrikam SCIM `req_7Q4K2`.",
   }}
+/>
+
+Peek at the committed Acme feature flags. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="posthog"
+  scenario="acme-flags.v1"
+  collection="feature_flags"
 />
 
 ## Compatibility verification
