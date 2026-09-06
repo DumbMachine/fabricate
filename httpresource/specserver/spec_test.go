@@ -166,6 +166,42 @@ func TestTemplatedServerHostIsNotAPathPrefix(t *testing.T) {
 	}
 }
 
+func TestResponseRefNamedWrap(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join("testdata", "openapi-response-ref.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	compiled, err := CompileSpec(raw, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	handler := testHandler(t, compiled)
+
+	created := doExercise(t, handler, http.MethodPost, "/v2/droplets", `{"name":"acme-billing"}`, testToken)
+	if created.Code != http.StatusOK && created.Code != http.StatusCreated && created.Code != http.StatusAccepted {
+		t.Fatalf("create = %d %s", created.Code, created.Body.String())
+	}
+	var createdBody map[string]any
+	if err := json.Unmarshal(created.Body.Bytes(), &createdBody); err != nil {
+		t.Fatal(err)
+	}
+	droplet, _ := createdBody["droplet"].(map[string]any)
+	id, _ := droplet["id"].(string)
+	if id == "" {
+		t.Fatalf("create missing droplet.id: %s", created.Body.String())
+	}
+
+	listed := doExercise(t, handler, http.MethodGet, "/v2/droplets", "", testToken)
+	if listed.Code != http.StatusOK || !strings.Contains(listed.Body.String(), `"droplets"`) || !strings.Contains(listed.Body.String(), `"acme-billing"`) {
+		t.Fatalf("list = %d %s", listed.Code, listed.Body.String())
+	}
+
+	got := doExercise(t, handler, http.MethodGet, "/v2/droplets/"+id, "", testToken)
+	if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `"droplet"`) || !strings.Contains(got.Body.String(), `"acme-billing"`) {
+		t.Fatalf("get = %d %s", got.Code, got.Body.String())
+	}
+}
+
 func TestDropPaths(t *testing.T) {
 	raw, err := os.ReadFile(filepath.Join("testdata", "openapi.yaml"))
 	if err != nil {

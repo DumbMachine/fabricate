@@ -1,37 +1,49 @@
 package specserver
 
 func inferWrap(op map[string]any, components map[string]any) wrapStyle {
-	schema := successSchema(op)
+	schema := successSchema(op, components)
 	return inferWrapSchema(schema, components, 0)
 }
 
-func successSchema(op map[string]any) any {
+func successSchema(op map[string]any, components map[string]any) any {
 	responses, _ := op["responses"].(map[string]any)
 	if responses == nil {
 		return nil
 	}
+	doc := map[string]any{"components": components}
 	for _, code := range []string{"200", "201", "202"} {
 		resp, _ := responses[code].(map[string]any)
 		if resp == nil {
 			continue
 		}
 		if ref, _ := resp["$ref"].(string); ref != "" {
-			continue
-		}
-		content, _ := resp["content"].(map[string]any)
-		if jsonContent, _ := content["application/json"].(map[string]any); jsonContent != nil {
-			if schema := jsonContent["schema"]; schema != nil {
-				return schema
-			}
-		}
-		for _, typed := range content {
-			item, _ := typed.(map[string]any)
-			if item == nil {
+			resolved, ok := resolveRef(ref, doc).(map[string]any)
+			if !ok {
 				continue
 			}
-			if schema := item["schema"]; schema != nil {
-				return schema
-			}
+			resp = resolved
+		}
+		if schema := schemaFromResponse(resp); schema != nil {
+			return schema
+		}
+	}
+	return nil
+}
+
+func schemaFromResponse(resp map[string]any) any {
+	content, _ := resp["content"].(map[string]any)
+	if jsonContent, _ := content["application/json"].(map[string]any); jsonContent != nil {
+		if schema := jsonContent["schema"]; schema != nil {
+			return schema
+		}
+	}
+	for _, typed := range content {
+		item, _ := typed.(map[string]any)
+		if item == nil {
+			continue
+		}
+		if schema := item["schema"]; schema != nil {
+			return schema
 		}
 	}
 	return nil
