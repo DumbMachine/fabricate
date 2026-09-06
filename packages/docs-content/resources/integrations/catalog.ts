@@ -9,6 +9,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "attio", label: "Attio"},
   {id: "close", label: "Close"},
   {id: "cloudflare", label: "Cloudflare"},
+  {id: "exa", label: "Exa"},
   {id: "gmail", label: "Gmail"},
   {id: "github", label: "GitHub", planned: true},
   {id: "hubspot", label: "HubSpot"},
