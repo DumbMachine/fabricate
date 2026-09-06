@@ -321,3 +321,24 @@ export function formatScenarioCounts(facts: ScenarioFacts | null): string {
     .map((key) => `${facts.counts[key]} ${key}`)
     .join(" · ");
 }
+
+export type ResourceCoverage = {
+  endpoints: number;
+  scenarios: number;
+};
+
+export function formatCountLabel(count: number, singular: string, plural: string): string {
+  return count === 1 ? `1 ${singular}` : `${count} ${plural}`;
+}
+
+export function loadResourceCoverage(resource?: string): ResourceCoverage | null {
+  const scenarios = loadScenarioCatalog(resource);
+  const operations = loadOperationsCatalog(resource);
+  if (!scenarios && !operations) {
+    return null;
+  }
+  return {
+    scenarios: scenarios?.scenarios.length ?? 0,
+    endpoints: operations?.operations.length ?? 0,
+  };
+}

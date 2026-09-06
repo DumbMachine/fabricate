@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/asana
 ---
 
+<ResourceCoverage resource="asana" />
+
 Users, workspaces, projects, tasks, sections, and stories. Local Asana REST
 1.0 that keeps board state across requests.
 
@@ -97,6 +99,17 @@ settings. In that case, use the direct URL.
     "asana.minimal.v1": "An empty Acme workspace for a clean test.",
     "asana.acme-sprint.v1": "Checkout reliability plus onboarding, with tasks, sections, and comments.",
   }}
+/>
+
+Peek at the committed Acme sprint world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="asana"
+  scenario="acme-sprint.v1"
+  collection="tasks"
 />
 
 ## Compatibility verification

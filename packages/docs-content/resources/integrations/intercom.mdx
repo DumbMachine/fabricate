@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/intercom
 ---
 
+<ResourceCoverage resource="intercom" />
+
 Admins, contacts, and conversations. Local Intercom 2.16 that keeps inbox
 state across requests.
 
@@ -123,6 +125,17 @@ settings. In that case, use the direct URL.
     "intercom.minimal.v1": "An empty inbox with Val as the current admin.",
     "intercom.acme-inbox.v1": "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
   }}
+/>
+
+Peek at the committed Acme inbox. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="intercom"
+  scenario="acme-inbox.v1"
+  collection="conversations"
 />
 
 ## Compatibility verification
