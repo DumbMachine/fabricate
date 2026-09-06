@@ -1,0 +1,1020 @@
+{
+  "integration": "neon",
+  "api": "Neon v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api_keys",
+      "operationId": "listApiKeys",
+      "summary": "List API keys"
+    },
+    {
+      "method": "POST",
+      "path": "/api_keys",
+      "operationId": "createApiKey",
+      "summary": "Create API key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api_keys/{key_id}",
+      "operationId": "revokeApiKey",
+      "summary": "Revoke API key"
+    },
+    {
+      "method": "GET",
+      "path": "/auth",
+      "operationId": "getAuthDetails",
+      "summary": "Retrieve request authentication details"
+    },
+    {
+      "method": "GET",
+      "path": "/consumption_history/projects",
+      "operationId": "getConsumptionHistoryPerProject",
+      "summary": "Retrieve project consumption metrics (legacy plans)"
+    },
+    {
+      "method": "GET",
+      "path": "/consumption_history/v2/branches",
+      "operationId": "getConsumptionHistoryPerBranchV2",
+      "summary": "Retrieve branch consumption metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/consumption_history/v2/projects",
+      "operationId": "getConsumptionHistoryPerProjectV2",
+      "summary": "Retrieve project consumption metrics"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}",
+      "operationId": "getOrganization",
+      "summary": "Retrieve organization details"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/api_keys",
+      "operationId": "listOrgApiKeys",
+      "summary": "List organization API keys"
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{org_id}/api_keys",
+      "operationId": "createOrgApiKey",
+      "summary": "Create organization API key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{org_id}/api_keys/{key_id}",
+      "operationId": "revokeOrgApiKey",
+      "summary": "Revoke organization API key"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/billing/spending_limit",
+      "operationId": "getOrganizationSpendingLimit",
+      "summary": "Retrieve organization spending limit"
+    },
+    {
+      "method": "PUT",
+      "path": "/organizations/{org_id}/billing/spending_limit",
+      "operationId": "setOrganizationSpendingLimit",
+      "summary": "Set organization spending limit"
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{org_id}/billing/spending_limit",
+      "operationId": "deleteOrganizationSpendingLimit",
+      "summary": "Remove organization spending limit"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/invitations",
+      "operationId": "getOrganizationInvitations",
+      "summary": "List organization invitations"
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{org_id}/invitations",
+      "operationId": "createOrganizationInvitations",
+      "summary": "Create organization invitations"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/members",
+      "operationId": "getOrganizationMembers",
+      "summary": "List organization members"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/members/{member_id}",
+      "operationId": "getOrganizationMember",
+      "summary": "Retrieve organization member details"
+    },
+    {
+      "method": "PATCH",
+      "path": "/organizations/{org_id}/members/{member_id}",
+      "operationId": "updateOrganizationMember",
+      "summary": "Update role for organization member"
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{org_id}/members/{member_id}",
+      "operationId": "removeOrganizationMember",
+      "summary": "Remove organization member"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints",
+      "operationId": "listOrganizationVPCEndpoints",
+      "summary": "List VPC endpoints"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}",
+      "operationId": "getOrganizationVPCEndpointDetails",
+      "summary": "Retrieve VPC endpoint details"
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}",
+      "operationId": "assignOrganizationVPCEndpoint",
+      "summary": "Assign or update VPC endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}",
+      "operationId": "deleteOrganizationVPCEndpoint",
+      "summary": "Delete VPC endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{org_id}/vpc/vpc_endpoints",
+      "operationId": "listOrganizationVPCEndpointsAllRegions",
+      "summary": "List VPC endpoints across all regions"
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{source_org_id}/projects/transfer",
+      "operationId": "transferProjectsFromOrgToOrg",
+      "summary": "Transfer projects between organizations"
+    },
+    {
+      "method": "GET",
+      "path": "/projects",
+      "operationId": "listProjects",
+      "summary": "List projects"
+    },
+    {
+      "method": "POST",
+      "path": "/projects",
+      "operationId": "createProject",
+      "summary": "Create project"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/auth/create",
+      "operationId": "createNeonAuthIntegration",
+      "summary": "Create Neon Auth integration"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/auth/keys",
+      "operationId": "createNeonAuthProviderSDKKeys",
+      "summary": "Create Auth Provider SDK keys"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/auth/transfer_ownership",
+      "operationId": "transferNeonAuthProviderProject",
+      "summary": "Transfer Neon-managed auth project to your own account"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/auth/user",
+      "operationId": "createNeonAuthNewUser",
+      "summary": "Create new auth user"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/shared",
+      "operationId": "listSharedProjects",
+      "summary": "List shared projects"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}",
+      "operationId": "getProject",
+      "summary": "Retrieve project details"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}",
+      "operationId": "updateProject",
+      "summary": "Update project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}",
+      "operationId": "deleteProject",
+      "summary": "Delete project"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/advisors",
+      "operationId": "getProjectAdvisorSecurityIssues",
+      "summary": "Get advisor issues"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/auth/domains",
+      "operationId": "listNeonAuthRedirectURIWhitelistDomains",
+      "summary": "List trusted redirect URI domains"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/auth/domains",
+      "operationId": "addNeonAuthDomainToRedirectURIWhitelist",
+      "summary": "Add trusted redirect URI domain"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/auth/domains",
+      "operationId": "deleteNeonAuthDomainFromRedirectURIWhitelist",
+      "summary": "Delete trusted redirect URI domain"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/auth/email_server",
+      "operationId": "getNeonAuthEmailServer",
+      "summary": "Retrieve email server configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/auth/email_server",
+      "operationId": "updateNeonAuthEmailServer",
+      "summary": "Update email server configuration"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/auth/integration/{auth_provider}",
+      "operationId": "deleteNeonAuthIntegration",
+      "summary": "Delete integration with auth provider"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/auth/integrations",
+      "operationId": "listNeonAuthIntegrations",
+      "summary": "List active integrations with auth providers"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/auth/oauth_providers",
+      "operationId": "listNeonAuthOauthProviders",
+      "summary": "List OAuth providers"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/auth/oauth_providers",
+      "operationId": "addNeonAuthOauthProvider",
+      "summary": "Add an OAuth provider"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/auth/oauth_providers/{oauth_provider_id}",
+      "operationId": "updateNeonAuthOauthProvider",
+      "summary": "Update OAuth provider"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/auth/oauth_providers/{oauth_provider_id}",
+      "operationId": "deleteNeonAuthOauthProvider",
+      "summary": "Delete OAuth provider"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/auth/users/{auth_user_id}",
+      "operationId": "deleteNeonAuthUser",
+      "summary": "Delete auth user"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/available_preload_libraries",
+      "operationId": "getAvailablePreloadLibraries",
+      "summary": "List available shared preload libraries"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branch_anonymized",
+      "operationId": "createProjectBranchAnonymized",
+      "summary": "Create anonymized branch"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches",
+      "operationId": "listProjectBranches",
+      "summary": "List branches"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches",
+      "operationId": "createProjectBranch",
+      "summary": "Create branch"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/count",
+      "operationId": "countProjectBranches",
+      "summary": "Retrieve number of branches"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}",
+      "operationId": "getProjectBranch",
+      "summary": "Retrieve branch details"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}",
+      "operationId": "updateProjectBranch",
+      "summary": "Update branch"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}",
+      "operationId": "deleteProjectBranch",
+      "summary": "Delete branch"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/ai_gateway",
+      "operationId": "getProjectBranchAiGateway",
+      "summary": "Get branch AI Gateway endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/anonymize",
+      "operationId": "startAnonymization",
+      "summary": "Start anonymization"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/anonymized_status",
+      "operationId": "getAnonymizedBranchStatus",
+      "summary": "Retrieve anonymized branch status"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth",
+      "operationId": "getNeonAuth",
+      "summary": "Retrieve Neon Auth details for the branch"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth",
+      "operationId": "createNeonAuth",
+      "summary": "Enable Neon Auth for the branch"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth",
+      "operationId": "disableNeonAuth",
+      "summary": "Disable Neon Auth for the branch"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/allow_localhost",
+      "operationId": "getNeonAuthAllowLocalhost",
+      "summary": "Retrieve localhost allow setting"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/allow_localhost",
+      "operationId": "updateNeonAuthAllowLocalhost",
+      "summary": "Update localhost allow setting"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/config",
+      "operationId": "updateNeonAuthConfig",
+      "summary": "Update auth configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/domains",
+      "operationId": "listBranchNeonAuthTrustedDomains",
+      "summary": "List domains in redirect_uri whitelist"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/domains",
+      "operationId": "addBranchNeonAuthTrustedDomain",
+      "summary": "Add domain to redirect_uri whitelist"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/domains",
+      "operationId": "deleteBranchNeonAuthTrustedDomain",
+      "summary": "Delete domain from redirect_uri whitelist"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/email_and_password",
+      "operationId": "getNeonAuthEmailAndPasswordConfig",
+      "summary": "Retrieve email and password configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/email_and_password",
+      "operationId": "updateNeonAuthEmailAndPasswordConfig",
+      "summary": "Update email and password configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/email_provider",
+      "operationId": "getNeonAuthEmailProvider",
+      "summary": "Retrieve email provider configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/email_provider",
+      "operationId": "updateNeonAuthEmailProvider",
+      "summary": "Update email provider configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/email_provider/test",
+      "operationId": "sendNeonAuthEmailProviderTest",
+      "summary": "Send test email using the saved email provider"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/oauth_providers",
+      "operationId": "listBranchNeonAuthOauthProviders",
+      "summary": "List OAuth providers for the branch"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/oauth_providers",
+      "operationId": "addBranchNeonAuthOauthProvider",
+      "summary": "Add an OAuth provider"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}",
+      "operationId": "updateBranchNeonAuthOauthProvider",
+      "summary": "Update OAuth provider"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}",
+      "operationId": "deleteBranchNeonAuthOauthProvider",
+      "summary": "Delete OAuth provider"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/plugins",
+      "operationId": "getNeonAuthPluginConfigs",
+      "summary": "Retrieve Neon Auth plugin configurations"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/plugins/magic-link",
+      "operationId": "updateNeonAuthMagicLinkPlugin",
+      "summary": "Update magic link plugin configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/plugins/organization",
+      "operationId": "updateNeonAuthOrganizationPlugin",
+      "summary": "Update organization plugin configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number",
+      "operationId": "getNeonAuthPhoneNumberPlugin",
+      "summary": "Retrieve phone number plugin configuration"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number",
+      "operationId": "updateNeonAuthPhoneNumberPlugin",
+      "summary": "Update phone number plugin configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/send_test_email",
+      "operationId": "sendNeonAuthTestEmail",
+      "summary": "Send test email"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/users",
+      "operationId": "createBranchNeonAuthNewUser",
+      "summary": "Create new auth user"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}",
+      "operationId": "deleteBranchNeonAuthUser",
+      "summary": "Delete auth user"
+    },
+    {
+      "method": "PUT",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}/role",
+      "operationId": "updateNeonAuthUserRole",
+      "summary": "Update auth user role"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/webhooks",
+      "operationId": "getNeonAuthWebhookConfig",
+      "summary": "Retrieve Neon Auth webhook configuration"
+    },
+    {
+      "method": "PUT",
+      "path": "/projects/{project_id}/branches/{branch_id}/auth/webhooks",
+      "operationId": "updateNeonAuthWebhookConfig",
+      "summary": "Update Neon Auth webhook configuration"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/backup_schedule",
+      "operationId": "getSnapshotSchedule",
+      "summary": "Retrieve backup schedule"
+    },
+    {
+      "method": "PUT",
+      "path": "/projects/{project_id}/branches/{branch_id}/backup_schedule",
+      "operationId": "setSnapshotSchedule",
+      "summary": "Update backup schedule"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets",
+      "operationId": "listProjectBranchBuckets",
+      "summary": "List buckets on the branch"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets",
+      "operationId": "createProjectBranchBucket",
+      "summary": "Create a bucket on the branch"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}",
+      "operationId": "deleteProjectBranchBucket",
+      "summary": "Delete a bucket on the branch"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects",
+      "operationId": "listProjectBranchBucketObjects",
+      "summary": "List objects in a bucket"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects-by-prefix",
+      "operationId": "deleteProjectBranchBucketObjectsByPrefix",
+      "summary": "Delete every object under a key prefix (folder) in a bucket"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}",
+      "operationId": "deleteProjectBranchBucketObject",
+      "summary": "Delete an object in a bucket"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}/download",
+      "operationId": "getProjectBranchBucketObject",
+      "summary": "Download an object's bytes"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}/presign",
+      "operationId": "presignProjectBranchBucketObject",
+      "summary": "Presign an upload or download for an object in a bucket"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/compare_schema",
+      "operationId": "getProjectBranchSchemaComparison",
+      "summary": "Compare database schema"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/credentials",
+      "operationId": "listCredentials",
+      "summary": "List credentials on the branch"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/credentials",
+      "operationId": "createCredential",
+      "summary": "Issue a scoped credential on the branch"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/credentials/{token_id}",
+      "operationId": "revokeCredential",
+      "summary": "Revoke a credential"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/data-api/{database_name}",
+      "operationId": "getProjectBranchDataAPI",
+      "summary": "Retrieve Neon Data API configuration"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/data-api/{database_name}",
+      "operationId": "createProjectBranchDataAPI",
+      "summary": "Create Neon Data API"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/data-api/{database_name}",
+      "operationId": "updateProjectBranchDataAPI",
+      "summary": "Update Neon Data API"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/data-api/{database_name}",
+      "operationId": "deleteProjectBranchDataAPI",
+      "summary": "Delete Neon Data API"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/databases",
+      "operationId": "listProjectBranchDatabases",
+      "summary": "List databases"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/databases",
+      "operationId": "createProjectBranchDatabase",
+      "summary": "Create database"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/databases/{database_name}",
+      "operationId": "getProjectBranchDatabase",
+      "summary": "Retrieve database details"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/databases/{database_name}",
+      "operationId": "updateProjectBranchDatabase",
+      "summary": "Update database"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/databases/{database_name}",
+      "operationId": "deleteProjectBranchDatabase",
+      "summary": "Delete database"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/endpoints",
+      "operationId": "listProjectBranchEndpoints",
+      "summary": "List branch endpoints"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/finalize_restore",
+      "operationId": "finalizeRestoreBranch",
+      "summary": "Finalize branch restore from snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/functions",
+      "operationId": "listProjectBranchFunctions",
+      "summary": "List functions on the branch"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/functions/{slug}",
+      "operationId": "getProjectBranchFunction",
+      "summary": "Get function details"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/functions/{slug}",
+      "operationId": "updateProjectBranchFunction",
+      "summary": "Update a function"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/functions/{slug}",
+      "operationId": "deleteProjectBranchFunction",
+      "summary": "Delete a function on the branch"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/functions/{slug}/deployments",
+      "operationId": "createProjectBranchFunctionDeployment",
+      "summary": "Deploy code to a function"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/logs/fields",
+      "operationId": "listProjectBranchLogFields",
+      "summary": "List branch log fields"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/logs/fields/{field_name}/values",
+      "operationId": "listProjectBranchLogFieldValues",
+      "summary": "List branch log field values"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/logs/query",
+      "operationId": "queryProjectBranchLogs",
+      "summary": "Query branch logs"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/masking_rules",
+      "operationId": "getMaskingRules",
+      "summary": "Retrieve masking rules"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/branches/{branch_id}/masking_rules",
+      "operationId": "updateMaskingRules",
+      "summary": "Update masking rules"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/restore",
+      "operationId": "restoreProjectBranch",
+      "summary": "Restore branch to a historical state"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/roles",
+      "operationId": "listProjectBranchRoles",
+      "summary": "List roles"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/roles",
+      "operationId": "createProjectBranchRole",
+      "summary": "Create role"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/roles/{role_name}",
+      "operationId": "getProjectBranchRole",
+      "summary": "Retrieve role details"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/branches/{branch_id}/roles/{role_name}",
+      "operationId": "deleteProjectBranchRole",
+      "summary": "Delete role"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/roles/{role_name}/reset_password",
+      "operationId": "resetProjectBranchRolePassword",
+      "summary": "Reset role password"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/roles/{role_name}/reveal_password",
+      "operationId": "getProjectBranchRolePassword",
+      "summary": "Retrieve role password"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/schema",
+      "operationId": "getProjectBranchSchema",
+      "summary": "Retrieve database schema"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/set_as_default",
+      "operationId": "setDefaultProjectBranch",
+      "summary": "Set branch as default"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/branches/{branch_id}/snapshot",
+      "operationId": "createSnapshot",
+      "summary": "Create snapshot"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/branches/{branch_id}/storage",
+      "operationId": "getProjectBranchStorage",
+      "summary": "Get branch object storage state"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/connection_uri",
+      "operationId": "getConnectionURI",
+      "summary": "Retrieve connection URI"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/endpoints",
+      "operationId": "listProjectEndpoints",
+      "summary": "List compute endpoints"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/endpoints",
+      "operationId": "createProjectEndpoint",
+      "summary": "Create compute endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/endpoints/{endpoint_id}",
+      "operationId": "getProjectEndpoint",
+      "summary": "Retrieve compute endpoint details"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/endpoints/{endpoint_id}",
+      "operationId": "updateProjectEndpoint",
+      "summary": "Update compute endpoint"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/endpoints/{endpoint_id}",
+      "operationId": "deleteProjectEndpoint",
+      "summary": "Delete compute endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/endpoints/{endpoint_id}/restart",
+      "operationId": "restartProjectEndpoint",
+      "summary": "Restart compute endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/endpoints/{endpoint_id}/start",
+      "operationId": "startProjectEndpoint",
+      "summary": "Start compute endpoint"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/endpoints/{endpoint_id}/suspend",
+      "operationId": "suspendProjectEndpoint",
+      "summary": "Suspend compute endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/jwks",
+      "operationId": "getProjectJWKS",
+      "summary": "List JWKS URLs"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/jwks",
+      "operationId": "addProjectJWKS",
+      "summary": "Add JWKS URL"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/jwks/{jwks_id}",
+      "operationId": "deleteProjectJWKS",
+      "summary": "Delete JWKS URL"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/members",
+      "operationId": "listProjectMembers",
+      "summary": "List org members and their project roles"
+    },
+    {
+      "method": "PUT",
+      "path": "/projects/{project_id}/members/{member_id}/role",
+      "operationId": "setProjectMemberRole",
+      "summary": "Set an org member's role on a project"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/members/{member_id}/role",
+      "operationId": "removeProjectMemberRole",
+      "summary": "Remove an org member's role on a project"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/operations",
+      "operationId": "listProjectOperations",
+      "summary": "List operations"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/operations/{operation_id}",
+      "operationId": "getProjectOperation",
+      "summary": "Retrieve operation details"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/permissions",
+      "operationId": "listProjectPermissions",
+      "summary": "List project access"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/permissions",
+      "operationId": "grantPermissionToProject",
+      "summary": "Grant project access"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/permissions/{permission_id}",
+      "operationId": "revokePermissionFromProject",
+      "summary": "Revoke project access"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/recover",
+      "operationId": "recoverProject",
+      "summary": "Recover a deleted project"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/snapshots",
+      "operationId": "listSnapshots",
+      "summary": "List project snapshots"
+    },
+    {
+      "method": "PATCH",
+      "path": "/projects/{project_id}/snapshots/{snapshot_id}",
+      "operationId": "updateSnapshot",
+      "summary": "Update snapshot"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/snapshots/{snapshot_id}",
+      "operationId": "deleteSnapshot",
+      "summary": "Delete snapshot"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/snapshots/{snapshot_id}/restore",
+      "operationId": "restoreSnapshot",
+      "summary": "Restore snapshot"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/transfer_requests",
+      "operationId": "createProjectTransferRequest",
+      "summary": "Create a project transfer request"
+    },
+    {
+      "method": "PUT",
+      "path": "/projects/{project_id}/transfer_requests/{request_id}",
+      "operationId": "acceptProjectTransferRequest",
+      "summary": "Accept a project transfer request"
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/vpc_endpoints",
+      "operationId": "listProjectVPCEndpoints",
+      "summary": "List VPC endpoint restrictions"
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}",
+      "operationId": "assignProjectVPCEndpoint",
+      "summary": "Set VPC endpoint restriction"
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}",
+      "operationId": "deleteProjectVPCEndpoint",
+      "summary": "Delete VPC endpoint restriction"
+    },
+    {
+      "method": "GET",
+      "path": "/regions",
+      "operationId": "getActiveRegions",
+      "summary": "List supported regions"
+    },
+    {
+      "method": "GET",
+      "path": "/users/me",
+      "operationId": "getCurrentUserInfo",
+      "summary": "Retrieve current user details"
+    },
+    {
+      "method": "GET",
+      "path": "/users/me/organizations",
+      "operationId": "getCurrentUserOrganizations",
+      "summary": "List organizations for the current user"
+    },
+    {
+      "method": "POST",
+      "path": "/users/me/projects/transfer",
+      "operationId": "transferProjectsFromUserToOrg",
+      "summary": "Transfer projects from personal account to organization"
+    }
+  ]
+}
