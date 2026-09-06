@@ -1,0 +1,371 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "openai.acme-responses.v1",
+  "$resource": "openai",
+  "$resourceVersion": "v1",
+  "state": {
+    "responses": [
+      {
+        "id": "resp_adatum",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Adatum domain verification status",
+        "output": "TXT acme-domain-verification=adatum-7f31. Owen Brooks. Cloudflare dns_adatum_txt."
+      },
+      {
+        "id": "resp_billing",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft a reminder for INV-4812",
+        "output": "Northwind Traders / Dana Whitfield: two $1,240 captures on August 18 for invoice INV-4812."
+      },
+      {
+        "id": "resp_checkout",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Explain the checkout reliability incident",
+        "output": "acme-web pay step 5xx. Flag checkout_reliability. Sentry acme-web. GitHub acme/web#1."
+      },
+      {
+        "id": "resp_csv",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Why is fernworks CSV empty?",
+        "output": "Priya Nair fernworks-prod. Analytics pipeline regression. PostHog billing_csv off."
+      },
+      {
+        "id": "resp_fill_01",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Summarize weekly exec metrics",
+        "output": "Draft for: Summarize weekly exec metrics"
+      },
+      {
+        "id": "resp_fill_02",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft status page copy for Aug 29 maintenance",
+        "output": "Draft for: Draft status page copy for Aug 29 maintenance"
+      },
+      {
+        "id": "resp_fill_03",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Rewrite onboarding empty state",
+        "output": "Draft for: Rewrite onboarding empty state"
+      },
+      {
+        "id": "resp_fill_04",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Classify this support tone",
+        "output": "Draft for: Classify this support tone"
+      },
+      {
+        "id": "resp_fill_05",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "SQL for WAU by plan",
+        "output": "Draft for: SQL for WAU by plan"
+      },
+      {
+        "id": "resp_fill_06",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Name the EU residency add-on",
+        "output": "Draft for: Name the EU residency add-on"
+      },
+      {
+        "id": "resp_fill_07",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Changelog blurb for dark mode",
+        "output": "Draft for: Changelog blurb for dark mode"
+      },
+      {
+        "id": "resp_fill_08",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Risks of SCIM retry storms",
+        "output": "Draft for: Risks of SCIM retry storms"
+      },
+      {
+        "id": "resp_fill_09",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Outline p95 checkout budget",
+        "output": "Draft for: Outline p95 checkout budget"
+      },
+      {
+        "id": "resp_fill_10",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Suggest CSV column order",
+        "output": "Draft for: Suggest CSV column order"
+      },
+      {
+        "id": "resp_fill_11",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Reply to seat overage",
+        "output": "Draft for: Reply to seat overage"
+      },
+      {
+        "id": "resp_fill_12",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft NPS survey",
+        "output": "Draft for: Draft NPS survey"
+      },
+      {
+        "id": "resp_fill_13",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Explain holdout assignment",
+        "output": "Draft for: Explain holdout assignment"
+      },
+      {
+        "id": "resp_fill_14",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Redact tokens from a log line",
+        "output": "Draft for: Redact tokens from a log line"
+      },
+      {
+        "id": "resp_fill_15",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Translate SAML error for admins",
+        "output": "Draft for: Translate SAML error for admins"
+      },
+      {
+        "id": "resp_fill_16",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Write a WAF exception for /login",
+        "output": "Draft for: Write a WAF exception for /login"
+      },
+      {
+        "id": "resp_fill_17",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Summarize Neon branch expiry",
+        "output": "Draft for: Summarize Neon branch expiry"
+      },
+      {
+        "id": "resp_fill_18",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft Vercel preview auth note",
+        "output": "Draft for: Draft Vercel preview auth note"
+      },
+      {
+        "id": "resp_fill_19",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Explain KV eviction to support",
+        "output": "Draft for: Explain KV eviction to support"
+      },
+      {
+        "id": "resp_fill_20",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Rewrite 30-day guarantee FAQ",
+        "output": "Draft for: Rewrite 30-day guarantee FAQ"
+      },
+      {
+        "id": "resp_fill_21",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Classify churn-risk cohort",
+        "output": "Draft for: Classify churn-risk cohort"
+      },
+      {
+        "id": "resp_fill_22",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Suggest heatmap sample rate",
+        "output": "Draft for: Suggest heatmap sample rate"
+      },
+      {
+        "id": "resp_fill_23",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft BigQuery quota email",
+        "output": "Draft for: Draft BigQuery quota email"
+      },
+      {
+        "id": "resp_fill_24",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Explain Okta clock skew",
+        "output": "Draft for: Explain Okta clock skew"
+      },
+      {
+        "id": "resp_fill_25",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Write SCIM group-push runbook",
+        "output": "Draft for: Write SCIM group-push runbook"
+      },
+      {
+        "id": "resp_fill_26",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Summarize droplet disk alerts",
+        "output": "Draft for: Summarize droplet disk alerts"
+      },
+      {
+        "id": "resp_fill_27",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft Figma webhook retry copy",
+        "output": "Draft for: Draft Figma webhook retry copy"
+      },
+      {
+        "id": "resp_fill_28",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Explain Val Town cron drift",
+        "output": "Draft for: Explain Val Town cron drift"
+      },
+      {
+        "id": "resp_fill_29",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Outline Exa research quota",
+        "output": "Draft for: Outline Exa research quota"
+      },
+      {
+        "id": "resp_fill_30",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Write HubSpot deal-stage note",
+        "output": "Draft for: Write HubSpot deal-stage note"
+      },
+      {
+        "id": "resp_fill_31",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Draft Gmail label policy",
+        "output": "Draft for: Draft Gmail label policy"
+      },
+      {
+        "id": "resp_fill_32",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Summarize Asana custom fields",
+        "output": "Draft for: Summarize Asana custom fields"
+      },
+      {
+        "id": "resp_fill_33",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "EU DPA questionnaire answers",
+        "output": "Draft for: EU DPA questionnaire answers"
+      },
+      {
+        "id": "resp_fill_34",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Breakglass SSH procedure",
+        "output": "Draft for: Breakglass SSH procedure"
+      },
+      {
+        "id": "resp_fill_35",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "API key last-used copy",
+        "output": "Draft for: API key last-used copy"
+      },
+      {
+        "id": "resp_fill_36",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Public insight robots.txt",
+        "output": "Draft for: Public insight robots.txt"
+      },
+      {
+        "id": "resp_hooks",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Webhook retry design for LakeTech",
+        "output": "Ben Okafor asked for exponential backoff on hooks.acme.example."
+      },
+      {
+        "id": "resp_keys",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "API key overlap for BrightPath",
+        "output": "Sofia Marin rotated keys with overlap; creating a key does not revoke the old one."
+      },
+      {
+        "id": "resp_scim",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Fabrikam SCIM audit gap",
+        "output": "Leila Haddad request ID req_7Q4K2. Group membership changes missing from export."
+      },
+      {
+        "id": "resp_sso",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "Summarize the Contoso SSO loop",
+        "output": "Mei Chen, 380 users, org slug contoso-eu, auth.acme.example SAML callback loop."
+      },
+      {
+        "id": "resp_tiny",
+        "object": "response",
+        "model": "gpt-4.1",
+        "status": "completed",
+        "input": "TinyShop 30-day refund",
+        "output": "Marco Silva annual Pro canceled; Stripe cus_tinyshop."
+      }
+    ]
+  }
+}

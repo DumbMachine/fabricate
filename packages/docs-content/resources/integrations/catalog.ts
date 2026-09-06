@@ -15,6 +15,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "intercom", label: "Intercom"},
   {id: "mailchimp", label: "Mailchimp"},
   {id: "mailgun", label: "Mailgun"},
+  {id: "openai", label: "OpenAI"},
   {id: "pipedrive", label: "Pipedrive"},
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},

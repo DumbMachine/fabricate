@@ -1,0 +1,1734 @@
+{
+  "integration": "openai",
+  "api": "OpenAI v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/assistants",
+      "operationId": "listAssistants",
+      "summary": "Returns a list of assistants."
+    },
+    {
+      "method": "POST",
+      "path": "/assistants",
+      "operationId": "createAssistant",
+      "summary": "Create an assistant with a model and instructions."
+    },
+    {
+      "method": "GET",
+      "path": "/assistants/{assistant_id}",
+      "operationId": "getAssistant",
+      "summary": "Retrieves an assistant."
+    },
+    {
+      "method": "POST",
+      "path": "/assistants/{assistant_id}",
+      "operationId": "modifyAssistant",
+      "summary": "Modifies an assistant."
+    },
+    {
+      "method": "DELETE",
+      "path": "/assistants/{assistant_id}",
+      "operationId": "deleteAssistant",
+      "summary": "Delete an assistant."
+    },
+    {
+      "method": "POST",
+      "path": "/audio/speech",
+      "operationId": "createSpeech",
+      "summary": "Generates audio from the input text.\n\nReturns the audio file content, or a stream of audio events."
+    },
+    {
+      "method": "POST",
+      "path": "/audio/transcriptions",
+      "operationId": "createTranscription",
+      "summary": "Transcribes audio into the input language.\n\nReturns a transcription object in `json`, `diarized_json`, or `verbose_json`\nformat, or a stream of transcript events."
+    },
+    {
+      "method": "POST",
+      "path": "/audio/translations",
+      "operationId": "createTranslation",
+      "summary": "Translates audio into English."
+    },
+    {
+      "method": "GET",
+      "path": "/audio/voice_consents",
+      "operationId": "listVoiceConsents",
+      "summary": "Returns a list of voice consent recordings."
+    },
+    {
+      "method": "POST",
+      "path": "/audio/voice_consents",
+      "operationId": "createVoiceConsent",
+      "summary": "Upload a voice consent recording."
+    },
+    {
+      "method": "GET",
+      "path": "/audio/voice_consents/{consent_id}",
+      "operationId": "getVoiceConsent",
+      "summary": "Retrieves a voice consent recording."
+    },
+    {
+      "method": "POST",
+      "path": "/audio/voice_consents/{consent_id}",
+      "operationId": "updateVoiceConsent",
+      "summary": "Updates a voice consent recording (metadata only)."
+    },
+    {
+      "method": "DELETE",
+      "path": "/audio/voice_consents/{consent_id}",
+      "operationId": "deleteVoiceConsent",
+      "summary": "Deletes a voice consent recording."
+    },
+    {
+      "method": "POST",
+      "path": "/audio/voices",
+      "operationId": "createVoice",
+      "summary": "Creates a custom voice."
+    },
+    {
+      "method": "GET",
+      "path": "/batches",
+      "operationId": "listBatches",
+      "summary": "List your organization's batches."
+    },
+    {
+      "method": "POST",
+      "path": "/batches",
+      "operationId": "createBatch",
+      "summary": "Creates and executes a batch from an uploaded file of requests"
+    },
+    {
+      "method": "GET",
+      "path": "/batches/{batch_id}",
+      "operationId": "retrieveBatch",
+      "summary": "Retrieves a batch."
+    },
+    {
+      "method": "POST",
+      "path": "/batches/{batch_id}/cancel",
+      "operationId": "cancelBatch",
+      "summary": "Cancels an in-progress batch. The batch will be in status `cancelling` for up to 10 minutes, before changing to `cancelled`, where it will have partial results (if any) available in the output file."
+    },
+    {
+      "method": "GET",
+      "path": "/chat/completions",
+      "operationId": "listChatCompletions",
+      "summary": "List stored Chat Completions. Only Chat Completions that have been stored\nwith the `store` parameter set to `true` will be returned."
+    },
+    {
+      "method": "POST",
+      "path": "/chat/completions",
+      "operationId": "createChatCompletion",
+      "summary": "**Starting a new project?** We recommend trying [Responses](/docs/api-reference/responses)\nto take advantage of the latest OpenAI platform features. Compare\n[Chat Completions with Responses](/docs/guides/responses-vs-chat-completions?api-mode=responses).\n\n---\n\nCreates a model response for the given chat conversation. Learn more in the\n[text generation](/docs/guides/text-generation), [vision](/docs/guides/vision),\nand [audio](/docs/guides/audio) guides.\n\nParameter support can differ depending on the model used to generate the\nresponse, particularly for newer reasoning models. Parameters that are only\nsupported for reasoning models are noted below. For the current state of\nunsupported parameters in reasoning models,\n[refer to the reasoning guide](/docs/guides/reasoning).\n\nReturns a chat completion object, or a streamed sequence of chat completion\nchunk objects if the request is streamed."
+    },
+    {
+      "method": "GET",
+      "path": "/chat/completions/{completion_id}",
+      "operationId": "getChatCompletion",
+      "summary": "Get a stored chat completion. Only Chat Completions that have been created\nwith the `store` parameter set to `true` will be returned."
+    },
+    {
+      "method": "POST",
+      "path": "/chat/completions/{completion_id}",
+      "operationId": "updateChatCompletion",
+      "summary": "Modify a stored chat completion. Only Chat Completions that have been\ncreated with the `store` parameter set to `true` can be modified. Currently,\nthe only supported modification is to update the `metadata` field."
+    },
+    {
+      "method": "DELETE",
+      "path": "/chat/completions/{completion_id}",
+      "operationId": "deleteChatCompletion",
+      "summary": "Delete a stored chat completion. Only Chat Completions that have been\ncreated with the `store` parameter set to `true` can be deleted."
+    },
+    {
+      "method": "GET",
+      "path": "/chat/completions/{completion_id}/messages",
+      "operationId": "getChatCompletionMessages",
+      "summary": "Get the messages in a stored chat completion. Only Chat Completions that\nhave been created with the `store` parameter set to `true` will be\nreturned."
+    },
+    {
+      "method": "POST",
+      "path": "/chatkit/sessions",
+      "operationId": "CreateChatSessionMethod",
+      "summary": "Create a ChatKit session."
+    },
+    {
+      "method": "POST",
+      "path": "/chatkit/sessions/{session_id}/cancel",
+      "operationId": "CancelChatSessionMethod",
+      "summary": "Cancel an active ChatKit session and return its most recent metadata.\n\nCancelling prevents new requests from using the issued client secret."
+    },
+    {
+      "method": "GET",
+      "path": "/chatkit/threads",
+      "operationId": "ListThreadsMethod",
+      "summary": "List ChatKit threads with optional pagination and user filters."
+    },
+    {
+      "method": "GET",
+      "path": "/chatkit/threads/{thread_id}",
+      "operationId": "GetThreadMethod",
+      "summary": "Retrieve a ChatKit thread by its identifier."
+    },
+    {
+      "method": "DELETE",
+      "path": "/chatkit/threads/{thread_id}",
+      "operationId": "DeleteThreadMethod",
+      "summary": "Delete a ChatKit thread along with its items and stored attachments."
+    },
+    {
+      "method": "GET",
+      "path": "/chatkit/threads/{thread_id}/items",
+      "operationId": "ListThreadItemsMethod",
+      "summary": "List items that belong to a ChatKit thread."
+    },
+    {
+      "method": "POST",
+      "path": "/completions",
+      "operationId": "createCompletion",
+      "summary": "Creates a completion for the provided prompt and parameters.\n\nReturns a completion object, or a sequence of completion objects if the request is streamed."
+    },
+    {
+      "method": "GET",
+      "path": "/containers",
+      "operationId": "ListContainers",
+      "summary": "List Containers"
+    },
+    {
+      "method": "POST",
+      "path": "/containers",
+      "operationId": "CreateContainer",
+      "summary": "Create Container"
+    },
+    {
+      "method": "GET",
+      "path": "/containers/{container_id}",
+      "operationId": "RetrieveContainer",
+      "summary": "Retrieve Container"
+    },
+    {
+      "method": "DELETE",
+      "path": "/containers/{container_id}",
+      "operationId": "DeleteContainer",
+      "summary": "Delete Container"
+    },
+    {
+      "method": "GET",
+      "path": "/containers/{container_id}/files",
+      "operationId": "ListContainerFiles",
+      "summary": "List Container files"
+    },
+    {
+      "method": "POST",
+      "path": "/containers/{container_id}/files",
+      "operationId": "CreateContainerFile",
+      "summary": "Create a Container File\n\nYou can send either a multipart/form-data request with the raw file content, or a JSON request with a file ID."
+    },
+    {
+      "method": "GET",
+      "path": "/containers/{container_id}/files/{file_id}",
+      "operationId": "RetrieveContainerFile",
+      "summary": "Retrieve Container File"
+    },
+    {
+      "method": "DELETE",
+      "path": "/containers/{container_id}/files/{file_id}",
+      "operationId": "DeleteContainerFile",
+      "summary": "Delete Container File"
+    },
+    {
+      "method": "GET",
+      "path": "/containers/{container_id}/files/{file_id}/content",
+      "operationId": "RetrieveContainerFileContent",
+      "summary": "Retrieve Container File Content"
+    },
+    {
+      "method": "POST",
+      "path": "/content_provenance_checks",
+      "operationId": "Createcontentprovenancecheck",
+      "summary": "Check whether an image or audio file contains known OpenAI provenance signals. [Learn more about content provenance](/api/docs/guides/content-provenance).\n\nIf `not_detected`, it means the tool did not find supported signals in the uploaded file. The content could still have been generated by OpenAI if the metadata was stripped or has evidence of tampering, the watermark was degraded, it comes from a legacy generation model, or it was created before provenance signals were available. Content could also still be AI-generated by another company's model, which the tool currently does not detect."
+    },
+    {
+      "method": "POST",
+      "path": "/conversations",
+      "operationId": "createConversation",
+      "summary": "Create a conversation."
+    },
+    {
+      "method": "GET",
+      "path": "/conversations/{conversation_id}",
+      "operationId": "getConversation",
+      "summary": "Get a conversation"
+    },
+    {
+      "method": "POST",
+      "path": "/conversations/{conversation_id}",
+      "operationId": "updateConversation",
+      "summary": "Update a conversation"
+    },
+    {
+      "method": "DELETE",
+      "path": "/conversations/{conversation_id}",
+      "operationId": "deleteConversation",
+      "summary": "Delete a conversation. Items in the conversation will not be deleted."
+    },
+    {
+      "method": "GET",
+      "path": "/conversations/{conversation_id}/items",
+      "operationId": "listConversationItems",
+      "summary": "List all items for a conversation with the given ID."
+    },
+    {
+      "method": "POST",
+      "path": "/conversations/{conversation_id}/items",
+      "operationId": "createConversationItems",
+      "summary": "Create items in a conversation with the given ID."
+    },
+    {
+      "method": "GET",
+      "path": "/conversations/{conversation_id}/items/{item_id}",
+      "operationId": "getConversationItem",
+      "summary": "Get a single item from a conversation with the given IDs."
+    },
+    {
+      "method": "DELETE",
+      "path": "/conversations/{conversation_id}/items/{item_id}",
+      "operationId": "deleteConversationItem",
+      "summary": "Delete an item from a conversation with the given IDs."
+    },
+    {
+      "method": "POST",
+      "path": "/embeddings",
+      "operationId": "createEmbedding",
+      "summary": "Creates an embedding vector representing the input text."
+    },
+    {
+      "method": "GET",
+      "path": "/evals",
+      "operationId": "listEvals",
+      "summary": "List evaluations for a project."
+    },
+    {
+      "method": "POST",
+      "path": "/evals",
+      "operationId": "createEval",
+      "summary": "Create the structure of an evaluation that can be used to test a model's performance.\nAn evaluation is a set of testing criteria and the config for a data source, which dictates the schema of the data used in the evaluation. After creating an evaluation, you can run it on different models and model parameters. We support several types of graders and datasources.\nFor more information, see the [Evals guide](/docs/guides/evals)."
+    },
+    {
+      "method": "GET",
+      "path": "/evals/{eval_id}",
+      "operationId": "getEval",
+      "summary": "Get an evaluation by ID."
+    },
+    {
+      "method": "POST",
+      "path": "/evals/{eval_id}",
+      "operationId": "updateEval",
+      "summary": "Update certain properties of an evaluation."
+    },
+    {
+      "method": "DELETE",
+      "path": "/evals/{eval_id}",
+      "operationId": "deleteEval",
+      "summary": "Delete an evaluation."
+    },
+    {
+      "method": "GET",
+      "path": "/evals/{eval_id}/runs",
+      "operationId": "getEvalRuns",
+      "summary": "Get a list of runs for an evaluation."
+    },
+    {
+      "method": "POST",
+      "path": "/evals/{eval_id}/runs",
+      "operationId": "createEvalRun",
+      "summary": "Kicks off a new run for a given evaluation, specifying the data source, and what model configuration to use to test. The datasource will be validated against the schema specified in the config of the evaluation."
+    },
+    {
+      "method": "GET",
+      "path": "/evals/{eval_id}/runs/{run_id}",
+      "operationId": "getEvalRun",
+      "summary": "Get an evaluation run by ID."
+    },
+    {
+      "method": "POST",
+      "path": "/evals/{eval_id}/runs/{run_id}",
+      "operationId": "cancelEvalRun",
+      "summary": "Cancel an ongoing evaluation run."
+    },
+    {
+      "method": "DELETE",
+      "path": "/evals/{eval_id}/runs/{run_id}",
+      "operationId": "deleteEvalRun",
+      "summary": "Delete an eval run."
+    },
+    {
+      "method": "GET",
+      "path": "/evals/{eval_id}/runs/{run_id}/output_items",
+      "operationId": "getEvalRunOutputItems",
+      "summary": "Get a list of output items for an evaluation run."
+    },
+    {
+      "method": "GET",
+      "path": "/evals/{eval_id}/runs/{run_id}/output_items/{output_item_id}",
+      "operationId": "getEvalRunOutputItem",
+      "summary": "Get an evaluation run output item by ID."
+    },
+    {
+      "method": "GET",
+      "path": "/files",
+      "operationId": "listFiles",
+      "summary": "Returns a list of files."
+    },
+    {
+      "method": "POST",
+      "path": "/files",
+      "operationId": "createFile",
+      "summary": "Upload a file that can be used across various endpoints. Individual files\ncan be up to 512 MB, and each project can store up to 2.5 TB of files in\ntotal. There is no organization-wide storage limit. Uploads to this\nendpoint are rate-limited to 1,000 requests per minute per authenticated\nuser.\n\n- The Assistants API supports files up to 2 million tokens and of specific\n  file types. See the [Assistants Tools guide](/docs/assistants/tools) for\n  details.\n- The Fine-tuning API only supports `.jsonl` files. The input also has\n  certain required formats for fine-tuning\n  [chat](/docs/api-reference/fine-tuning/chat-input) or\n  [completions](/docs/api-reference/fine-tuning/completions-input) models.\n- The Batch API only supports `.jsonl` files up to 200 MB in size. The input\n  also has a specific required\n  [format](/docs/api-reference/batch/request-input).\n- For Retrieval or `file_search` ingestion, upload files here first. If\n  you need to attach multiple uploaded files to the same vector store, use\n  [`/vector_stores/{vector_store_id}/file_batches`](/docs/api-reference/vector-stores-file-batches/createBatch)\n  instead of attaching them one by one. Vector store attachment has separate\n  limits from file upload, including 2,000 attached files per minute per\n  organization.\n\nPlease [contact us](https://help.openai.com/) if you need to increase these\nstorage limits."
+    },
+    {
+      "method": "GET",
+      "path": "/files/{file_id}",
+      "operationId": "retrieveFile",
+      "summary": "Returns information about a specific file."
+    },
+    {
+      "method": "DELETE",
+      "path": "/files/{file_id}",
+      "operationId": "deleteFile",
+      "summary": "Delete a file and remove it from all vector stores."
+    },
+    {
+      "method": "GET",
+      "path": "/files/{file_id}/content",
+      "operationId": "downloadFile",
+      "summary": "Returns the contents of the specified file."
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/alpha/graders/run",
+      "operationId": "runGrader",
+      "summary": "Run a grader."
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/alpha/graders/validate",
+      "operationId": "validateGrader",
+      "summary": "Validate a grader."
+    },
+    {
+      "method": "GET",
+      "path": "/fine_tuning/checkpoints/{fine_tuned_model_checkpoint}/permissions",
+      "operationId": "listFineTuningCheckpointPermissions",
+      "summary": "**NOTE:** This endpoint requires an [admin API key](../admin-api-keys).\n\nOrganization owners can use this endpoint to view all permissions for a fine-tuned model checkpoint."
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/checkpoints/{fine_tuned_model_checkpoint}/permissions",
+      "operationId": "createFineTuningCheckpointPermission",
+      "summary": "**NOTE:** Calling this endpoint requires an [admin API key](../admin-api-keys).\n\nThis enables organization owners to share fine-tuned models with other projects in their organization."
+    },
+    {
+      "method": "DELETE",
+      "path": "/fine_tuning/checkpoints/{fine_tuned_model_checkpoint}/permissions/{permission_id}",
+      "operationId": "deleteFineTuningCheckpointPermission",
+      "summary": "**NOTE:** This endpoint requires an [admin API key](../admin-api-keys).\n\nOrganization owners can use this endpoint to delete a permission for a fine-tuned model checkpoint."
+    },
+    {
+      "method": "GET",
+      "path": "/fine_tuning/jobs",
+      "operationId": "listPaginatedFineTuningJobs",
+      "summary": "List your organization's fine-tuning jobs"
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/jobs",
+      "operationId": "createFineTuningJob",
+      "summary": "Creates a fine-tuning job which begins the process of creating a new model from a given dataset.\n\nResponse includes details of the enqueued job including job status and the name of the fine-tuned models once complete.\n\n[Learn more about fine-tuning](/docs/guides/model-optimization)"
+    },
+    {
+      "method": "GET",
+      "path": "/fine_tuning/jobs/{fine_tuning_job_id}",
+      "operationId": "retrieveFineTuningJob",
+      "summary": "Get info about a fine-tuning job.\n\n[Learn more about fine-tuning](/docs/guides/model-optimization)"
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/jobs/{fine_tuning_job_id}/cancel",
+      "operationId": "cancelFineTuningJob",
+      "summary": "Immediately cancel a fine-tune job."
+    },
+    {
+      "method": "GET",
+      "path": "/fine_tuning/jobs/{fine_tuning_job_id}/checkpoints",
+      "operationId": "listFineTuningJobCheckpoints",
+      "summary": "List checkpoints for a fine-tuning job."
+    },
+    {
+      "method": "GET",
+      "path": "/fine_tuning/jobs/{fine_tuning_job_id}/events",
+      "operationId": "listFineTuningEvents",
+      "summary": "Get status updates for a fine-tuning job."
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/jobs/{fine_tuning_job_id}/pause",
+      "operationId": "pauseFineTuningJob",
+      "summary": "Pause a fine-tune job."
+    },
+    {
+      "method": "POST",
+      "path": "/fine_tuning/jobs/{fine_tuning_job_id}/resume",
+      "operationId": "resumeFineTuningJob",
+      "summary": "Resume a fine-tune job."
+    },
+    {
+      "method": "POST",
+      "path": "/images/edits",
+      "operationId": "createImageEdit",
+      "summary": "Creates an edited or extended image given one or more source images and a prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`, `gpt-image-1-mini`, and `chatgpt-image-latest`) and `dall-e-2`."
+    },
+    {
+      "method": "POST",
+      "path": "/images/generations",
+      "operationId": "createImage",
+      "summary": "Creates an image given a prompt. [Learn more](/docs/guides/images)."
+    },
+    {
+      "method": "POST",
+      "path": "/images/variations",
+      "operationId": "createImageVariation",
+      "summary": "Creates a variation of a given image. This endpoint only supports `dall-e-2`."
+    },
+    {
+      "method": "GET",
+      "path": "/models",
+      "operationId": "listModels",
+      "summary": "Lists the currently available models, and provides basic information about each one such as the owner and availability."
+    },
+    {
+      "method": "GET",
+      "path": "/models/{model}",
+      "operationId": "retrieveModel",
+      "summary": "Retrieves a model instance, providing basic information about the model such as the owner and permissioning."
+    },
+    {
+      "method": "DELETE",
+      "path": "/models/{model}",
+      "operationId": "deleteModel",
+      "summary": "Delete a fine-tuned model. You must have the Owner role in your organization to delete a model."
+    },
+    {
+      "method": "POST",
+      "path": "/moderations",
+      "operationId": "createModeration",
+      "summary": "Classifies if text and/or image inputs are potentially harmful. Learn\nmore in the [moderation guide](/docs/guides/moderation)."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/admin_api_keys",
+      "operationId": "admin-api-keys-list",
+      "summary": "List organization API keys"
+    },
+    {
+      "method": "POST",
+      "path": "/organization/admin_api_keys",
+      "operationId": "admin-api-keys-create",
+      "summary": "Create an organization admin API key"
+    },
+    {
+      "method": "GET",
+      "path": "/organization/admin_api_keys/{key_id}",
+      "operationId": "admin-api-keys-get",
+      "summary": "Retrieve a single organization API key"
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/admin_api_keys/{key_id}",
+      "operationId": "admin-api-keys-delete",
+      "summary": "Delete an organization admin API key"
+    },
+    {
+      "method": "GET",
+      "path": "/organization/audit_logs",
+      "operationId": "list-audit-logs",
+      "summary": "List user actions and configuration changes within this organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/certificates",
+      "operationId": "listOrganizationCertificates",
+      "summary": "List uploaded certificates for this organization."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/certificates",
+      "operationId": "uploadCertificate",
+      "summary": "Upload a certificate to the organization. This does **not** automatically activate the certificate.\n\nOrganizations can upload up to 50 certificates."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/certificates/activate",
+      "operationId": "activateOrganizationCertificates",
+      "summary": "Activate certificates at the organization level.\n\nYou can atomically and idempotently activate up to 10 certificates at a time."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/certificates/deactivate",
+      "operationId": "deactivateOrganizationCertificates",
+      "summary": "Deactivate certificates at the organization level.\n\nYou can atomically and idempotently deactivate up to 10 certificates at a time."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/certificates/{certificate_id}",
+      "operationId": "getCertificate",
+      "summary": "Get a certificate that has been uploaded to the organization.\n\nYou can get a certificate regardless of whether it is active or not."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/certificates/{certificate_id}",
+      "operationId": "modifyCertificate",
+      "summary": "Modify a certificate. Note that only the name can be modified."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/certificates/{certificate_id}",
+      "operationId": "deleteCertificate",
+      "summary": "Delete a certificate from the organization.\n\nThe certificate must be inactive for the organization and all projects."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/costs",
+      "operationId": "usage-costs",
+      "summary": "Get costs details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/data_retention",
+      "operationId": "retrieve-organization-data-retention",
+      "summary": "Retrieves organization data retention controls."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/data_retention",
+      "operationId": "update-organization-data-retention",
+      "summary": "Updates organization data retention controls."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/groups",
+      "operationId": "list-groups",
+      "summary": "Lists all groups in the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/groups",
+      "operationId": "create-group",
+      "summary": "Creates a new group in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/groups/{group_id}",
+      "operationId": "retrieve-group",
+      "summary": "Retrieves a group."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/groups/{group_id}",
+      "operationId": "update-group",
+      "summary": "Updates a group's information."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/groups/{group_id}",
+      "operationId": "delete-group",
+      "summary": "Deletes a group from the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/groups/{group_id}/roles",
+      "operationId": "list-group-role-assignments",
+      "summary": "Lists the organization roles assigned to a group within the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/groups/{group_id}/roles",
+      "operationId": "assign-group-role",
+      "summary": "Assigns an organization role to a group within the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/groups/{group_id}/roles/{role_id}",
+      "operationId": "retrieve-group-role",
+      "summary": "Retrieves an organization role assigned to a group."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/groups/{group_id}/roles/{role_id}",
+      "operationId": "unassign-group-role",
+      "summary": "Unassigns an organization role from a group within the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/groups/{group_id}/users",
+      "operationId": "list-group-users",
+      "summary": "Lists the users assigned to a group."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/groups/{group_id}/users",
+      "operationId": "add-group-user",
+      "summary": "Adds a user to a group."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/groups/{group_id}/users/{user_id}",
+      "operationId": "retrieve-group-user",
+      "summary": "Retrieves a user in a group."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/groups/{group_id}/users/{user_id}",
+      "operationId": "remove-group-user",
+      "summary": "Removes a user from a group."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/invites",
+      "operationId": "list-invites",
+      "summary": "Returns a list of invites in the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/invites",
+      "operationId": "inviteUser",
+      "summary": "Create an invite for a user to the organization. The invite must be accepted by the user before they have access to the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/invites/{invite_id}",
+      "operationId": "retrieve-invite",
+      "summary": "Retrieves an invite."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/invites/{invite_id}",
+      "operationId": "delete-invite",
+      "summary": "Delete an invite. If the invite has already been accepted, it cannot be deleted."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects",
+      "operationId": "list-projects",
+      "summary": "Returns a list of projects."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects",
+      "operationId": "create-project",
+      "summary": "Create a new project in the organization. Projects can be created and archived, but cannot be deleted."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}",
+      "operationId": "retrieve-project",
+      "summary": "Retrieves a project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}",
+      "operationId": "modify-project",
+      "summary": "Modifies a project in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/api_keys",
+      "operationId": "list-project-api-keys",
+      "summary": "Returns a list of API keys in the project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/api_keys/{api_key_id}",
+      "operationId": "retrieve-project-api-key",
+      "summary": "Retrieves an API key in the project."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/api_keys/{api_key_id}",
+      "operationId": "delete-project-api-key",
+      "summary": "Deletes an API key from the project.\n\nReturns confirmation of the key deletion, or an error if the key belonged to\na service account."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/archive",
+      "operationId": "archive-project",
+      "summary": "Archives a project in the organization. Archived projects cannot be used or updated."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/certificates",
+      "operationId": "listProjectCertificates",
+      "summary": "List certificates for this project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/certificates/activate",
+      "operationId": "activateProjectCertificates",
+      "summary": "Activate certificates at the project level.\n\nYou can atomically and idempotently activate up to 10 certificates at a time."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/certificates/deactivate",
+      "operationId": "deactivateProjectCertificates",
+      "summary": "Deactivate certificates at the project level. You can atomically and \nidempotently deactivate up to 10 certificates at a time."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/data_retention",
+      "operationId": "retrieve-project-data-retention",
+      "summary": "Retrieves project data retention controls."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/data_retention",
+      "operationId": "update-project-data-retention",
+      "summary": "Updates project data retention controls."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/groups",
+      "operationId": "list-project-groups",
+      "summary": "Lists the groups that have access to a project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/groups",
+      "operationId": "add-project-group",
+      "summary": "Grants a group access to a project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/groups/{group_id}",
+      "operationId": "retrieve-project-group",
+      "summary": "Retrieves a project's group."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/groups/{group_id}",
+      "operationId": "remove-project-group",
+      "summary": "Revokes a group's access to a project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/hosted_tool_permissions",
+      "operationId": "retrieve-project-hosted-tool-permissions",
+      "summary": "Returns hosted tool permissions for a project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/hosted_tool_permissions",
+      "operationId": "update-project-hosted-tool-permissions",
+      "summary": "Updates hosted tool permissions for a project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/model_permissions",
+      "operationId": "retrieve-project-model-permissions",
+      "summary": "Returns model permissions for a project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/model_permissions",
+      "operationId": "update-project-model-permissions",
+      "summary": "Updates model permissions for a project."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/model_permissions",
+      "operationId": "delete-project-model-permissions",
+      "summary": "Deletes model permissions for a project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/rate_limits",
+      "operationId": "list-project-rate-limits",
+      "summary": "Returns the rate limits per model for a project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/rate_limits/{rate_limit_id}",
+      "operationId": "update-project-rate-limits",
+      "summary": "Updates a project rate limit."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/service_accounts",
+      "operationId": "list-project-service-accounts",
+      "summary": "Returns a list of service accounts in the project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/service_accounts",
+      "operationId": "create-project-service-account",
+      "summary": "Creates a new service account in the project. By default, this also returns an unredacted API key for the service account."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/service_accounts/{service_account_id}",
+      "operationId": "retrieve-project-service-account",
+      "summary": "Retrieves a service account in the project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/service_accounts/{service_account_id}",
+      "operationId": "update-project-service-account",
+      "summary": "Updates a service account in the project."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/service_accounts/{service_account_id}",
+      "operationId": "delete-project-service-account",
+      "summary": "Deletes a service account from the project.\n\nReturns confirmation of service account deletion, or an error if the project\nis archived (archived projects have no service accounts)."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/service_accounts/{service_account_id}/api_keys",
+      "operationId": "CreateanAPIkeyforaserviceaccount",
+      "summary": "Creates an API key for a service account in the project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/spend_alerts",
+      "operationId": "list-project-spend-alerts",
+      "summary": "Lists project spend alerts."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/spend_alerts",
+      "operationId": "create-project-spend-alert",
+      "summary": "Creates a project spend alert."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/spend_alerts/{alert_id}",
+      "operationId": "retrieve-project-spend-alert",
+      "summary": "Retrieves a project spend alert."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/spend_alerts/{alert_id}",
+      "operationId": "update-project-spend-alert",
+      "summary": "Updates a project spend alert."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/spend_alerts/{alert_id}",
+      "operationId": "delete-project-spend-alert",
+      "summary": "Deletes a project spend alert."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/spend_limit",
+      "operationId": "Getprojectspendlimit",
+      "summary": "Get a project's hard spend limit."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/spend_limit",
+      "operationId": "Updateprojectspendlimit",
+      "summary": "Create or replace a project's hard spend limit."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/spend_limit",
+      "operationId": "Deleteprojectspendlimit",
+      "summary": "Delete a project's hard spend limit."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/users",
+      "operationId": "list-project-users",
+      "summary": "Returns a list of users in the project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/users",
+      "operationId": "create-project-user",
+      "summary": "Adds a user to the project. Users must already be members of the organization to be added to a project."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/projects/{project_id}/users/{user_id}",
+      "operationId": "retrieve-project-user",
+      "summary": "Retrieves a user in the project."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/projects/{project_id}/users/{user_id}",
+      "operationId": "modify-project-user",
+      "summary": "Modifies a user's role in the project."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/projects/{project_id}/users/{user_id}",
+      "operationId": "delete-project-user",
+      "summary": "Deletes a user from the project.\n\nReturns confirmation of project user deletion, or an error if the project is\narchived (archived projects have no users)."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/roles",
+      "operationId": "list-roles",
+      "summary": "Lists the roles configured for the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/roles",
+      "operationId": "create-role",
+      "summary": "Creates a custom role for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/roles/{role_id}",
+      "operationId": "retrieve-role",
+      "summary": "Retrieves an organization role."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/roles/{role_id}",
+      "operationId": "update-role",
+      "summary": "Updates an existing organization role."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/roles/{role_id}",
+      "operationId": "delete-role",
+      "summary": "Deletes a custom role from the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/spend_alerts",
+      "operationId": "list-organization-spend-alerts",
+      "summary": "Lists organization spend alerts."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/spend_alerts",
+      "operationId": "create-organization-spend-alert",
+      "summary": "Creates an organization spend alert."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/spend_alerts/{alert_id}",
+      "operationId": "retrieve-organization-spend-alert",
+      "summary": "Retrieves an organization spend alert."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/spend_alerts/{alert_id}",
+      "operationId": "update-organization-spend-alert",
+      "summary": "Updates an organization spend alert."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/spend_alerts/{alert_id}",
+      "operationId": "delete-organization-spend-alert",
+      "summary": "Deletes an organization spend alert."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/spend_limit",
+      "operationId": "Getorganizationspendlimit",
+      "summary": "Get the organization's hard spend limit."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/spend_limit",
+      "operationId": "Updateorganizationspendlimit",
+      "summary": "Create or replace the organization's hard spend limit."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/spend_limit",
+      "operationId": "Deleteorganizationspendlimit",
+      "summary": "Delete the organization's hard spend limit."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/audio_speeches",
+      "operationId": "usage-audio-speeches",
+      "summary": "Get audio speeches usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/audio_transcriptions",
+      "operationId": "usage-audio-transcriptions",
+      "summary": "Get audio transcriptions usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/code_interpreter_sessions",
+      "operationId": "usage-code-interpreter-sessions",
+      "summary": "Get code interpreter sessions usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/completions",
+      "operationId": "usage-completions",
+      "summary": "Get completions usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/embeddings",
+      "operationId": "usage-embeddings",
+      "summary": "Get embeddings usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/file_search_calls",
+      "operationId": "usage-file-search-calls",
+      "summary": "Get file search calls usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/images",
+      "operationId": "usage-images",
+      "summary": "Get images usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/moderations",
+      "operationId": "usage-moderations",
+      "summary": "Get moderations usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/vector_stores",
+      "operationId": "usage-vector-stores",
+      "summary": "Get vector stores usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/usage/web_search_calls",
+      "operationId": "usage-web-search-calls",
+      "summary": "Get web search calls usage details for the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/users",
+      "operationId": "list-users",
+      "summary": "Lists all of the users in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/users/{user_id}",
+      "operationId": "retrieve-user",
+      "summary": "Retrieves a user by their identifier."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/users/{user_id}",
+      "operationId": "modify-user",
+      "summary": "Modifies a user's role in the organization."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/users/{user_id}",
+      "operationId": "delete-user",
+      "summary": "Deletes a user from the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/users/{user_id}/roles",
+      "operationId": "list-user-role-assignments",
+      "summary": "Lists the organization roles assigned to a user within the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/organization/users/{user_id}/roles",
+      "operationId": "assign-user-role",
+      "summary": "Assigns an organization role to a user within the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/organization/users/{user_id}/roles/{role_id}",
+      "operationId": "retrieve-user-role",
+      "summary": "Retrieves an organization role assigned to a user."
+    },
+    {
+      "method": "DELETE",
+      "path": "/organization/users/{user_id}/roles/{role_id}",
+      "operationId": "unassign-user-role",
+      "summary": "Unassigns an organization role from a user within the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/groups/{group_id}/roles",
+      "operationId": "list-project-group-role-assignments",
+      "summary": "Lists the project roles assigned to a group within a project."
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/groups/{group_id}/roles",
+      "operationId": "assign-project-group-role",
+      "summary": "Assigns a project role to a group within a project."
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/groups/{group_id}/roles/{role_id}",
+      "operationId": "retrieve-project-group-role",
+      "summary": "Retrieves a project role assigned to a group."
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/groups/{group_id}/roles/{role_id}",
+      "operationId": "unassign-project-group-role",
+      "summary": "Unassigns a project role from a group within a project."
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/roles",
+      "operationId": "list-project-roles",
+      "summary": "Lists the roles configured for a project."
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/roles",
+      "operationId": "create-project-role",
+      "summary": "Creates a custom role for a project."
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/roles/{role_id}",
+      "operationId": "retrieve-project-role",
+      "summary": "Retrieves a project role."
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/roles/{role_id}",
+      "operationId": "update-project-role",
+      "summary": "Updates an existing project role."
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/roles/{role_id}",
+      "operationId": "delete-project-role",
+      "summary": "Deletes a custom role from a project."
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/users/{user_id}/roles",
+      "operationId": "list-project-user-role-assignments",
+      "summary": "Lists the project roles assigned to a user within a project."
+    },
+    {
+      "method": "POST",
+      "path": "/projects/{project_id}/users/{user_id}/roles",
+      "operationId": "assign-project-user-role",
+      "summary": "Assigns a project role to a user within a project."
+    },
+    {
+      "method": "GET",
+      "path": "/projects/{project_id}/users/{user_id}/roles/{role_id}",
+      "operationId": "retrieve-project-user-role",
+      "summary": "Retrieves a project role assigned to a user."
+    },
+    {
+      "method": "DELETE",
+      "path": "/projects/{project_id}/users/{user_id}/roles/{role_id}",
+      "operationId": "unassign-project-user-role",
+      "summary": "Unassigns a project role from a user within a project."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/calls",
+      "operationId": "create-realtime-call",
+      "summary": "Create a new Realtime API call over WebRTC and receive the SDP answer needed\nto complete the peer connection."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/calls/{call_id}/accept",
+      "operationId": "accept-realtime-call",
+      "summary": "Accept an incoming SIP call and configure the realtime session that will\nhandle it."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/calls/{call_id}/hangup",
+      "operationId": "hangup-realtime-call",
+      "summary": "End an active Realtime API call, whether it was initiated over SIP or\nWebRTC."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/calls/{call_id}/refer",
+      "operationId": "refer-realtime-call",
+      "summary": "Transfer an active SIP call to a new destination using the SIP REFER verb."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/calls/{call_id}/reject",
+      "operationId": "reject-realtime-call",
+      "summary": "Decline an incoming SIP call by returning a SIP status code to the caller."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/client_secrets",
+      "operationId": "create-realtime-client-secret",
+      "summary": "Create a Realtime client secret with an associated session configuration.\n\nClient secrets are short-lived tokens that can be passed to a client app,\nsuch as a web frontend or mobile client, which grants access to the Realtime API without\nleaking your main API key. You can configure a custom TTL for each client secret.\n\nYou can also attach session configuration options to the client secret, which will be\napplied to any sessions created using that client secret, but these can also be overridden\nby the client connection.\n\n[Learn more about authentication with client secrets over WebRTC](/docs/guides/realtime-webrtc).\n\nReturns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/sessions",
+      "operationId": "create-realtime-session",
+      "summary": "Create an ephemeral API token for use in client-side applications with the\nRealtime API. Can be configured with the same session parameters as the\n`session.update` client event.\n\nIt responds with a session object, plus a `client_secret` key which contains\na usable ephemeral API token that can be used to authenticate browser clients\nfor the Realtime API.\n\nReturns the created Realtime session object, plus an ephemeral key."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/transcription_sessions",
+      "operationId": "create-realtime-transcription-session",
+      "summary": "Create an ephemeral API token for use in client-side applications with the\nRealtime API specifically for realtime transcriptions. \nCan be configured with the same session parameters as the `transcription_session.update` client event.\n\nIt responds with a session object, plus a `client_secret` key which contains\na usable ephemeral API token that can be used to authenticate browser clients\nfor the Realtime API.\n\nReturns the created Realtime transcription session object, plus an ephemeral key."
+    },
+    {
+      "method": "POST",
+      "path": "/realtime/translations/client_secrets",
+      "operationId": "create-realtime-translation-client-secret",
+      "summary": "Create a Realtime translation client secret with an associated translation session configuration.\n\nClient secrets are short-lived tokens that can be passed to a client app,\nsuch as a web frontend or mobile client, which grants access to the Realtime\nTranslation API without leaking your main API key. You can configure a custom\nTTL for each client secret.\n\nReturns the created client secret and the effective translation session object.\nThe client secret is a string that looks like `ek_1234`."
+    },
+    {
+      "method": "POST",
+      "path": "/responses",
+      "operationId": "createResponse",
+      "summary": "Creates a model response. Provide [text](/docs/guides/text) or\n[image](/docs/guides/images) inputs to generate [text](/docs/guides/text)\nor [JSON](/docs/guides/structured-outputs) outputs. Have the model call\nyour own [custom code](/docs/guides/function-calling) or use built-in\n[tools](/docs/guides/tools) like [web search](/docs/guides/tools-web-search)\nor [file search](/docs/guides/tools-file-search) to use your own data\nas input for the model's response."
+    },
+    {
+      "method": "POST",
+      "path": "/responses/compact",
+      "operationId": "Compactconversation",
+      "summary": "Compact a conversation. Returns a compacted response object.\n\nLearn when and how to compact long-running conversations in the [conversation state guide](/docs/guides/conversation-state#managing-the-context-window). For ZDR-compatible compaction details, see [Compaction (advanced)](/docs/guides/conversation-state#compaction-advanced)."
+    },
+    {
+      "method": "POST",
+      "path": "/responses/compact?beta=true",
+      "operationId": "beta_Compactconversation",
+      "summary": "Compact a conversation. Returns a compacted response object.\n\nLearn when and how to compact long-running conversations in the [conversation state guide](/docs/guides/conversation-state#managing-the-context-window). For ZDR-compatible compaction details, see [Compaction (advanced)](/docs/guides/conversation-state#compaction-advanced)."
+    },
+    {
+      "method": "POST",
+      "path": "/responses/input_tokens",
+      "operationId": "Getinputtokencounts",
+      "summary": "Returns input token counts of the request.\n\nReturns an object with `object` set to `response.input_tokens` and an `input_tokens` count."
+    },
+    {
+      "method": "POST",
+      "path": "/responses/input_tokens?beta=true",
+      "operationId": "beta_Getinputtokencounts",
+      "summary": "Returns input token counts of the request.\n\nReturns an object with `object` set to `response.input_tokens` and an `input_tokens` count."
+    },
+    {
+      "method": "GET",
+      "path": "/responses/{response_id}",
+      "operationId": "getResponse",
+      "summary": "Retrieves a model response with the given ID."
+    },
+    {
+      "method": "DELETE",
+      "path": "/responses/{response_id}",
+      "operationId": "deleteResponse",
+      "summary": "Deletes a model response with the given ID."
+    },
+    {
+      "method": "POST",
+      "path": "/responses/{response_id}/cancel",
+      "operationId": "cancelResponse",
+      "summary": "Cancels a model response with the given ID. Only responses created with\nthe `background` parameter set to `true` can be cancelled. \n[Learn more](/docs/guides/background)."
+    },
+    {
+      "method": "POST",
+      "path": "/responses/{response_id}/cancel?beta=true",
+      "operationId": "beta_cancelResponse",
+      "summary": "Cancels a model response with the given ID. Only responses created with\nthe `background` parameter set to `true` can be cancelled. \n[Learn more](/docs/guides/background)."
+    },
+    {
+      "method": "GET",
+      "path": "/responses/{response_id}/input_items",
+      "operationId": "listInputItems",
+      "summary": "Returns a list of input items for a given response."
+    },
+    {
+      "method": "GET",
+      "path": "/responses/{response_id}/input_items?beta=true",
+      "operationId": "beta_listInputItems",
+      "summary": "Returns a list of input items for a given response."
+    },
+    {
+      "method": "GET",
+      "path": "/responses/{response_id}?beta=true",
+      "operationId": "beta_getResponse",
+      "summary": "Retrieves a model response with the given ID."
+    },
+    {
+      "method": "DELETE",
+      "path": "/responses/{response_id}?beta=true",
+      "operationId": "beta_deleteResponse",
+      "summary": "Deletes a model response with the given ID."
+    },
+    {
+      "method": "POST",
+      "path": "/responses?beta=true",
+      "operationId": "beta_createResponse",
+      "summary": "Creates a model response. Provide [text](/docs/guides/text) or\n[image](/docs/guides/images) inputs to generate [text](/docs/guides/text)\nor [JSON](/docs/guides/structured-outputs) outputs. Have the model call\nyour own [custom code](/docs/guides/function-calling) or use built-in\n[tools](/docs/guides/tools) like [web search](/docs/guides/tools-web-search)\nor [file search](/docs/guides/tools-file-search) to use your own data\nas input for the model's response."
+    },
+    {
+      "method": "GET",
+      "path": "/skills",
+      "operationId": "ListSkills",
+      "summary": "List all skills for the current project."
+    },
+    {
+      "method": "POST",
+      "path": "/skills",
+      "operationId": "CreateSkill",
+      "summary": "Create a new skill."
+    },
+    {
+      "method": "GET",
+      "path": "/skills/{skill_id}",
+      "operationId": "GetSkill",
+      "summary": "Get a skill by its ID."
+    },
+    {
+      "method": "POST",
+      "path": "/skills/{skill_id}",
+      "operationId": "UpdateSkillDefaultVersion",
+      "summary": "Update the default version pointer for a skill."
+    },
+    {
+      "method": "DELETE",
+      "path": "/skills/{skill_id}",
+      "operationId": "DeleteSkill",
+      "summary": "Delete a skill by its ID."
+    },
+    {
+      "method": "GET",
+      "path": "/skills/{skill_id}/content",
+      "operationId": "GetSkillContent",
+      "summary": "Download a skill zip bundle by its ID."
+    },
+    {
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions",
+      "operationId": "ListSkillVersions",
+      "summary": "List skill versions for a skill."
+    },
+    {
+      "method": "POST",
+      "path": "/skills/{skill_id}/versions",
+      "operationId": "CreateSkillVersion",
+      "summary": "Create a new immutable skill version."
+    },
+    {
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions/{version}",
+      "operationId": "GetSkillVersion",
+      "summary": "Get a specific skill version."
+    },
+    {
+      "method": "DELETE",
+      "path": "/skills/{skill_id}/versions/{version}",
+      "operationId": "DeleteSkillVersion",
+      "summary": "Delete a skill version."
+    },
+    {
+      "method": "GET",
+      "path": "/skills/{skill_id}/versions/{version}/content",
+      "operationId": "GetSkillVersionContent",
+      "summary": "Download a skill version zip bundle."
+    },
+    {
+      "method": "POST",
+      "path": "/threads",
+      "operationId": "createThread",
+      "summary": "Create a thread."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/runs",
+      "operationId": "createThreadAndRun",
+      "summary": "Create a thread and run it in one request."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}",
+      "operationId": "getThread",
+      "summary": "Retrieves a thread."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}",
+      "operationId": "modifyThread",
+      "summary": "Modifies a thread."
+    },
+    {
+      "method": "DELETE",
+      "path": "/threads/{thread_id}",
+      "operationId": "deleteThread",
+      "summary": "Delete a thread."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}/messages",
+      "operationId": "listMessages",
+      "summary": "Returns a list of messages for a given thread."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}/messages",
+      "operationId": "createMessage",
+      "summary": "Create a message."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}/messages/{message_id}",
+      "operationId": "getMessage",
+      "summary": "Retrieve a message."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}/messages/{message_id}",
+      "operationId": "modifyMessage",
+      "summary": "Modifies a message."
+    },
+    {
+      "method": "DELETE",
+      "path": "/threads/{thread_id}/messages/{message_id}",
+      "operationId": "deleteMessage",
+      "summary": "Deletes a message."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}/runs",
+      "operationId": "listRuns",
+      "summary": "Returns a list of runs belonging to a thread."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}/runs",
+      "operationId": "createRun",
+      "summary": "Create a run."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}/runs/{run_id}",
+      "operationId": "getRun",
+      "summary": "Retrieves a run."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}/runs/{run_id}",
+      "operationId": "modifyRun",
+      "summary": "Modifies a run."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}/runs/{run_id}/cancel",
+      "operationId": "cancelRun",
+      "summary": "Cancels a run that is `in_progress`."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}/runs/{run_id}/steps",
+      "operationId": "listRunSteps",
+      "summary": "Returns a list of run steps belonging to a run."
+    },
+    {
+      "method": "GET",
+      "path": "/threads/{thread_id}/runs/{run_id}/steps/{step_id}",
+      "operationId": "getRunStep",
+      "summary": "Retrieves a run step."
+    },
+    {
+      "method": "POST",
+      "path": "/threads/{thread_id}/runs/{run_id}/submit_tool_outputs",
+      "operationId": "submitToolOuputsToRun",
+      "summary": "When a run has the `status: \"requires_action\"` and `required_action.type` is `submit_tool_outputs`, this endpoint can be used to submit the outputs from the tool calls once they're all completed. All outputs must be submitted in a single request."
+    },
+    {
+      "method": "POST",
+      "path": "/uploads",
+      "operationId": "createUpload",
+      "summary": "Creates an intermediate [Upload](/docs/api-reference/uploads/object) object\nthat you can add [Parts](/docs/api-reference/uploads/part-object) to.\nCurrently, an Upload can accept at most 8 GB in total and expires after an\nhour after you create it.\n\nOnce you complete the Upload, we will create a\n[File](/docs/api-reference/files/object) object that contains all the parts\nyou uploaded. This File is usable in the rest of our platform as a regular\nFile object.\n\nFor certain `purpose` values, the correct `mime_type` must be specified. \nPlease refer to documentation for the \n[supported MIME types for your use case](/docs/assistants/tools/file-search#supported-files).\n\nFor guidance on the proper filename extensions for each purpose, please\nfollow the documentation on [creating a\nFile](/docs/api-reference/files/create).\n\nReturns the Upload object with status `pending`."
+    },
+    {
+      "method": "POST",
+      "path": "/uploads/{upload_id}/cancel",
+      "operationId": "cancelUpload",
+      "summary": "Cancels the Upload. No Parts may be added after an Upload is cancelled.\n\nReturns the Upload object with status `cancelled`."
+    },
+    {
+      "method": "POST",
+      "path": "/uploads/{upload_id}/complete",
+      "operationId": "completeUpload",
+      "summary": "Completes the [Upload](/docs/api-reference/uploads/object). \n\nWithin the returned Upload object, there is a nested [File](/docs/api-reference/files/object) object that is ready to use in the rest of the platform.\n\nYou can specify the order of the Parts by passing in an ordered list of the Part IDs.\n\nThe number of bytes uploaded upon completion must match the number of bytes initially specified when creating the Upload object. No Parts may be added after an Upload is completed.\nReturns the Upload object with status `completed`, including an additional `file` property containing the created usable File object."
+    },
+    {
+      "method": "POST",
+      "path": "/uploads/{upload_id}/parts",
+      "operationId": "addUploadPart",
+      "summary": "Adds a [Part](/docs/api-reference/uploads/part-object) to an [Upload](/docs/api-reference/uploads/object) object. A Part represents a chunk of bytes from the file you are trying to upload. \n\nEach Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.\n\nIt is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you [complete the Upload](/docs/api-reference/uploads/complete)."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores",
+      "operationId": "listVectorStores",
+      "summary": "Returns a list of vector stores."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores",
+      "operationId": "createVectorStore",
+      "summary": "Create a vector store."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores/{vector_store_id}",
+      "operationId": "getVectorStore",
+      "summary": "Retrieves a vector store."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores/{vector_store_id}",
+      "operationId": "modifyVectorStore",
+      "summary": "Modifies a vector store."
+    },
+    {
+      "method": "DELETE",
+      "path": "/vector_stores/{vector_store_id}",
+      "operationId": "deleteVectorStore",
+      "summary": "Delete a vector store."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores/{vector_store_id}/file_batches",
+      "operationId": "createVectorStoreFileBatch",
+      "summary": "Create a vector store file batch."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores/{vector_store_id}/file_batches/{batch_id}",
+      "operationId": "getVectorStoreFileBatch",
+      "summary": "Retrieves a vector store file batch."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores/{vector_store_id}/file_batches/{batch_id}/cancel",
+      "operationId": "cancelVectorStoreFileBatch",
+      "summary": "Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as possible."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores/{vector_store_id}/file_batches/{batch_id}/files",
+      "operationId": "listFilesInVectorStoreBatch",
+      "summary": "Returns a list of vector store files in a batch."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores/{vector_store_id}/files",
+      "operationId": "listVectorStoreFiles",
+      "summary": "Returns a list of vector store files."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores/{vector_store_id}/files",
+      "operationId": "createVectorStoreFile",
+      "summary": "Create a vector store file by attaching a [File](/docs/api-reference/files) to a [vector store](/docs/api-reference/vector-stores/object)."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores/{vector_store_id}/files/{file_id}",
+      "operationId": "getVectorStoreFile",
+      "summary": "Retrieves a vector store file."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores/{vector_store_id}/files/{file_id}",
+      "operationId": "updateVectorStoreFileAttributes",
+      "summary": "Update attributes on a vector store file."
+    },
+    {
+      "method": "DELETE",
+      "path": "/vector_stores/{vector_store_id}/files/{file_id}",
+      "operationId": "deleteVectorStoreFile",
+      "summary": "Delete a vector store file. This will remove the file from the vector store but the file itself will not be deleted. To delete the file, use the [delete file](/docs/api-reference/files/delete) endpoint."
+    },
+    {
+      "method": "GET",
+      "path": "/vector_stores/{vector_store_id}/files/{file_id}/content",
+      "operationId": "retrieveVectorStoreFileContent",
+      "summary": "Retrieve the parsed contents of a vector store file."
+    },
+    {
+      "method": "POST",
+      "path": "/vector_stores/{vector_store_id}/search",
+      "operationId": "searchVectorStore",
+      "summary": "Search a vector store for relevant chunks based on a query and file attributes filter."
+    },
+    {
+      "method": "GET",
+      "path": "/videos",
+      "operationId": "ListVideos",
+      "summary": "List recently generated videos for the current project."
+    },
+    {
+      "method": "POST",
+      "path": "/videos",
+      "operationId": "createVideo",
+      "summary": "Create a new video generation job from a prompt and optional reference assets."
+    },
+    {
+      "method": "POST",
+      "path": "/videos/characters",
+      "operationId": "CreateVideoCharacter",
+      "summary": "Create a character from an uploaded video."
+    },
+    {
+      "method": "GET",
+      "path": "/videos/characters/{character_id}",
+      "operationId": "GetVideoCharacter",
+      "summary": "Fetch a character."
+    },
+    {
+      "method": "POST",
+      "path": "/videos/edits",
+      "operationId": "CreateVideoEdit",
+      "summary": "Create a new video generation job by editing a source video or existing generated video."
+    },
+    {
+      "method": "POST",
+      "path": "/videos/extensions",
+      "operationId": "CreateVideoExtend",
+      "summary": "Create an extension of a completed video."
+    },
+    {
+      "method": "GET",
+      "path": "/videos/{video_id}",
+      "operationId": "GetVideo",
+      "summary": "Fetch the latest metadata for a generated video."
+    },
+    {
+      "method": "DELETE",
+      "path": "/videos/{video_id}",
+      "operationId": "DeleteVideo",
+      "summary": "Permanently delete a completed or failed video and its stored assets."
+    },
+    {
+      "method": "GET",
+      "path": "/videos/{video_id}/content",
+      "operationId": "RetrieveVideoContent",
+      "summary": "Download the generated video bytes or a derived preview asset.\n\nStreams the rendered video content for the specified video job."
+    },
+    {
+      "method": "POST",
+      "path": "/videos/{video_id}/remix",
+      "operationId": "CreateVideoRemix",
+      "summary": "Create a remix of a completed video using a refreshed prompt."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "integration": "openai",
+  "scenarios": [
+    {
+      "id": "openai.acme-responses.v1",
+      "counts": {
+        "responses": 45
+      }
+    },
+    {
+      "id": "openai.minimal.v1",
+      "counts": {
+        "responses": 0
+      }
+    }
+  ]
+}
