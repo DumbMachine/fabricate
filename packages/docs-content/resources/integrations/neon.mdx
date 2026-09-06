@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/neon
 ---
 
+<ResourceCoverage resource="neon" />
+
 Projects, branches, endpoints, and organizations. Local Neon v1 that keeps
 project state across requests.
 
@@ -60,6 +62,17 @@ Fabricate handles `console.neon.tech` locally. Other hosts are forwarded unchang
     "neon.minimal.v1": "Empty Neon state for a clean test.",
     "neon.acme-projects.v1": "Acme Postgres estate: projects, branches, and endpoints. Needles: `acme-prod` checkout/billing, INV-4812 ledger, Contoso `acme-sso`, fernworks analytics, Adatum DNS, LakeTech webhooks, Fabrikam SCIM.",
   }}
+/>
+
+Peek at the committed Acme projects. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="neon"
+  scenario="acme-projects.v1"
+  collection="projects"
 />
 
 ## Compatibility verification
