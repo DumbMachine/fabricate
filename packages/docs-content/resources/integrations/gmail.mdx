@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/gmail
 ---
 
+<ResourceCoverage resource="gmail" />
+
 Messages, threads, labels, profile, and send. Local Gmail v1 that keeps
 mailbox state across requests.
 
@@ -76,6 +78,17 @@ settings. In that case, use the direct URL.
     "gmail.minimal.v1": "An empty inbox for a clean test.",
     "gmail.acme-corp.v1": "A populated Acme support inbox with labels and threads, including one phishing message in spam/trash.",
   }}
+/>
+
+Peek at the committed Acme support inbox. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="gmail"
+  scenario="acme-corp.v1"
+  collection="messages"
 />
 
 ## Compatibility verification
