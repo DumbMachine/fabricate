@@ -5,6 +5,8 @@ sidebar:
   icon: https://logos.composio.dev/api/hubspot
 ---
 
+<ResourceCoverage resource="hubspot" />
+
 Contacts, companies, deals, and tickets. Local HubSpot CRM v3 that keeps
 object state across requests.
 
@@ -123,6 +125,17 @@ settings. In that case, use the direct URL.
     "hubspot.minimal.v1": "Empty CRM objects for a clean test.",
     "hubspot.acme-pipeline.v1": "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
   }}
+/>
+
+Peek at the committed Acme pipeline. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="hubspot"
+  scenario="acme-pipeline.v1"
+  collection="contacts"
 />
 
 ## Compatibility verification
