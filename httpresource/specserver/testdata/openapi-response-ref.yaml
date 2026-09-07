@@ -1,0 +1,70 @@
+openapi: "3.0.3"
+info:
+  title: Envelope API
+  version: "2.0"
+servers:
+  - url: https://api.example.com
+paths:
+  /v2/droplets:
+    get:
+      operationId: droplets_list
+      responses:
+        "200":
+          $ref: "#/components/responses/all_droplets"
+    post:
+      operationId: droplets_create
+      responses:
+        "202":
+          $ref: "#/components/responses/droplet_create"
+  /v2/droplets/{droplet_id}:
+    get:
+      operationId: droplets_get
+      responses:
+        "200":
+          $ref: "#/components/responses/one_droplet"
+components:
+  responses:
+    all_droplets:
+      description: All Droplets
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              droplets:
+                type: array
+                items:
+                  type: object
+            required:
+              - droplets
+    droplet_create:
+      description: Accepted
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - title: Single Droplet Response
+                type: object
+                properties:
+                  droplet:
+                    type: object
+                required:
+                  - droplet
+              - title: Multiple Droplet Response
+                type: object
+                properties:
+                  droplets:
+                    type: array
+                    items:
+                      type: object
+    one_droplet:
+      description: One Droplet
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              droplet:
+                type: object
+            required:
+              - droplet

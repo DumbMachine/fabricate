@@ -94,7 +94,7 @@
   ],
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:547686fe1e0a55d6e0a01a480b8c89460663d82597f9233c066582e99a84b37d",
+    "digest": "sha256:0a56497577de5b5692aa7c0661fab9c80ba8b8d84772673788be3068fa7f6729",
     "roots": [
       {
         "path": "cli/run.go",
@@ -114,7 +114,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:f18d1259cb92454054a0cdbcc6bea07d695ca21b0becfdd3a0ba758d048cc10d"
+        "digest": "sha256:92cfde6e04e185db121b95c6fdddf6e00e450fc88f5edb3d1dd35a329d255dae"
       },
       {
         "path": "packages/docs-content/resources/_examples/acme-billing-ops-inv-4812.json",
