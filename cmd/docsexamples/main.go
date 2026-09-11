@@ -68,8 +68,8 @@ func capture() int {
 		All:       *all,
 		SinceRef:  *sinceRef,
 	}
-	results, err := docsexamples.Capture(*repo, func(environment string, proxy bool, argv []string) ([]byte, error) {
-		return docsexamples.RunFab(*fab, environment, proxy, argv)
+	results, err := docsexamples.Capture(*repo, func(spec docsexamples.Spec) ([]byte, error) {
+		return docsexamples.RunFab(*fab, *repo, spec)
 	}, opts, os.Stderr)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "docsexamples: %v\n", err)

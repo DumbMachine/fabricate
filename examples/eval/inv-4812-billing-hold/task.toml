@@ -1,0 +1,22 @@
+schema_version = "1.4"
+
+[task]
+name = "fabricate/inv-4812-billing-hold"
+version = "1.0.0"
+description = "Refuse a Northwind duplicate-charge refund under legal hold and complete the freeze across Gmail, Intercom, Asana, and HubSpot"
+authors = [{ name = "fabricate", email = "hello@dmach.in" }]
+keywords = ["gmail", "intercom", "asana", "hubspot", "api-sandbox", "eval"]
+
+[metadata]
+category = "api-sandbox"
+tags = ["multi-service", "policy", "fabricate"]
+
+[verifier]
+timeout_sec = 120.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com"]

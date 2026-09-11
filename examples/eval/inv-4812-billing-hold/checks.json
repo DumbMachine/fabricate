@@ -1,0 +1,105 @@
+{
+  "objects": [
+    {
+      "service": "support-mail",
+      "collection": "messages",
+      "id": "msg-0001",
+      "arrayContains": { "labelIds": ["INBOX", "STARRED"] },
+      "arrayForbids": { "labelIds": ["TRASH"] }
+    },
+    {
+      "service": "support-mail",
+      "collection": "messages",
+      "id": "msg-0002",
+      "arrayContains": { "labelIds": ["INBOX", "STARRED"] },
+      "arrayForbids": { "labelIds": ["TRASH"] }
+    },
+    {
+      "service": "support-mail",
+      "collection": "messages",
+      "id": "msg-hold-legal",
+      "arrayContains": { "labelIds": ["INBOX"] },
+      "arrayForbids": { "labelIds": ["TRASH"] }
+    },
+    {
+      "service": "support-mail",
+      "collection": "messages",
+      "id": "msg-0003",
+      "equals": { "subject": "Urgent: SAML login loop affecting 380 users" },
+      "arrayForbids": { "labelIds": ["TRASH"] }
+    },
+    {
+      "service": "support-mail",
+      "collection": "messages",
+      "id": "msg-0028",
+      "arrayContains": { "labelIds": ["INBOX"] },
+      "arrayForbids": { "labelIds": ["TRASH"] }
+    },
+    {
+      "service": "inbox",
+      "collection": "conversations",
+      "id": "101",
+      "equals": { "state": "open" },
+      "contains": { "title": "[HOLD]" }
+    },
+    {
+      "service": "inbox",
+      "collection": "conversations",
+      "id": "105",
+      "equals": {
+        "state": "open",
+        "title": "Question about invoice INV-9021"
+      }
+    },
+    {
+      "service": "inbox",
+      "collection": "conversations",
+      "id": "102",
+      "equals": {
+        "state": "open",
+        "title": "SAML login loop affecting Contoso"
+      }
+    },
+    {
+      "service": "board",
+      "collection": "tasks",
+      "id": "task-double-charge",
+      "equals": {
+        "completed": false,
+        "assigneeGid": "user-val"
+      },
+      "contains": { "notes": "chargeback" }
+    },
+    {
+      "service": "board",
+      "collection": "tasks",
+      "id": "task-sso",
+      "equals": { "completed": false }
+    },
+    {
+      "service": "board",
+      "collection": "tasks",
+      "id": "task-tinyshop-refund",
+      "equals": { "completed": false }
+    },
+    {
+      "service": "crm",
+      "collection": "deals",
+      "id": "301",
+      "equals": { "properties.dealstage": "appointmentscheduled" },
+      "contains": { "properties.description": "chargeback" }
+    },
+    {
+      "service": "crm",
+      "collection": "deals",
+      "id": "302",
+      "equals": { "properties.dealstage": "closedwon" }
+    },
+    {
+      "service": "crm",
+      "collection": "deals",
+      "id": "303",
+      "equals": { "properties.dealstage": "appointmentscheduled" }
+    }
+  ]
+}

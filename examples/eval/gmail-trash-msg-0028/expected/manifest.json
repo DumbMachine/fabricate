@@ -1,0 +1,12 @@
+{
+  "environment": "acme-gmail",
+  "services": [
+    {
+      "name": "support-mail",
+      "resource": "gmail",
+      "scenario": "gmail.acme-corp.v1",
+      "digest": "sha256:77d8254b599751f2803b3b8a3684d6c3766e360348ab49d95bda8848719c0327",
+      "file": "support-mail.json"
+    }
+  ]
+}

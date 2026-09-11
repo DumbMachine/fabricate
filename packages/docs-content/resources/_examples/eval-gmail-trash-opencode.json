@@ -1,0 +1,22 @@
+{
+  "id": "eval-gmail-trash-opencode",
+  "title": "Score OpenCode on the Gmail trash eval",
+  "environment": "environments/acme-gmail.yaml",
+  "environmentLabel": "Acme's Gmail",
+  "proxy": true,
+  "invocation": "eval",
+  "skipCapture": true,
+  "flags": [
+    "--expected",
+    "examples/eval/gmail-trash-msg-0028/expected",
+    "--output",
+    "json"
+  ],
+  "outputPath": "packages/docs-content/resources/_generated/eval-gmail-trash-opencode.json",
+  "publishedCommand": "./examples/eval/gmail-trash-msg-0028/eval-opencode.sh",
+  "argv": ["./examples/eval/gmail-trash-msg-0028/run-opencode.sh"],
+  "extraRoots": [
+    "cli/eval.go",
+    "examples/eval/gmail-trash-msg-0028"
+  ]
+}

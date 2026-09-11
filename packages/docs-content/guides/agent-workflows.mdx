@@ -42,6 +42,14 @@ serves the seeded inbox:
 fab run acme-gmail --proxy -- opencode web
 ```
 
+That is interactive QA. It does **not** produce a score. To start the same
+environment, run OpenCode to completion, then dump and score, use
+[`fab eval`](/eval/first-eval#wrap-opencode):
+
+```bash
+./examples/eval/gmail-trash-msg-0028/eval-opencode.sh
+```
+
 The agent must honor the injected HTTP proxy and CA variables, the same as a
 wrapped worker. After the session, `fab logs acme-gmail --cat` shows the
 redacted Gmail calls.
@@ -125,6 +133,10 @@ Gmail, Intercom, Asana, and HubSpot services share customer and incident IDs.
 A worker can read the same case across providers, decide what to do, then make
 writes without touching real accounts.
 
-After the run, use `fab logs acme-support-desk --cat` to inspect the redacted
-request trace and score the worker's API behavior. Start a new run to restore
-the exact scenario baseline.
+Score that run with [`fab eval`](/eval): start the same environment, dump live
+provider state, and read a score. [Your first eval](/eval/first-eval) uses
+Acme's Gmail. [Your own environment](/eval/own-environment) authors a local
+manifest first.
+
+`fab logs acme-support-desk --cat` still shows the redacted request trace.
+Start a new run to restore the exact scenario baseline.

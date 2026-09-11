@@ -74,6 +74,41 @@ func TestResolveRunSpecRejectsUnknownScenarioWithOptions(t *testing.T) {
 	}
 }
 
+func TestResolveRunSpecLoadsScenarioFile(t *testing.T) {
+	dir := t.TempDir()
+	src, err := os.ReadFile(filepath.Join("..", "resources", "gmail", "scenarios", "minimal.v1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "inbox.json")
+	if err := os.WriteFile(path, src, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	spec, err := resolveRunSpec("gmail", path, all.Registry())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if spec.Services["gmail"].Scenario != path {
+		t.Fatalf("scenario = %q", spec.Services["gmail"].Scenario)
+	}
+}
+
+func TestResolveRunSpecRejectsScenarioFileForWrongResource(t *testing.T) {
+	dir := t.TempDir()
+	src, err := os.ReadFile(filepath.Join("..", "resources", "gmail", "scenarios", "minimal.v1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "inbox.json")
+	if err := os.WriteFile(path, src, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	_, err = resolveRunSpec("hubspot", path, all.Registry())
+	if err == nil || !strings.Contains(err.Error(), "gmail") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
 func TestResolveRunSpecRejectsScenarioOnEnvironment(t *testing.T) {
 	_, err := resolveRunSpec("acme-gmail", "gmail.minimal.v1", all.Registry())
 	if err == nil || !strings.Contains(err.Error(), "--scenario can only be used with a service") {

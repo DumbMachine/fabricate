@@ -90,5 +90,16 @@ answers `POST https://oauth2.googleapis.com/token` for `grant_type=refresh_token
 with a non-empty refresh token and returns that same synthetic access token.
 That is not a general OAuth implementation.
 
+## Dump live state
+
+`--dump DIR` writes a canonical snapshot of every service after the command
+exits, or when an interrupt stops a foreground run. Use that dump with
+[`fab diff`](/cli/commands/diff) or as a starting point for
+[`fab gold`](/cli/commands/gold) / [`fab eval`](/cli/commands/eval).
+
+```bash
+fab run acme-gmail --dump ./actual -- npm test
+```
+
 The old `--environment <manifest>` form remains temporarily available but is
 deprecated. Pass the environment name or path as the first argument instead.

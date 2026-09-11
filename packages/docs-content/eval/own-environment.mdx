@@ -1,0 +1,145 @@
+---
+title: Your own environment
+description: Author a local environment, then score a worker against that world.
+---
+
+[Your first eval](/eval/first-eval) used `acme-gmail`, an environment
+Fabricate already ships. This walkthrough **creates an environment**, then
+scores against it.
+
+An environment is still the same object as in [`fab run`](/cli/commands/run):
+a YAML manifest that names services (resource + scenario). Putting that file
+next to an eval task does not change the model. `fab eval ./environment.yaml`
+starts that world, runs a worker, and prints a **score**.
+
+The example is
+[`examples/eval/inv-4812-billing-hold`](https://github.com/DumbMachine/fabricate/tree/main/examples/eval/inv-4812-billing-hold).
+Run scripts from a Fabricate checkout. They pick up `./scripts/fab-dev`, then
+`fab` on your PATH.
+
+## 1. Write the environment
+
+[`environment.yaml`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/environment.yaml)
+is a Fabricate environment, same `kind` as [Acme Support Desk](/resources/environments/acme-support-desk).
+Four services, one company:
+
+```yaml
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: inv-4812-billing-hold
+
+services:
+  support-mail:
+    resource: gmail
+    scenario: ./scenarios/gmail.acme-corp.hold.json
+  inbox:
+    resource: intercom
+    scenario: intercom.acme-inbox.v1
+  board:
+    resource: asana
+    scenario: asana.acme-sprint.v1
+  crm:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1
+```
+
+Intercom, Asana, and HubSpot use catalog scenarios. Gmail uses a **local
+scenario file** — Acme's inbox plus two Legal/Finance hold messages that are
+not in `gmail.acme-corp.v1`. That file is seed data for this environment, not
+the gold dump and not the score.
+
+`fab eval` / `fab gold` take the path to this manifest as the environment
+argument, exactly like `fab run ./environment.yaml`.
+
+You can sanity-check the world without scoring:
+
+```bash
+fab run examples/eval/inv-4812-billing-hold/environment.yaml -- \
+  sh -c 'curl -sS -H "Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN" \
+    "$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages?q=HOLD"'
+```
+
+## 2. Write the task, not the world twice
+
+[`instruction.md`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/instruction.md)
+is the ticket the worker sees. It asks to refund INV-4812 and close everything.
+The hold policy lives in the mailbox you seeded, not in that ticket.
+
+[`solution/solve.sh`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/solution/solve.sh)
+is the oracle. Keep it off the agent's context.
+
+[`checks.json`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/checks.json)
+is how this task **scores**. HubSpot and Asana bump `updatedAt` on writes, so
+a full gold-dump digest would flake. Field checks assert the freeze (stars,
+`[HOLD]`, Asana notes, deal still open) and that decoys stayed put.
+
+Do not put the oracle recipe in `instruction.md`. Do not treat `expected/` as
+a second environment manifest; this example scores with `--checks` and does
+not need a digest dump.
+
+## 3. Score against that environment
+
+[`eval-oracle.sh`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/eval-oracle.sh)
+is:
+
+```bash
+fab eval examples/eval/inv-4812-billing-hold/environment.yaml \
+  --checks examples/eval/inv-4812-billing-hold/checks.json \
+  --output json \
+  -- ./examples/eval/inv-4812-billing-hold/solution/solve.sh
+```
+
+```bash
+./examples/eval/inv-4812-billing-hold/eval-oracle.sh
+```
+
+The score names the environment you authored. A passing oracle looks like:
+
+```json
+{
+  "passed": true,
+  "environment": "inv-4812-billing-hold",
+  "checks": {
+    "passed": true
+  }
+}
+```
+
+`passed` is the score. `environment` is `metadata.name` from your manifest.
+
+A worker that does nothing must fail:
+
+```bash
+./examples/eval/inv-4812-billing-hold/eval-noop.sh
+```
+
+That score is `passed: false` with check failures (missing `STARRED`, no
+`[HOLD]` on conversation 101, Asana still assigned to Mei, deal description
+without chargeback). The process exits 1.
+
+## Wrap OpenCode
+
+Same harness as [Your first eval](/eval/first-eval#wrap-opencode):
+[`eval-opencode.sh`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/eval-opencode.sh)
+wraps [`run-opencode.sh`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/inv-4812-billing-hold/run-opencode.sh).
+The environment argument is the local manifest. This task is meant to fail
+cheap models; the captured passing score on the first-eval page is the Gmail
+trash task.
+
+```bash
+./examples/eval/inv-4812-billing-hold/eval-opencode.sh
+```
+
+## What you created vs what Fabricate started
+
+| Artifact | Is it an environment? |
+| --- | --- |
+| `environment.yaml` + `scenarios/*.json` | Yes — the baseline you start |
+| `instruction.md` / `solve.sh` | No — the task and the oracle |
+| `checks.json` | No — how the score is computed |
+| A gold dump from `fab gold --dump` | No — snapshot of the environment after writes |
+
+When you outgrow a catalog world, start here: write the environment, then
+reuse [Your first eval](/eval/first-eval) for the gold-dump scoring loop on
+that manifest.

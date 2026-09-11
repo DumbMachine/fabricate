@@ -142,7 +142,7 @@ func TestCaptureSkipsMatchingProvenance(t *testing.T) {
 		t.Fatal(err)
 	}
 	calls := 0
-	runner := func(string, bool, []string) ([]byte, error) {
+	runner := func(Spec) ([]byte, error) {
 		calls++
 		return []byte(`{"ok":true}`), nil
 	}
@@ -205,7 +205,7 @@ func TestCaptureSkipsMatchingProvenance(t *testing.T) {
 
 func TestCaptureConcatenatedJSONDocuments(t *testing.T) {
 	repo := writeExampleRepo(t)
-	runner := func(string, bool, []string) ([]byte, error) {
+	runner := func(Spec) ([]byte, error) {
 		return []byte("{\"z\":1}\n\n{\"a\":2}\n"), nil
 	}
 	if _, err := Capture(repo, runner, Options{All: true}, ioDiscard()); err != nil {
@@ -230,7 +230,7 @@ func TestCaptureConcatenatedJSONDocuments(t *testing.T) {
 
 func TestCapturePreservesJSONKeyOrder(t *testing.T) {
 	repo := writeExampleRepo(t)
-	runner := func(string, bool, []string) ([]byte, error) {
+	runner := func(Spec) ([]byte, error) {
 		return []byte(`{"z":1,"a":2}`), nil
 	}
 	if _, err := Capture(repo, runner, Options{All: true}, ioDiscard()); err != nil {
@@ -316,7 +316,7 @@ func TestToolChanged(t *testing.T) {
 func TestCaptureForceWhenGeneratedFileChanged(t *testing.T) {
 	repo := writeExampleRepo(t)
 	gitInit(t, repo)
-	runner := func(string, bool, []string) ([]byte, error) {
+	runner := func(Spec) ([]byte, error) {
 		return []byte(`{"ok":true}`), nil
 	}
 	if _, err := Capture(repo, runner, Options{All: true}, ioDiscard()); err != nil {
@@ -327,7 +327,7 @@ func TestCaptureForceWhenGeneratedFileChanged(t *testing.T) {
 	gitCommitAll(t, repo, "hand edit")
 
 	calls := 0
-	runner = func(string, bool, []string) ([]byte, error) {
+	runner = func(Spec) ([]byte, error) {
 		calls++
 		return []byte(`{"ok":true}`), nil
 	}
@@ -340,9 +340,49 @@ func TestCaptureForceWhenGeneratedFileChanged(t *testing.T) {
 	}
 }
 
+func TestCaptureSkipCaptureUnlessExplicitID(t *testing.T) {
+	repo := writeExampleRepo(t)
+	specPath := filepath.Join(repo, "packages/docs-content/resources/_examples/gmail-list-messages.json")
+	data, err := os.ReadFile(specPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data = bytes.Replace(data, []byte(`"proxy": true,`), []byte(`"proxy": true,`+"\n  \"skipCapture\": true,"), 1)
+	if err := os.WriteFile(specPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	calls := 0
+	runner := func(Spec) ([]byte, error) {
+		calls++
+		return []byte(`{"ok":true}`), nil
+	}
+	results, err := Capture(repo, runner, Options{All: true}, ioDiscard())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if calls != 0 {
+		t.Fatalf("skipCapture ran under --all; calls = %d", calls)
+	}
+	if len(results) != 1 || results[0].Action != "skip" {
+		t.Fatalf("results = %+v", results)
+	}
+
+	results, err = Capture(repo, runner, Options{IDs: []string{"gmail-list-messages"}}, ioDiscard())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if calls != 1 {
+		t.Fatalf("explicit --id did not recapture; calls = %d", calls)
+	}
+	if len(results) != 1 || results[0].Action != "capture" {
+		t.Fatalf("explicit id results = %+v", results)
+	}
+}
+
 func TestSelectUnknownID(t *testing.T) {
 	repo := writeExampleRepo(t)
-	_, err := Capture(repo, func(string, bool, []string) ([]byte, error) {
+	_, err := Capture(repo, func(Spec) ([]byte, error) {
 		t.Fatal("runner should not run")
 		return nil, nil
 	}, Options{IDs: []string{"missing"}}, ioDiscard())
@@ -385,7 +425,7 @@ func TestLoadRejectsCompatibilityOutputPath(t *testing.T) {
 
 func TestCaptureResourceFilter(t *testing.T) {
 	repo := writeExampleRepo(t)
-	_, err := Capture(repo, func(string, bool, []string) ([]byte, error) {
+	_, err := Capture(repo, func(Spec) ([]byte, error) {
 		t.Fatal("runner should not run")
 		return nil, nil
 	}, Options{Resources: []string{"resources/asana"}}, ioDiscard())
@@ -394,7 +434,7 @@ func TestCaptureResourceFilter(t *testing.T) {
 	}
 
 	calls := 0
-	_, err = Capture(repo, func(string, bool, []string) ([]byte, error) {
+	_, err = Capture(repo, func(Spec) ([]byte, error) {
 		calls++
 		return []byte(`{"ok":true}`), nil
 	}, Options{Resources: []string{"gmail"}}, ioDiscard())
@@ -421,7 +461,7 @@ func TestNormalizeResource(t *testing.T) {
 func TestToolChangeForcesAll(t *testing.T) {
 	repo := writeExampleRepo(t)
 	gitInit(t, repo)
-	runner := func(string, bool, []string) ([]byte, error) {
+	runner := func(Spec) ([]byte, error) {
 		return []byte(`{"ok":true}`), nil
 	}
 	if _, err := Capture(repo, runner, Options{All: true}, ioDiscard()); err != nil {
@@ -432,7 +472,7 @@ func TestToolChangeForcesAll(t *testing.T) {
 	gitCommitAll(t, repo, "tool")
 
 	calls := 0
-	runner = func(string, bool, []string) ([]byte, error) {
+	runner = func(Spec) ([]byte, error) {
 		calls++
 		return []byte(`{"ok":true}`), nil
 	}

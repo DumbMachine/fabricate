@@ -1,0 +1,52 @@
+---
+title: fab gold
+description: Replay a command and write a gold dump of live service state.
+---
+
+`fab gold` starts an **environment**, runs a command, then writes a canonical
+dump of every service. That dump is a snapshot of the environment after the
+oracle, not a new catalog environment. Use it as `--expected` for
+[`fab eval`](/cli/commands/eval).
+
+The command sees the same `FAB_*` connection variables as [`fab run`](/cli/commands/run).
+
+```bash
+fab gold acme-gmail --dump ./expected -- ./solve.sh
+```
+
+`--dump` is required. It is a directory path, not the global `--output` /
+`-o` format flag.
+
+## What it writes
+
+```text
+expected/
+  manifest.json
+  support-mail.json
+```
+
+`manifest.json` names the environment and each service: resource, scenario,
+digest, and dump filename. Each `*.json` file is a canonical scenario
+document. Digests are SHA-256 of that canonical JSON.
+
+Lifecycle lines go to stderr. A short summary of environment and digests goes
+to stdout:
+
+```text
+environment  acme-gmail
+support-mail  gmail.acme-corp.v1  sha256:77d8254b599751f2803b3b8a3684d6c3766e360348ab49d95bda8848719c0327
+```
+
+Re-run `fab gold` when the oracle or the seeded scenario changes. Do not edit
+the dump by hand.
+
+## Flags
+
+| Flag | Meaning |
+| --- | --- |
+| `--dump DIR` | Directory to write (required) |
+| `--proxy` | Transparent HTTPS proxy, same as `fab run` |
+| `--scenario` | Scenario ID or JSON path when the target is one service |
+
+The first argument is an official environment, a local manifest, or a resource
+ID (with `--scenario`).

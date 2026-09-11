@@ -2,10 +2,8 @@ package cli
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"os/signal"
 	"sort"
 	"strings"
@@ -23,6 +21,7 @@ var (
 	runEnvironment string
 	runScenario    string
 	runProxy       bool
+	runDump        string
 )
 
 var runCmd = &cobra.Command{
@@ -36,15 +35,19 @@ URLs, credentials, proxy settings, and request log needed by another process.
 
 Provider SDKs can keep their production hostnames with --proxy. Unknown proxy
 destinations tunnel unchanged unless the environment opts into strict
-rejection; the generated CA is never installed globally.`,
+rejection; the generated CA is never installed globally.
+
+--dump writes a canonical snapshot of live service state after the command
+exits, or when an interrupt stops a foreground run.`,
 	Args: cobra.ArbitraryArgs,
 	RunE: runEnvironmentCommand,
 }
 
 func init() {
 	runCmd.Flags().StringVar(&runEnvironment, "environment", "", "Environment manifest to run (deprecated; pass it as the first argument)")
-	runCmd.Flags().StringVar(&runScenario, "scenario", "", "Scenario to use when running one service")
+	runCmd.Flags().StringVar(&runScenario, "scenario", "", "Scenario ID or JSON path when running one service")
 	runCmd.Flags().BoolVar(&runProxy, "proxy", false, "Enable transparent HTTPS proxying")
+	runCmd.Flags().StringVar(&runDump, "dump", "", "Write a canonical dump of live service state after the command exits")
 	_ = runCmd.Flags().MarkDeprecated("environment", "pass the environment name or manifest as the first argument")
 }
 
@@ -53,68 +56,50 @@ func runEnvironmentCommand(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	registry := all.Registry()
-	spec, err := resolveRunSpec(target, runScenario, registry)
+	spec, err := resolveRunSpec(target, runScenario, all.Registry())
 	if err != nil {
 		return err
 	}
 	ctx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	runtime, err := environment.Start(ctx, spec, registry, runProxy)
+	sess, err := startSession(ctx, spec, runProxy)
 	if err != nil {
 		return err
 	}
-	closed := false
-	closeRuntime := func() error {
-		if closed {
-			return nil
-		}
-		closed = true
-		closeCtx, cancel := environment.CloseTimeout()
-		defer cancel()
-		return runtime.Close(closeCtx)
-	}
-	defer closeRuntime()
-
-	serviceNames := make([]string, 0, len(runtime.Services))
-	for name := range runtime.Services {
-		serviceNames = append(serviceNames, name)
-	}
-	sort.Strings(serviceNames)
-	for _, name := range serviceNames {
-		service := runtime.Services[name]
-		fmt.Fprintf(os.Stderr, "fab: service %s (%s) ready at %s\n", name, service.Resource.Descriptor().ID, service.URL)
-	}
-	if runtime.Proxy != nil {
-		fmt.Fprintf(os.Stderr, "fab: transparent proxy ready at %s (CA %s)\n", runtime.Proxy.URL, runtime.Proxy.CAPath)
-		fmt.Fprintf(os.Stderr, "fab: proxying %s\n", strings.Join(runtime.Proxy.InterceptedHosts(), ", "))
-	}
-	fmt.Fprintf(os.Stderr, "fab: request log %s\n", runtime.Requests.Path())
+	defer sess.Close()
 	if len(childArgs) == 0 {
-		printStandaloneEnvironment(os.Stderr, runtime.Environment())
+		printStandaloneEnvironment(os.Stderr, sess.runtime.Environment())
 		fmt.Fprintln(os.Stderr, "fab: running until interrupted")
 		<-ctx.Done()
-		if err := closeRuntime(); err != nil && !errors.Is(err, context.Canceled) {
-			return fmt.Errorf("environment teardown: %w", err)
+		if err := dumpSession(ctx, sess, runDump); err != nil {
+			return err
 		}
+		return closeSessionError(sess.Close())
+	}
+	commandErr := sess.runCommand(ctx, childArgs)
+	if err := dumpSession(ctx, sess, runDump); err != nil {
+		_ = sess.Close()
+		return err
+	}
+	closeErr := closeSessionError(sess.Close())
+	if commandErr != nil {
+		return commandErr
+	}
+	return closeErr
+}
+
+func dumpSession(ctx context.Context, sess *session, dir string) error {
+	if dir == "" {
 		return nil
 	}
-	fmt.Fprintf(os.Stderr, "fab: running %s\n", strings.Join(childArgs, " "))
-
-	child := exec.CommandContext(ctx, childArgs[0], childArgs[1:]...)
-	child.Stdin, child.Stdout, child.Stderr = os.Stdin, os.Stdout, os.Stderr
-	child.Env = mergedEnvironment(os.Environ(), runtime.Environment())
-	err = child.Run()
-	closeErr := closeRuntime()
+	snap, err := sess.dump(ctx)
 	if err != nil {
-		if ctx.Err() != nil {
-			return ctx.Err()
-		}
-		return fmt.Errorf("child command: %w", err)
+		return err
 	}
-	if closeErr != nil && !errors.Is(closeErr, context.Canceled) {
-		return fmt.Errorf("environment teardown: %w", closeErr)
+	if err := environment.WriteSnapshot(dir, snap); err != nil {
+		return err
 	}
+	fmt.Fprintf(os.Stderr, "fab: wrote dump %s\n", dir)
 	return nil
 }
 
@@ -150,25 +135,38 @@ func wrapStandaloneService(target, scenarioID string, registry *httpresource.Reg
 	if !ok {
 		return environment.Spec{}, fmt.Errorf("run: --scenario can only be used with a service")
 	}
-	docs, err := resource.ScenarioDocuments()
-	if err != nil {
-		return environment.Spec{}, fmt.Errorf("run: list scenarios for %s: %w", target, err)
-	}
-	ids := scenario.IDs(docs)
 	if scenarioID == "" {
-		return environment.Spec{}, fmt.Errorf("run: service %q requires --scenario; choose one of: %s", target, strings.Join(ids, ", "))
+		docs, err := resource.ScenarioDocuments()
+		if err != nil {
+			return environment.Spec{}, fmt.Errorf("run: list scenarios for %s: %w", target, err)
+		}
+		return environment.Spec{}, fmt.Errorf("run: service %q requires --scenario; choose one of: %s", target, strings.Join(scenario.IDs(docs), ", "))
 	}
-	if _, ok := scenario.Lookup(docs, scenarioID); !ok {
-		return environment.Spec{}, fmt.Errorf("run: unknown scenario %q for service %q; choose one of: %s", scenarioID, target, strings.Join(ids, ", "))
-	}
-	return environment.Spec{
+	spec := environment.Spec{
 		APIVersion: environment.APIVersion,
 		Kind:       "Environment",
 		Metadata:   environment.Metadata{Name: target},
 		Services: map[string]environment.ServiceSpec{
 			target: {Resource: target, Scenario: scenarioID},
 		},
-	}, nil
+	}
+	if scenario.LooksLikePath(scenarioID) {
+		cwd, err := os.Getwd()
+		if err != nil {
+			return environment.Spec{}, fmt.Errorf("run: working directory: %w", err)
+		}
+		spec.SourceDir = cwd
+	}
+	if _, err := environment.ResolveScenario(resource, spec, scenarioID); err != nil {
+		if !scenario.LooksLikePath(scenarioID) {
+			docs, listErr := resource.ScenarioDocuments()
+			if listErr == nil {
+				return environment.Spec{}, fmt.Errorf("run: unknown scenario %q for service %q; choose one of: %s", scenarioID, target, strings.Join(scenario.IDs(docs), ", "))
+			}
+		}
+		return environment.Spec{}, fmt.Errorf("run: %w", err)
+	}
+	return spec, nil
 }
 
 func printStandaloneEnvironment(out *os.File, values map[string]string) {

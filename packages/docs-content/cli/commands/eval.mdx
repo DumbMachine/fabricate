@@ -1,0 +1,88 @@
+---
+title: fab eval
+description: Run a command and score live state against a gold dump and/or field checks.
+---
+
+`fab eval` starts an **environment**, runs a command, dumps live state, and
+writes a **score**. The first argument is that environment: an official name,
+a local manifest, or one resource with `--scenario`. The score is whether the
+live tenant matches `--expected` and/or `--checks`. The process exits 0 only
+when every selected scorer passes.
+
+Informational logs go to stderr. The **score** object is written to stdout.
+
+```bash
+fab eval acme-gmail --expected ./expected -- ./solve.sh
+fab eval ./environment.yaml --checks ./checks.json -- ./agent
+fab eval acme-gmail --proxy --expected ./expected --output json -- \
+  ./run-opencode.sh
+```
+
+A matching gold replay:
+
+```text
+PASS acme-gmail
+  support-mail  ok
+```
+
+A field-check failure (for example `true` against a hold task):
+
+```text
+FAIL inv-4812-billing-hold
+  checks  fail
+    support-mail messages msg-0001 labelIds: missing "STARRED"
+    inbox conversations 101 title: "Charged twice for INV-4812" does not contain "[HOLD]"
+```
+
+`--output json` prints the same result as a JSON object. Use that in CI.
+
+## Flags
+
+| Flag | Meaning |
+| --- | --- |
+| `--expected DIR` | Gold dump directory from `fab gold` |
+| `--checks FILE` | JSON field-assertion file |
+| `--dump DIR` | Also write the candidate dump |
+| `--reward-file PATH` | Write `1` or `0` for Harbor-style verifiers |
+| `--proxy` | Transparent HTTPS proxy, same as `fab run` |
+| `--scenario` | Scenario ID or JSON path when the target is one service |
+
+`--expected` and/or `--checks` is required.
+
+## Field checks
+
+A checks file lists objects in the dump by service, collection, and id
+(`id` or `gid`):
+
+```json
+{
+  "objects": [
+    {
+      "service": "support-mail",
+      "collection": "messages",
+      "id": "msg-0001",
+      "arrayContains": { "labelIds": ["INBOX", "STARRED"] },
+      "arrayForbids": { "labelIds": ["TRASH"] }
+    },
+    {
+      "service": "crm",
+      "collection": "deals",
+      "id": "301",
+      "equals": { "properties.dealstage": "appointmentscheduled" },
+      "contains": { "properties.description": "chargeback" }
+    }
+  ]
+}
+```
+
+`equals` is an exact field match. `contains` is a case-insensitive substring
+on a string field. Nested paths use dots (`properties.dealstage`).
+`arrayContains` / `arrayForbids` apply to string arrays such as Gmail labels.
+
+Use checks when digest compare is flaky (timestamps, generated IDs) or when
+the task is mostly negative constraints.
+
+Wrap a non-interactive agent (OpenCode, or anything that exits) after `--`.
+[`Your first eval`](/eval/first-eval) has the OpenCode command and how
+Harbor-shaped `tests/test.sh` uses `--reward-file` / `fab diff`. See also
+[Evaluate agents](/eval) and [Your own environment](/eval/own-environment).

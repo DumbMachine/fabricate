@@ -18,6 +18,8 @@ Run an official environment, a local manifest, or one service:
   fab run acme-gmail
   fab run ./environment.yaml -- npm test
   fab run gmail --scenario gmail.minimal.v1
+  fab gold acme-gmail --dump ./expected -- ./solve.sh
+  fab eval acme-gmail --expected ./expected -- ./agent
 
 Inspect the available definitions:
 

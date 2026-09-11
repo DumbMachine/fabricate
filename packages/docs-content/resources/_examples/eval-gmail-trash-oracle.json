@@ -1,0 +1,21 @@
+{
+  "id": "eval-gmail-trash-oracle",
+  "title": "Score the Gmail trash oracle",
+  "environment": "environments/acme-gmail.yaml",
+  "environmentLabel": "Acme's Gmail",
+  "proxy": false,
+  "invocation": "eval",
+  "flags": [
+    "--expected",
+    "examples/eval/gmail-trash-msg-0028/expected",
+    "--output",
+    "json"
+  ],
+  "outputPath": "packages/docs-content/resources/_generated/eval-gmail-trash-oracle.json",
+  "publishedCommand": "./examples/eval/gmail-trash-msg-0028/eval-oracle.sh",
+  "argv": ["./examples/eval/gmail-trash-msg-0028/solution/solve.sh"],
+  "extraRoots": [
+    "cli/eval.go",
+    "examples/eval/gmail-trash-msg-0028"
+  ]
+}

@@ -286,7 +286,7 @@ func validateEnvironmentDefinition(spec environment.Spec, registry *httpresource
 		if !ok {
 			return fmt.Errorf("environment %q service %q: unknown resource %q", spec.Metadata.Name, name, serviceSpec.Resource)
 		}
-		doc, err := resource.Scenario(serviceSpec.Scenario)
+		doc, err := environment.ResolveScenario(resource, spec, serviceSpec.Scenario)
 		if err != nil {
 			return fmt.Errorf("environment %q service %q: %w", spec.Metadata.Name, name, err)
 		}
@@ -387,12 +387,8 @@ func scenarioViews(registry *httpresource.Registry, resourceID string) ([]scenar
 }
 
 func loadScenarioDefinition(target string, registry *httpresource.Registry) (scenario.Document, httpresource.Resource, error) {
-	if isScenarioPath(target) {
-		raw, err := os.ReadFile(target)
-		if err != nil {
-			return scenario.Document{}, nil, fmt.Errorf("scenario: read %s: %w", target, err)
-		}
-		doc, err := scenario.Parse(raw)
+	if scenario.LooksLikePath(target) {
+		doc, err := scenario.LoadFile(target)
 		if err != nil {
 			return scenario.Document{}, nil, err
 		}
@@ -419,10 +415,6 @@ func loadScenarioDefinition(target string, registry *httpresource.Registry) (sce
 		return scenario.Document{}, nil, fmt.Errorf("unknown scenario %q; choose one of: %s", target, strings.Join(scenario.IDs(docs), ", "))
 	}
 	return doc, resource, nil
-}
-
-func isScenarioPath(target string) bool {
-	return strings.ContainsRune(target, os.PathSeparator) || strings.HasSuffix(target, ".json")
 }
 
 func writeEnvironmentList(w io.Writer, views []environmentView, format output.Format) error {

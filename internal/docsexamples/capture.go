@@ -42,7 +42,7 @@ type Result struct {
 }
 
 // Runner starts an environment and returns the wrapped command's stdout.
-type Runner func(environment string, proxy bool, argv []string) ([]byte, error)
+type Runner func(spec Spec) ([]byte, error)
 
 // Capture recaptures dirty examples and writes snapshots. Unchanged
 // provenance is left on disk.
@@ -75,8 +75,24 @@ func Capture(repo string, runner Runner, opts Options, stderr io.Writer) ([]Resu
 		return nil, fmt.Errorf("docsexamples: no examples matched the selection")
 	}
 
+	explicitIDs := map[string]struct{}{}
+	for _, id := range opts.IDs {
+		id = strings.TrimSpace(id)
+		if id == "" {
+			continue
+		}
+		explicitIDs[id] = struct{}{}
+	}
+
 	var results []Result
 	for _, spec := range selected {
+		if spec.SkipCapture {
+			if _, ok := explicitIDs[spec.ID]; !ok {
+				fmt.Fprintf(stderr, "docs-examples: skip %s (skipCapture)\n", spec.ID)
+				results = append(results, Result{ID: spec.ID, Action: "skip"})
+				continue
+			}
+		}
 		prov, err := digestSpec(repo, spec)
 		if err != nil {
 			return results, err
@@ -91,7 +107,7 @@ func Capture(repo string, runner Runner, opts Options, stderr io.Writer) ([]Resu
 			continue
 		}
 		fmt.Fprintf(stderr, "docs-examples: capture %s (%s)\n", spec.ID, reason)
-		stdout, err := runner(filepath.Join(repo, filepath.FromSlash(spec.Environment)), spec.Proxy, spec.Argv)
+		stdout, err := runner(spec)
 		if err != nil {
 			return results, fmt.Errorf("docsexamples: %s: %w", spec.ID, err)
 		}

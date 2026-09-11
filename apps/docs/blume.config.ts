@@ -75,6 +75,14 @@ export default defineConfig({
         ],
       },
       {
+        label: "Eval",
+        items: [
+          { label: "Evaluate agents", href: "/eval" },
+          { label: "Your first eval", href: "/eval/first-eval" },
+          { label: "Your own environment", href: "/eval/own-environment" },
+        ],
+      },
+      {
         label: "Resources",
         items: [
           {
@@ -125,6 +133,9 @@ export default defineConfig({
             collapsed: false,
             items: [
               { label: `${fab} run`, href: "/cli/commands/run" },
+              { label: `${fab} gold`, href: "/cli/commands/gold" },
+              { label: `${fab} eval`, href: "/cli/commands/eval" },
+              { label: `${fab} diff`, href: "/cli/commands/diff" },
               { label: `${fab} environment`, href: "/cli/commands/environment" },
               { label: `${fab} service`, href: "/cli/commands/service" },
               { label: `${fab} resource`, href: "/cli/commands/resource" },

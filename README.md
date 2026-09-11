@@ -111,6 +111,7 @@ fab scenario list gmail
 - [CLI](https://fabricate.dmach.in/docs/cli)
 - [Gmail](https://fabricate.dmach.in/docs/resources/integrations/gmail)
 - [Agent and workflow QA](https://fabricate.dmach.in/docs/guides/agent-workflows)
+- [Evaluate agents](https://fabricate.dmach.in/docs/eval)
 
 ## Development
 

@@ -15,7 +15,9 @@ fab run gmail --scenario gmail.minimal.v1
 
 The first and third commands stay in the foreground until you press `Ctrl-C`.
 The second starts the environment, runs `npm test` with its connection
-variables, and tears everything down when the command exits.
+variables, and tears everything down when the command exits. Score a worker
+against that world with [`fab gold`](/cli/commands/gold) and
+[`fab eval`](/cli/commands/eval).
 
 ## Entities
 
@@ -66,7 +68,11 @@ control of stdin, stdout, and stderr.
 ## Command reference
 
 - [`fab run`](/cli/commands/run)
+- [`fab gold`](/cli/commands/gold)
+- [`fab eval`](/cli/commands/eval)
+- [`fab diff`](/cli/commands/diff)
 - [`fab environment`](/cli/commands/environment)
 - [`fab service`](/cli/commands/service)
 - [`fab resource`](/cli/commands/resource)
 - [`fab scenario`](/cli/commands/scenario)
+- [`fab logs`](/cli/commands/logs)

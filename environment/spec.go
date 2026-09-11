@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -19,6 +20,7 @@ type Spec struct {
 	Metadata   Metadata               `yaml:"metadata" json:"metadata"`
 	Services   map[string]ServiceSpec `yaml:"services" json:"services"`
 	Proxy      ProxySpec              `yaml:"proxy,omitempty" json:"proxy,omitempty"`
+	SourceDir  string                 `yaml:"-" json:"-"`
 }
 
 type Metadata struct {
@@ -43,7 +45,16 @@ func Load(path string) (Spec, error) {
 	if err != nil {
 		return Spec{}, fmt.Errorf("environment: read %s: %w", path, err)
 	}
-	return Parse(raw)
+	spec, err := Parse(raw)
+	if err != nil {
+		return Spec{}, err
+	}
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		return Spec{}, fmt.Errorf("environment: resolve %s: %w", path, err)
+	}
+	spec.SourceDir = filepath.Dir(abs)
+	return spec, nil
 }
 
 func Parse(raw []byte) (Spec, error) {

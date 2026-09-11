@@ -1,0 +1,27 @@
+---
+title: fab diff
+description: Compare two environment dumps, or grade one dump with field checks.
+---
+
+`fab diff` scores dumps that already exist. It does not start services.
+
+Compare a gold directory to a candidate dump:
+
+```bash
+fab diff ./expected ./actual
+```
+
+Grade one dump with field checks (Harbor `tests/test.sh` uses this after
+`fab eval --dump`):
+
+```bash
+fab diff --checks ./checks.json ./actual
+```
+
+With two directories and `--checks`, both scorers must pass.
+
+Exit 0 only on a full pass. `--reward-file PATH` writes `1` or `0`.
+`--output json` prints the score object.
+
+Produce dumps with [`fab gold --dump`](/cli/commands/gold),
+[`fab eval --dump`](/cli/commands/eval), or [`fab run --dump`](/cli/commands/run).

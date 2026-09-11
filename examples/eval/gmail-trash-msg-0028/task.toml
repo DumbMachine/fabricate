@@ -1,0 +1,22 @@
+schema_version = "1.4"
+
+[task]
+name = "fabricate/gmail-trash-msg-0028"
+version = "1.0.0"
+description = "Trash Gmail message msg-0028 in the seeded Acme inbox"
+authors = [{ name = "fabricate", email = "hello@dmach.in" }]
+keywords = ["gmail", "api-sandbox", "eval"]
+
+[metadata]
+category = "api-sandbox"
+tags = ["gmail", "fabricate"]
+
+[verifier]
+timeout_sec = 60.0
+
+[agent]
+timeout_sec = 180.0
+
+[environment]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com"]

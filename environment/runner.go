@@ -57,12 +57,9 @@ func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enab
 		if !ok {
 			return nil, fmt.Errorf("environment: service %q uses unknown resource %q", name, serviceSpec.Resource)
 		}
-		doc, err := resource.Scenario(serviceSpec.Scenario)
+		doc, err := ResolveScenario(resource, spec, serviceSpec.Scenario)
 		if err != nil {
 			return nil, fmt.Errorf("environment: service %q: %w", name, err)
-		}
-		if doc.Resource != resource.Descriptor().ID {
-			return nil, fmt.Errorf("environment: service %q scenario %q belongs to resource %q", name, doc.ID, doc.Resource)
 		}
 		service, err := httpengine.StartService(ctx, name, filepath.Join(stateDir, "services", name), resource, doc, runtime.Requests)
 		if err != nil {

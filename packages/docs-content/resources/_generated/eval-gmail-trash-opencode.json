@@ -1,0 +1,74 @@
+{
+  "id": "eval-gmail-trash-opencode",
+  "title": "Score OpenCode on the Gmail trash eval",
+  "environment": {
+    "label": "Acme's Gmail",
+    "manifest": "environments/acme-gmail.yaml"
+  },
+  "command": "./examples/eval/gmail-trash-msg-0028/eval-opencode.sh",
+  "output": {
+    "passed": true,
+    "environment": "acme-gmail",
+    "diff": {
+      "match": true,
+      "services": [
+        {
+          "name": "support-mail",
+          "match": true,
+          "expected_digest": "sha256:77d8254b599751f2803b3b8a3684d6c3766e360348ab49d95bda8848719c0327",
+          "actual_digest": "sha256:77d8254b599751f2803b3b8a3684d6c3766e360348ab49d95bda8848719c0327"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:a689d9283fba3bc25a79cf26de88e6d7cb796876d4c4781139f6c1cf836753ed",
+    "roots": [
+      {
+        "path": "cli/eval.go",
+        "digest": "sha256:47be5009ecb46e7efe8a11b630605de88a3db189f36a60f66bb8eb26d055f108"
+      },
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:440b413698f50abc004005de040803835c411fed1cdecc0e6da5d064c0dc67cb"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:c720ad6229c043952effbd5df0619312f1e2612ee1d21c96ac36ad85bc727a9e"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:e2f43c2b9f25f4993c5b93c27726e6a0a362443a7a9fd272288eb87044bb7901"
+      },
+      {
+        "path": "environments/acme-gmail.yaml",
+        "digest": "sha256:120846fe3c878eec5bfbb3940e38fc98099a6530da9ebde86627e9c749257eef"
+      },
+      {
+        "path": "examples/eval/gmail-trash-msg-0028",
+        "digest": "sha256:45620f9b585b0a4015ce6fd7ebe26075a9ef66b7867306963f37e91610c21c38"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:92cfde6e04e185db121b95c6fdddf6e00e450fc88f5edb3d1dd35a329d255dae"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/eval-gmail-trash-opencode.json",
+        "digest": "sha256:fafb23c774990dd70164dc78fce0caacb9dd5ed396b4f35deff24f3e83d8ec99"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/gmail",
+        "digest": "sha256:da7d9821ce14f4120d503c09971f0f4eed3ab56f76a0addb5dbf285ac75a8459"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:48b135c9e600b9d63e338349db82ec84231a541a3a39e37b8b38f04790f6a1c5"
+      }
+    ]
+  }
+}

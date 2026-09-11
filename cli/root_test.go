@@ -7,7 +7,7 @@ func TestRootExposesOnlyAPISandboxCommands(t *testing.T) {
 	for _, command := range rootCmd.Commands() {
 		commands[command.Name()] = true
 	}
-	for _, name := range []string{"run", "logs", "environment", "service", "resource", "scenario"} {
+	for _, name := range []string{"run", "logs", "environment", "service", "resource", "scenario", "gold", "eval", "diff"} {
 		if !commands[name] {
 			t.Errorf("public command %q is missing", name)
 		}

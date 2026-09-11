@@ -35,6 +35,10 @@ type Spec struct {
 	Proxy            bool     `json:"proxy"`
 	OutputPath       string   `json:"outputPath"`
 	PublishedCommand string   `json:"publishedCommand"`
+	Invocation       string   `json:"invocation,omitempty"`
+	Flags            []string `json:"flags,omitempty"`
+	AllowFailure     bool     `json:"allowFailure,omitempty"`
+	SkipCapture      bool     `json:"skipCapture,omitempty"`
 	Argv             []string `json:"argv"`
 	ExtraRoots       []string `json:"extraRoots,omitempty"`
 	Path             string   `json:"-"`
@@ -128,6 +132,11 @@ func loadSpec(repo, rel string, cat catalog) (Spec, error) {
 	}
 	if len(spec.Argv) == 0 {
 		return Spec{}, fmt.Errorf("docsexamples: %s: argv must not be empty", rel)
+	}
+	switch spec.Invocation {
+	case "", "run", "eval", "gold":
+	default:
+		return Spec{}, fmt.Errorf("docsexamples: %s: invocation %q is not supported", rel, spec.Invocation)
 	}
 	if err := requireRelative(spec.Environment); err != nil {
 		return Spec{}, fmt.Errorf("docsexamples: %s: environment: %w", rel, err)

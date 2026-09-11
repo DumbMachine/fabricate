@@ -1,0 +1,22 @@
+{
+  "id": "eval-gmail-trash-noop",
+  "title": "A no-op fails the Gmail trash eval",
+  "environment": "environments/acme-gmail.yaml",
+  "environmentLabel": "Acme's Gmail",
+  "proxy": false,
+  "invocation": "eval",
+  "allowFailure": true,
+  "flags": [
+    "--expected",
+    "examples/eval/gmail-trash-msg-0028/expected",
+    "--output",
+    "json"
+  ],
+  "outputPath": "packages/docs-content/resources/_generated/eval-gmail-trash-noop.json",
+  "publishedCommand": "./examples/eval/gmail-trash-msg-0028/eval-noop.sh",
+  "argv": ["true"],
+  "extraRoots": [
+    "cli/eval.go",
+    "examples/eval/gmail-trash-msg-0028"
+  ]
+}

@@ -1,0 +1,84 @@
+---
+title: Your first eval
+description: Trash one message in a disposable Acme inbox. Pass or fail is the mailbox after the agent exits.
+---
+
+The sample task is in
+[`examples/eval/gmail-trash-msg-0028`](https://github.com/DumbMachine/fabricate/tree/main/examples/eval/gmail-trash-msg-0028).
+Run it from a Fabricate checkout. Scripts use `./scripts/fab-dev` if present,
+otherwise `fab` on your PATH.
+
+## The job
+
+Trash Gmail message `msg-0028`. Do not create, send, or change any other
+message.
+
+That is the whole task. The agent reads
+[`instruction.md`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/gmail-trash-msg-0028/instruction.md).
+It does **not** get
+[`solution/solve.sh`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/gmail-trash-msg-0028/solution/solve.sh).
+
+The inbox is [Acme's Gmail](/resources/environments/acme-gmail). It is
+already in the catalog. You do not write an environment file for this task.
+
+After the agent exits, we snapshot the inbox and compare it to
+`expected/`, which is checked in. Chat text is not part of pass or fail.
+
+## Official solution
+
+`solve.sh` is the known-good fix: one Gmail trash call. This must pass.
+
+```bash
+./examples/eval/gmail-trash-msg-0028/eval-oracle.sh
+```
+
+<CommandOutput id="eval-gmail-trash-oracle" />
+
+`passed: true` means the live inbox matched `expected/`.
+
+## Doing nothing fails
+
+A command that exits immediately never trashes `msg-0028`. This must fail.
+
+```bash
+./examples/eval/gmail-trash-msg-0028/eval-noop.sh
+```
+
+<CommandOutput id="eval-gmail-trash-noop" />
+
+The process exits 1. The agent can “succeed” and still fail the task.
+
+## OpenCode
+
+Same inbox, same check, OpenCode as the agent:
+
+```bash
+./examples/eval/gmail-trash-msg-0028/eval-opencode.sh
+```
+
+Needs `opencode` on your PATH. The script pins
+`opencode/muse-spark-1.3-contributor-free` (`OPENCODE_MODEL` overrides).
+Give the agent `instruction.md` only.
+
+<CommandOutput id="eval-gmail-trash-opencode" />
+
+This captured run passed. A later run can fail; that is the model, not the
+inbox.
+
+Interactive `fab run acme-gmail --proxy -- opencode web` is a chat session.
+It does not check the mailbox. See
+[Agent and workflow QA](/guides/agent-workflows).
+
+## What the scripts do
+
+Each script starts a fresh Acme inbox, runs one command, snapshots Gmail,
+and compares that snapshot to `expected/`. Locally that is
+[`fab eval`](/cli/commands/eval). Harbor’s check is
+[`tests/test.sh`](https://github.com/DumbMachine/fabricate/blob/main/examples/eval/gmail-trash-msg-0028/tests/test.sh):
+same comparison, written as `1` or `0` in a reward file.
+
+`expected/` was produced once by running `solve.sh` and saving the inbox.
+You do not recreate it to run the task. Do not edit those files by hand.
+
+A harder task — four services, a ticket that asks for the wrong thing — is
+[Your own environment](/eval/own-environment).

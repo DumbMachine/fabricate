@@ -19,6 +19,7 @@ import (
 type Service struct {
 	Name       string
 	Resource   httpresource.Resource
+	Document   scenario.Document
 	State      *ServiceState
 	Server     httpresource.Server
 	HTTPServer *http.Server
@@ -93,7 +94,7 @@ func StartService(ctx context.Context, name, serviceDir string, resource httpres
 	}
 	httpServer := &http.Server{Handler: handler, ReadHeaderTimeout: 10 * time.Second}
 	service := &Service{
-		Name: name, Resource: resource, State: state, Server: resourceServer,
+		Name: name, Resource: resource, Document: doc, State: state, Server: resourceServer,
 		HTTPServer: httpServer, Listener: listener, URL: "http://" + listener.Addr().String(),
 		Token: token, serveErr: make(chan error, 1),
 	}
@@ -106,6 +107,17 @@ func StartService(ctx context.Context, name, serviceDir string, resource httpres
 	}()
 	cleanupState = false
 	return service, nil
+}
+
+func (s *Service) Dump(ctx context.Context) (scenario.Document, error) {
+	if s == nil || s.State == nil {
+		return scenario.Document{}, fmt.Errorf("http service: closed")
+	}
+	db := s.State.DB()
+	if db == nil {
+		return scenario.Document{}, fmt.Errorf("http service %q: closed", s.Name)
+	}
+	return s.Resource.Scenarios().Dump(ctx, db, s.Document.Metadata())
 }
 
 func (s *Service) Close(ctx context.Context) error {

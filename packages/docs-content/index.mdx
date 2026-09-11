@@ -105,7 +105,8 @@ draft and send, label the thread, patch the deal, comment on the task. That
 is only testable if those writes are real API calls, inspectable, and
 reversible.
 
-The agent can send mail and close a deal. `fab logs` shows the redacted
+The agent can send mail and close a deal. [`fab eval`](/eval) scores the live
+tenant against a gold dump or field checks. `fab logs` shows the redacted
 trace. The next run starts from the same baseline, so an eval score means
 the same thing on the next attempt.
 
@@ -180,4 +181,5 @@ the client pins certificates or ignores proxy settings.
 [Getting started](/getting-started) has the wrap commands.
 [Example apps](https://github.com/DumbMachine/fabricate/tree/main/examples)
 show both modes. [Agent and workflow QA](/guides/agent-workflows) is for
-workers and local agents.
+workers and local agents. [Evaluate agents](/eval) scores the world those
+workers leave behind.

@@ -1,0 +1,62 @@
+---
+title: Evaluate agents
+description: Start a disposable inbox (or a whole support desk), run an agent, then check the live APIs — not the chat.
+---
+
+An eval is a task against a Fabricate environment. The environment is the
+world (which APIs exist, what they are seeded with). The agent does the
+job. Pass or fail is the tenant it left behind, not the transcript.
+
+Fabricate is not an agent runtime. Keep Harbor, OpenCode, Codex, or whatever
+you already use. For a chat session with no pass/fail, see
+[Agent and workflow QA](/guides/agent-workflows).
+
+## Tutorials
+
+1. [Your first eval](/eval/first-eval) — trash one message in **Acme's
+   Gmail**. The inbox is already in the catalog.
+2. [Your own environment](/eval/own-environment) — write a local
+   `environment.yaml` (extra seed, four services), then run a harder task.
+
+## How pass/fail is decided
+
+After the agent exits, Fabricate snapshots live provider state.
+
+- **`expected/`** — a checked-in snapshot of that environment after the
+  official solution. The Gmail trash task uses this. Fine when writes do
+  not bump timestamps.
+- **`checks.json`** — named objects that must look a certain way (and
+  records that must be left alone). Use this when a full snapshot would
+  flake (`updatedAt`) or when the task is mostly “do not touch these.”
+
+[`fab eval`](/cli/commands/eval) starts the environment, runs the agent,
+then does that comparison. [`fab diff`](/cli/commands/diff) compares two
+snapshots that already exist. [`fab run --dump`](/cli/commands/run)
+writes a snapshot with no pass/fail.
+
+`--output json` is the machine-readable result. `--reward-file` writes
+`1` or `0` for Harbor.
+
+A passing Gmail trash run:
+
+```json
+{
+  "passed": true,
+  "environment": "acme-gmail",
+  "diff": {
+    "match": true,
+    "services": [
+      {
+        "name": "support-mail",
+        "match": true,
+        "expected_digest": "sha256:77d8254b599751f2803b3b8a3684d6c3766e360348ab49d95bda8848719c0327",
+        "actual_digest": "sha256:77d8254b599751f2803b3b8a3684d6c3766e360348ab49d95bda8848719c0327"
+      }
+    ]
+  }
+}
+```
+
+The environment argument is the same as [`fab run`](/cli/commands/run): a
+catalog name, a local manifest, or one resource with `--scenario`. Saving
+a snapshot does not add a new environment to the catalog.

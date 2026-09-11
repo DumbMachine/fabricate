@@ -1,0 +1,21 @@
+{
+  "id": "eval-gmail-trash-gold",
+  "title": "Record gold for the Gmail trash eval",
+  "environment": "environments/acme-gmail.yaml",
+  "environmentLabel": "Acme's Gmail",
+  "proxy": false,
+  "invocation": "gold",
+  "flags": [
+    "--dump",
+    "examples/eval/gmail-trash-msg-0028/expected",
+    "--output",
+    "json"
+  ],
+  "outputPath": "packages/docs-content/resources/_generated/eval-gmail-trash-gold.json",
+  "publishedCommand": "./examples/eval/gmail-trash-msg-0028/record-gold.sh",
+  "argv": ["./examples/eval/gmail-trash-msg-0028/solution/solve.sh"],
+  "extraRoots": [
+    "cli/eval.go",
+    "examples/eval/gmail-trash-msg-0028"
+  ]
+}

@@ -22,6 +22,8 @@ Acme data. The apps are ordinary Python, Node, and Rust programs.
 | [asana-planner-python](asana-planner-python) | Print the Checkout reliability board | `acme-asana` |
 | [hubspot-pipeline-node](hubspot-pipeline-node) | Print open deals in the Acme CRM | `acme-hubspot` |
 | [support-desk-python](support-desk-python) | One case file for `INV-4812` across mail, chat, board, and CRM | `acme-support-desk` |
+| [eval/gmail-trash-msg-0028](eval/gmail-trash-msg-0028) | Harbor-shaped eval: trash `msg-0028`. Oracle, no-op, and `eval-opencode.sh` | `acme-gmail` |
+| [eval/inv-4812-billing-hold](eval/inv-4812-billing-hold) | Hard eval: refuse a refund, freeze four services. Oracle, no-op, and `eval-opencode.sh` | local manifest |
 
 Each folder has its own README with the exact command.
 
