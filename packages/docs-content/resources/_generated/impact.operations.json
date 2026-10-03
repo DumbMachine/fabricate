@@ -1,0 +1,72 @@
+{
+  "integration": "impact",
+  "api": "impact.com v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Actions",
+      "operationId": "ListActions",
+      "summary": "List actions."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Actions/{ActionId}",
+      "operationId": "GetActionById",
+      "summary": "Get one action by action id or order id."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Actions/{ActionId}/Items",
+      "operationId": "ListActionItems",
+      "summary": "List line items on an action."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Campaigns",
+      "operationId": "ListPrograms",
+      "summary": "List programs."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Campaigns/{CampaignId}",
+      "operationId": "GetProgramById",
+      "summary": "Get one program."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Campaigns/{CampaignId}/Notes",
+      "operationId": "ListNotes",
+      "summary": "List notes on a program."
+    },
+    {
+      "method": "POST",
+      "path": "/Advertisers/{AccountSID}/Campaigns/{CampaignId}/Notes",
+      "operationId": "CreateNote",
+      "summary": "Create a partner note."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/Campaigns/{CampaignId}/Notes/{NoteId}",
+      "operationId": "GetNoteById",
+      "summary": "Get one note."
+    },
+    {
+      "method": "POST",
+      "path": "/Advertisers/{AccountSID}/Conversions",
+      "operationId": "SubmitConversion",
+      "summary": "Submit a conversion, recorded immediately as a pending action."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/MediaPartners",
+      "operationId": "ListPartners",
+      "summary": "List partners."
+    },
+    {
+      "method": "GET",
+      "path": "/Advertisers/{AccountSID}/MediaPartners/{PartnerId}",
+      "operationId": "GetPartnerById",
+      "summary": "Get one partner."
+    }
+  ]
+}

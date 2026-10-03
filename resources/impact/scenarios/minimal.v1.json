@@ -1,0 +1,14 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "impact.minimal.v1",
+  "$resource": "impact",
+  "$resourceVersion": "v1",
+  "state": {
+    "accountSid": "acct-acme",
+    "programs": [],
+    "partners": [],
+    "actions": [],
+    "notes": []
+  }
+}

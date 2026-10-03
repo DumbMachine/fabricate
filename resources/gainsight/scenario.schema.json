@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/gainsight/scenario-v1.json",
+  "title": "Fabricate Gainsight scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["companies", "ctas", "successPlans", "activities"],
+  "properties": {
+    "companies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gsid", "name", "status", "stage", "health", "csmFirstName", "csmLastName", "csmEmail", "domain", "createdDate", "modifiedDate"],
+        "properties": {
+          "gsid": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "industry": {"type": "string"},
+          "arr": {"type": "number"},
+          "employees": {"type": "integer"},
+          "lifecycleInWeeks": {"type": "integer"},
+          "originalContractDate": {"type": "string"},
+          "renewalDate": {"type": "string"},
+          "stage": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "health": {"type": "string", "enum": ["Red", "Yellow", "Green"]},
+          "csmFirstName": {"type": "string", "minLength": 1},
+          "csmLastName": {"type": "string", "minLength": 1},
+          "csmEmail": {"type": "string", "format": "email"},
+          "domain": {"type": "string", "minLength": 1},
+          "createdDate": {"type": "integer"},
+          "modifiedDate": {"type": "integer"}
+        }
+      }
+    },
+    "ctas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gsid", "name", "companyId", "successPlanId", "ownerEmail", "ownerName", "dueDate", "type", "reason", "status", "priority", "comments", "entityType", "isClosed", "isImportant"],
+        "properties": {
+          "gsid": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "companyId": {"type": "string", "minLength": 1},
+          "successPlanId": {"type": "string", "minLength": 1},
+          "ownerEmail": {"type": "string", "format": "email"},
+          "ownerName": {"type": "string", "minLength": 1},
+          "dueDate": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "priority": {"type": "string", "minLength": 1},
+          "comments": {"type": "string", "minLength": 1},
+          "entityType": {"type": "string", "enum": ["COMPANY"]},
+          "isClosed": {"type": "boolean"},
+          "isImportant": {"type": "boolean"}
+        }
+      }
+    },
+    "successPlans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gsid", "name", "companyId", "ownerEmail", "ownerName", "dueDate", "type", "status", "actionPlan", "entityType"],
+        "properties": {
+          "gsid": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "companyId": {"type": "string", "minLength": 1},
+          "ownerEmail": {"type": "string", "format": "email"},
+          "ownerName": {"type": "string", "minLength": 1},
+          "dueDate": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "actionPlan": {"type": "string", "minLength": 1},
+          "entityType": {"type": "string", "enum": ["COMPANY"]}
+        }
+      }
+    },
+    "activities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gsid", "externalId", "contextName", "author", "typeName", "subject", "notes", "activityDate"],
+        "properties": {
+          "gsid": {"type": "string", "minLength": 1},
+          "externalId": {"type": "string", "minLength": 1},
+          "contextName": {"type": "string", "enum": ["Company", "CTA", "SuccessPlan"]},
+          "contextId": {"type": "string"},
+          "companyId": {"type": "string"},
+          "author": {"type": "string", "minLength": 1},
+          "authorId": {"type": "string"},
+          "typeName": {"type": "string", "minLength": 1},
+          "subject": {"type": "string", "minLength": 1},
+          "notes": {"type": "string", "minLength": 1},
+          "activityDate": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

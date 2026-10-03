@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-impact
+
+services:
+  impact:
+    resource: impact
+    scenario: impact.acme-partners.v1

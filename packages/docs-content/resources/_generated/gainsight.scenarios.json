@@ -1,0 +1,23 @@
+{
+  "integration": "gainsight",
+  "scenarios": [
+    {
+      "id": "gainsight.acme-success.v1",
+      "counts": {
+        "activities": 0,
+        "companies": 4,
+        "ctas": 4,
+        "successPlans": 4
+      }
+    },
+    {
+      "id": "gainsight.minimal.v1",
+      "counts": {
+        "activities": 0,
+        "companies": 0,
+        "ctas": 0,
+        "successPlans": 0
+      }
+    }
+  ]
+}

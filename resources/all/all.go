@@ -17,12 +17,16 @@ import (
 	"github.com/dumbmachine/fabricate/resources/cloudflare"
 	"github.com/dumbmachine/fabricate/resources/digitalocean"
 	"github.com/dumbmachine/fabricate/resources/docusign"
+	"github.com/dumbmachine/fabricate/resources/gainsight"
 	"github.com/dumbmachine/fabricate/resources/gmail"
+	"github.com/dumbmachine/fabricate/resources/googledrive"
 	"github.com/dumbmachine/fabricate/resources/greenhouse"
 	"github.com/dumbmachine/fabricate/resources/gupshup"
 	"github.com/dumbmachine/fabricate/resources/hubspot"
+	"github.com/dumbmachine/fabricate/resources/impact"
 	"github.com/dumbmachine/fabricate/resources/intercom"
 	"github.com/dumbmachine/fabricate/resources/ironclad"
+	"github.com/dumbmachine/fabricate/resources/jsm"
 	"github.com/dumbmachine/fabricate/resources/mailchimp"
 	"github.com/dumbmachine/fabricate/resources/mailgun"
 	"github.com/dumbmachine/fabricate/resources/outreach"
@@ -49,12 +53,16 @@ func Registry() *httpresource.Registry {
 		cloudflare.NewResource(),
 		digitalocean.NewResource(),
 		docusign.NewResource(),
+		gainsight.NewResource(),
 		gmail.NewResource(),
+		googledrive.NewResource(),
 		greenhouse.NewResource(),
 		gupshup.NewResource(),
 		hubspot.NewResource(),
+		impact.NewResource(),
 		intercom.NewResource(),
 		ironclad.NewResource(),
+		jsm.NewResource(),
 		mailchimp.NewResource(),
 		mailgun.NewResource(),
 		outreach.NewResource(),

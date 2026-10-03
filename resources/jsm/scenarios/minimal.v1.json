@@ -1,0 +1,23 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "jsm.minimal.v1",
+  "$resource": "jsm",
+  "$resourceVersion": "3",
+  "state": {
+    "currentUserAccountId": "user-sam",
+    "serviceDesks": [],
+    "requestTypes": [],
+    "users": [
+      {
+        "accountId": "user-sam",
+        "emailAddress": "sam@acme.example",
+        "displayName": "Sam Adeyemi",
+        "active": true,
+        "timeZone": "Asia/Kolkata"
+      }
+    ],
+    "requests": [],
+    "comments": []
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "jsm.acme-desk.v1",
+  "$resource": "jsm",
+  "$resourceVersion": "3",
+  "state": {
+    "currentUserAccountId": "user-sam",
+    "serviceDesks": [
+      {
+        "id": "1",
+        "projectId": "10001",
+        "projectKey": "SUP",
+        "projectName": "Acme Support"
+      }
+    ],
+    "requestTypes": [
+      {
+        "id": "1",
+        "serviceDeskId": "1",
+        "name": "Report a problem",
+        "description": "Something in Acme App or Acme Goods needs support.",
+        "helpText": "Include the invoice, order, or org slug.",
+        "issueTypeId": "10010"
+      },
+      {
+        "id": "2",
+        "serviceDeskId": "1",
+        "name": "Request a change",
+        "description": "Ask to change or cancel a subscription.",
+        "helpText": "Include the subscription or invoice id.",
+        "issueTypeId": "10011"
+      }
+    ],
+    "users": [
+      {
+        "accountId": "user-dana",
+        "emailAddress": "dana@northwind.example",
+        "displayName": "Dana Whitfield",
+        "active": true,
+        "timeZone": "Asia/Kolkata"
+      },
+      {
+        "accountId": "user-marco",
+        "emailAddress": "marco@tinyshop.example",
+        "displayName": "Marco Silva",
+        "active": true,
+        "timeZone": "Asia/Kolkata"
+      },
+      {
+        "accountId": "user-mei",
+        "emailAddress": "mei.chen@contoso.example",
+        "displayName": "Mei Chen",
+        "active": true,
+        "timeZone": "America/Los_Angeles"
+      },
+      {
+        "accountId": "user-sam",
+        "emailAddress": "sam@acme.example",
+        "displayName": "Sam Adeyemi",
+        "active": true,
+        "timeZone": "Asia/Kolkata"
+      }
+    ],
+    "requests": [
+      {
+        "issueId": "10483",
+        "issueKey": "ITSM-10483",
+        "serviceDeskId": "1",
+        "requestTypeId": "1",
+        "summary": "NDR on Acme Goods #10483",
+        "description": "NDR on Acme Goods #10483. Shiprocket AWB SR10483AWB, courier Bluedart, status ndr, reason Customer not available. Razorpay payment pay_Acme10483 was captured and not refunded. Zoho Books invoice INV-10483 is paid.",
+        "reporterAccountId": "user-sam",
+        "status": "Waiting for Support",
+        "statusCategory": "INDETERMINATE",
+        "createdAt": "2026-08-24T17:05:00Z",
+        "updatedAt": "2026-08-26T09:30:00Z",
+        "participantAccountIds": []
+      },
+      {
+        "issueId": "1188",
+        "issueKey": "ITSM-1188",
+        "serviceDeskId": "1",
+        "requestTypeId": "2",
+        "summary": "Cancel TinyShop annual Pro",
+        "description": "Marco Silva asked to cancel TinyShop annual Pro under the 30-day guarantee. Invoice INV-1188 is 1188 USD. Chargebee subscription sub_tinyshop_pro, customer cus_tinyshop, status non_renewing. Not refunded yet.",
+        "reporterAccountId": "user-marco",
+        "status": "Waiting for Support",
+        "statusCategory": "INDETERMINATE",
+        "createdAt": "2026-08-21T13:20:00Z",
+        "updatedAt": "2026-08-25T16:00:00Z",
+        "participantAccountIds": ["user-sam"]
+      },
+      {
+        "issueId": "4812",
+        "issueKey": "ITSM-4812",
+        "serviceDeskId": "1",
+        "requestTypeId": "1",
+        "summary": "Duplicate charge INV-4812",
+        "description": "Northwind Traders was charged twice for SaaS invoice INV-4812 (1240 USD). The duplicate payments are pay_saas_4812 and pay_saas_4812b. Chargebee subscription sub_northwind_checkout, customer cus_northwind.",
+        "reporterAccountId": "user-dana",
+        "status": "Waiting for Support",
+        "statusCategory": "INDETERMINATE",
+        "createdAt": "2026-08-18T15:00:00Z",
+        "updatedAt": "2026-08-26T11:00:00Z",
+        "participantAccountIds": ["user-sam"]
+      },
+      {
+        "issueId": "9001",
+        "issueKey": "ITSM-SSO",
+        "serviceDeskId": "1",
+        "requestTypeId": "1",
+        "summary": "SAML login loop Contoso",
+        "description": "Contoso IT reports a SAML login loop for org slug contoso-eu (380 users).",
+        "reporterAccountId": "user-mei",
+        "status": "Waiting for Support",
+        "statusCategory": "INDETERMINATE",
+        "createdAt": "2026-08-25T08:15:00Z",
+        "updatedAt": "2026-08-25T08:15:00Z",
+        "participantAccountIds": ["user-sam"]
+      }
+    ],
+    "comments": []
+  }
+}

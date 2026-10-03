@@ -1,0 +1,72 @@
+{
+  "integration": "gainsight",
+  "api": "Gainsight v1",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/v1/ant/es/activity",
+      "operationId": "GainsightActivityCreate",
+      "summary": "Save Timeline activities."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/objects/Company",
+      "operationId": "GainsightCompanyInsert",
+      "summary": "Insert Company records."
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/data/objects/Company",
+      "operationId": "GainsightCompanyUpdate",
+      "summary": "Update Company records identified by keys."
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/data/objects/Company/{gsid}",
+      "operationId": "GainsightCompanyDelete",
+      "summary": "Delete one Company by GSID."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/objects/query/Company",
+      "operationId": "GainsightCompanyQuery",
+      "summary": "Read Company records."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/objects/query/activity_timeline",
+      "operationId": "GainsightActivityQuery",
+      "summary": "Read Timeline activity records."
+    },
+    {
+      "method": "POST",
+      "path": "/v2/cockpit/cta/",
+      "operationId": "GainsightCtaCreate",
+      "summary": "Create a Call to Action."
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/cockpit/cta/",
+      "operationId": "GainsightCtaUpdate",
+      "summary": "Update a Call to Action."
+    },
+    {
+      "method": "POST",
+      "path": "/v2/cockpit/cta/list",
+      "operationId": "GainsightCtaList",
+      "summary": "Fetch Call to Action records."
+    },
+    {
+      "method": "POST",
+      "path": "/v2/successPlan/",
+      "operationId": "GainsightSuccessPlanCreate",
+      "summary": "Create a Success Plan."
+    },
+    {
+      "method": "POST",
+      "path": "/v2/successPlan/list/",
+      "operationId": "GainsightSuccessPlanList",
+      "summary": "Fetch Success Plans."
+    }
+  ]
+}

@@ -1,0 +1,542 @@
+openapi: 3.0.3
+info:
+  title: impact.com Brand API
+  version: v14
+  description: >-
+    Curated impact.com Brand API v14 surface. Live impact.com authenticates
+    with HTTP Basic and submits conversions and notes as form bodies. This
+    contract accepts a bearer token and JSON because Fabricate's proxy injects
+    Authorization: Bearer. Responses are JSON.
+servers:
+  - url: https://api.impact.com
+security:
+  - bearerAuth: []
+tags:
+  - name: Programs
+  - name: Partners
+  - name: Actions
+  - name: Conversions
+  - name: Notes
+paths:
+  /Advertisers/{AccountSID}/Campaigns:
+    get:
+      operationId: listPrograms
+      summary: List programs.
+      description: Returns programs for the account, sorted by program id. Official responses use the Campaigns key.
+      tags: [Programs]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: Name
+          in: query
+          description: Filter by program name, case-insensitive exact match.
+          schema: {type: string}
+        - name: State
+          in: query
+          schema: {$ref: '#/components/schemas/ProgramState'}
+      responses:
+        '200':
+          description: Programs.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListProgramsResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Campaigns/{CampaignId}:
+    get:
+      operationId: getProgramById
+      summary: Get one program.
+      tags: [Programs]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/CampaignId'
+      responses:
+        '200':
+          description: Program.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Program'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/MediaPartners:
+    get:
+      operationId: listPartners
+      summary: List partners.
+      description: Returns partners sorted by creation date.
+      tags: [Partners]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: Id
+          in: query
+          description: Comma-separated partner ids.
+          schema: {type: string}
+        - name: CampaignId
+          in: query
+          schema: {type: integer, minimum: 1}
+        - name: State
+          in: query
+          schema: {$ref: '#/components/schemas/PartnerState'}
+      responses:
+        '200':
+          description: Partners.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListPartnersResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/MediaPartners/{PartnerId}:
+    get:
+      operationId: getPartnerById
+      summary: Get one partner.
+      tags: [Partners]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/PartnerId'
+      responses:
+        '200':
+          description: Partner.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Partner'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Actions:
+    get:
+      operationId: listActions
+      summary: List actions.
+      description: >-
+        Returns actions for one program, newest creation date first. Oid filters
+        by the advertiser order id. The published v14 parameter list does not
+        name Oid; Action.Oid is that order id, and this filter is how an order
+        is listed.
+      tags: [Actions]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: CampaignId
+          in: query
+          required: true
+          schema: {type: integer, minimum: 1}
+        - name: State
+          in: query
+          schema: {$ref: '#/components/schemas/ActionState'}
+        - name: Oid
+          in: query
+          description: Advertiser order id (Action.Oid).
+          schema: {type: string}
+      responses:
+        '200':
+          description: Actions.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListActionsResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Actions/{ActionId}:
+    get:
+      operationId: getActionById
+      summary: Get one action by action id or order id.
+      description: >-
+        Retrieves an action by its impact.com action id. When no action uses
+        that id, a unique Action.Oid match is returned so an order id such as
+        10482 addresses the same record.
+      tags: [Actions]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/ActionId'
+      responses:
+        '200':
+          description: Action.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Action'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Actions/{ActionId}/Items:
+    get:
+      operationId: listActionItems
+      summary: List line items on an action.
+      tags: [Actions]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/ActionId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Action items.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListActionItemsResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Conversions:
+    post:
+      operationId: submitConversion
+      summary: Submit a conversion, recorded immediately as a pending action.
+      description: >-
+        Live impact.com accepts application/x-www-form-urlencoded and queues the
+        submission. This curated operation accepts JSON, applies the conversion
+        immediately, and returns QUEUED with the new action URI.
+      tags: [Conversions]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ConversionCreate'}
+      responses:
+        '200':
+          description: Conversion recorded.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/QueuedResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Campaigns/{CampaignId}/Notes:
+    get:
+      operationId: listNotes
+      summary: List notes on a program.
+      tags: [Notes]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/CampaignId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: MediaId
+          in: query
+          description: Partner id. Official docs type this as an integer.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Notes.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListNotesResponse'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createNote
+      summary: Create a partner note.
+      description: >-
+        Live impact.com accepts multipart/form-data. This curated operation
+        accepts JSON. Attachments are not stored.
+      tags: [Notes]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/CampaignId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/NoteCreate'}
+      responses:
+        '200':
+          description: Note created.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SuccessUriResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /Advertisers/{AccountSID}/Campaigns/{CampaignId}/Notes/{NoteId}:
+    get:
+      operationId: getNoteById
+      summary: Get one note.
+      tags: [Notes]
+      parameters:
+        - $ref: '#/components/parameters/AccountSID'
+        - $ref: '#/components/parameters/CampaignId'
+        - $ref: '#/components/parameters/NoteId'
+      responses:
+        '200':
+          description: Note.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Note'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Live impact.com uses HTTP Basic with the
+        Account SID as the username and the Auth Token as the password.
+  parameters:
+    AccountSID:
+      name: AccountSID
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    CampaignId:
+      name: CampaignId
+      in: path
+      required: true
+      schema: {type: integer, minimum: 1}
+    PartnerId:
+      name: PartnerId
+      in: path
+      required: true
+      description: Partner id. Official get-by-id types this as an integer; Acme ids are strings.
+      schema: {type: string, minLength: 1}
+    ActionId:
+      name: ActionId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    NoteId:
+      name: NoteId
+      in: path
+      required: true
+      description: Note id. Official docs type this as an integer.
+      schema: {type: string, minLength: 1}
+    Page:
+      name: Page
+      in: query
+      schema: {type: integer, minimum: 1}
+    PageSize:
+      name: PageSize
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 20000}
+  responses:
+    Error:
+      description: Error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/APIError'}
+  schemas:
+    APIError:
+      type: object
+      additionalProperties: false
+      required: [Status, Message]
+      properties:
+        Status: {type: string}
+        Message: {type: string}
+    ProgramState:
+      type: string
+      enum: [ACTIVE, AWAITING_REVIEW, CANCELLED, CLOSED, DEACTIVATED, DELINQUENT, REJECTED, SETUP, SETUP_COMPLETE]
+    ProgramType:
+      type: string
+      enum: [Seller, "Retail Media Seller", Performance, Advocate, Creator, "Retail Media"]
+    PartnerState:
+      type: string
+      enum: [ACTIVE, EXPIRED, PENDING, DECLINED, SUSPENDED, DEACTIVATED, CLOSING, CLOSED, NOT_APPLICABLE]
+    ActionState:
+      type: string
+      enum: [PENDING, APPROVED, REVERSED]
+    NoteType:
+      type: string
+      enum: [EMAIL, IM, NONE, PHONE]
+    Program:
+      type: object
+      additionalProperties: false
+      required: [Id, Name, State, Type, ShortDescription, Uri]
+      properties:
+        Id: {type: integer}
+        Name: {type: string}
+        State: {$ref: '#/components/schemas/ProgramState'}
+        Type: {$ref: '#/components/schemas/ProgramType'}
+        ShortDescription: {type: string}
+        Uri: {type: string}
+    PartnerProgram:
+      type: object
+      additionalProperties: false
+      required: [Id, Name]
+      properties:
+        Id: {type: string}
+        Name: {type: string}
+    Partner:
+      type: object
+      additionalProperties: false
+      required: [Id, Name, Description, Website, State, Currency, DateCreated, Programs, Uri]
+      properties:
+        Id: {type: string}
+        Name: {type: string}
+        Description: {type: string}
+        Website: {type: string}
+        State: {$ref: '#/components/schemas/PartnerState'}
+        Currency: {type: string}
+        DateCreated: {type: string}
+        Programs:
+          type: array
+          items: {$ref: '#/components/schemas/PartnerProgram'}
+        Uri: {type: string}
+    Action:
+      type: object
+      additionalProperties: false
+      required: [Id, CampaignId, CampaignName, MediaPartnerId, MediaPartnerName, State, Payout, Amount, Currency, EventDate, CreationDate, Oid, Uri]
+      properties:
+        Id: {type: string}
+        CampaignId: {type: integer}
+        CampaignName: {type: string}
+        MediaPartnerId:
+          type: string
+          description: Partner id. Official Action.MediaPartnerId is an integer.
+        MediaPartnerName: {type: string}
+        State: {$ref: '#/components/schemas/ActionState'}
+        Payout:
+          type: number
+          description: Commission in major currency units. INR 150 is 15000 paise.
+        Amount:
+          type: number
+          description: Sale amount in major currency units.
+        Currency: {type: string}
+        EventDate: {type: string}
+        CreationDate: {type: string}
+        Oid: {type: string, description: Advertiser order id.}
+        CustomerCity: {type: string}
+        CustomerRegion: {type: string}
+        CustomerCountry: {type: string}
+        CustomerPostCode: {type: string}
+        Note: {type: string}
+        Uri: {type: string}
+    ActionItem:
+      type: object
+      additionalProperties: false
+      required: [Sku, ItemName, Quantity, SaleAmount, SaleAmountCurrency, Uri]
+      properties:
+        Sku: {type: string}
+        ItemName: {type: string}
+        Quantity: {type: string}
+        SaleAmount: {type: string}
+        SaleAmountCurrency: {type: string}
+        Uri: {type: string}
+    Note:
+      type: object
+      additionalProperties: false
+      required: [Id, MediaId, MediaName, Creator, CreationDate, ModificationDate, Content, Type, Uri]
+      properties:
+        Id: {type: string}
+        MediaId: {type: string, description: Partner id. Official Note.MediaId is an integer.}
+        MediaName: {type: string}
+        Creator: {type: string}
+        CreationDate: {type: string}
+        ModificationDate: {type: string}
+        Content: {type: string}
+        Type: {$ref: '#/components/schemas/NoteType'}
+        Uri: {type: string}
+    NoteCreate:
+      type: object
+      additionalProperties: false
+      required: [MediaId, Content]
+      properties:
+        MediaId: {type: string, minLength: 1}
+        Content: {type: string, minLength: 1}
+        Type: {$ref: '#/components/schemas/NoteType'}
+    ConversionCreate:
+      type: object
+      additionalProperties: false
+      required: [CampaignId, OrderId, MediaPartnerId, CurrencyCode, Amount]
+      properties:
+        CampaignId: {type: integer, minimum: 1}
+        OrderId: {type: string, minLength: 1}
+        MediaPartnerId: {type: string, minLength: 1}
+        CurrencyCode: {type: string, minLength: 3, maxLength: 3}
+        Amount: {type: number, minimum: 0}
+        Payout: {type: number, minimum: 0}
+        EventDate: {type: string}
+        EventTypeCode: {type: string}
+    QueuedResponse:
+      type: object
+      additionalProperties: false
+      required: [Status, QueuedUri]
+      properties:
+        Status: {type: string}
+        QueuedUri: {type: string}
+    SuccessUriResponse:
+      type: object
+      additionalProperties: false
+      required: [Status, Uri]
+      properties:
+        Status: {type: string}
+        Uri: {type: string}
+    ListProgramsResponse:
+      type: object
+      additionalProperties: false
+      required: ["@page", "@numpages", "@pagesize", "@total", "@start", "@end", "@uri", "@firstpageuri", "@previouspageuri", "@nextpageuri", "@lastpageuri", Campaigns]
+      properties:
+        "@page": {type: string}
+        "@numpages": {type: string}
+        "@pagesize": {type: string}
+        "@total": {type: string}
+        "@start": {type: string}
+        "@end": {type: string}
+        "@uri": {type: string}
+        "@firstpageuri": {type: string}
+        "@previouspageuri": {type: string}
+        "@nextpageuri": {type: string}
+        "@lastpageuri": {type: string}
+        Campaigns:
+          type: array
+          items: {$ref: '#/components/schemas/Program'}
+    ListPartnersResponse:
+      type: object
+      additionalProperties: false
+      required: ["@page", "@numpages", "@pagesize", "@total", "@start", "@end", "@uri", "@firstpageuri", "@previouspageuri", "@nextpageuri", "@lastpageuri", Partners]
+      properties:
+        "@page": {type: string}
+        "@numpages": {type: string}
+        "@pagesize": {type: string}
+        "@total": {type: string}
+        "@start": {type: string}
+        "@end": {type: string}
+        "@uri": {type: string}
+        "@firstpageuri": {type: string}
+        "@previouspageuri": {type: string}
+        "@nextpageuri": {type: string}
+        "@lastpageuri": {type: string}
+        Partners:
+          type: array
+          items: {$ref: '#/components/schemas/Partner'}
+    ListActionsResponse:
+      type: object
+      additionalProperties: false
+      required: ["@page", "@numpages", "@pagesize", "@total", "@start", "@end", "@uri", "@firstpageuri", "@previouspageuri", "@nextpageuri", "@lastpageuri", Actions]
+      properties:
+        "@page": {type: string}
+        "@numpages": {type: string}
+        "@pagesize": {type: string}
+        "@total": {type: string}
+        "@start": {type: string}
+        "@end": {type: string}
+        "@uri": {type: string}
+        "@firstpageuri": {type: string}
+        "@previouspageuri": {type: string}
+        "@nextpageuri": {type: string}
+        "@lastpageuri": {type: string}
+        Actions:
+          type: array
+          items: {$ref: '#/components/schemas/Action'}
+    ListActionItemsResponse:
+      type: object
+      additionalProperties: false
+      required: ["@page", "@numpages", "@pagesize", "@total", "@start", "@end", "@uri", "@firstpageuri", "@previouspageuri", "@nextpageuri", "@lastpageuri", ActionItems]
+      properties:
+        "@page": {type: string}
+        "@numpages": {type: string}
+        "@pagesize": {type: string}
+        "@total": {type: string}
+        "@start": {type: string}
+        "@end": {type: string}
+        "@uri": {type: string}
+        "@firstpageuri": {type: string}
+        "@previouspageuri": {type: string}
+        "@nextpageuri": {type: string}
+        "@lastpageuri": {type: string}
+        ActionItems:
+          type: array
+          items: {$ref: '#/components/schemas/ActionItem'}
+    ListNotesResponse:
+      type: object
+      additionalProperties: false
+      required: ["@page", "@numpages", "@pagesize", "@total", "@start", "@end", "@uri", "@firstpageuri", "@previouspageuri", "@nextpageuri", "@lastpageuri", Notes]
+      properties:
+        "@page": {type: string}
+        "@numpages": {type: string}
+        "@pagesize": {type: string}
+        "@total": {type: string}
+        "@start": {type: string}
+        "@end": {type: string}
+        "@uri": {type: string}
+        "@firstpageuri": {type: string}
+        "@previouspageuri": {type: string}
+        "@nextpageuri": {type: string}
+        "@lastpageuri": {type: string}
+        Notes:
+          type: array
+          items: {$ref: '#/components/schemas/Note'}

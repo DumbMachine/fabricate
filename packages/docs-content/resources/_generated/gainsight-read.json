@@ -1,0 +1,84 @@
+{
+  "id": "gainsight-read",
+  "title": "List seeded companies",
+  "environment": {
+    "label": "Acme Gainsight",
+    "manifest": "environments/acme-gainsight.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gainsight.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS -H 'Content-Type: application/json' \\\n      -d '{\"select\":[\"Name\",\"Gsid\",\"Health__gc\",\"Status\"],\"limit\":100,\"offset\":0}' \\\n      -X POST https://acme.gainsightcloud.com/v1/data/objects/query/Company",
+  "output": {
+    "data": [
+      {
+        "Gsid": "company-contoso",
+        "Health__gc": "Red",
+        "Name": "Contoso",
+        "Status": "Active"
+      },
+      {
+        "Gsid": "company-fernworks",
+        "Health__gc": "Green",
+        "Name": "Fernworks",
+        "Status": "Active"
+      },
+      {
+        "Gsid": "company-northwind",
+        "Health__gc": "Red",
+        "Name": "Northwind Traders",
+        "Status": "Active"
+      },
+      {
+        "Gsid": "company-tinyshop",
+        "Health__gc": "Yellow",
+        "Name": "TinyShop",
+        "Status": "Active"
+      }
+    ],
+    "errorCode": null,
+    "errorDesc": null,
+    "message": null,
+    "requestId": "fab-gainsight-request-7cfc64944f-000001",
+    "result": true
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:eb9918fbb676bc81d873fee9ec747cf6c400c75132c0a616080cd9edcbb4935e",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:19f5fa8429b3e9bb474fd6017504dc66cc7f1d1039ffb418d701935ae2e08ff9"
+      },
+      {
+        "path": "environments/acme-gainsight.yaml",
+        "digest": "sha256:3a01d1eed0e1536643d35ca313ef5d5bdf237622b2124e129b26740bef69a30e"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:37a2ba36c22aceb4f79ac60060b9820004e3e63e90bd26c674f8be54d8333919"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/gainsight-read.json",
+        "digest": "sha256:1f004e23ca648d2d9614a78ebcd92f6f7dc3fd4e61e77dd0f89733c5a685bbc6"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/gainsight",
+        "digest": "sha256:b034a00e17db9e6a8dbe7909494c2a7348eb81a88f0dd07725893dd3e2373d95"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
+      }
+    ]
+  }
+}

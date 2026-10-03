@@ -1,0 +1,66 @@
+{
+  "integration": "jsm",
+  "api": "Jira Service Management 3",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/request",
+      "operationId": "getCustomerRequests",
+      "summary": "Get customer requests."
+    },
+    {
+      "method": "POST",
+      "path": "/rest/servicedeskapi/request",
+      "operationId": "createCustomerRequest",
+      "summary": "Create customer request."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/request/{issueIdOrKey}",
+      "operationId": "getCustomerRequestByIdOrKey",
+      "summary": "Get customer request by id or key."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/request/{issueIdOrKey}/comment",
+      "operationId": "getRequestComments",
+      "summary": "Get request comments."
+    },
+    {
+      "method": "POST",
+      "path": "/rest/servicedeskapi/request/{issueIdOrKey}/comment",
+      "operationId": "createRequestComment",
+      "summary": "Create request comment."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/request/{issueIdOrKey}/comment/{commentId}",
+      "operationId": "getRequestCommentById",
+      "summary": "Get request comment by id."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/servicedesk",
+      "operationId": "getServiceDesks",
+      "summary": "Get service desks."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/servicedesk/{serviceDeskId}",
+      "operationId": "getServiceDeskById",
+      "summary": "Get service desk by id."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype",
+      "operationId": "getRequestTypes",
+      "summary": "Get request types."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/{requestTypeId}",
+      "operationId": "getRequestTypeById",
+      "summary": "Get request type by id."
+    }
+  ]
+}

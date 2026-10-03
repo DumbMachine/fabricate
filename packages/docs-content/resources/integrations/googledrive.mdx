@@ -1,0 +1,150 @@
+---
+title: Google Drive
+description: Files, folders, permissions, and Drive about.
+sidebar:
+  icon: https://logos.composio.dev/api/googledrive
+---
+
+<ResourceCoverage resource="googledrive" />
+
+Files, folders, permissions, and Drive about. Local Google Drive v3 that keeps
+file state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Google Drive v3 |
+| Auth | Synthetic bearer token. Direct mode requires it; proxy mode injects it. |
+| Hosts | `www.googleapis.com` (`/drive/`) |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest. Direct calls must send that token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-googledrive.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GOOGLEDRIVE_TOKEN" \
+      "$FAB_GOOGLEDRIVE_URL/drive/v3/files/file-razorpay-settlement-2026-08-25"'
+```
+
+The service is named `googledrive` in the example manifest, so the variables are
+`FAB_GOOGLEDRIVE_URL` and `FAB_GOOGLEDRIVE_TOKEN`.
+
+The response is the August 2026 Razorpay settlement in `Finance/August 2026`:
+
+```json
+{
+  "copyRequiresWriterPermission": false,
+  "createdTime": "2026-08-25T18:30:00Z",
+  "description": "Razorpay settlement for 2026-08-25 including pay_Acme10482, pay_Acme10483, pay_Acme10484, and rfnd_Acme10484.",
+  "explicitlyTrashed": false,
+  "fileExtension": "csv",
+  "fullFileExtension": "csv",
+  "id": "file-razorpay-settlement-2026-08-25",
+  "kind": "drive#file",
+  "lastModifyingUser": {
+    "displayName": "Val Ortega",
+    "emailAddress": "val@acme.example",
+    "kind": "drive#user",
+    "me": true,
+    "permissionId": "user-val"
+  },
+  "md5Checksum": "733503db1d9d361da76cf86c05d633ad",
+  "mimeType": "text/csv",
+  "modifiedByMe": true,
+  "modifiedByMeTime": "2026-08-25T18:30:00Z",
+  "modifiedTime": "2026-08-25T18:30:00Z",
+  "name": "razorpay-settlement-2026-08-25.csv",
+  "originalFilename": "razorpay-settlement-2026-08-25.csv",
+  "ownedByMe": true,
+  "owners": [
+    {
+      "displayName": "Val Ortega",
+      "emailAddress": "val@acme.example",
+      "kind": "drive#user",
+      "me": true,
+      "permissionId": "user-val"
+    }
+  ],
+  "parents": [
+    "folder-finance-august-2026"
+  ],
+  "permissionIds": [
+    "user-val"
+  ],
+  "quotaBytesUsed": "207",
+  "shared": false,
+  "size": "207",
+  "spaces": [
+    "drive"
+  ],
+  "starred": false,
+  "trashed": false,
+  "version": "1",
+  "viewedByMe": false,
+  "webViewLink": "https://drive.google.com/file/d/file-razorpay-settlement-2026-08-25/view",
+  "writersCanShare": true
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Google Drive URLs and follows standard
+proxy and CA environment variables. This one-paste check calls Drive's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_GOOGLEDRIVE_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-googledrive.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://www.googleapis.com/drive/v3/files/file-razorpay-settlement-2026-08-25
+```
+
+Fabricate handles Drive paths on `www.googleapis.com`. Gmail keeps `/gmail/`
+on that same host. Other hosts are forwarded unchanged; set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="googledrive"
+  descriptions={{
+    "googledrive.minimal.v1": "An empty Acme Drive for a clean test.",
+    "googledrive.acme-drive.v1": "Finance, Legal, HR, and Compliance folders, including the August 2026 close.",
+  }}
+/>
+
+Peek at the committed Acme Drive. The table fetches the official scenario JSON
+and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="googledrive"
+  scenario="acme-drive.v1"
+  collection="files"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Google Drive check ran against the Acme Google
+Drive environment with curl:
+
+<IntegrationCompatibility resource="googledrive" />
+
+## Supported operations
+
+<SupportedOperations resource="googledrive" />

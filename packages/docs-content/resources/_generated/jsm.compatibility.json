@@ -1,0 +1,44 @@
+{
+  "api": "Jira Service Management REST API 3",
+  "environment": {
+    "label": "Acme Jira Service Management",
+    "manifest": "environments/acme-jsm.yaml",
+    "messages": 4
+  },
+  "integration": "jsm",
+  "modes": {
+    "direct": {
+      "messagesAfter": 5,
+      "messagesBefore": 4,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 5,
+      "messagesBefore": 4,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List customer requests",
+    "write": "Create request comment",
+    "persistence": "Confirm comment persisted"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:44:38.654Z",
+  "testedCommit": "77e334621a33a9c39cce059ae03dcd8ac3b51483"
+}

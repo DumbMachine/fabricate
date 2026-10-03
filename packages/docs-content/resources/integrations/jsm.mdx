@@ -1,0 +1,140 @@
+---
+title: Jira Service Management
+description: Service desks, request types, customer requests, and comments.
+sidebar:
+  icon: https://logos.composio.dev/api/jira
+---
+
+<ResourceCoverage resource="jsm" />
+
+Service desks, request types, customer requests, and comments. Local Jira
+Service Management REST API 3 that keeps desk state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Jira Service Management REST API 3 |
+| Auth | Synthetic bearer token |
+| Hosts | `acme.atlassian.net` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Jira Cloud ad-hoc clients send HTTP Basic (the account email and an API
+token). OAuth 2.0 clients send `Authorization: Bearer`. Fabricate's proxy
+writes that bearer header, and this resource accepts it.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-jsm.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_JSM_TOKEN" \
+      "$FAB_JSM_URL/rest/servicedeskapi/request"'
+```
+
+The service is named `jsm` in the example manifest, so the variables are
+`FAB_JSM_URL` and `FAB_JSM_TOKEN`.
+
+The response is the Acme support desk:
+
+```json
+{
+  "size": 4,
+  "isLastPage": true,
+  "values": [
+    {
+      "issueKey": "ITSM-4812",
+      "summary": "Duplicate charge INV-4812",
+      "reporter": {
+        "displayName": "Dana Whitfield",
+        "emailAddress": "dana@northwind.example"
+      }
+    },
+    {
+      "issueKey": "ITSM-10483",
+      "summary": "NDR on Acme Goods #10483",
+      "reporter": {
+        "displayName": "Sam Adeyemi",
+        "emailAddress": "sam@acme.example"
+      }
+    },
+    {
+      "issueKey": "ITSM-1188",
+      "summary": "Cancel TinyShop annual Pro",
+      "reporter": {
+        "displayName": "Marco Silva",
+        "emailAddress": "marco@tinyshop.example"
+      }
+    },
+    {
+      "issueKey": "ITSM-SSO",
+      "summary": "SAML login loop Contoso",
+      "reporter": {
+        "displayName": "Mei Chen",
+        "emailAddress": "mei.chen@contoso.example"
+      }
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Jira Service Management URLs and
+follows standard proxy and CA environment variables. This one-paste check
+calls the service desk hostname; replace the final `curl` with your app. Omit
+`$FAB_JSM_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-jsm.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://acme.atlassian.net/rest/servicedeskapi/request
+```
+
+Fabricate handles `acme.atlassian.net` requests whose path starts with
+`/rest/servicedeskapi/`. Other hosts are forwarded unchanged; set
+`proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="jsm"
+  descriptions={{
+    "jsm.minimal.v1": "An empty service desk for a clean test.",
+    "jsm.acme-desk.v1": "Acme support project SUP, with the duplicate charge, NDR, Contoso SAML, and TinyShop cancellation requests.",
+  }}
+/>
+
+Peek at the committed Acme desk. The table fetches the official scenario JSON
+and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="jsm"
+  scenario="acme-desk.v1"
+  collection="requests"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Jira Service Management check ran against the
+Acme Jira Service Management environment with curl:
+
+<IntegrationCompatibility resource="jsm" />
+
+## Supported operations
+
+<SupportedOperations resource="jsm" />

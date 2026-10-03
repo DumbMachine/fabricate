@@ -1,0 +1,137 @@
+---
+title: impact.com
+description: Programs, partners, actions, and notes.
+sidebar:
+  icon: https://logos.composio.dev/api/impact
+---
+
+<ResourceCoverage resource="impact" />
+
+Programs, partners, actions, and notes. Local impact.com Brand API that keeps
+affiliate state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | impact.com Brand API v14 |
+| Auth | Synthetic bearer token. impact.com uses HTTP Basic (Account SID and Auth Token). |
+| Hosts | `api.impact.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Account `acct-acme`. Program `1001` is Acme Goods affiliates. The seeded action
+for order `10482` pays Northwind Creators ₹150 (15000 paise) and is `PENDING`.
+`Payout` is in rupees. Live impact.com returns XML unless the client sends
+`Accept: application/json`; this resource always returns JSON.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-impact.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_IMPACT_TOKEN" -H "Accept: application/json" \
+      "$FAB_IMPACT_URL/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482"'
+```
+
+The service is named `impact` in the example manifest, so the variables are
+`FAB_IMPACT_URL` and `FAB_IMPACT_TOKEN`.
+
+The response is the pending Acme Goods action for order 10482. `Payout` is rupees, so ₹150 is `150`. The same action is also `GET /Advertisers/acct-acme/Actions/10482`.
+
+```json
+{
+  "@end": "0",
+  "@firstpageuri": "/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482&Page=1&PageSize=100",
+  "@lastpageuri": "/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482&Page=1&PageSize=100",
+  "@nextpageuri": "",
+  "@numpages": "1",
+  "@page": "1",
+  "@pagesize": "100",
+  "@previouspageuri": "",
+  "@start": "0",
+  "@total": "1",
+  "@uri": "/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482&Page=1&PageSize=100",
+  "Actions": [
+    {
+      "Amount": 3097,
+      "CampaignId": 1001,
+      "CampaignName": "Acme Goods affiliates",
+      "CreationDate": "2026-08-25T09:14:00Z",
+      "Currency": "INR",
+      "CustomerCity": "Bengaluru",
+      "CustomerCountry": "IN",
+      "CustomerPostCode": "560025",
+      "CustomerRegion": "KA",
+      "EventDate": "2026-08-25T09:14:00Z",
+      "Id": "act_10482",
+      "MediaPartnerId": "partner_northwind",
+      "MediaPartnerName": "Northwind Creators",
+      "Oid": "10482",
+      "Payout": 150,
+      "State": "PENDING",
+      "Uri": "/Advertisers/acct-acme/Actions/act_10482"
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal impact.com URLs and follows standard
+proxy and CA environment variables. This one-paste check calls impact.com's
+normal production hostname; replace the final `curl` with your app. Omit
+`$FAB_IMPACT_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-impact.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS -H "Accept: application/json" \
+      "https://api.impact.com/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482"
+```
+
+Fabricate handles `api.impact.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="impact"
+  descriptions={{
+    "impact.minimal.v1": "An empty Acme affiliate account for a clean test.",
+    "impact.acme-partners.v1": "Acme Goods affiliates, Northwind Creators, and the pending order 10482 action.",
+  }}
+/>
+
+Peek at the committed Acme partner world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="impact"
+  scenario="acme-partners.v1"
+  collection="actions"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest impact.com check ran against the Acme impact.com
+environment with curl:
+
+<IntegrationCompatibility resource="impact" />
+
+## Supported operations
+
+<SupportedOperations resource="impact" />

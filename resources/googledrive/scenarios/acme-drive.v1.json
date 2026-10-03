@@ -1,0 +1,296 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "googledrive.acme-drive.v1",
+  "$resource": "googledrive",
+  "$resourceVersion": "v3",
+  "state": {
+    "user": {
+      "displayName": "Val Ortega",
+      "emailAddress": "val@acme.example",
+      "permissionId": "user-val"
+    },
+    "files": [
+      {
+        "id": "file-409a-2026",
+        "name": "409a-2026.pdf",
+        "mimeType": "application/pdf",
+        "description": "Carta 409A valuation for 2026.",
+        "body": "409A valuation 2026\nIssuer: Acme\nDocument: 409a-2026.pdf\nSource: Carta\n",
+        "parents": [
+          "folder-compliance"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-03-15T11:00:00Z",
+        "modifiedTime": "2026-03-15T11:00:00Z"
+      },
+      {
+        "id": "file-access-review-2026-08",
+        "name": "access-review-2026-08.pdf",
+        "mimeType": "application/pdf",
+        "description": "Vanta evidence for the Shopify admin access review, August 2026.",
+        "body": "Access review 2026-08\nVanta test: Access review for Shopify admin\nDeprovisioned contractor: old.contractor@acme.example\n",
+        "parents": [
+          "folder-compliance"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-26T08:00:00Z",
+        "modifiedTime": "2026-08-26T08:00:00Z"
+      },
+      {
+        "id": "file-fernworks-msa",
+        "name": "Fernworks-MSA.pdf",
+        "mimeType": "application/pdf",
+        "description": "Fernworks MSA. DocuSign envelope env-fernworks-msa. Ironclad workflow wf-fernworks-msa.",
+        "body": "Fernworks Master Services Agreement\nDocuSign envelope: env-fernworks-msa\nSigners: Priya Nair and Iris Berg\nIronclad workflow: wf-fernworks-msa\nStatus: completed\n",
+        "parents": [
+          "folder-legal"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-06-02T10:00:00Z",
+        "modifiedTime": "2026-06-02T10:00:00Z"
+      },
+      {
+        "id": "file-inv-4812-northwind",
+        "name": "INV-4812-northwind.pdf",
+        "mimeType": "application/pdf",
+        "description": "SaaS invoice INV-4812 for Northwind Traders, 1240 USD, status sent.",
+        "body": "Invoice INV-4812\nCustomer: Northwind Traders\nAmount: 1240 USD\nStatus: sent\n",
+        "parents": [
+          "folder-finance-august-2026"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-20T15:04:00Z",
+        "modifiedTime": "2026-08-20T15:04:00Z"
+      },
+      {
+        "id": "file-offer-letter-jordan-hale",
+        "name": "offer-letter-jordan-hale.pdf",
+        "mimeType": "application/pdf",
+        "description": "Offer letter for Jordan Hale. DocuSign envelope env-offer-jordan. Greenhouse offer offer-jordan.",
+        "body": "Offer letter\nCandidate: Jordan Hale\nEmail: jordan.hale@acme.example\nDocuSign envelope: env-offer-jordan\nGreenhouse offer: offer-jordan\nStart date: 2026-09-08\n",
+        "parents": [
+          "folder-hr"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-18T08:30:00Z",
+        "modifiedTime": "2026-08-18T08:30:00Z"
+      },
+      {
+        "id": "file-razorpay-settlement-2026-08-25",
+        "name": "razorpay-settlement-2026-08-25.csv",
+        "mimeType": "text/csv",
+        "description": "Razorpay settlement for 2026-08-25 including pay_Acme10482, pay_Acme10483, pay_Acme10484, and rfnd_Acme10484.",
+        "body": "payment_id,order,amount_paise,currency,status\npay_Acme10482,10482,309700,INR,captured\npay_Acme10483,10483,49900,INR,captured\npay_Acme10484,10484,149900,INR,refunded\nrfnd_Acme10484,10484,149900,INR,processed\n",
+        "parents": [
+          "folder-finance-august-2026"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-25T18:30:00Z",
+        "modifiedTime": "2026-08-25T18:30:00Z"
+      },
+      {
+        "id": "file-shiprocket-ndr-10483",
+        "name": "shiprocket-ndr-10483.pdf",
+        "mimeType": "application/pdf",
+        "description": "Shiprocket NDR for Acme Goods order 10483, AWB SR10483AWB, courier Bluedart, reason Customer not available.",
+        "body": "NDR report\nOrder: 10483\nAWB: SR10483AWB\nCourier: Bluedart\nStatus: ndr\nReason: Customer not available\n",
+        "parents": [
+          "folder-finance-august-2026"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-24T17:10:00Z",
+        "modifiedTime": "2026-08-24T17:10:00Z"
+      },
+      {
+        "id": "file-tinyshop-cancellation",
+        "name": "TinyShop-cancellation.pdf",
+        "mimeType": "application/pdf",
+        "description": "TinyShop cancellation. DocuSign envelope env-tinyshop-refund. Ironclad workflow wf-tinyshop-cancel.",
+        "body": "TinyShop cancellation\nDocuSign envelope: env-tinyshop-refund\nWaiting on: Marco Silva\nIronclad workflow: wf-tinyshop-cancel\nInvoice: INV-1188\n",
+        "parents": [
+          "folder-legal"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-22T12:00:00Z",
+        "modifiedTime": "2026-08-22T12:00:00Z"
+      },
+      {
+        "id": "folder-compliance",
+        "name": "Compliance",
+        "mimeType": "application/vnd.google-apps.folder",
+        "description": "Acme compliance evidence.",
+        "body": "",
+        "parents": [],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-01T09:00:00Z",
+        "modifiedTime": "2026-08-26T08:00:00Z"
+      },
+      {
+        "id": "folder-finance",
+        "name": "Finance",
+        "mimeType": "application/vnd.google-apps.folder",
+        "description": "Acme finance documents.",
+        "body": "",
+        "parents": [],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-01T09:00:00Z",
+        "modifiedTime": "2026-08-25T18:30:00Z"
+      },
+      {
+        "id": "folder-finance-august-2026",
+        "name": "August 2026",
+        "mimeType": "application/vnd.google-apps.folder",
+        "description": "August 2026 finance close.",
+        "body": "",
+        "parents": [
+          "folder-finance"
+        ],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-01T09:00:00Z",
+        "modifiedTime": "2026-08-25T18:30:00Z"
+      },
+      {
+        "id": "folder-hr",
+        "name": "HR",
+        "mimeType": "application/vnd.google-apps.folder",
+        "description": "Acme people documents.",
+        "body": "",
+        "parents": [],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-01T09:00:00Z",
+        "modifiedTime": "2026-08-18T08:30:00Z"
+      },
+      {
+        "id": "folder-legal",
+        "name": "Legal",
+        "mimeType": "application/vnd.google-apps.folder",
+        "description": "Acme legal agreements.",
+        "body": "",
+        "parents": [],
+        "starred": false,
+        "trashed": false,
+        "createdTime": "2026-08-01T09:00:00Z",
+        "modifiedTime": "2026-08-22T12:00:00Z"
+      }
+    ],
+    "permissions": [
+      {
+        "id": "user-val",
+        "fileId": "file-409a-2026",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-access-review-2026-08",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-fernworks-msa",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-inv-4812-northwind",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-offer-letter-jordan-hale",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-razorpay-settlement-2026-08-25",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-shiprocket-ndr-10483",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "file-tinyshop-cancellation",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "folder-compliance",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "folder-finance",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "folder-finance-august-2026",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "folder-hr",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      },
+      {
+        "id": "user-val",
+        "fileId": "folder-legal",
+        "type": "user",
+        "role": "owner",
+        "emailAddress": "val@acme.example",
+        "displayName": "Val Ortega"
+      }
+    ]
+  }
+}

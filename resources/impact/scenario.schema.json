@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/impact/scenario-v1.json",
+  "title": "Fabricate impact.com scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accountSid", "programs", "partners", "actions", "notes"],
+  "properties": {
+    "accountSid": {"type": "string", "const": "acct-acme"},
+    "programs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "state", "type", "shortDescription"],
+        "properties": {
+          "id": {"type": "integer", "minimum": 1},
+          "name": {"type": "string", "minLength": 1},
+          "state": {
+            "type": "string",
+            "enum": ["ACTIVE", "AWAITING_REVIEW", "CANCELLED", "CLOSED", "DEACTIVATED", "DELINQUENT", "REJECTED", "SETUP", "SETUP_COMPLETE"]
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Seller", "Retail Media Seller", "Performance", "Advocate", "Creator", "Retail Media"]
+          },
+          "shortDescription": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "partners": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "campaignId", "name", "state", "currency", "website", "description", "dateCreated"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "campaignId": {"type": "integer", "minimum": 1},
+          "name": {"type": "string", "minLength": 1},
+          "state": {
+            "type": "string",
+            "enum": ["ACTIVE", "EXPIRED", "PENDING", "DECLINED", "SUSPENDED", "DEACTIVATED", "CLOSING", "CLOSED", "NOT_APPLICABLE"]
+          },
+          "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+          "website": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "dateCreated": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "campaignId", "partnerId", "oid", "state", "payoutPaise", "amountPaise", "currency", "eventDate", "creationDate", "customerCity", "customerRegion", "customerCountry", "customerPostCode", "note", "items"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "campaignId": {"type": "integer", "minimum": 1},
+          "partnerId": {"type": "string", "minLength": 1},
+          "oid": {"type": "string", "minLength": 1},
+          "state": {"type": "string", "enum": ["PENDING", "APPROVED", "REVERSED"]},
+          "payoutPaise": {"type": "integer", "minimum": 0},
+          "amountPaise": {"type": "integer", "minimum": 0},
+          "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+          "eventDate": {"type": "string", "minLength": 1},
+          "creationDate": {"type": "string", "minLength": 1},
+          "customerCity": {"type": "string"},
+          "customerRegion": {"type": "string"},
+          "customerCountry": {"type": "string"},
+          "customerPostCode": {"type": "string"},
+          "note": {"type": "string"},
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["sku", "name", "quantity", "saleAmountPaise"],
+              "properties": {
+                "sku": {"type": "string", "minLength": 1},
+                "name": {"type": "string", "minLength": 1},
+                "quantity": {"type": "integer", "minimum": 1},
+                "saleAmountPaise": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "campaignId", "partnerId", "creator", "content", "type", "creationDate", "modificationDate"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "campaignId": {"type": "integer", "minimum": 1},
+          "partnerId": {"type": "string", "minLength": 1},
+          "creator": {"type": "string", "minLength": 1},
+          "content": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "enum": ["EMAIL", "IM", "NONE", "PHONE"]},
+          "creationDate": {"type": "string", "minLength": 1},
+          "modificationDate": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

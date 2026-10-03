@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/googledrive/scenario-v1.json",
+  "title": "Fabricate Google Drive scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["user", "files", "permissions"],
+  "properties": {
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["displayName", "emailAddress", "permissionId"],
+      "properties": {
+        "displayName": {"type": "string", "minLength": 1},
+        "emailAddress": {"type": "string", "format": "email"},
+        "permissionId": {"type": "string", "minLength": 1}
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "mimeType", "description", "body", "parents", "starred", "trashed", "createdTime", "modifiedTime"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "mimeType": {"type": "string", "minLength": 1},
+          "description": {"type": "string"},
+          "body": {"type": "string"},
+          "parents": {
+            "type": "array",
+            "maxItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "starred": {"type": "boolean"},
+          "trashed": {"type": "boolean"},
+          "createdTime": {"type": "string", "format": "date-time"},
+          "modifiedTime": {"type": "string", "format": "date-time"},
+          "folderColorRgb": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"}
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "fileId", "type", "role", "emailAddress", "displayName"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "fileId": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "enum": ["user", "group", "domain", "anyone"]},
+          "role": {"type": "string", "enum": ["owner", "organizer", "fileOrganizer", "writer", "commenter", "reader"]},
+          "emailAddress": {"type": "string"},
+          "displayName": {"type": "string"},
+          "allowFileDiscovery": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

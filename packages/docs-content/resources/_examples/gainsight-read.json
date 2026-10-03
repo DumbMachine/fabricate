@@ -1,0 +1,20 @@
+{
+  "id": "gainsight-read",
+  "title": "List seeded companies",
+  "environment": "environments/acme-gainsight.yaml",
+  "environmentLabel": "Acme Gainsight",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/gainsight-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gainsight.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS -H 'Content-Type: application/json' \\\n      -d '{\"select\":[\"Name\",\"Gsid\",\"Health__gc\",\"Status\"],\"limit\":100,\"offset\":0}' \\\n      -X POST https://acme.gainsightcloud.com/v1/data/objects/query/Company",
+  "argv": [
+    "curl",
+    "-sS",
+    "-H",
+    "Content-Type: application/json",
+    "-d",
+    "{\"select\":[\"Name\",\"Gsid\",\"Health__gc\",\"Status\"],\"limit\":100,\"offset\":0}",
+    "-X",
+    "POST",
+    "https://acme.gainsightcloud.com/v1/data/objects/query/Company"
+  ]
+}

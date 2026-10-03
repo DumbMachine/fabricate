@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/jsm/scenario-v1.json",
+  "title": "Fabricate Jira Service Management scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["currentUserAccountId", "serviceDesks", "requestTypes", "users", "requests", "comments"],
+  "properties": {
+    "currentUserAccountId": {"type": "string", "minLength": 1},
+    "serviceDesks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "projectId", "projectKey", "projectName"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "projectId": {"type": "string", "minLength": 1},
+          "projectKey": {"type": "string", "minLength": 1},
+          "projectName": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "requestTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "serviceDeskId", "name", "description", "helpText", "issueTypeId"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "serviceDeskId": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "description": {"type": "string"},
+          "helpText": {"type": "string"},
+          "issueTypeId": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["accountId", "emailAddress", "displayName", "active", "timeZone"],
+        "properties": {
+          "accountId": {"type": "string", "minLength": 1},
+          "emailAddress": {"type": "string", "format": "email"},
+          "displayName": {"type": "string", "minLength": 1},
+          "active": {"type": "boolean"},
+          "timeZone": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["issueId", "issueKey", "serviceDeskId", "requestTypeId", "summary", "description", "reporterAccountId", "status", "statusCategory", "createdAt", "updatedAt", "participantAccountIds"],
+        "properties": {
+          "issueId": {"type": "string", "minLength": 1},
+          "issueKey": {"type": "string", "minLength": 1},
+          "serviceDeskId": {"type": "string", "minLength": 1},
+          "requestTypeId": {"type": "string", "minLength": 1},
+          "summary": {"type": "string", "minLength": 1},
+          "description": {"type": "string"},
+          "reporterAccountId": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "statusCategory": {"type": "string", "enum": ["UNDEFINED", "NEW", "INDETERMINATE", "DONE"]},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "participantAccountIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "issueId", "body", "public", "authorAccountId", "createdAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "issueId": {"type": "string", "minLength": 1},
+          "body": {"type": "string", "minLength": 1},
+          "public": {"type": "boolean"},
+          "authorAccountId": {"type": "string", "minLength": 1},
+          "createdAt": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}
