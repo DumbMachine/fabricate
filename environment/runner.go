@@ -131,6 +131,20 @@ func (r *Runtime) Close(ctx context.Context) error {
 	return first
 }
 
+func hostPrefix(descriptor httpresource.Descriptor, host string) string {
+	prefix := "/"
+	if value, ok := descriptor.HostPrefixes[host]; ok && strings.TrimSpace(value) != "" {
+		prefix = strings.TrimSpace(value)
+	}
+	if !strings.HasPrefix(prefix, "/") {
+		prefix = "/" + prefix
+	}
+	if prefix != "/" && !strings.HasSuffix(prefix, "/") {
+		prefix += "/"
+	}
+	return prefix
+}
+
 func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
 	explicit := make(map[string]string, len(r.Spec.Proxy.Hosts))
 	for route, service := range r.Spec.Proxy.Hosts {
@@ -141,10 +155,7 @@ func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
 	for name, service := range r.Services {
 		descriptor := service.Resource.Descriptor()
 		for _, host := range descriptor.ProviderHosts {
-			prefix := "/"
-			if descriptor.ID == "gmail" && host == "www.googleapis.com" {
-				prefix = "/gmail/"
-			}
+			prefix := hostPrefix(descriptor, host)
 			key := normalizeRouteKey(host + prefix)
 			selected := name
 			if override, ok := explicit[key]; ok {

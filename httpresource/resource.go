@@ -14,14 +14,18 @@ import (
 )
 
 type Descriptor struct {
-	ID              string        `json:"id"`
-	DisplayName     string        `json:"display_name"`
-	Version         string        `json:"version"`
-	OpenAPIVersion  string        `json:"openapi_version"`
-	OpenAPIDigest   string        `json:"openapi_digest"`
-	ScenarioVersion int           `json:"scenario_version"`
-	ProviderHosts   []string      `json:"provider_hosts"`
-	SDK             SDKDescriptor `json:"sdk"`
+	ID              string   `json:"id"`
+	DisplayName     string   `json:"display_name"`
+	Version         string   `json:"version"`
+	OpenAPIVersion  string   `json:"openapi_version"`
+	OpenAPIDigest   string   `json:"openapi_digest"`
+	ScenarioVersion int      `json:"scenario_version"`
+	ProviderHosts   []string `json:"provider_hosts"`
+	// HostPrefixes narrows a shared provider host to a path prefix so two
+	// resources can share a hostname. The key is the host; the value is a
+	// prefix such as "/books/". Hosts absent from the map claim the whole host.
+	HostPrefixes map[string]string `json:"host_prefixes,omitempty"`
+	SDK          SDKDescriptor     `json:"sdk"`
 }
 
 type SDKDescriptor struct {

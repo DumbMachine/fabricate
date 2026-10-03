@@ -28,8 +28,10 @@ The CA and ephemeral service state are destroyed when the wrapper exits.
 ## Routing and safety
 
 Provider hosts come from `httpresource.Descriptor.ProviderHosts`. A resource
-may require narrower path routing on a shared host; Gmail, for example, claims
-only `/gmail/` on `www.googleapis.com`. Google OAuth token refresh is handled by
+may set `HostPrefixes` to claim only a path prefix on a shared host. Gmail
+claims `/gmail/` on `www.googleapis.com`, which leaves `/drive/` free for
+Google Drive and lets Zoho Books (`/books/`) and Zoho Inventory
+(`/inventory/`) share `www.zohoapis.com`. Google OAuth token refresh is handled by
 a local synthetic token route so the wrapped application does not need working
 Google credentials. The route accepts `POST /token` on `oauth2.googleapis.com`
 with `grant_type=refresh_token` and a non-empty refresh token, then returns

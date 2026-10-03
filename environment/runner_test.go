@@ -12,8 +12,25 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/dumbmachine/fabricate/httpresource"
 	"github.com/dumbmachine/fabricate/resources/all"
 )
+
+func TestHostPrefixNormalizesSharedHosts(t *testing.T) {
+	descriptor := httpresource.Descriptor{HostPrefixes: map[string]string{
+		"www.zohoapis.com":   "books",
+		"www.googleapis.com": "/gmail/",
+	}}
+	if got := hostPrefix(descriptor, "www.zohoapis.com"); got != "/books/" {
+		t.Fatalf("zoho prefix = %q", got)
+	}
+	if got := hostPrefix(descriptor, "www.googleapis.com"); got != "/gmail/" {
+		t.Fatalf("gmail prefix = %q", got)
+	}
+	if got := hostPrefix(descriptor, "api.razorpay.com"); got != "/" {
+		t.Fatalf("default prefix = %q", got)
+	}
+}
 
 func TestRuntimeServesAcmeGmailThroughTransparentProxy(t *testing.T) {
 	t.Setenv("FAB_LOG_DIR", t.TempDir())
@@ -56,6 +73,16 @@ services:
 	response.Body.Close()
 	if response.StatusCode != http.StatusOK || !strings.Contains(string(body), `"messagesTotal":28`) {
 		t.Fatalf("profile = %d %s", response.StatusCode, body)
+	}
+	shared, _ := http.NewRequest(http.MethodGet, "https://www.googleapis.com/gmail/v1/users/me/profile", nil)
+	sharedResponse, err := client.Do(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sharedBody, _ := io.ReadAll(sharedResponse.Body)
+	sharedResponse.Body.Close()
+	if sharedResponse.StatusCode != http.StatusOK || !strings.Contains(string(sharedBody), `"messagesTotal":28`) {
+		t.Fatalf("shared-host profile = %d %s", sharedResponse.StatusCode, sharedBody)
 	}
 	logPath := runtime.Requests.Path()
 	if err := runtime.Close(context.Background()); err != nil {
