@@ -33,6 +33,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "shopify", label: "Shopify", planned: true},
   {id: "slack", label: "Slack"},
   {id: "statuspage", label: "Statuspage"},
+  {id: "vanta", label: "Vanta"},
   {id: "zohobooks", label: "Zoho Books"},
 ];
 

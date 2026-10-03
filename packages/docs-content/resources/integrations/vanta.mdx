@@ -1,0 +1,144 @@
+---
+title: Vanta
+description: Vendors, security reviews, tests, documents, and uploads.
+sidebar:
+  icon: https://logos.composio.dev/api/vanta
+---
+
+<ResourceCoverage resource="vanta" />
+
+Vendors, security reviews, tests, documents, and uploads. Local Vanta v1 that
+keeps compliance state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Vanta v1 |
+| Auth | Synthetic bearer token. Vanta's Manage API uses an OAuth access token as a bearer. |
+| Hosts | `api.vanta.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vanta.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_VANTA_TOKEN" \
+      "$FAB_VANTA_URL/v1/tests"'
+```
+
+The service is named `vanta` in the example manifest, so the variables are
+`FAB_VANTA_URL` and `FAB_VANTA_TOKEN`.
+
+The response is the Acme test list. The Shopify admin access test needs
+attention and cites the deprovisioned contractor and Drive file
+`access-review-2026-08.pdf`:
+
+```json
+{
+  "results": {
+    "data": [
+      {
+        "category": "Accounts access",
+        "deactivatedStatusInfo": {
+          "deactivatedReason": null,
+          "isDeactivated": false,
+          "lastUpdatedDate": null
+        },
+        "description": "Checks Shopify admin access against the August 2026 access review.",
+        "failureDescription": "Deprovisioned user old.contractor@acme.example still has Shopify admin access. Evidence is Drive file access-review-2026-08.pdf.",
+        "id": "shopify-admin-access-review",
+        "integrations": [
+          "shopify"
+        ],
+        "lastTestRunDate": "2026-08-26T12:00:00Z",
+        "latestFlipDate": "2026-08-26T12:00:00Z",
+        "name": "Access review for Shopify admin",
+        "owner": {
+          "displayName": "Val Ortega",
+          "emailAddress": "val@acme.example",
+          "id": "user-val"
+        },
+        "remediationDescription": "Remove Shopify admin for old.contractor@acme.example and refresh access-review-2026-08.pdf.",
+        "remediationStatusInfo": {
+          "itemCount": 1,
+          "soonestRemediateByDate": null,
+          "status": "NEEDS_WORK"
+        },
+        "status": "NEEDS_ATTENTION",
+        "version": {
+          "major": 1,
+          "minor": 0
+        }
+      }
+    ],
+    "pageInfo": {
+      "endCursor": "shopify-admin-access-review",
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "shopify-admin-access-review"
+    }
+  }
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Vanta URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Vanta's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_VANTA_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vanta.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.vanta.com/v1/tests
+```
+
+Fabricate handles `api.vanta.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="vanta"
+  descriptions={{
+    "vanta.minimal.v1": "Empty compliance state for a clean test.",
+    "vanta.acme-compliance.v1": "Shiprocket's open security review, Razorpay approved, and the failing Shopify admin access test.",
+  }}
+/>
+
+Peek at the committed Acme compliance world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="vanta"
+  scenario="acme-compliance.v1"
+  collection="tests"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Vanta check ran against the Acme Vanta
+environment with curl:
+
+<IntegrationCompatibility resource="vanta" />
+
+## Supported operations
+
+<SupportedOperations resource="vanta" />

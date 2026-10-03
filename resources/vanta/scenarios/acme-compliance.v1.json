@@ -1,0 +1,163 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "vanta.acme-compliance.v1",
+  "$resource": "vanta",
+  "$resourceVersion": "v1",
+  "state": {
+    "vendors": [
+      {
+        "id": "vendor-razorpay",
+        "name": "Razorpay",
+        "websiteUrl": "https://razorpay.com",
+        "servicesProvided": "Payment gateway",
+        "additionalNotes": "Approved payments vendor for Acme Goods.",
+        "status": "MANAGED",
+        "inherentRiskLevel": "HIGH",
+        "residualRiskLevel": "MEDIUM",
+        "latestDecision": {
+          "status": "APPROVED",
+          "lastUpdatedAt": "2026-07-10T00:00:00Z"
+        },
+        "category": {"displayName": "Payments"},
+        "securityOwnerUserId": "user-aisha",
+        "businessOwnerUserId": "user-val",
+        "nextSecurityReviewDueDate": "2027-07-10T00:00:00Z",
+        "lastSecurityReviewCompletionDate": "2026-07-10T00:00:00Z",
+        "vendorHeadquarters": "IND",
+        "isVisibleToAuditors": true
+      },
+      {
+        "id": "vendor-shiprocket",
+        "name": "Shiprocket",
+        "websiteUrl": "https://www.shiprocket.in",
+        "servicesProvided": "India shipping and courier",
+        "additionalNotes": "Security review is open. No decision has been recorded.",
+        "status": "MANAGED",
+        "inherentRiskLevel": "HIGH",
+        "residualRiskLevel": "UNSCORED",
+        "latestDecision": null,
+        "category": {"displayName": "Logistics"},
+        "securityOwnerUserId": "user-ravi",
+        "businessOwnerUserId": "user-val",
+        "nextSecurityReviewDueDate": "2026-09-03T00:00:00Z",
+        "lastSecurityReviewCompletionDate": null,
+        "vendorHeadquarters": "IND",
+        "isVisibleToAuditors": true
+      }
+    ],
+    "securityReviews": [
+      {
+        "id": "review-razorpay",
+        "vendorId": "vendor-razorpay",
+        "decisionNotes": "Payments vendor approved for Acme Goods.",
+        "comments": null,
+        "completedByUserId": "user-aisha",
+        "startDate": "2026-07-01T00:00:00Z",
+        "dueDate": "2026-07-15T00:00:00Z",
+        "completionDate": "2026-07-10T00:00:00Z",
+        "decision": {
+          "status": "APPROVED",
+          "lastUpdatedAt": "2026-07-10T00:00:00Z"
+        },
+        "owner": {
+          "id": "user-aisha",
+          "type": "USER",
+          "displayName": "Aisha Rahman",
+          "email": "aisha@acme.example"
+        }
+      },
+      {
+        "id": "review-shiprocket",
+        "vendorId": "vendor-shiprocket",
+        "decisionNotes": null,
+        "comments": "Security review is open.",
+        "completedByUserId": null,
+        "startDate": "2026-08-20T00:00:00Z",
+        "dueDate": "2026-09-03T00:00:00Z",
+        "completionDate": null,
+        "decision": null,
+        "owner": {
+          "id": "user-ravi",
+          "type": "USER",
+          "displayName": "Ravi Mehta",
+          "email": "ravi@acme.example"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "id": "shopify-admin-access-review",
+        "name": "Access review for Shopify admin",
+        "lastTestRunDate": "2026-08-26T12:00:00Z",
+        "latestFlipDate": "2026-08-26T12:00:00Z",
+        "description": "Checks Shopify admin access against the August 2026 access review.",
+        "failureDescription": "Deprovisioned user old.contractor@acme.example still has Shopify admin access. Evidence is Drive file access-review-2026-08.pdf.",
+        "remediationDescription": "Remove Shopify admin for old.contractor@acme.example and refresh access-review-2026-08.pdf.",
+        "version": {"major": 1, "minor": 0},
+        "category": "Accounts access",
+        "integrations": ["shopify"],
+        "status": "NEEDS_ATTENTION",
+        "deactivatedStatusInfo": {
+          "isDeactivated": false,
+          "deactivatedReason": null,
+          "lastUpdatedDate": null
+        },
+        "remediationStatusInfo": {
+          "status": "NEEDS_WORK",
+          "soonestRemediateByDate": null,
+          "itemCount": 1
+        },
+        "owner": {
+          "id": "user-val",
+          "displayName": "Val Ortega",
+          "emailAddress": "val@acme.example"
+        }
+      }
+    ],
+    "entities": [
+      {
+        "id": "entity-old-contractor",
+        "testId": "shopify-admin-access-review",
+        "entityStatus": "FAILING",
+        "displayName": "old.contractor@acme.example",
+        "responseType": "Shopify admin user",
+        "deactivatedReason": null,
+        "lastUpdatedDate": "2026-08-26T12:00:00Z",
+        "createdDate": "2026-08-01T00:00:00Z"
+      }
+    ],
+    "documents": [
+      {
+        "id": "doc-shopify-admin-access",
+        "ownerId": "user-val",
+        "category": "Accounts access",
+        "description": "August 2026 Shopify admin access review. Evidence file access-review-2026-08.pdf from Drive folder Compliance.",
+        "isSensitive": true,
+        "title": "Shopify admin access review",
+        "uploadStatus": "OK",
+        "uploadStatusDate": "2026-08-26T12:00:00Z",
+        "url": "https://app.vanta.com/documents/doc-shopify-admin-access",
+        "timeSensitivity": "MOST_RECENT",
+        "cadence": "P1M",
+        "reminderWindow": "P1W"
+      }
+    ],
+    "uploads": [
+      {
+        "id": "upload-access-review-2026-08",
+        "documentId": "doc-shopify-admin-access",
+        "fileName": "access-review-2026-08.pdf",
+        "title": "Shopify admin access review",
+        "description": "Drive folder Compliance, file access-review-2026-08.pdf.",
+        "mimeType": "application/pdf",
+        "uploadedBy": {"id": "user-val", "type": "USER"},
+        "creationDate": "2026-08-26T12:00:00Z",
+        "updatedDate": "2026-08-26T12:00:00Z",
+        "deletionDate": null,
+        "effectiveDate": "2026-08-26T12:00:00Z",
+        "url": "https://app.vanta.com/documents/doc-shopify-admin-access/uploads/upload-access-review-2026-08"
+      }
+    ]
+  }
+}

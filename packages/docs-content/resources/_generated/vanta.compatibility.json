@@ -1,0 +1,44 @@
+{
+  "api": "Vanta Manage API v1",
+  "environment": {
+    "label": "Acme Vanta",
+    "manifest": "environments/acme-vanta.yaml",
+    "messages": 1
+  },
+  "integration": "vanta",
+  "modes": {
+    "direct": {
+      "messagesAfter": 2,
+      "messagesBefore": 1,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 2,
+      "messagesBefore": 1,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List vendors and the failing access test",
+    "write": "Create a document",
+    "persistence": "Confirm the document persists"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:40:15.785Z",
+  "testedCommit": "e80ddf90a105f0c1ccb605ef814a17ea719a1893"
+}

@@ -32,6 +32,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
 	"github.com/dumbmachine/fabricate/resources/slack"
 	"github.com/dumbmachine/fabricate/resources/statuspage"
+	"github.com/dumbmachine/fabricate/resources/vanta"
 	"github.com/dumbmachine/fabricate/resources/zohobooks"
 )
 
@@ -63,6 +64,7 @@ func Registry() *httpresource.Registry {
 		sendgrid.NewResource(),
 		slack.NewResource(),
 		statuspage.NewResource(),
+		vanta.NewResource(),
 		zohobooks.NewResource(),
 	)
 	if err != nil {
