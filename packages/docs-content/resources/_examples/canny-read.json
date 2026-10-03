@@ -1,0 +1,18 @@
+{
+  "id": "canny-read",
+  "title": "List seeded posts",
+  "environment": "environments/acme-canny.yaml",
+  "environmentLabel": "Acme Canny",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/canny-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-canny.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS -H \"Content-Type: application/json\" -d \"{}\" https://canny.io/api/v1/posts/list",
+  "argv": [
+    "curl",
+    "-sS",
+    "-H",
+    "Content-Type: application/json",
+    "-d",
+    "{}",
+    "https://canny.io/api/v1/posts/list"
+  ]
+}

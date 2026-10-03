@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-docusign
+
+services:
+  docusign:
+    resource: docusign
+    scenario: docusign.acme-envelopes.v1

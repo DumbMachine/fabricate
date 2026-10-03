@@ -1,0 +1,156 @@
+---
+title: Greenhouse
+description: Jobs, job stages, candidates, applications, offers, scorecards, and users.
+sidebar:
+  icon: https://logos.composio.dev/api/greenhouse
+---
+
+<ResourceCoverage resource="greenhouse" />
+
+Jobs, job stages, candidates, applications, offers, scorecards, and users. Local
+Greenhouse Harvest v1 that keeps the Acme recruiting pipeline across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Greenhouse Harvest API v1 |
+| Auth | Synthetic bearer token. Harvest uses HTTP Basic (API key as the username, empty password). |
+| Hosts | `harvest.greenhouse.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Harvest authenticates with HTTP Basic: the API key is the username and the
+password is empty. Fabricate accepts `Authorization: Bearer` instead. The
+proxy overwrites `Authorization` on `harvest.greenhouse.io` with the
+environment's ephemeral bearer token, so existing clients keep working without
+a Basic header. Note creates still require the Harvest `On-Behalf-Of` header.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-greenhouse.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GREENHOUSE_TOKEN" \
+      "$FAB_GREENHOUSE_URL/v1/jobs"'
+```
+
+The service is named `greenhouse` in the example manifest, so the variables are
+`FAB_GREENHOUSE_URL` and `FAB_GREENHOUSE_TOKEN`.
+
+The response is the Support Engineer job:
+
+```json
+[
+  {
+    "closed_at": "",
+    "confidential": false,
+    "created_at": "2026-07-01T08:00:00Z",
+    "departments": [
+      {
+        "id": "dept-support",
+        "name": "Support"
+      }
+    ],
+    "hiring_team": {
+      "coordinators": [],
+      "hiring_managers": [
+        {
+          "employee_id": "",
+          "first_name": "Sam",
+          "id": "user-sam",
+          "last_name": "Adeyemi",
+          "name": "Sam Adeyemi"
+        }
+      ],
+      "recruiters": [
+        {
+          "employee_id": "",
+          "first_name": "Leo",
+          "id": "user-leo",
+          "last_name": "Park",
+          "name": "Leo Park",
+          "responsible": true
+        }
+      ],
+      "sourcers": []
+    },
+    "id": "job-support",
+    "name": "Support Engineer",
+    "notes": "Support Engineer for Acme App.",
+    "offices": [
+      {
+        "id": "office-blr",
+        "location": {
+          "name": "Bengaluru, KA, IN"
+        },
+        "name": "Bengaluru"
+      }
+    ],
+    "opened_at": "2026-07-01T08:00:00Z",
+    "requisition_id": "",
+    "status": "open",
+    "updated_at": "2026-08-20T16:30:00Z"
+  }
+]
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Harvest URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Harvest's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_GREENHOUSE_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-greenhouse.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://harvest.greenhouse.io/v1/jobs
+```
+
+Fabricate handles `harvest.greenhouse.io` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="greenhouse"
+  descriptions={{
+    "greenhouse.minimal.v1": "Empty Greenhouse state for a clean test.",
+    "greenhouse.acme-pipeline.v1": "Support Engineer pipeline with Jordan's accepted offer and Sasha on-site.",
+  }}
+/>
+
+Peek at the committed Acme pipeline. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="greenhouse"
+  scenario="acme-pipeline.v1"
+  collection="candidates"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Greenhouse check ran against the Acme Greenhouse
+environment with curl:
+
+<IntegrationCompatibility resource="greenhouse" />
+
+## Supported operations
+
+<SupportedOperations resource="greenhouse" />

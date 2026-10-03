@@ -1,0 +1,19 @@
+{
+  "integration": "docusign",
+  "scenarios": [
+    {
+      "id": "docusign.acme-envelopes.v1",
+      "counts": {
+        "envelopes": 3,
+        "users": 1
+      }
+    },
+    {
+      "id": "docusign.minimal.v1",
+      "counts": {
+        "envelopes": 0,
+        "users": 0
+      }
+    }
+  ]
+}

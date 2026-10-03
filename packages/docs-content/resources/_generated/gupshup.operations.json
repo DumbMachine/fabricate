@@ -1,0 +1,66 @@
+{
+  "integration": "gupshup",
+  "api": "Gupshup v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/wa/api/v1/msg",
+      "operationId": "GupshupMessagesList",
+      "summary": "Lists stored WhatsApp messages and their status."
+    },
+    {
+      "method": "POST",
+      "path": "/wa/api/v1/msg",
+      "operationId": "GupshupMessagesSend",
+      "summary": "Sends a WhatsApp session text message."
+    },
+    {
+      "method": "GET",
+      "path": "/wa/api/v1/msg/{messageId}",
+      "operationId": "GupshupMessagesGet",
+      "summary": "Gets one stored WhatsApp message and its status."
+    },
+    {
+      "method": "POST",
+      "path": "/wa/api/v1/template/msg",
+      "operationId": "GupshupMessagesSendTemplate",
+      "summary": "Sends a WhatsApp template message."
+    },
+    {
+      "method": "GET",
+      "path": "/wa/app/{appId}/business",
+      "operationId": "GupshupAppBusinessGet",
+      "summary": "Gets WhatsApp business details for an app."
+    },
+    {
+      "method": "GET",
+      "path": "/wa/app/{appId}/business/profile",
+      "operationId": "GupshupAppProfileGet",
+      "summary": "Gets the WhatsApp business profile."
+    },
+    {
+      "method": "GET",
+      "path": "/wa/app/{appId}/business/profile/about",
+      "operationId": "GupshupAppProfileAboutGet",
+      "summary": "Gets the WhatsApp profile about text."
+    },
+    {
+      "method": "PUT",
+      "path": "/wa/app/{appId}/msg/{msgId}/read",
+      "operationId": "GupshupMessagesMarkRead",
+      "summary": "Marks an inbound WhatsApp message as read."
+    },
+    {
+      "method": "GET",
+      "path": "/wa/app/{appId}/template",
+      "operationId": "GupshupTemplatesList",
+      "summary": "Lists message templates for an app."
+    },
+    {
+      "method": "GET",
+      "path": "/wa/app/{appId}/template/{templateId}",
+      "operationId": "GupshupTemplatesGet",
+      "summary": "Gets one message template."
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "outreach.acme-sequences.v1",
+  "$resource": "outreach",
+  "$resourceVersion": "v2",
+  "state": {
+    "sequences": [
+      {
+        "id": "1",
+        "name": "Northwind expansion",
+        "description": "Northwind Traders expansion.",
+        "enabled": true,
+        "sequenceType": "interval",
+        "shareType": "shared",
+        "tags": [],
+        "createdAt": "2026-08-20T09:00:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "2",
+        "name": "Helix Bio trial",
+        "description": "Helix Bio sales trial.",
+        "enabled": true,
+        "sequenceType": "interval",
+        "shareType": "shared",
+        "tags": [],
+        "createdAt": "2026-08-26T10:00:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z"
+      }
+    ],
+    "prospects": [
+      {
+        "id": "1",
+        "firstName": "Dana",
+        "lastName": "Whitfield",
+        "name": "Dana Whitfield",
+        "emails": ["dana@northwind.example"],
+        "title": "Northwind buyer",
+        "company": "Northwind Traders",
+        "mobilePhones": ["+91-99000-48120"],
+        "tags": [],
+        "createdAt": "2026-08-20T09:05:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "2",
+        "firstName": "Jules",
+        "lastName": "Okonkwo",
+        "name": "Jules Okonkwo",
+        "emails": ["jules@northwind.example"],
+        "title": "Northwind ops",
+        "company": "Northwind Traders",
+        "mobilePhones": ["+91-99000-48121"],
+        "tags": [],
+        "createdAt": "2026-08-20T09:06:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z"
+      },
+      {
+        "id": "3",
+        "firstName": "Noah",
+        "lastName": "Patel",
+        "name": "Noah Patel",
+        "emails": ["noah@helixbio.example"],
+        "title": "",
+        "company": "Helix Bio",
+        "mobilePhones": ["+1-617-555-0133"],
+        "tags": [],
+        "createdAt": "2026-08-26T10:05:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z"
+      }
+    ],
+    "sequenceStates": [
+      {
+        "id": "1",
+        "state": "active",
+        "prospectId": "1",
+        "sequenceId": "1",
+        "createdAt": "2026-08-20T09:10:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z",
+        "stateChangedAt": "2026-08-20T09:10:00Z"
+      },
+      {
+        "id": "2",
+        "state": "active",
+        "prospectId": "2",
+        "sequenceId": "1",
+        "createdAt": "2026-08-20T09:11:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z",
+        "stateChangedAt": "2026-08-20T09:11:00Z"
+      },
+      {
+        "id": "3",
+        "state": "active",
+        "prospectId": "3",
+        "sequenceId": "2",
+        "createdAt": "2026-08-26T10:10:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z",
+        "stateChangedAt": "2026-08-26T10:10:00Z"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "1",
+        "action": "call",
+        "note": "Call Dana Whitfield about duplicate SaaS invoice INV-4812 (1240 USD).",
+        "completed": false,
+        "state": "incomplete",
+        "taskType": "sequence_step_call",
+        "dueAt": "2026-08-26T12:00:00Z",
+        "completedAt": "",
+        "stateChangedAt": "2026-08-25T16:00:00Z",
+        "createdAt": "2026-08-25T16:00:00Z",
+        "updatedAt": "2026-08-26T12:00:00Z",
+        "prospectId": "1",
+        "sequenceId": "1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "api": "Airbyte API v1",
+  "environment": {
+    "label": "Acme Airbyte",
+    "manifest": "environments/acme-airbyte.yaml",
+    "messages": 2
+  },
+  "integration": "airbyte",
+  "modes": {
+    "direct": {
+      "messagesAfter": 3,
+      "messagesBefore": 2,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 3,
+      "messagesBefore": 2,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List jobs",
+    "write": "Trigger a sync",
+    "persistence": "Confirm the new job"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:38:50.119Z",
+  "testedCommit": "b19647c886dca0ed9e7d4e729fd9d690e3c14df0"
+}

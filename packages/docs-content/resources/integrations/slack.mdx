@@ -1,0 +1,120 @@
+---
+title: Slack
+description: Users, channels, and messages.
+sidebar:
+  icon: https://logos.composio.dev/api/slack
+---
+
+<ResourceCoverage resource="slack" />
+
+Users, channels, and messages. Local Slack Web API v2 that keeps workspace
+state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Slack Web API v2 |
+| Auth | Synthetic bearer token. Direct calls can also send that secret as the `token` field. |
+| Hosts | `slack.com` under `/api/` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-slack.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SLACK_TOKEN" \
+      "$FAB_SLACK_URL/api/conversations.history?channel=C-fulfillment"'
+```
+
+The service is named `slack` in the example manifest, so the variables are
+`FAB_SLACK_URL` and `FAB_SLACK_TOKEN`.
+
+The response is Acme's `#fulfillment` channel, newest first:
+
+```json
+{
+  "has_more": false,
+  "messages": [
+    {
+      "text": "Acme Goods #10482 is in transit with Delhivery. AWB SR10482AWB.",
+      "ts": "1787652300.000000",
+      "type": "message",
+      "user": "U-ravi"
+    },
+    {
+      "text": "NDR on Acme Goods #10483. Customer was not available.",
+      "ts": "1787592600.000000",
+      "type": "message",
+      "user": "U-sam"
+    }
+  ],
+  "ok": true,
+  "pin_count": 0
+}
+```
+
+A message posted with `chat.postMessage` is stored and returned by a later
+`conversations.history` call.
+
+### Start it through the proxy
+
+Use this when your app uses the normal Slack URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Slack's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_SLACK_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-slack.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS 'https://slack.com/api/conversations.history?channel=C-fulfillment'
+```
+
+Fabricate handles `/api/` on `slack.com` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="slack"
+  descriptions={{
+    "slack.minimal.v1": "An empty Acme workspace with the owner and no channels or messages.",
+    "slack.acme-workspace.v1": "Acme employees, fulfillment and finance threads, and the Contoso incident.",
+  }}
+/>
+
+Peek at the committed Acme workspace. The table fetches the official scenario
+JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="slack"
+  scenario="acme-workspace.v1"
+  collection="messages"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Slack check ran against the Acme Slack
+environment with curl:
+
+<IntegrationCompatibility resource="slack" />
+
+## Supported operations
+
+<SupportedOperations resource="slack" />

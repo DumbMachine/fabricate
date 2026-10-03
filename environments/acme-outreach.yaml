@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-outreach
+
+services:
+  outreach:
+    resource: outreach
+    scenario: outreach.acme-sequences.v1

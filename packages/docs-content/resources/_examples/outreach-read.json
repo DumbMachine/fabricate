@@ -1,0 +1,14 @@
+{
+  "id": "outreach-read",
+  "title": "List seeded sequences",
+  "environment": "environments/acme-outreach.yaml",
+  "environmentLabel": "Acme Outreach",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/outreach-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-outreach.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.outreach.io/api/v2/sequences",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.outreach.io/api/v2/sequences"
+  ]
+}

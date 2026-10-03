@@ -1,0 +1,109 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "gupshup.acme-whatsapp.v1",
+  "$resource": "gupshup",
+  "$resourceVersion": "v1",
+  "state": {
+    "app": {
+      "id": "app_acme_goods",
+      "name": "Acme Goods",
+      "phone": "918041230101",
+      "about": "Acme Goods order updates.",
+      "business": {
+        "name": "Acme Goods",
+        "addressLine1": "18 Industrial Layout",
+        "addressLine2": "",
+        "city": "Bengaluru",
+        "state": "KA",
+        "country": "IN",
+        "pinCode": "560058",
+        "contactName": "Ravi Mehta",
+        "contactNumber": "+91-80-4123-0103",
+        "email": "ravi@acme.example",
+        "website": "https://acme-goods.myshopify.com",
+        "vertical": "RETAIL",
+        "emailVerified": true,
+        "tncAccepted": true
+      },
+      "profile": {
+        "addressLine1": "18 Industrial Layout",
+        "addressLine2": "",
+        "city": "Bengaluru",
+        "country": "IN",
+        "desc": "Acme Goods ships from warehouse BLR-1.",
+        "pinCode": "560058",
+        "profileEmail": "ravi@acme.example",
+        "state": "KA",
+        "vertical": "RETAIL",
+        "website1": "https://acme-goods.myshopify.com",
+        "website2": "https://acme.example"
+      }
+    },
+    "templates": [
+      {
+        "id": "tpl_order_status",
+        "elementName": "order_status",
+        "category": "UTILITY",
+        "status": "APPROVED",
+        "languageCode": "en",
+        "templateType": "TEXT",
+        "data": "Order {{1}} update: {{2}}"
+      }
+    ],
+    "messages": [
+      {
+        "messageId": "msg_10484",
+        "direction": "outbound",
+        "source": "918041230101",
+        "destination": "+919900048120",
+        "type": "text",
+        "text": "Your Acme Goods refund rfnd_Acme10484 for order 10484 has been issued.",
+        "status": "delivered",
+        "senderName": "",
+        "contextGsId": "",
+        "read": false,
+        "timestamp": 1787397600000
+      },
+      {
+        "messageId": "msg_10483",
+        "direction": "outbound",
+        "source": "918041230101",
+        "destination": "+919811122008",
+        "type": "text",
+        "text": "We could not deliver Acme Goods order 10483. Please reply with a delivery window.",
+        "status": "failed",
+        "senderName": "",
+        "contextGsId": "",
+        "read": false,
+        "timestamp": 1787646600000
+      },
+      {
+        "messageId": "msg_10482",
+        "direction": "outbound",
+        "source": "918041230101",
+        "destination": "+919845011223",
+        "type": "text",
+        "text": "Your Acme Goods order 10482 is in transit with Delhivery. AWB SR10482AWB.",
+        "status": "delivered",
+        "senderName": "",
+        "contextGsId": "",
+        "read": false,
+        "timestamp": 1787652300000
+      },
+      {
+        "messageId": "msg_10482_in",
+        "direction": "inbound",
+        "source": "+919845011223",
+        "destination": "918041230101",
+        "type": "text",
+        "text": "thanks, where is the tee?",
+        "status": "received",
+        "senderName": "Priya Nair",
+        "contextGsId": "msg_10482",
+        "read": false,
+        "timestamp": 1787658000000
+      }
+    ]
+  }
+}

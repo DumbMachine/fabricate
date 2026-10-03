@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-gupshup
+
+services:
+  gupshup:
+    resource: gupshup
+    scenario: gupshup.acme-whatsapp.v1

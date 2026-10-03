@@ -1,0 +1,163 @@
+---
+title: Canny
+description: Boards, posts, users, and votes.
+sidebar:
+  icon: https://logos.composio.dev/api/canny
+---
+
+<ResourceCoverage resource="canny" />
+
+Boards, posts, users, and votes. Local Canny API v1 that keeps feedback
+state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Canny API v1 |
+| Auth | Synthetic bearer token. Canny's live API sends `apiKey` in the JSON body; Fabricate ignores that field. |
+| Hosts | `canny.io` (`/api/v1/`) |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-canny.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_CANNY_TOKEN" -H "Content-Type: application/json" \
+      -d "{}" "$FAB_CANNY_URL/api/v1/posts/list"'
+```
+
+The service is named `canny` in the example manifest, so the variables are
+`FAB_CANNY_URL` and `FAB_CANNY_TOKEN`.
+
+Canny's production clients POST JSON to `/api/v1/posts/list` and put the
+secret in `apiKey`. Send `Authorization: Bearer` instead. A body `apiKey` is
+optional and is not checked.
+
+The response is the Acme App board, newest first:
+
+```json
+{
+  "hasMore": false,
+  "posts": [
+    {
+      "author": {
+        "created": "2026-08-26T12:00:00.000Z",
+        "email": "dana@northwind.example",
+        "id": "user-dana",
+        "isAdmin": false,
+        "name": "Dana Whitfield",
+        "url": "https://acme.canny.io/admin/users/dana-whitfield",
+        "userID": "dana"
+      },
+      "board": {
+        "created": "2026-08-26T12:00:00.000Z",
+        "id": "board-acme-app",
+        "name": "Acme App",
+        "postCount": 2,
+        "url": "https://acme.canny.io/admin/board/acme-app"
+      },
+      "commentCount": 0,
+      "created": "2026-08-26T12:00:00.000Z",
+      "details": "Northwind Traders was charged twice on invoice INV-4812 (1240 USD).",
+      "id": "post-duplicate-charge",
+      "imageURLs": [],
+      "score": 1,
+      "status": "in progress",
+      "statusChangedAt": "2026-08-26T12:00:00.000Z",
+      "title": "Refund duplicate charge",
+      "url": "https://acme.canny.io/admin/board/acme-app/p/refund-duplicate-charge"
+    },
+    {
+      "author": {
+        "created": "2026-08-26T12:00:00.000Z",
+        "email": "priya@fernworks.example",
+        "id": "user-priya",
+        "isAdmin": false,
+        "name": "Priya Nair",
+        "url": "https://acme.canny.io/admin/users/priya-nair",
+        "userID": "priya"
+      },
+      "board": {
+        "created": "2026-08-26T12:00:00.000Z",
+        "id": "board-acme-app",
+        "name": "Acme App",
+        "postCount": 2,
+        "url": "https://acme.canny.io/admin/board/acme-app"
+      },
+      "commentCount": 0,
+      "created": "2026-08-26T12:00:00.000Z",
+      "details": "CSV export downloads an empty file.",
+      "id": "post-csv-export",
+      "imageURLs": [],
+      "score": 0,
+      "status": "open",
+      "statusChangedAt": "2026-08-26T12:00:00.000Z",
+      "title": "CSV export downloads an empty file",
+      "url": "https://acme.canny.io/admin/board/acme-app/p/csv-export-downloads-an-empty-file"
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Canny URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Canny's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_CANNY_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token. Leave `apiKey` out of the body.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-canny.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS -H "Content-Type: application/json" -d "{}" https://canny.io/api/v1/posts/list
+```
+
+Fabricate handles `canny.io` paths under `/api/v1/` locally. Other hosts are
+forwarded unchanged; set `proxy.unknown_hosts: reject` for an isolated,
+fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="canny"
+  descriptions={{
+    "canny.minimal.v1": "Empty Canny state for a clean test.",
+    "canny.acme-feedback.v1": "Acme App board with Priya's CSV export post and Dana's INV-4812 post, voted by Jules.",
+  }}
+/>
+
+Peek at the committed Acme feedback world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="canny"
+  scenario="acme-feedback.v1"
+  collection="posts"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Canny check ran against the Acme Canny
+environment with curl:
+
+<IntegrationCompatibility resource="canny" />
+
+## Supported operations
+
+<SupportedOperations resource="canny" />

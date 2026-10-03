@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/airbyte/scenario-v1.json",
+  "title": "Fabricate Airbyte scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workspaceId", "sources", "destinations", "connections", "jobs"],
+  "properties": {
+    "workspaceId": {"type": "string", "minLength": 1},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sourceId", "name", "sourceType", "workspaceId", "configuration"],
+        "properties": {
+          "sourceId": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "sourceType": {"type": "string", "minLength": 1},
+          "workspaceId": {"type": "string", "minLength": 1},
+          "configuration": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sourceType"],
+            "properties": {
+              "sourceType": {"type": "string", "minLength": 1},
+              "shop": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "destinations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["destinationId", "name", "destinationType", "workspaceId", "configuration"],
+        "properties": {
+          "destinationId": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "destinationType": {"type": "string", "minLength": 1},
+          "workspaceId": {"type": "string", "minLength": 1},
+          "configuration": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["destinationType", "host", "database", "schema"],
+            "properties": {
+              "destinationType": {"type": "string", "minLength": 1},
+              "host": {"type": "string", "minLength": 1},
+              "database": {"type": "string", "minLength": 1},
+              "schema": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["connectionId", "name", "sourceId", "destinationId", "workspaceId", "status", "schedule", "dataResidency", "configurations", "createdAt"],
+        "properties": {
+          "connectionId": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "sourceId": {"type": "string", "minLength": 1},
+          "destinationId": {"type": "string", "minLength": 1},
+          "workspaceId": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["active", "inactive", "deprecated"]},
+          "schedule": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["scheduleType"],
+            "properties": {
+              "scheduleType": {"type": "string", "enum": ["manual", "cron", "basic"]},
+              "cronExpression": {"type": "string", "minLength": 1},
+              "basicTiming": {"type": "string", "minLength": 1}
+            }
+          },
+          "dataResidency": {"type": "string", "enum": ["auto", "us", "eu"]},
+          "configurations": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["streams"],
+            "properties": {
+              "streams": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["name"],
+                  "properties": {
+                    "name": {"type": "string", "minLength": 1},
+                    "syncMode": {
+                      "type": "string",
+                      "enum": ["full_refresh_overwrite", "full_refresh_append", "incremental_append", "incremental_deduped_history"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "createdAt": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["jobId", "status", "jobType", "startTime"],
+        "properties": {
+          "jobId": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["pending", "running", "incomplete", "failed", "succeeded", "cancelled"]},
+          "jobType": {"type": "string", "enum": ["sync", "reset"]},
+          "startTime": {"type": "string", "minLength": 1},
+          "connectionId": {"type": "string", "minLength": 1},
+          "sourceId": {"type": "string", "minLength": 1},
+          "lastUpdatedAt": {"type": "string", "minLength": 1},
+          "duration": {"type": "string", "minLength": 1},
+          "bytesSynced": {"type": "integer", "minimum": 0},
+          "rowsSynced": {"type": "integer", "minimum": 0},
+          "failureReason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

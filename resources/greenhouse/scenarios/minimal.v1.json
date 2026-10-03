@@ -1,0 +1,19 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "greenhouse.minimal.v1",
+  "$resource": "greenhouse",
+  "$resourceVersion": "v1",
+  "state": {
+    "users": [],
+    "offices": [],
+    "departments": [],
+    "jobs": [],
+    "jobStages": [],
+    "candidates": [],
+    "applications": [],
+    "offers": [],
+    "notes": [],
+    "scorecards": []
+  }
+}

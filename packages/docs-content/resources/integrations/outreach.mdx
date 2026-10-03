@@ -1,0 +1,157 @@
+---
+title: Outreach
+description: Sequences, prospects, sequence states, and tasks.
+sidebar:
+  icon: https://logos.composio.dev/api/outreach
+---
+
+<ResourceCoverage resource="outreach" />
+
+Sequences, prospects, sequence states, and tasks. Local Outreach API v2 that
+keeps sales-engagement state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Outreach API v2 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.outreach.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-outreach.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OUTREACH_TOKEN" \
+      "$FAB_OUTREACH_URL/api/v2/sequences"'
+```
+
+The service is named `outreach` in the example manifest, so the variables are
+`FAB_OUTREACH_URL` and `FAB_OUTREACH_TOKEN`.
+
+The response is the Acme sequence list:
+
+```json
+{
+  "data": [
+    {
+      "attributes": {
+        "createdAt": "2026-08-20T09:00:00Z",
+        "description": "Northwind Traders expansion.",
+        "enabled": true,
+        "name": "Northwind expansion",
+        "sequenceType": "interval",
+        "shareType": "shared",
+        "tags": [],
+        "updatedAt": "2026-08-26T12:00:00Z"
+      },
+      "id": "1",
+      "relationships": {
+        "sequenceStates": {
+          "links": {
+            "related": "https://api.outreach.io/api/v2/sequenceStates?filter[sequence][id]=1"
+          }
+        },
+        "tasks": {
+          "links": {
+            "related": "https://api.outreach.io/api/v2/tasks?filter[sequence][id]=1"
+          }
+        }
+      },
+      "type": "sequence"
+    },
+    {
+      "attributes": {
+        "createdAt": "2026-08-26T10:00:00Z",
+        "description": "Helix Bio sales trial.",
+        "enabled": true,
+        "name": "Helix Bio trial",
+        "sequenceType": "interval",
+        "shareType": "shared",
+        "tags": [],
+        "updatedAt": "2026-08-26T12:00:00Z"
+      },
+      "id": "2",
+      "relationships": {
+        "sequenceStates": {
+          "links": {
+            "related": "https://api.outreach.io/api/v2/sequenceStates?filter[sequence][id]=2"
+          }
+        },
+        "tasks": {
+          "links": {
+            "related": "https://api.outreach.io/api/v2/tasks?filter[sequence][id]=2"
+          }
+        }
+      },
+      "type": "sequence"
+    }
+  ],
+  "meta": {
+    "count": 2,
+    "count_truncated": false
+  }
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Outreach URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Outreach's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_OUTREACH_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-outreach.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.outreach.io/api/v2/sequences
+```
+
+Fabricate handles `api.outreach.io` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="outreach"
+  descriptions={{
+    "outreach.minimal.v1": "Empty Outreach state for a clean test.",
+    "outreach.acme-sequences.v1": "Northwind expansion with Dana and Jules, Helix Bio trial with Noah, and a call task for INV-4812.",
+  }}
+/>
+
+Peek at the committed Acme sequences. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="outreach"
+  scenario="acme-sequences.v1"
+  collection="sequences"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Outreach check ran against the Acme Outreach
+environment with curl:
+
+<IntegrationCompatibility resource="outreach" />
+
+## Supported operations
+
+<SupportedOperations resource="outreach" />

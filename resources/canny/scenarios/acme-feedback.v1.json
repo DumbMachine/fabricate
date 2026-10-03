@@ -1,0 +1,83 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "canny.acme-feedback.v1",
+  "$resource": "canny",
+  "$resourceVersion": "v1",
+  "state": {
+    "boards": [
+      {
+        "id": "board-acme-app",
+        "name": "Acme App",
+        "created": "2026-08-26T12:00:00.000Z",
+        "isPrivate": false,
+        "privateComments": false
+      }
+    ],
+    "users": [
+      {
+        "id": "user-dana",
+        "name": "Dana Whitfield",
+        "email": "dana@northwind.example",
+        "isAdmin": false,
+        "created": "2026-08-26T12:00:00.000Z",
+        "userID": "dana"
+      },
+      {
+        "id": "user-jules",
+        "name": "Jules Okonkwo",
+        "email": "jules@northwind.example",
+        "isAdmin": false,
+        "created": "2026-08-26T12:00:00.000Z",
+        "userID": "jules"
+      },
+      {
+        "id": "user-priya",
+        "name": "Priya Nair",
+        "email": "priya@fernworks.example",
+        "isAdmin": false,
+        "created": "2026-08-26T12:00:00.000Z",
+        "userID": "priya"
+      },
+      {
+        "id": "user-val",
+        "name": "Val Ortega",
+        "email": "val@acme.example",
+        "isAdmin": true,
+        "created": "2026-08-26T12:00:00.000Z",
+        "userID": "val"
+      }
+    ],
+    "posts": [
+      {
+        "id": "post-csv-export",
+        "boardID": "board-acme-app",
+        "authorID": "user-priya",
+        "title": "CSV export downloads an empty file",
+        "details": "CSV export downloads an empty file.",
+        "status": "open",
+        "created": "2026-08-26T12:00:00.000Z",
+        "statusChangedAt": "2026-08-26T12:00:00.000Z"
+      },
+      {
+        "id": "post-duplicate-charge",
+        "boardID": "board-acme-app",
+        "authorID": "user-dana",
+        "title": "Refund duplicate charge",
+        "details": "Northwind Traders was charged twice on invoice INV-4812 (1240 USD).",
+        "status": "in progress",
+        "created": "2026-08-26T12:00:00.000Z",
+        "statusChangedAt": "2026-08-26T12:00:00.000Z"
+      }
+    ],
+    "votes": [
+      {
+        "id": "vote-jules-inv-4812",
+        "postID": "post-duplicate-charge",
+        "voterID": "user-jules",
+        "created": "2026-08-26T12:00:00.000Z",
+        "votePriority": "No priority"
+      }
+    ]
+  }
+}

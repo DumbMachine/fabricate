@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-slack
+
+services:
+  slack:
+    resource: slack
+    scenario: slack.acme-workspace.v1

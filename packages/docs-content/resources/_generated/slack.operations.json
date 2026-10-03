@@ -1,0 +1,72 @@
+{
+  "integration": "slack",
+  "api": "Slack v2",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/auth.test",
+      "operationId": "auth.test",
+      "summary": "Checks authentication and returns identity."
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat.delete",
+      "operationId": "chat.delete",
+      "summary": "Deletes a message the caller authored."
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat.postMessage",
+      "operationId": "chat.postMessage",
+      "summary": "Posts a message and stores it."
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat.update",
+      "operationId": "chat.update",
+      "summary": "Updates a message the caller authored."
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations.history",
+      "operationId": "conversations.history",
+      "summary": "Returns channel messages, newest first."
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations.info",
+      "operationId": "conversations.info",
+      "summary": "Gets one channel."
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations.list",
+      "operationId": "conversations.list",
+      "summary": "Lists channels in the workspace."
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations.members",
+      "operationId": "conversations.members",
+      "summary": "Lists members of a channel."
+    },
+    {
+      "method": "GET",
+      "path": "/api/conversations.replies",
+      "operationId": "conversations.replies",
+      "summary": "Returns a thread, parent first."
+    },
+    {
+      "method": "GET",
+      "path": "/api/users.info",
+      "operationId": "users.info",
+      "summary": "Gets one user."
+    },
+    {
+      "method": "GET",
+      "path": "/api/users.list",
+      "operationId": "users.list",
+      "summary": "Lists users in the workspace."
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+---
+title: Gupshup
+description: WhatsApp app, templates, messages, and delivery status.
+sidebar:
+  icon: https://logos.composio.dev/api/gupshup
+---
+
+<ResourceCoverage resource="gupshup" />
+
+WhatsApp app, templates, messages, and delivery status. Local Gupshup
+WhatsApp v1 that keeps message state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Gupshup WhatsApp v1 |
+| Auth | Synthetic bearer token, or an `apikey` header with the same token |
+| Hosts | `api.gupshup.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Gupshup clients usually send `apikey`. Fabricate also accepts
+`Authorization: Bearer`, which is what the proxy writes. Both values are the
+same synthetic token.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gupshup.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GUPSHUP_TOKEN" \
+      "$FAB_GUPSHUP_URL/wa/api/v1/msg"'
+```
+
+The service is named `gupshup` in the example manifest, so the variables are
+`FAB_GUPSHUP_URL` and `FAB_GUPSHUP_TOKEN`. The same call with the Gupshup
+header is:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gupshup.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "apikey: $FAB_GUPSHUP_TOKEN" \
+      "$FAB_GUPSHUP_URL/wa/api/v1/msg/msg_10482"'
+```
+
+The list response is the Acme Goods WhatsApp thread:
+
+```json
+{
+  "messages": [
+    {
+      "destination": "+919900048120",
+      "direction": "outbound",
+      "messageId": "msg_10484",
+      "read": false,
+      "source": "918041230101",
+      "status": "delivered",
+      "text": "Your Acme Goods refund rfnd_Acme10484 for order 10484 has been issued.",
+      "timestamp": 1787397600000,
+      "type": "text"
+    },
+    {
+      "destination": "+919811122008",
+      "direction": "outbound",
+      "messageId": "msg_10483",
+      "read": false,
+      "source": "918041230101",
+      "status": "failed",
+      "text": "We could not deliver Acme Goods order 10483. Please reply with a delivery window.",
+      "timestamp": 1787646600000,
+      "type": "text"
+    },
+    {
+      "destination": "+919845011223",
+      "direction": "outbound",
+      "messageId": "msg_10482",
+      "read": false,
+      "source": "918041230101",
+      "status": "delivered",
+      "text": "Your Acme Goods order 10482 is in transit with Delhivery. AWB SR10482AWB.",
+      "timestamp": 1787652300000,
+      "type": "text"
+    },
+    {
+      "contextGsId": "msg_10482",
+      "destination": "918041230101",
+      "direction": "inbound",
+      "messageId": "msg_10482_in",
+      "read": false,
+      "senderName": "Priya Nair",
+      "source": "+919845011223",
+      "status": "received",
+      "text": "thanks, where is the tee?",
+      "timestamp": 1787658000000,
+      "type": "text"
+    }
+  ],
+  "status": "success"
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Gupshup URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Gupshup's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_GUPSHUP_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gupshup.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.gupshup.io/wa/api/v1/msg
+```
+
+Fabricate handles `api.gupshup.io` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="gupshup"
+  descriptions={{
+    "gupshup.minimal.v1": "An empty Acme Goods WhatsApp app for a clean test.",
+    "gupshup.acme-whatsapp.v1": "Order updates for 10482, 10483, and 10484, plus Priya's inbound reply.",
+  }}
+/>
+
+Peek at the committed Acme WhatsApp world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="gupshup"
+  scenario="acme-whatsapp.v1"
+  collection="messages"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Gupshup check ran against the Acme Gupshup
+environment with curl:
+
+<IntegrationCompatibility resource="gupshup" />
+
+## Supported operations
+
+<SupportedOperations resource="gupshup" />

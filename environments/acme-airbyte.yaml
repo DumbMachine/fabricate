@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-airbyte
+
+services:
+  airbyte:
+    resource: airbyte
+    scenario: airbyte.acme-syncs.v1

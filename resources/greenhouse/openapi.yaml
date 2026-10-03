@@ -1,0 +1,750 @@
+openapi: 3.0.3
+info:
+  title: Greenhouse Harvest API
+  version: v1
+  description: >-
+    Curated Greenhouse Harvest API v1 surface. Paths and field names follow
+    https://developers.greenhouse.io/harvest.html. Identifiers are strings so
+    Acme scenario keys round-trip. Authentication is a bearer token standing in
+    for Harvest HTTP Basic.
+servers:
+  - url: https://harvest.greenhouse.io
+security:
+  - bearerAuth: []
+tags:
+  - name: Jobs
+  - name: Candidates
+  - name: Applications
+  - name: Offers
+  - name: Scorecards
+  - name: Users
+paths:
+  /v1/jobs:
+    get:
+      operationId: listJobs
+      summary: List jobs.
+      tags: [Jobs]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Jobs ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Job'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/jobs/{id}:
+    get:
+      operationId: getJob
+      summary: Retrieve a job.
+      tags: [Jobs]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Job.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Job'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/jobs/{id}/stages:
+    get:
+      operationId: listJobStages
+      summary: List stages for a job.
+      tags: [Jobs]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Stages ordered by priority, then id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/JobStage'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/candidates:
+    get:
+      operationId: listCandidates
+      summary: List candidates.
+      tags: [Candidates]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - name: email
+          in: query
+          description: Return candidates with this email address.
+          schema: {type: string}
+        - name: job_id
+          in: query
+          description: Return candidates who have applied to this job.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Candidates ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Candidate'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/candidates/{id}:
+    get:
+      operationId: getCandidate
+      summary: Retrieve a candidate.
+      tags: [Candidates]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Candidate.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Candidate'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/candidates/{id}/activity_feed:
+    get:
+      operationId: getActivityFeed
+      summary: Retrieve a candidate activity feed.
+      tags: [Candidates]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Notes, emails, and activities.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ActivityFeed'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/candidates/{id}/activity_feed/notes:
+    post:
+      operationId: createCandidateNote
+      summary: Add a note to a candidate.
+      tags: [Candidates]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - name: On-Behalf-Of
+          in: header
+          required: true
+          description: ID of the Greenhouse user issuing the request.
+          schema: {type: string, minLength: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateNoteRequest'}
+      responses:
+        '201':
+          description: Created note.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Note'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/applications:
+    get:
+      operationId: listApplications
+      summary: List applications.
+      tags: [Applications]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - name: job_id
+          in: query
+          description: Return applications for this job.
+          schema: {type: string}
+        - name: status
+          in: query
+          description: Return applications with this status. Unknown values return an empty list.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Applications ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Application'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/applications/{id}:
+    get:
+      operationId: getApplication
+      summary: Retrieve an application.
+      tags: [Applications]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Application.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Application'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/applications/{id}/offers:
+    get:
+      operationId: listApplicationOffers
+      summary: List offers for an application.
+      tags: [Offers]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Offers ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Offer'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/applications/{id}/scorecards:
+    get:
+      operationId: listApplicationScorecards
+      summary: List scorecards for an application.
+      tags: [Scorecards]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Scorecards ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Scorecard'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/offers:
+    get:
+      operationId: listOffers
+      summary: List offers.
+      tags: [Offers]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - name: status
+          in: query
+          description: Return offers with this status. Unknown values return an empty list.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Offers ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Offer'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/offers/{id}:
+    get:
+      operationId: getOffer
+      summary: Retrieve an offer.
+      tags: [Offers]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Offer.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Offer'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/scorecards:
+    get:
+      operationId: listScorecards
+      summary: List scorecards.
+      tags: [Scorecards]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Scorecards ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Scorecard'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/users:
+    get:
+      operationId: listUsers
+      summary: List users.
+      tags: [Users]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - name: email
+          in: query
+          description: Return the user with this email address.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Users ordered by id.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/User'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/users/{id}:
+    get:
+      operationId: getUser
+      summary: Retrieve a user.
+      tags: [Users]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: User.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/User'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Harvest uses HTTP Basic with the API key as
+        the username and an empty password. The proxy injects this bearer token.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    Page:
+      name: page
+      in: query
+      description: 1-based page index. Defaults to 1.
+      schema: {type: integer, minimum: 1}
+    PerPage:
+      name: per_page
+      in: query
+      description: Page size from 1 to 500. Defaults to 100.
+      schema: {type: integer, minimum: 1, maximum: 500}
+  responses:
+    Error:
+      description: Harvest-style error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    JobStatus:
+      type: string
+      enum: [open, closed, draft]
+    ApplicationStatus:
+      type: string
+      enum: [active, rejected, hired, converted]
+    OfferStatus:
+      type: string
+      enum: [unresolved, accepted, rejected, deprecated]
+    NoteVisibility:
+      type: string
+      enum: [admin_only, private, public]
+    Recommendation:
+      type: string
+      enum: [definitely_not, no, yes, strong_yes, no_decision]
+    AttributeRating:
+      type: string
+      enum: [definitely_not, no, mixed, yes, strong_yes, no_decision]
+    EmailType:
+      type: string
+      enum: [personal, work, other]
+    PhoneType:
+      type: string
+      enum: [home, work, mobile, skype, other]
+    AttachmentType:
+      type: string
+      enum: [resume, cover_letter, offer_packet, offer_letter, take_home_test, other]
+    UserRef:
+      type: object
+      additionalProperties: false
+      required: [id, first_name, last_name, name, employee_id]
+      properties:
+        id: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        name: {type: string}
+        employee_id: {type: string}
+    HiringTeamMember:
+      type: object
+      additionalProperties: false
+      required: [id, first_name, last_name, name, employee_id, responsible]
+      properties:
+        id: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        name: {type: string}
+        employee_id: {type: string}
+        responsible: {type: boolean}
+    DepartmentRef:
+      type: object
+      additionalProperties: false
+      required: [id, name]
+      properties:
+        id: {type: string}
+        name: {type: string}
+    Location:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string}
+    OfficeRef:
+      type: object
+      additionalProperties: false
+      required: [id, name, location]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        location: {$ref: '#/components/schemas/Location'}
+    HiringTeam:
+      type: object
+      additionalProperties: false
+      required: [hiring_managers, recruiters, coordinators, sourcers]
+      properties:
+        hiring_managers:
+          type: array
+          items: {$ref: '#/components/schemas/UserRef'}
+        recruiters:
+          type: array
+          items: {$ref: '#/components/schemas/HiringTeamMember'}
+        coordinators:
+          type: array
+          items: {$ref: '#/components/schemas/HiringTeamMember'}
+        sourcers:
+          type: array
+          items: {$ref: '#/components/schemas/UserRef'}
+    Job:
+      type: object
+      additionalProperties: false
+      required: [id, name, requisition_id, notes, confidential, status, created_at, opened_at, closed_at, updated_at, departments, offices, hiring_team]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        requisition_id: {type: string}
+        notes: {type: string}
+        confidential: {type: boolean}
+        status: {$ref: '#/components/schemas/JobStatus'}
+        created_at: {type: string}
+        opened_at: {type: string}
+        closed_at: {type: string}
+        updated_at: {type: string}
+        departments:
+          type: array
+          items: {$ref: '#/components/schemas/DepartmentRef'}
+        offices:
+          type: array
+          items: {$ref: '#/components/schemas/OfficeRef'}
+        hiring_team: {$ref: '#/components/schemas/HiringTeam'}
+    Interview:
+      type: object
+      additionalProperties: false
+      required: [id, name, schedulable, estimated_minutes]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        schedulable: {type: boolean}
+        estimated_minutes: {type: integer, minimum: 0}
+    JobStage:
+      type: object
+      additionalProperties: false
+      required: [id, name, created_at, updated_at, active, job_id, priority, interviews]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        created_at: {type: string}
+        updated_at: {type: string}
+        active: {type: boolean}
+        job_id: {type: string}
+        priority: {type: integer, minimum: 0}
+        interviews:
+          type: array
+          items: {$ref: '#/components/schemas/Interview'}
+    JobRef:
+      type: object
+      additionalProperties: false
+      required: [id, name]
+      properties:
+        id: {type: string}
+        name: {type: string}
+    StageRef:
+      type: object
+      additionalProperties: false
+      required: [id, name]
+      properties:
+        id: {type: string}
+        name: {type: string}
+    Source:
+      type: object
+      additionalProperties: false
+      required: [id, public_name]
+      properties:
+        id: {type: string}
+        public_name: {type: string}
+    EmailAddress:
+      type: object
+      additionalProperties: false
+      required: [value, type]
+      properties:
+        value: {type: string}
+        type: {$ref: '#/components/schemas/EmailType'}
+    PhoneNumber:
+      type: object
+      additionalProperties: false
+      required: [value, type]
+      properties:
+        value: {type: string}
+        type: {$ref: '#/components/schemas/PhoneType'}
+    Attachment:
+      type: object
+      additionalProperties: false
+      required: [filename, url, type, created_at]
+      properties:
+        filename: {type: string}
+        url: {type: string}
+        type: {$ref: '#/components/schemas/AttachmentType'}
+        created_at: {type: string}
+    Application:
+      type: object
+      additionalProperties: false
+      required: [id, candidate_id, prospect, applied_at, rejected_at, last_activity_at, source, recruiter, jobs, status, current_stage, attachments]
+      properties:
+        id: {type: string}
+        candidate_id: {type: string}
+        prospect: {type: boolean}
+        applied_at: {type: string}
+        rejected_at: {type: string}
+        last_activity_at: {type: string}
+        source: {$ref: '#/components/schemas/Source'}
+        recruiter: {$ref: '#/components/schemas/UserRef'}
+        jobs:
+          type: array
+          items: {$ref: '#/components/schemas/JobRef'}
+        status: {$ref: '#/components/schemas/ApplicationStatus'}
+        current_stage: {$ref: '#/components/schemas/StageRef'}
+        attachments:
+          type: array
+          items: {$ref: '#/components/schemas/Attachment'}
+    Candidate:
+      type: object
+      additionalProperties: false
+      required: [id, first_name, last_name, company, title, created_at, updated_at, last_activity, is_private, application_ids, phone_numbers, email_addresses, recruiter, can_email, tags, applications, attachments]
+      properties:
+        id: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        company: {type: string}
+        title: {type: string}
+        created_at: {type: string}
+        updated_at: {type: string}
+        last_activity: {type: string}
+        is_private: {type: boolean}
+        application_ids:
+          type: array
+          items: {type: string}
+        phone_numbers:
+          type: array
+          items: {$ref: '#/components/schemas/PhoneNumber'}
+        email_addresses:
+          type: array
+          items: {$ref: '#/components/schemas/EmailAddress'}
+        recruiter: {$ref: '#/components/schemas/UserRef'}
+        can_email: {type: boolean}
+        tags:
+          type: array
+          items: {type: string}
+        applications:
+          type: array
+          items: {$ref: '#/components/schemas/Application'}
+        attachments:
+          type: array
+          items: {$ref: '#/components/schemas/Attachment'}
+    KeyedCustomField:
+      type: object
+      additionalProperties: false
+      required: [name, type, value]
+      properties:
+        name: {type: string}
+        type: {type: string}
+        value: {type: string}
+    Offer:
+      type: object
+      additionalProperties: false
+      required: [id, version, application_id, job_id, candidate_id, created_at, updated_at, sent_at, resolved_at, starts_at, status, custom_fields, keyed_custom_fields]
+      properties:
+        id: {type: string}
+        version: {type: integer, minimum: 1}
+        application_id: {type: string}
+        job_id: {type: string}
+        candidate_id: {type: string}
+        created_at: {type: string}
+        updated_at: {type: string}
+        sent_at: {type: string}
+        resolved_at: {type: string}
+        starts_at: {type: string}
+        status: {$ref: '#/components/schemas/OfferStatus'}
+        custom_fields:
+          type: object
+          additionalProperties: {type: string}
+        keyed_custom_fields:
+          type: object
+          additionalProperties: {$ref: '#/components/schemas/KeyedCustomField'}
+    ScorecardAttribute:
+      type: object
+      additionalProperties: false
+      required: [name, type, note, rating]
+      properties:
+        name: {type: string}
+        type: {type: string}
+        note: {type: string}
+        rating: {$ref: '#/components/schemas/AttributeRating'}
+    ScorecardQuestion:
+      type: object
+      additionalProperties: false
+      required: [id, question, answer]
+      properties:
+        id: {type: string}
+        question: {type: string}
+        answer: {type: string}
+    ScorecardRatings:
+      type: object
+      additionalProperties: false
+      required: [definitely_not, no, mixed, yes, strong_yes]
+      properties:
+        definitely_not: {type: array, items: {type: string}}
+        no: {type: array, items: {type: string}}
+        mixed: {type: array, items: {type: string}}
+        yes: {type: array, items: {type: string}}
+        strong_yes: {type: array, items: {type: string}}
+    InterviewStep:
+      type: object
+      additionalProperties: false
+      required: [id, name]
+      properties:
+        id: {type: string}
+        name: {type: string}
+    Scorecard:
+      type: object
+      additionalProperties: false
+      required: [id, updated_at, created_at, interview, interview_step, candidate_id, application_id, interviewed_at, submitted_by, interviewer, submitted_at, overall_recommendation, attributes, ratings, questions]
+      properties:
+        id: {type: string}
+        updated_at: {type: string}
+        created_at: {type: string}
+        interview: {type: string}
+        interview_step: {$ref: '#/components/schemas/InterviewStep'}
+        candidate_id: {type: string}
+        application_id: {type: string}
+        interviewed_at: {type: string}
+        submitted_by: {$ref: '#/components/schemas/UserRef'}
+        interviewer: {$ref: '#/components/schemas/UserRef'}
+        submitted_at: {type: string}
+        overall_recommendation: {$ref: '#/components/schemas/Recommendation'}
+        attributes:
+          type: array
+          items: {$ref: '#/components/schemas/ScorecardAttribute'}
+        ratings: {$ref: '#/components/schemas/ScorecardRatings'}
+        questions:
+          type: array
+          items: {$ref: '#/components/schemas/ScorecardQuestion'}
+    User:
+      type: object
+      additionalProperties: false
+      required: [id, name, first_name, last_name, primary_email_address, updated_at, created_at, disabled, site_admin, emails, employee_id]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        primary_email_address: {type: string, format: email}
+        updated_at: {type: string}
+        created_at: {type: string}
+        disabled: {type: boolean}
+        site_admin: {type: boolean}
+        emails:
+          type: array
+          items: {type: string}
+        employee_id: {type: string}
+    Note:
+      type: object
+      additionalProperties: false
+      required: [id, created_at, body, user, private, visiblity, visibility]
+      properties:
+        id: {type: string}
+        created_at: {type: string}
+        body: {type: string}
+        user: {$ref: '#/components/schemas/UserRef'}
+        private: {type: boolean}
+        visiblity: {$ref: '#/components/schemas/NoteVisibility'}
+        visibility: {$ref: '#/components/schemas/NoteVisibility'}
+    EmailActivity:
+      type: object
+      additionalProperties: false
+      required: [id, created_at, subject, body, to, from, cc, user]
+      properties:
+        id: {type: string}
+        created_at: {type: string}
+        subject: {type: string}
+        body: {type: string}
+        to: {type: string}
+        from: {type: string}
+        cc: {type: string}
+        user: {$ref: '#/components/schemas/UserRef'}
+    Activity:
+      type: object
+      additionalProperties: false
+      required: [id, created_at, subject, body, user]
+      properties:
+        id: {type: string}
+        created_at: {type: string}
+        subject: {type: string}
+        body: {type: string}
+        user: {$ref: '#/components/schemas/UserRef'}
+    ActivityFeed:
+      type: object
+      additionalProperties: false
+      required: [notes, emails, activities]
+      properties:
+        notes:
+          type: array
+          items: {$ref: '#/components/schemas/Note'}
+        emails:
+          type: array
+          items: {$ref: '#/components/schemas/EmailActivity'}
+        activities:
+          type: array
+          items: {$ref: '#/components/schemas/Activity'}
+    CreateNoteRequest:
+      type: object
+      additionalProperties: false
+      required: [user_id, body, visibility]
+      properties:
+        user_id: {type: string, minLength: 1}
+        body: {type: string, minLength: 1}
+        visibility: {$ref: '#/components/schemas/NoteVisibility'}
+    FieldError:
+      type: object
+      additionalProperties: false
+      required: [message, field]
+      properties:
+        message: {type: string}
+        field: {type: string}
+    Error:
+      type: object
+      additionalProperties: false
+      required: [message]
+      properties:
+        message: {type: string}
+        errors:
+          type: array
+          items: {$ref: '#/components/schemas/FieldError'}

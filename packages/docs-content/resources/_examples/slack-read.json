@@ -1,0 +1,14 @@
+{
+  "id": "slack-read",
+  "title": "Read fulfillment history",
+  "environment": "environments/acme-slack.yaml",
+  "environmentLabel": "Acme's Slack",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/slack-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-slack.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS 'https://slack.com/api/conversations.history?channel=C-fulfillment'",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://slack.com/api/conversations.history?channel=C-fulfillment"
+  ]
+}

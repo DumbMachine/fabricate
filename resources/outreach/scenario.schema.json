@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/outreach/scenario-v1.json",
+  "title": "Fabricate Outreach scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sequences", "prospects", "sequenceStates", "tasks"],
+  "properties": {
+    "sequences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "description", "enabled", "sequenceType", "shareType", "tags", "createdAt", "updatedAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "description": {"type": "string"},
+          "enabled": {"type": "boolean"},
+          "sequenceType": {"enum": ["date", "interval"]},
+          "shareType": {"enum": ["private", "read_only", "shared"]},
+          "tags": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "prospects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "firstName", "lastName", "name", "emails", "title", "company", "mobilePhones", "tags", "createdAt", "updatedAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "firstName": {"type": "string", "minLength": 1},
+          "lastName": {"type": "string"},
+          "name": {"type": "string", "minLength": 1},
+          "emails": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "email"}},
+          "title": {"type": "string"},
+          "company": {"type": "string"},
+          "mobilePhones": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "tags": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "sequenceStates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "state", "prospectId", "sequenceId", "createdAt", "updatedAt", "stateChangedAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "state": {"enum": ["pending", "active", "paused", "failed", "bounced", "finished", "disabled"]},
+          "prospectId": {"type": "string", "minLength": 1},
+          "sequenceId": {"type": "string", "minLength": 1},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "stateChangedAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "action", "note", "completed", "state", "taskType", "dueAt", "completedAt", "stateChangedAt", "createdAt", "updatedAt", "prospectId", "sequenceId"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "action": {"enum": ["action_item", "call", "email", "in_person"]},
+          "note": {"type": "string"},
+          "completed": {"type": "boolean"},
+          "state": {"enum": ["pending", "incomplete", "complete"]},
+          "taskType": {
+            "enum": [
+              "follow_up",
+              "manual",
+              "no_reply",
+              "sequence_open",
+              "sequence_click",
+              "sequence_step_call",
+              "sequence_step_email",
+              "sequence_step_linkedin_interact_with_post",
+              "sequence_step_linkedin_other",
+              "sequence_step_linkedin_send_connection_request",
+              "sequence_step_linkedin_send_message",
+              "sequence_step_linkedin_view_profile",
+              "sequence_step_sms",
+              "sequence_step_task",
+              "touch"
+            ]
+          },
+          "dueAt": {"type": "string", "minLength": 1},
+          "completedAt": {"type": "string"},
+          "stateChangedAt": {"type": "string", "minLength": 1},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "prospectId": {"type": "string", "minLength": 1},
+          "sequenceId": {"type": "string"}
+        }
+      }
+    }
+  }
+}

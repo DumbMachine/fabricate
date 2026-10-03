@@ -1,0 +1,102 @@
+{
+  "id": "gupshup-read",
+  "title": "List seeded WhatsApp messages",
+  "environment": {
+    "label": "Acme's Gupshup",
+    "manifest": "environments/acme-gupshup.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gupshup.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.gupshup.io/wa/api/v1/msg",
+  "output": {
+    "messages": [
+      {
+        "destination": "+919900048120",
+        "direction": "outbound",
+        "messageId": "msg_10484",
+        "read": false,
+        "source": "918041230101",
+        "status": "delivered",
+        "text": "Your Acme Goods refund rfnd_Acme10484 for order 10484 has been issued.",
+        "timestamp": 1787397600000,
+        "type": "text"
+      },
+      {
+        "destination": "+919811122008",
+        "direction": "outbound",
+        "messageId": "msg_10483",
+        "read": false,
+        "source": "918041230101",
+        "status": "failed",
+        "text": "We could not deliver Acme Goods order 10483. Please reply with a delivery window.",
+        "timestamp": 1787646600000,
+        "type": "text"
+      },
+      {
+        "destination": "+919845011223",
+        "direction": "outbound",
+        "messageId": "msg_10482",
+        "read": false,
+        "source": "918041230101",
+        "status": "delivered",
+        "text": "Your Acme Goods order 10482 is in transit with Delhivery. AWB SR10482AWB.",
+        "timestamp": 1787652300000,
+        "type": "text"
+      },
+      {
+        "contextGsId": "msg_10482",
+        "destination": "918041230101",
+        "direction": "inbound",
+        "messageId": "msg_10482_in",
+        "read": false,
+        "senderName": "Priya Nair",
+        "source": "+919845011223",
+        "status": "received",
+        "text": "thanks, where is the tee?",
+        "timestamp": 1787658000000,
+        "type": "text"
+      }
+    ],
+    "status": "success"
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:cfb7c2f0ac192d3f14ebc7be9ae45d2d7ff836f28025b2a09d5645f93fc7b574",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:19f5fa8429b3e9bb474fd6017504dc66cc7f1d1039ffb418d701935ae2e08ff9"
+      },
+      {
+        "path": "environments/acme-gupshup.yaml",
+        "digest": "sha256:7eedd83fb3da4f6254ac965c8d8dcb17c7d67904e871b35553acedddb2c40068"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:37a2ba36c22aceb4f79ac60060b9820004e3e63e90bd26c674f8be54d8333919"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/gupshup-read.json",
+        "digest": "sha256:a984f52a731bac0c0f7bdb1fe0437d570f1fca3212e5b33380b629ccbcb488a1"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/gupshup",
+        "digest": "sha256:f55c7dbc182a9c5af6e6d158d2fa9b95a9c8432edbafb57303f308d87b589378"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
+      }
+    ]
+  }
+}

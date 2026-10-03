@@ -1,0 +1,418 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Canny API
+  version: v1
+  description: >-
+    Curated Canny API v1 contract. Every operation is POST /api/v1/<resource>.<action>
+    with a JSON body, matching https://developers.canny.io/api-reference.
+    Canny's live API authenticates with a body apiKey. This contract ignores
+    apiKey and requires Authorization Bearer, because the Fabricate proxy
+    injects that header on canny.io. Undeclared Canny operations are not
+    advertised.
+servers:
+  - url: https://canny.io
+    description: Canny API.
+security:
+  - bearerAuth: []
+tags:
+  - name: Boards
+  - name: Posts
+  - name: Users
+  - name: Votes
+paths:
+  /api/v1/boards/list:
+    post:
+      operationId: canny.boards.list
+      summary: Lists boards.
+      tags: [Boards]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ListBoardsRequest'}
+      responses:
+        '200':
+          description: Boards for the company.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListBoardsResponse'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/boards/retrieve:
+    post:
+      operationId: canny.boards.retrieve
+      summary: Retrieves a board by id.
+      tags: [Boards]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RetrieveBoardRequest'}
+      responses:
+        '200':
+          description: Board.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Board'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/posts/list:
+    post:
+      operationId: canny.posts.list
+      summary: Lists posts.
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ListPostsRequest'}
+      responses:
+        '200':
+          description: Matching posts.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListPostsResponse'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/posts/retrieve:
+    post:
+      operationId: canny.posts.retrieve
+      summary: Retrieves a post by id or urlName.
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RetrievePostRequest'}
+      responses:
+        '200':
+          description: Post.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Post'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/posts/create:
+    post:
+      operationId: canny.posts.create
+      summary: Creates a post.
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreatePostRequest'}
+      responses:
+        '200':
+          description: Created post id.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/IDResponse'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/posts/change_status:
+    post:
+      operationId: canny.posts.change_status
+      summary: Changes a post status.
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ChangePostStatusRequest'}
+      responses:
+        '200':
+          description: Updated post.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Post'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/users/retrieve:
+    post:
+      operationId: canny.users.retrieve
+      summary: Retrieves a user by id, email, or userID.
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RetrieveUserRequest'}
+      responses:
+        '200':
+          description: User.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/User'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/users/create_or_update:
+    post:
+      operationId: canny.users.create_or_update
+      summary: Creates a user or updates the matching user.
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateOrUpdateUserRequest'}
+      responses:
+        '200':
+          description: User id.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/IDResponse'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/votes/create:
+    post:
+      operationId: canny.votes.create
+      summary: Creates a vote, or reports success when it already exists.
+      tags: [Votes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateVoteRequest'}
+      responses:
+        '200':
+          description: JSON string success.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Success'}
+        '400': {$ref: '#/components/responses/Error'}
+  /api/v1/votes/retrieve:
+    post:
+      operationId: canny.votes.retrieve
+      summary: Retrieves a vote by id.
+      tags: [Votes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RetrieveVoteRequest'}
+      responses:
+        '200':
+          description: Vote.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Vote'}
+        '400': {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Environment-scoped synthetic bearer token. The body apiKey is optional
+        and ignored.
+  responses:
+    Error:
+      description: Request failed.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error: {type: string}
+    Success:
+      type: string
+      enum: [success]
+    IDResponse:
+      type: object
+      additionalProperties: false
+      required: [id]
+      properties:
+        id: {type: string}
+    User:
+      type: object
+      additionalProperties: false
+      required: [created, email, id, isAdmin, name, url, userID]
+      properties:
+        created: {type: string}
+        email: {type: string}
+        id: {type: string}
+        isAdmin: {type: boolean}
+        name: {type: string}
+        url: {type: string}
+        userID: {type: string}
+    BoardSummary:
+      type: object
+      additionalProperties: false
+      required: [created, id, name, postCount, url]
+      properties:
+        created: {type: string}
+        id: {type: string}
+        name: {type: string}
+        postCount: {type: integer}
+        url: {type: string}
+    Board:
+      type: object
+      additionalProperties: false
+      required: [created, id, isPrivate, name, postCount, privateComments, url]
+      properties:
+        created: {type: string}
+        id: {type: string}
+        isPrivate: {type: boolean}
+        name: {type: string}
+        postCount: {type: integer}
+        privateComments: {type: boolean}
+        url: {type: string}
+    Post:
+      type: object
+      additionalProperties: false
+      required: [author, board, commentCount, created, details, id, imageURLs, score, status, statusChangedAt, title, url]
+      properties:
+        author: {$ref: '#/components/schemas/User'}
+        board: {$ref: '#/components/schemas/BoardSummary'}
+        by: {$ref: '#/components/schemas/User'}
+        commentCount: {type: integer}
+        created: {type: string}
+        details: {type: string}
+        id: {type: string}
+        imageURLs:
+          type: array
+          items: {type: string}
+        score: {type: integer}
+        status: {type: string}
+        statusChangedAt: {type: string}
+        title: {type: string}
+        url: {type: string}
+    VotePost:
+      type: object
+      additionalProperties: false
+      required: [commentCount, details, id, imageURLs, score, status, title, url]
+      properties:
+        commentCount: {type: integer}
+        details: {type: string}
+        id: {type: string}
+        imageURLs:
+          type: array
+          items: {type: string}
+        score: {type: integer}
+        status: {type: string}
+        title: {type: string}
+        url: {type: string}
+    Vote:
+      type: object
+      additionalProperties: false
+      required: [board, created, id, post, votePriority, voter]
+      properties:
+        board: {$ref: '#/components/schemas/BoardSummary'}
+        by: {$ref: '#/components/schemas/User'}
+        created: {type: string}
+        id: {type: string}
+        post: {$ref: '#/components/schemas/VotePost'}
+        votePriority:
+          type: string
+          enum: ["No priority", "Nice to have", "Important", "Must have"]
+        voter: {$ref: '#/components/schemas/User'}
+    ListBoardsResponse:
+      type: object
+      additionalProperties: false
+      required: [boards]
+      properties:
+        boards:
+          type: array
+          items: {$ref: '#/components/schemas/Board'}
+    ListPostsResponse:
+      type: object
+      additionalProperties: false
+      required: [hasMore, posts]
+      properties:
+        hasMore: {type: boolean}
+        posts:
+          type: array
+          items: {$ref: '#/components/schemas/Post'}
+    ListBoardsRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+    RetrieveBoardRequest:
+      type: object
+      additionalProperties: false
+      required: [id]
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        id: {type: string, minLength: 1}
+    ListPostsRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        authorID: {type: string}
+        boardID: {type: string}
+        limit: {type: integer, minimum: 1, maximum: 100}
+        search: {type: string}
+        skip: {type: integer, minimum: 0}
+        sort:
+          type: string
+          enum: [newest, oldest, relevance, score, statusChanged, trending]
+        status: {type: string, description: Comma-separated statuses.}
+    RetrievePostRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        boardID: {type: string}
+        id: {type: string}
+        urlName: {type: string}
+    CreatePostRequest:
+      type: object
+      additionalProperties: false
+      required: [authorID, boardID, title]
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        authorID: {type: string, minLength: 1}
+        boardID: {type: string, minLength: 1}
+        byID: {type: string}
+        created: {type: string}
+        details: {type: string}
+        title: {type: string, minLength: 1}
+    ChangePostStatusRequest:
+      type: object
+      additionalProperties: false
+      required: [changerID, postID, status]
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        changerID: {type: string, minLength: 1}
+        comment: {type: string}
+        postID: {type: string, minLength: 1}
+        shouldNotifyVoters: {type: boolean}
+        status: {type: string, minLength: 1}
+    RetrieveUserRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        email: {type: string}
+        id: {type: string}
+        userID: {type: string}
+    CreateOrUpdateUserRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        created: {type: string}
+        email: {type: string}
+        id: {type: string}
+        name: {type: string, maxLength: 50}
+        userID: {type: string}
+    CreateVoteRequest:
+      type: object
+      additionalProperties: false
+      required: [postID, voterID]
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        byID: {type: string}
+        created: {type: string}
+        postID: {type: string, minLength: 1}
+        votePriority:
+          type: integer
+          enum: [0, 10, 20]
+          description: 0 Nice to have, 10 Important, 20 Must have. Omitted means No priority.
+        voterID: {type: string, minLength: 1}
+    RetrieveVoteRequest:
+      type: object
+      additionalProperties: false
+      required: [id]
+      properties:
+        apiKey: {type: string, description: Ignored. Send Authorization Bearer.}
+        id: {type: string, minLength: 1}

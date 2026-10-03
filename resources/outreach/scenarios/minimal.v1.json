@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "outreach.minimal.v1",
+  "$resource": "outreach",
+  "$resourceVersion": "v2",
+  "state": {
+    "sequences": [],
+    "prospects": [],
+    "sequenceStates": [],
+    "tasks": []
+  }
+}

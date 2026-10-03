@@ -1,0 +1,120 @@
+---
+title: Airbyte
+description: Sources, destinations, connections, and jobs.
+sidebar:
+  icon: https://logos.composio.dev/api/airbyte
+---
+
+<ResourceCoverage resource="airbyte" />
+
+Sources, destinations, connections, and jobs. Local Airbyte API v1 that keeps
+sync state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Airbyte API v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `api.airbyte.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-airbyte.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_AIRBYTE_TOKEN" \
+      "$FAB_AIRBYTE_URL/v1/jobs"'
+```
+
+The service is named `airbyte` in the example manifest, so the variables are
+`FAB_AIRBYTE_URL` and `FAB_AIRBYTE_TOKEN`.
+
+The response is the Acme sync history:
+
+```json
+{
+  "data": [
+    {
+      "connectionId": "conn_shopify_goods",
+      "duration": "PT6M",
+      "jobId": "job_10482",
+      "jobType": "sync",
+      "lastUpdatedAt": "2026-08-25T10:06:00Z",
+      "startTime": "2026-08-25T10:00:00Z",
+      "status": "succeeded"
+    },
+    {
+      "duration": "PT2M",
+      "failureReason": "Sync of source_shiprocket failed: shipment 10483 NDR, Customer not available",
+      "jobId": "job_fail_ndr",
+      "jobType": "sync",
+      "lastUpdatedAt": "2026-08-24T17:02:00Z",
+      "sourceId": "source_shiprocket",
+      "startTime": "2026-08-24T17:00:00Z",
+      "status": "failed"
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Airbyte URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Airbyte's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_AIRBYTE_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-airbyte.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.airbyte.com/v1/jobs
+```
+
+Fabricate handles `api.airbyte.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="airbyte"
+  descriptions={{
+    "airbyte.minimal.v1": "An empty Airbyte workspace for a clean test.",
+    "airbyte.acme-syncs.v1": "Shopify, Razorpay, and Shiprocket sources into Redshift, with the succeeded 10482 sync and the failed shipment 10483 sync.",
+  }}
+/>
+
+Peek at the committed Acme syncs. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="airbyte"
+  scenario="acme-syncs.v1"
+  collection="jobs"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Airbyte check ran against the Acme Airbyte
+environment with curl:
+
+<IntegrationCompatibility resource="airbyte" />
+
+## Supported operations
+
+<SupportedOperations resource="airbyte" />

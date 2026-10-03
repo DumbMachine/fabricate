@@ -1,0 +1,60 @@
+{
+  "integration": "airbyte",
+  "api": "Airbyte v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/connections",
+      "operationId": "listConnections",
+      "summary": "List connections"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/connections/{connectionId}",
+      "operationId": "getConnection",
+      "summary": "Get a connection"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/destinations",
+      "operationId": "listDestinations",
+      "summary": "List destinations"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/destinations/{destinationId}",
+      "operationId": "getDestination",
+      "summary": "Get a destination"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/jobs",
+      "operationId": "listJobs",
+      "summary": "List jobs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/jobs",
+      "operationId": "createJob",
+      "summary": "Trigger a sync or reset job of a connection"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/jobs/{jobId}",
+      "operationId": "getJob",
+      "summary": "Get job status and details"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sources",
+      "operationId": "listSources",
+      "summary": "List sources"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sources/{sourceId}",
+      "operationId": "getSource",
+      "summary": "Get a source"
+    }
+  ]
+}

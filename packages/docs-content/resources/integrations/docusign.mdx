@@ -1,0 +1,250 @@
+---
+title: DocuSign
+description: Accounts, users, envelopes, recipients, and documents.
+sidebar:
+  icon: https://logos.composio.dev/api/docusign
+---
+
+<ResourceCoverage resource="docusign" />
+
+Accounts, users, envelopes, recipients, and documents. Local DocuSign
+eSignature REST API v2.1 that keeps envelope state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | DocuSign eSignature REST API v2.1 |
+| Auth | Synthetic bearer token |
+| Hosts | `demo.docusign.net` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-docusign.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_DOCUSIGN_TOKEN" \
+      "$FAB_DOCUSIGN_URL/restapi/v2.1/accounts/acct-acme/envelopes"'
+```
+
+The service is named `docusign` in the example manifest, so the variables are
+`FAB_DOCUSIGN_URL` and `FAB_DOCUSIGN_TOKEN`.
+
+The response is the Acme envelope list. `env-tinyshop-refund` is still sent
+and waiting on Marco, `env-offer-jordan` is delivered, and
+`env-fernworks-msa` is completed:
+
+```json
+{
+  "endPosition": "2",
+  "envelopes": [
+    {
+      "createdDateTime": "2026-08-25T14:00:00.0000000Z",
+      "documentsUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-tinyshop-refund/documents",
+      "emailBlurb": "Waiting on Marco Silva to sign TinyShop-cancellation.pdf for TinyShop annual Pro invoice INV-1188. The subscription is not refunded yet. Ironclad workflow wf-tinyshop-cancel.",
+      "emailSubject": "TinyShop cancellation under the 30-day guarantee",
+      "envelopeDocuments": [
+        {
+          "documentId": "1",
+          "fileExtension": "pdf",
+          "name": "TinyShop-cancellation.pdf",
+          "order": "1",
+          "type": "content",
+          "uri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-tinyshop-refund/documents/1"
+        }
+      ],
+      "envelopeId": "env-tinyshop-refund",
+      "envelopeUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-tinyshop-refund",
+      "recipients": {
+        "currentRoutingOrder": "1",
+        "recipientCount": "1",
+        "signers": [
+          {
+            "email": "marco@tinyshop.example",
+            "name": "Marco Silva",
+            "recipientId": "1",
+            "routingOrder": "1",
+            "sentDateTime": "2026-08-25T14:02:00.0000000Z",
+            "status": "sent"
+          }
+        ]
+      },
+      "recipientsUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-tinyshop-refund/recipients",
+      "sender": {
+        "accountId": "acct-acme",
+        "email": "iris@acme.example",
+        "userId": "user-iris",
+        "userName": "Iris Berg"
+      },
+      "sentDateTime": "2026-08-25T14:02:00.0000000Z",
+      "status": "sent",
+      "statusChangedDateTime": "2026-08-25T14:02:00.0000000Z"
+    },
+    {
+      "createdDateTime": "2026-08-20T08:00:00.0000000Z",
+      "deliveredDateTime": "2026-08-24T16:10:00.0000000Z",
+      "documentsUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-offer-jordan/documents",
+      "emailBlurb": "Offer letter offer-letter-jordan-hale.pdf for Greenhouse offer offer-jordan. Jordan Hale starts 2026-09-08.",
+      "emailSubject": "Offer letter for Jordan Hale",
+      "envelopeDocuments": [
+        {
+          "documentId": "1",
+          "fileExtension": "pdf",
+          "name": "offer-letter-jordan-hale.pdf",
+          "order": "1",
+          "type": "content",
+          "uri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-offer-jordan/documents/1"
+        }
+      ],
+      "envelopeId": "env-offer-jordan",
+      "envelopeUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-offer-jordan",
+      "recipients": {
+        "currentRoutingOrder": "1",
+        "recipientCount": "1",
+        "signers": [
+          {
+            "deliveredDateTime": "2026-08-24T16:10:00.0000000Z",
+            "email": "jordan.hale@acme.example",
+            "name": "Jordan Hale",
+            "recipientId": "1",
+            "routingOrder": "1",
+            "sentDateTime": "2026-08-20T08:05:00.0000000Z",
+            "status": "delivered"
+          }
+        ]
+      },
+      "recipientsUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-offer-jordan/recipients",
+      "sender": {
+        "accountId": "acct-acme",
+        "email": "iris@acme.example",
+        "userId": "user-iris",
+        "userName": "Iris Berg"
+      },
+      "sentDateTime": "2026-08-20T08:05:00.0000000Z",
+      "status": "delivered",
+      "statusChangedDateTime": "2026-08-24T16:10:00.0000000Z"
+    },
+    {
+      "completedDateTime": "2026-08-12T15:30:00.0000000Z",
+      "createdDateTime": "2026-08-10T09:00:00.0000000Z",
+      "deliveredDateTime": "2026-08-10T11:00:00.0000000Z",
+      "documentsUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-fernworks-msa/documents",
+      "emailBlurb": "Priya Nair and Iris Berg sign Fernworks-MSA.pdf. Ironclad workflow wf-fernworks-msa.",
+      "emailSubject": "Please sign the Fernworks master services agreement",
+      "envelopeDocuments": [
+        {
+          "documentId": "1",
+          "fileExtension": "pdf",
+          "name": "Fernworks-MSA.pdf",
+          "order": "1",
+          "type": "content",
+          "uri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-fernworks-msa/documents/1"
+        }
+      ],
+      "envelopeId": "env-fernworks-msa",
+      "envelopeUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-fernworks-msa",
+      "recipients": {
+        "currentRoutingOrder": "2",
+        "recipientCount": "2",
+        "signers": [
+          {
+            "deliveredDateTime": "2026-08-10T11:00:00.0000000Z",
+            "email": "priya@fernworks.example",
+            "name": "Priya Nair",
+            "recipientId": "1",
+            "routingOrder": "1",
+            "sentDateTime": "2026-08-10T09:05:00.0000000Z",
+            "signedDateTime": "2026-08-11T10:00:00.0000000Z",
+            "status": "completed"
+          },
+          {
+            "deliveredDateTime": "2026-08-11T10:05:00.0000000Z",
+            "email": "iris@acme.example",
+            "name": "Iris Berg",
+            "recipientId": "2",
+            "routingOrder": "2",
+            "sentDateTime": "2026-08-11T10:00:00.0000000Z",
+            "signedDateTime": "2026-08-12T15:30:00.0000000Z",
+            "status": "completed"
+          }
+        ]
+      },
+      "recipientsUri": "/restapi/v2.1/accounts/acct-acme/envelopes/env-fernworks-msa/recipients",
+      "sender": {
+        "accountId": "acct-acme",
+        "email": "iris@acme.example",
+        "userId": "user-iris",
+        "userName": "Iris Berg"
+      },
+      "sentDateTime": "2026-08-10T09:05:00.0000000Z",
+      "status": "completed",
+      "statusChangedDateTime": "2026-08-12T15:30:00.0000000Z"
+    }
+  ],
+  "resultSetSize": "3",
+  "startPosition": "0",
+  "totalSetSize": "3"
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal DocuSign URLs and follows standard proxy
+and CA environment variables. This one-paste check calls DocuSign's demo
+hostname; replace the final `curl` with your app. Omit `$FAB_DOCUSIGN_TOKEN`
+here: the proxy replaces `Authorization` on routed hosts with the
+environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-docusign.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://demo.docusign.net/restapi/v2.1/accounts/acct-acme/envelopes
+```
+
+Fabricate handles `/restapi/` on `demo.docusign.net` locally. Other hosts are
+forwarded unchanged; set `proxy.unknown_hosts: reject` for an isolated,
+fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="docusign"
+  descriptions={{
+    "docusign.minimal.v1": "An empty Acme account for a clean test.",
+    "docusign.acme-envelopes.v1": "Fernworks MSA, TinyShop cancellation waiting on Marco, and Jordan Hale's offer letter.",
+  }}
+/>
+
+Peek at the committed Acme envelopes. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="docusign"
+  scenario="acme-envelopes.v1"
+  collection="envelopes"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest DocuSign check ran against the Acme DocuSign
+environment with curl:
+
+<IntegrationCompatibility resource="docusign" />
+
+## Supported operations
+
+<SupportedOperations resource="docusign" />
