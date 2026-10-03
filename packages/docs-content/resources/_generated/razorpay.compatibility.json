@@ -1,0 +1,44 @@
+{
+  "api": "Razorpay API v1",
+  "environment": {
+    "label": "Acme Razorpay",
+    "manifest": "environments/acme-razorpay.yaml",
+    "messages": 6
+  },
+  "integration": "razorpay",
+  "modes": {
+    "direct": {
+      "messagesAfter": 7,
+      "messagesBefore": 6,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 7,
+      "messagesBefore": 6,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read captured payments",
+    "write": "Refund a captured payment",
+    "persistence": "Confirm the refund"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:34:07.157Z",
+  "testedCommit": "7aff68f2810151492e067efb12bcb7e71d7828e6"
+}

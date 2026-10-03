@@ -1,0 +1,459 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Razorpay API
+  version: v1
+  description: >-
+    Curated Razorpay API v1 contract supported by Fabricate. Covers orders,
+    payments, refunds, and payment links. Undeclared Razorpay operations are
+    not advertised. Live Razorpay authenticates with HTTP Basic; this contract
+    accepts a synthetic bearer token because the Fabricate proxy injects one.
+servers:
+  - url: https://api.razorpay.com
+security:
+  - bearerAuth: []
+tags:
+  - name: Orders
+  - name: Payments
+  - name: Refunds
+  - name: Payment Links
+paths:
+  /v1/orders:
+    get:
+      operationId: razorpay.orders.list
+      summary: Fetch all orders.
+      tags: [Orders]
+      parameters:
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Skip'
+        - name: receipt
+          in: query
+          description: Return the order with this receipt, when set.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Order collection.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/OrderCollection'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: razorpay.orders.create
+      summary: Create an order.
+      tags: [Orders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateOrderRequest'}
+      responses:
+        '200':
+          description: Created order.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Order'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/orders/{id}:
+    get:
+      operationId: razorpay.orders.fetch
+      summary: Fetch an order by id.
+      tags: [Orders]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Order.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Order'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/orders/{id}/payments:
+    get:
+      operationId: razorpay.orders.fetchPayments
+      summary: Fetch payments for an order.
+      tags: [Orders]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Skip'
+      responses:
+        '200':
+          description: Payments captured or attempted against the order.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentCollection'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payments:
+    get:
+      operationId: razorpay.payments.list
+      summary: Fetch all payments.
+      tags: [Payments]
+      parameters:
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Skip'
+      responses:
+        '200':
+          description: Payment collection.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentCollection'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payments/{id}:
+    get:
+      operationId: razorpay.payments.fetch
+      summary: Fetch a payment by id.
+      tags: [Payments]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Payment.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Payment'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payments/{id}/refund:
+    post:
+      operationId: razorpay.payments.refund
+      summary: Create a normal refund for a captured payment.
+      tags: [Refunds]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateRefundRequest'}
+      responses:
+        '200':
+          description: Created refund.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Refund'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payments/{id}/refunds:
+    get:
+      operationId: razorpay.payments.fetchRefunds
+      summary: Fetch refunds for a payment.
+      tags: [Refunds]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Skip'
+      responses:
+        '200':
+          description: Refund collection for the payment.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RefundCollection'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/refunds:
+    get:
+      operationId: razorpay.refunds.list
+      summary: Fetch all refunds.
+      tags: [Refunds]
+      parameters:
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Skip'
+      responses:
+        '200':
+          description: Refund collection.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RefundCollection'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/refunds/{id}:
+    get:
+      operationId: razorpay.refunds.fetch
+      summary: Fetch a refund by id.
+      tags: [Refunds]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Refund.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Refund'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payment_links:
+    get:
+      operationId: razorpay.paymentLinks.list
+      summary: Fetch all standard payment links.
+      tags: [Payment Links]
+      parameters:
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Skip'
+      responses:
+        '200':
+          description: Payment link collection.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentLinkCollection'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: razorpay.paymentLinks.create
+      summary: Create a standard payment link.
+      tags: [Payment Links]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreatePaymentLinkRequest'}
+      responses:
+        '200':
+          description: Created payment link.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentLink'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payment_links/{id}:
+    get:
+      operationId: razorpay.paymentLinks.fetch
+      summary: Fetch a standard payment link by id.
+      tags: [Payment Links]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Payment link.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentLink'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/payment_links/{id}/cancel:
+    post:
+      operationId: razorpay.paymentLinks.cancel
+      summary: Cancel a standard payment link.
+      tags: [Payment Links]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Cancelled payment link.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentLink'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token from the secret key `token`. Razorpay's live
+        API uses HTTP Basic with the key id and secret. Fabricate accepts
+        Bearer because the proxy overwrites Authorization.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    Count:
+      name: count
+      in: query
+      description: Number of records to return. Defaults to 10. Maximum 100.
+      schema: {type: integer, minimum: 1, maximum: 100, default: 10}
+    Skip:
+      name: skip
+      in: query
+      description: Number of records to skip. Defaults to 0.
+      schema: {type: integer, minimum: 0, default: 0}
+  responses:
+    Error:
+      description: Razorpay error envelope.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorEnvelope'}
+  schemas:
+    Notes:
+      type: object
+      additionalProperties: {type: string}
+      description: >-
+        Key-value notes, at most 15 pairs. Empty notes are an object. Live
+        Razorpay sometimes returns an empty array instead.
+    Customer:
+      type: object
+      additionalProperties: false
+      required: [name, email, contact]
+      properties:
+        name: {type: string}
+        email: {type: string}
+        contact: {type: string}
+    Notify:
+      type: object
+      additionalProperties: false
+      required: [email, sms]
+      properties:
+        email: {type: boolean}
+        sms: {type: boolean}
+    Order:
+      type: object
+      additionalProperties: false
+      required: [id, entity, amount, amount_paid, amount_due, currency, receipt, status, attempts, notes, created_at]
+      properties:
+        id: {type: string}
+        entity: {type: string, enum: [order]}
+        amount: {type: integer, minimum: 0}
+        amount_paid: {type: integer, minimum: 0}
+        amount_due: {type: integer, minimum: 0}
+        currency: {type: string, minLength: 3, maxLength: 3}
+        receipt: {type: string, maxLength: 40}
+        status: {type: string, description: "created, attempted, or paid."}
+        attempts: {type: integer, minimum: 0}
+        notes: {$ref: '#/components/schemas/Notes'}
+        created_at: {type: integer, minimum: 0, description: Unix timestamp.}
+    OrderCollection:
+      type: object
+      additionalProperties: false
+      required: [entity, count, items]
+      properties:
+        entity: {type: string, enum: [collection]}
+        count: {type: integer, minimum: 0}
+        items: {type: array, items: {$ref: '#/components/schemas/Order'}}
+    CreateOrderRequest:
+      type: object
+      additionalProperties: false
+      required: [amount, currency]
+      properties:
+        amount: {type: integer, minimum: 0, description: Amount in currency subunits. Paise for INR.}
+        currency: {type: string, pattern: '^[A-Z]{3}$'}
+        receipt: {type: string, maxLength: 40}
+        notes: {$ref: '#/components/schemas/Notes'}
+    Payment:
+      type: object
+      additionalProperties: false
+      required: [id, entity, amount, currency, status, order_id, international, method, amount_refunded, captured, description, email, contact, notes, fee, tax, acquirer_data, created_at]
+      properties:
+        id: {type: string}
+        entity: {type: string, enum: [payment]}
+        amount: {type: integer, minimum: 0}
+        currency: {type: string}
+        status: {type: string, description: "created, authorized, captured, refunded, or failed."}
+        order_id: {type: string}
+        international: {type: boolean}
+        method: {type: string, description: "card, netbanking, wallet, emi, or upi."}
+        amount_refunded: {type: integer, minimum: 0}
+        refund_status: {type: string, description: "partial or full. Omitted when the payment has no refund."}
+        captured: {type: boolean}
+        description: {type: string}
+        email: {type: string}
+        contact: {type: string}
+        notes: {$ref: '#/components/schemas/Notes'}
+        fee: {type: integer, minimum: 0}
+        tax: {type: integer, minimum: 0}
+        acquirer_data:
+          type: object
+          additionalProperties: {type: string}
+        created_at: {type: integer, minimum: 0}
+    PaymentCollection:
+      type: object
+      additionalProperties: false
+      required: [entity, count, items]
+      properties:
+        entity: {type: string, enum: [collection]}
+        count: {type: integer, minimum: 0}
+        items: {type: array, items: {$ref: '#/components/schemas/Payment'}}
+    Refund:
+      type: object
+      additionalProperties: false
+      required: [id, entity, amount, currency, payment_id, notes, receipt, acquirer_data, created_at, status, speed_processed, speed_requested]
+      properties:
+        id: {type: string}
+        entity: {type: string, enum: [refund]}
+        amount: {type: integer, minimum: 0}
+        currency: {type: string}
+        payment_id: {type: string}
+        notes: {$ref: '#/components/schemas/Notes'}
+        receipt: {type: string}
+        acquirer_data:
+          type: object
+          additionalProperties: {type: string}
+        created_at: {type: integer, minimum: 0}
+        status: {type: string, description: "pending, processed, or failed."}
+        speed_processed: {type: string}
+        speed_requested: {type: string}
+    RefundCollection:
+      type: object
+      additionalProperties: false
+      required: [entity, count, items]
+      properties:
+        entity: {type: string, enum: [collection]}
+        count: {type: integer, minimum: 0}
+        items: {type: array, items: {$ref: '#/components/schemas/Refund'}}
+    CreateRefundRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        amount: {type: integer, minimum: 0, description: Omit to refund the remaining captured amount.}
+        speed: {type: string, enum: [normal, optimum]}
+        notes: {$ref: '#/components/schemas/Notes'}
+        receipt: {type: string, maxLength: 40}
+    PaymentLink:
+      type: object
+      additionalProperties: false
+      required: [id, entity, amount, amount_paid, currency, accept_partial, description, reference_id, customer, notes, notify, reminder_enable, short_url, status, expire_by, expired_at, cancelled_at, created_at, updated_at, user_id]
+      properties:
+        id: {type: string}
+        entity: {type: string, enum: [payment_link]}
+        amount: {type: integer, minimum: 0}
+        amount_paid: {type: integer, minimum: 0}
+        currency: {type: string}
+        accept_partial: {type: boolean}
+        description: {type: string}
+        reference_id: {type: string}
+        customer: {$ref: '#/components/schemas/Customer'}
+        notes: {$ref: '#/components/schemas/Notes'}
+        notify: {$ref: '#/components/schemas/Notify'}
+        reminder_enable: {type: boolean}
+        short_url: {type: string}
+        status: {type: string, description: "created, partially_paid, paid, expired, or cancelled."}
+        expire_by: {type: integer, minimum: 0}
+        expired_at: {type: integer, minimum: 0}
+        cancelled_at: {type: integer, minimum: 0}
+        created_at: {type: integer, minimum: 0}
+        updated_at: {type: integer, minimum: 0}
+        user_id: {type: string}
+    PaymentLinkCollection:
+      type: object
+      additionalProperties: false
+      required: [entity, count, items]
+      properties:
+        entity: {type: string, enum: [collection]}
+        count: {type: integer, minimum: 0}
+        items: {type: array, items: {$ref: '#/components/schemas/PaymentLink'}}
+    CreatePaymentLinkRequest:
+      type: object
+      additionalProperties: false
+      required: [amount, currency]
+      properties:
+        amount: {type: integer, minimum: 0}
+        currency: {type: string, pattern: '^[A-Z]{3}$'}
+        accept_partial: {type: boolean}
+        description: {type: string}
+        reference_id: {type: string}
+        customer: {$ref: '#/components/schemas/Customer'}
+        notes: {$ref: '#/components/schemas/Notes'}
+        notify: {$ref: '#/components/schemas/Notify'}
+        reminder_enable: {type: boolean}
+        expire_by: {type: integer, minimum: 0}
+    ErrorBody:
+      type: object
+      additionalProperties: false
+      required: [code, description, source, step, reason, metadata]
+      properties:
+        code: {type: string}
+        description: {type: string}
+        source: {type: string}
+        step: {type: string}
+        reason: {type: string}
+        metadata:
+          type: object
+          additionalProperties: {type: string}
+        field: {type: string}
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error: {$ref: '#/components/schemas/ErrorBody'}

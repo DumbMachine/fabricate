@@ -1,0 +1,121 @@
+---
+title: Razorpay
+description: Orders, payments, refunds, and payment links.
+sidebar:
+  icon: https://logos.composio.dev/api/razorpay
+---
+
+<ResourceCoverage resource="razorpay" />
+
+Orders, payments, refunds, and payment links. Local Razorpay v1 that keeps
+captured payments and refunds across requests. Amounts are paise.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Razorpay v1 |
+| Auth | Synthetic bearer token. Razorpay's live API uses HTTP Basic with the key id and secret. |
+| Hosts | `api.razorpay.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-razorpay.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_RAZORPAY_TOKEN" \
+      "$FAB_RAZORPAY_URL/v1/payments/pay_Acme10482"'
+```
+
+The service is named `razorpay` in the example manifest, so the variables are
+`FAB_RAZORPAY_URL` and `FAB_RAZORPAY_TOKEN`.
+
+The response is the captured UPI payment for Acme Goods order 10482:
+
+```json
+{
+  "acquirer_data": {},
+  "amount": 309700,
+  "amount_refunded": 0,
+  "captured": true,
+  "contact": "+91-98450-11223",
+  "created_at": 1787649240,
+  "currency": "INR",
+  "description": "Acme Goods order 10482",
+  "email": "priya@fernworks.example",
+  "entity": "payment",
+  "fee": 0,
+  "id": "pay_Acme10482",
+  "international": false,
+  "method": "upi",
+  "notes": {
+    "order_id": "10482",
+    "shop": "acme-goods"
+  },
+  "order_id": "order_Acme10482",
+  "status": "captured",
+  "tax": 0
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Razorpay URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Razorpay's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_RAZORPAY_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token. Live Razorpay expects HTTP Basic; this
+resource accepts the bearer token the proxy injects.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-razorpay.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.razorpay.com/v1/payments/pay_Acme10482
+```
+
+Fabricate handles `api.razorpay.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="razorpay"
+  descriptions={{
+    "razorpay.minimal.v1": "An empty Razorpay account for a clean test.",
+    "razorpay.acme-payments.v1": "Acme Goods and agency shop payments, including full refund rfnd_Acme10484.",
+  }}
+/>
+
+Peek at the committed Acme payments world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="razorpay"
+  scenario="acme-payments.v1"
+  collection="payments"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Razorpay check ran against the Acme Razorpay
+environment with curl:
+
+<IntegrationCompatibility resource="razorpay" />
+
+## Supported operations
+
+<SupportedOperations resource="razorpay" />
