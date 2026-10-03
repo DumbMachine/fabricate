@@ -1,0 +1,550 @@
+openapi: 3.0.3
+info:
+  title: Fabricate BambooHR API
+  version: v1
+  description: >-
+    Curated BambooHR API v1 contract for the company host. Paths match the
+    public reference at https://documentation.bamboohr.com/reference.
+    Production BambooHR uses HTTP Basic; this contract accepts a bearer token
+    because Fabricate's proxy injects one. Undeclared BambooHR operations are
+    not advertised.
+servers:
+  - url: https://acme.bamboohr.com
+    description: Acme company subdomain.
+security:
+  - bearerAuth: []
+tags:
+  - name: Account
+  - name: Employees
+  - name: Time Off
+paths:
+  /api/v1/meta/company:
+    get:
+      operationId: get-meta-company
+      summary: Get company properties.
+      tags: [Account]
+      responses:
+        '200':
+          description: Company id, name, subdomain, and legacy gateway URL.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Company'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/employees:
+    get:
+      operationId: list-employees
+      summary: List employees.
+      description: >-
+        Returns the company roster in one page. `fields` adds comma-separated
+        extras beyond the default identity and job columns. `sort` is a
+        comma-separated list; prefix a field with `-` for descending order.
+      tags: [Employees]
+      parameters:
+        - $ref: '#/components/parameters/EmployeeFields'
+        - $ref: '#/components/parameters/EmployeeSort'
+      responses:
+        '200':
+          description: Paginated employees.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EmployeeList'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/employees/directory:
+    get:
+      operationId: get-employees-directory
+      summary: Get the employee directory.
+      tags: [Employees]
+      parameters:
+        - name: onlyCurrent
+          in: query
+          description: Accepted for compatibility. Only current values are stored.
+          schema: {type: boolean, default: true}
+      responses:
+        '200':
+          description: Directory fieldset and employee rows.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Directory'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/employees/{id}:
+    get:
+      operationId: get-employee
+      summary: Get an employee.
+      description: >-
+        Returns `id` plus any fields named in `fields`. The id `0` is the
+        employee bound to the caller.
+      tags: [Employees]
+      parameters:
+        - $ref: '#/components/parameters/EmployeeId'
+        - $ref: '#/components/parameters/EmployeeFields'
+        - name: onlyCurrent
+          in: query
+          description: Accepted for compatibility. Only current values are stored.
+          schema: {type: boolean, default: true}
+      responses:
+        '200':
+          description: Employee field map.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EmployeeRecord'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/meta/lists:
+    get:
+      operationId: list-list-fields
+      summary: List list fields.
+      description: Department options for the company.
+      tags: [Account]
+      responses:
+        '200':
+          description: List fields and their options.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/ListField'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/meta/time_off/types:
+    get:
+      operationId: list-time-off-types
+      summary: List time off types.
+      tags: [Time Off]
+      parameters:
+        - name: mode
+          in: query
+          schema: {type: string, enum: [request]}
+      responses:
+        '200':
+          description: Time off types and the default hours schedule.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TimeOffTypeList'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/time_off/requests:
+    get:
+      operationId: list-time-off-requests
+      summary: List time off requests.
+      description: >-
+        Supply `start` and `end` together, `updatedSince`, or all three. A
+        date window returns requests that overlap it. `employeeId=0` returns
+        an empty array; use `action=myRequests` for the caller.
+      tags: [Time Off]
+      parameters:
+        - name: id
+          in: query
+          schema: {type: string}
+        - name: action
+          in: query
+          schema: {type: string, enum: [view, approve, myRequests], default: view}
+        - name: employeeId
+          in: query
+          schema: {type: string}
+        - name: start
+          in: query
+          description: YYYY-MM-DD. Keep requests whose end is on or after this date.
+          schema: {type: string}
+        - name: end
+          in: query
+          description: YYYY-MM-DD. Keep requests whose start is on or before this date.
+          schema: {type: string}
+        - name: updatedSince
+          in: query
+          description: ISO 8601 UTC timestamp.
+          schema: {type: string}
+        - name: type
+          in: query
+          description: Comma-separated time off type ids.
+          schema: {type: string}
+        - name: status
+          in: query
+          description: Comma-separated statuses. approved, denied, superceded, requested, canceled.
+          schema: {type: string}
+        - name: excludeNote
+          in: query
+          schema: {type: string}
+      responses:
+        '200':
+          description: Matching time off requests.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/TimeOffRequest'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/employees/{employeeId}/time_off/request:
+    put:
+      operationId: create-time-off-request
+      summary: Create a time off request.
+      tags: [Time Off]
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          description: Internal employee id. `0` is the caller.
+          schema: {type: string, pattern: '^\d+$'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/TimeOffRequestCreate'}
+      responses:
+        '201':
+          description: Created request.
+          headers:
+            Location:
+              description: Path of the created request.
+              schema: {type: string}
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TimeOffRequest'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/time_off/requests/{requestId}/status:
+    put:
+      operationId: update-time-off-request-status
+      summary: Update a time off request status.
+      tags: [Time Off]
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema: {type: string, minLength: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/TimeOffStatusUpdate'}
+      responses:
+        '200':
+          description: Empty JSON object.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Empty'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/time_off/whos_out:
+    get:
+      operationId: list-whos-out
+      summary: List who is out.
+      description: >-
+        Approved time off overlapping the window. Defaults to the clock's date
+        through 14 days later.
+      tags: [Time Off]
+      parameters:
+        - name: start
+          in: query
+          schema: {type: string}
+        - name: end
+          in: query
+          schema: {type: string}
+      responses:
+        '200':
+          description: Time off entries in the window.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/WhosOutEntry'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. BambooHR production uses HTTP Basic with the
+        API key as the username.
+  parameters:
+    EmployeeId:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    EmployeeFields:
+      name: fields
+      in: query
+      description: Comma-separated employee field names.
+      schema: {type: string}
+    EmployeeSort:
+      name: sort
+      in: query
+      description: Comma-separated sort fields. Prefix with `-` for descending.
+      schema: {type: string}
+  responses:
+    Error:
+      description: Error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [message]
+      properties:
+        message: {type: string}
+    Empty:
+      type: object
+      additionalProperties: false
+    Company:
+      type: object
+      additionalProperties: false
+      required: [id, name, domain, baseApiUrl]
+      properties:
+        id: {type: integer, description: Numeric company id.}
+        name: {type: string}
+        domain: {type: string, description: Company subdomain.}
+        baseApiUrl:
+          type: string
+          description: Legacy gateway URL, https://api.bamboohr.com/api/gateway.php/{domain}.
+    EmployeeSummary:
+      type: object
+      additionalProperties: false
+      required: [employeeId, firstName, lastName, preferredName, photoUrl, jobTitleName, status, _restrictedFields]
+      properties:
+        employeeId: {type: string}
+        firstName: {type: string}
+        lastName: {type: string}
+        preferredName: {type: string}
+        photoUrl: {type: string, nullable: true}
+        jobTitleName: {type: string}
+        status: {type: string, enum: [Active, Inactive]}
+        _restrictedFields: {type: array, items: {type: string}}
+        workEmail: {type: string}
+        mobilePhone: {type: string}
+        departmentId: {type: string}
+        departmentName: {type: string}
+        hireDate: {type: string}
+        employmentStatus: {type: string}
+        location: {type: string}
+    Page:
+      type: object
+      additionalProperties: false
+      required: [limit, nextCursor, prevCursor]
+      properties:
+        limit: {type: integer}
+        nextCursor: {type: string, nullable: true}
+        prevCursor: {type: string, nullable: true}
+    Link:
+      type: object
+      additionalProperties: false
+      required: [href]
+      properties:
+        href: {type: string}
+    EmployeeListLinks:
+      type: object
+      additionalProperties: false
+      required: [self]
+      properties:
+        self: {$ref: '#/components/schemas/Link'}
+        next: {$ref: '#/components/schemas/Link'}
+        prev: {$ref: '#/components/schemas/Link'}
+    EmployeeList:
+      type: object
+      additionalProperties: false
+      required: [data, meta, _links]
+      properties:
+        data: {type: array, items: {$ref: '#/components/schemas/EmployeeSummary'}}
+        meta:
+          type: object
+          additionalProperties: false
+          required: [total, page]
+          properties:
+            total: {type: integer, minimum: 0}
+            page: {$ref: '#/components/schemas/Page'}
+        _links: {$ref: '#/components/schemas/EmployeeListLinks'}
+    EmployeeRecord:
+      type: object
+      additionalProperties: false
+      required: [id]
+      properties:
+        id: {type: string}
+        firstName: {type: string}
+        lastName: {type: string}
+        preferredName: {type: string}
+        workEmail: {type: string}
+        mobilePhone: {type: string}
+        jobTitleName: {type: string}
+        department: {type: string}
+        departmentId: {type: string}
+        status: {type: string, enum: [Active, Inactive]}
+        employmentStatus: {type: string}
+        hireDate: {type: string}
+        location: {type: string}
+    DirectoryField:
+      type: object
+      additionalProperties: false
+      required: [id, type, name]
+      properties:
+        id: {type: string}
+        type: {type: string}
+        name: {type: string}
+    DirectoryEmployee:
+      type: object
+      additionalProperties: false
+      required: [id, displayName, firstName, lastName, jobTitle, workEmail, mobilePhone, department, location, canUploadPhoto]
+      properties:
+        id: {type: string}
+        displayName: {type: string}
+        firstName: {type: string}
+        lastName: {type: string}
+        jobTitle: {type: string}
+        workEmail: {type: string, format: email}
+        mobilePhone: {type: string}
+        department: {type: string}
+        location: {type: string}
+        canUploadPhoto: {type: integer, enum: [0, 1]}
+    Directory:
+      type: object
+      additionalProperties: false
+      required: [fields, employees]
+      properties:
+        fields: {type: array, items: {$ref: '#/components/schemas/DirectoryField'}}
+        employees: {type: array, items: {$ref: '#/components/schemas/DirectoryEmployee'}}
+    ListOption:
+      type: object
+      additionalProperties: false
+      required: [id, name, archived]
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        archived: {type: string, enum: [yes, no]}
+    ListField:
+      type: object
+      additionalProperties: false
+      required: [id, fieldId, name, alias, manageable, multiple, options]
+      properties:
+        id: {type: integer}
+        fieldId: {type: integer}
+        name: {type: string}
+        alias: {type: string}
+        manageable: {type: string, enum: [yes, no]}
+        multiple: {type: string, enum: [yes, no]}
+        options: {type: array, items: {$ref: '#/components/schemas/ListOption'}}
+    TimeOffType:
+      type: object
+      additionalProperties: false
+      required: [id, name, units, color, icon, source]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        units: {type: string, enum: [hours, days]}
+        color: {type: string}
+        icon: {type: string}
+        source: {type: string, enum: [internal, remote, external]}
+    DefaultHours:
+      type: object
+      additionalProperties: false
+      required: [name, amount]
+      properties:
+        name: {type: string}
+        amount: {type: string}
+    TimeOffTypeList:
+      type: object
+      additionalProperties: false
+      required: [timeOffTypes, defaultHours]
+      properties:
+        timeOffTypes: {type: array, items: {$ref: '#/components/schemas/TimeOffType'}}
+        defaultHours: {type: array, items: {$ref: '#/components/schemas/DefaultHours'}}
+    TimeOffStatus:
+      type: object
+      additionalProperties: false
+      required: [lastChanged, lastChangedByUserId, status]
+      properties:
+        lastChanged: {type: string}
+        lastChangedByUserId: {type: string}
+        status: {type: string}
+    TimeOffTypeRef:
+      type: object
+      additionalProperties: false
+      required: [id, name, icon]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        icon: {type: string}
+    TimeOffAmount:
+      type: object
+      additionalProperties: false
+      required: [unit, amount]
+      properties:
+        unit: {type: string, enum: [hours, days]}
+        amount: {type: number}
+    TimeOffActions:
+      type: object
+      additionalProperties: false
+      required: [view, edit, cancel, approve, deny, bypass]
+      properties:
+        view: {type: boolean}
+        edit: {type: boolean}
+        cancel: {type: boolean}
+        approve: {type: boolean}
+        deny: {type: boolean}
+        bypass: {type: boolean}
+    TimeOffNotes:
+      type: object
+      additionalProperties: false
+      properties:
+        employee: {type: string}
+        manager: {type: string}
+    TimeOffRequest:
+      type: object
+      additionalProperties: false
+      required: [id, employeeId, name, start, end, created, updated, status, type, amount, actions, dates, notes]
+      properties:
+        id: {type: string}
+        employeeId: {type: string}
+        name: {type: string}
+        start: {type: string}
+        end: {type: string}
+        created: {type: string}
+        updated: {type: string, nullable: true}
+        status: {$ref: '#/components/schemas/TimeOffStatus'}
+        type: {$ref: '#/components/schemas/TimeOffTypeRef'}
+        amount: {$ref: '#/components/schemas/TimeOffAmount'}
+        actions: {$ref: '#/components/schemas/TimeOffActions'}
+        dates:
+          type: object
+          additionalProperties: {type: number}
+        notes: {$ref: '#/components/schemas/TimeOffNotes'}
+    TimeOffNoteInput:
+      type: object
+      additionalProperties: false
+      required: [from, note]
+      properties:
+        from: {type: string, enum: [employee, manager]}
+        note: {type: string}
+    TimeOffDateInput:
+      type: object
+      additionalProperties: false
+      required: [ymd, amount]
+      properties:
+        ymd: {type: string}
+        amount: {type: number, minimum: 0}
+    TimeOffRequestCreate:
+      type: object
+      additionalProperties: false
+      required: [status, start, end, timeOffTypeId]
+      properties:
+        status: {type: string, enum: [approved, denied, declined, requested]}
+        start: {type: string}
+        end: {type: string}
+        timeOffTypeId: {type: string, minLength: 1}
+        amount: {type: number, minimum: 0}
+        previousRequest: {type: string}
+        notes: {type: array, items: {$ref: '#/components/schemas/TimeOffNoteInput'}}
+        dates: {type: array, items: {$ref: '#/components/schemas/TimeOffDateInput'}}
+    TimeOffStatusUpdate:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status: {type: string, enum: [approved, denied, declined, canceled, cancelled]}
+        note: {type: string}
+    WhosOutEntry:
+      type: object
+      additionalProperties: false
+      required: [id, type, name, start, end]
+      properties:
+        id: {type: string}
+        type: {type: string, enum: [timeOff, holiday]}
+        employeeId: {type: string}
+        name: {type: string}
+        start: {type: string}
+        end: {type: string}

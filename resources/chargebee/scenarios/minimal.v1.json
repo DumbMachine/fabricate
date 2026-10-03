@@ -1,0 +1,14 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "chargebee.minimal.v1",
+  "$resource": "chargebee",
+  "$resourceVersion": "v2",
+  "state": {
+    "customers": [],
+    "subscriptions": [],
+    "invoices": [],
+    "transactions": [],
+    "comments": []
+  }
+}

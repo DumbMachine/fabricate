@@ -1,0 +1,14 @@
+{
+  "id": "zohobooks-read",
+  "title": "Read the Northwind invoice",
+  "environment": "environments/acme-zohobooks.yaml",
+  "environmentLabel": "Acme Zoho Books",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/zohobooks-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-zohobooks.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS \"https://www.zohoapis.com/books/v3/invoices/INV-4812?organization_id=org-acme\"",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://www.zohoapis.com/books/v3/invoices/INV-4812?organization_id=org-acme"
+  ]
+}

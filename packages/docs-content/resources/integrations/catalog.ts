@@ -7,6 +7,9 @@ export type IntegrationEntry = {
 export const integrations: IntegrationEntry[] = [
   {id: "asana", label: "Asana"},
   {id: "attio", label: "Attio"},
+  {id: "bamboohr", label: "BambooHR"},
+  {id: "carta", label: "Carta"},
+  {id: "chargebee", label: "Chargebee"},
   {id: "close", label: "Close"},
   {id: "cloudflare", label: "Cloudflare"},
   {id: "digitalocean", label: "DigitalOcean"},
@@ -14,6 +17,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "github", label: "GitHub", planned: true},
   {id: "hubspot", label: "HubSpot"},
   {id: "intercom", label: "Intercom"},
+  {id: "ironclad", label: "Ironclad"},
   {id: "mailchimp", label: "Mailchimp"},
   {id: "mailgun", label: "Mailgun"},
   {id: "pipedrive", label: "Pipedrive"},
@@ -21,6 +25,8 @@ export const integrations: IntegrationEntry[] = [
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
   {id: "shopify", label: "Shopify", planned: true},
+  {id: "statuspage", label: "Statuspage"},
+  {id: "zohobooks", label: "Zoho Books"},
 ];
 
 export function composioLogo(id: string, theme?: "dark"): string {

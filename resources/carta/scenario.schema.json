@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/carta/scenario-v1.json",
+  "title": "Fabricate Carta scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["issuer", "stakeholders", "certificates", "optionGrants", "fairMarketValues", "draftOptionGrants"],
+  "properties": {
+    "issuer": {"$ref": "#/$defs/issuer"},
+    "stakeholders": {"type": "array", "items": {"$ref": "#/$defs/stakeholder"}},
+    "certificates": {"type": "array", "items": {"$ref": "#/$defs/certificate"}},
+    "optionGrants": {"type": "array", "items": {"$ref": "#/$defs/optionGrant"}},
+    "fairMarketValues": {"type": "array", "items": {"$ref": "#/$defs/fairMarketValue"}},
+    "draftOptionGrants": {"type": "array", "items": {"$ref": "#/$defs/draftOptionGrant"}}
+  },
+  "$defs": {
+    "stringValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {"value": {"type": "string", "minLength": 1, "maxLength": 100}}
+    },
+    "money": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["currencyCode", "amount"],
+      "properties": {
+        "currencyCode": {"$ref": "#/$defs/stringValue"},
+        "amount": {"$ref": "#/$defs/stringValue"}
+      }
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "legalName", "doingBusinessAsName", "website"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 50},
+        "legalName": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "doingBusinessAsName": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "website": {"type": "string", "minLength": 1, "maxLength": 1000}
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["country"],
+      "properties": {"country": {"type": "string", "minLength": 1, "maxLength": 1000}}
+    },
+    "stakeholder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "issuerId", "fullName", "relationship", "entityType"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 50},
+        "issuerId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "fullName": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "email": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "relationship": {"type": "string", "enum": ["ADVISOR", "EX_ADVISOR", "BOARD_MEMBER", "CONSULTANT", "EX_CONSULTANT", "EMPLOYEE", "EX_EMPLOYEE", "EXECUTIVE", "FOUNDER", "INTERNATIONAL_EMPLOYEE", "INVESTOR", "OFFICER", "OTHER", "EX_BOARD_MEMBER", "EX_INTERNATIONAL_EMPLOYEE"]},
+        "entityType": {"type": "string", "enum": ["INDIVIDUAL", "CORPORATION", "LIMITED_LIABILITY_CORPORATION", "ESTATE_OR_TRUST", "PARTNERSHIP", "DISREGARDED_ENTITY", "UNKNOWN"]},
+        "address": {"$ref": "#/$defs/address"}
+      }
+    },
+    "certificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "issuerId", "stakeholderId", "shareClassName", "securityLabel", "issueDate", "quantity", "pricePerShare"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 50},
+        "issuerId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "stakeholderId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "shareClassName": {"type": "string", "minLength": 1, "maxLength": 100},
+        "securityLabel": {"type": "string", "minLength": 1, "maxLength": 50},
+        "issueDate": {"$ref": "#/$defs/stringValue"},
+        "quantity": {"$ref": "#/$defs/stringValue"},
+        "pricePerShare": {"$ref": "#/$defs/money"}
+      }
+    },
+    "optionGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "issuerId", "stakeholderId", "equityIncentivePlanName", "securityLabel", "stockOptionType", "issueDate", "quantity", "outstandingQuantity", "exercisePrice"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 50},
+        "issuerId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "stakeholderId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "equityIncentivePlanName": {"type": "string", "minLength": 1, "maxLength": 100},
+        "securityLabel": {"type": "string", "minLength": 1, "maxLength": 50},
+        "stockOptionType": {"type": "string", "enum": ["ISO", "NSO", "OTHER"]},
+        "issueDate": {"$ref": "#/$defs/stringValue"},
+        "quantity": {"$ref": "#/$defs/stringValue"},
+        "outstandingQuantity": {"$ref": "#/$defs/stringValue"},
+        "exercisePrice": {"$ref": "#/$defs/money"}
+      }
+    },
+    "shareClassValuation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shareClassId", "shareClassName", "common", "price"],
+      "properties": {
+        "shareClassId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "shareClassName": {"type": "string", "minLength": 1, "maxLength": 100},
+        "common": {"type": "boolean"},
+        "price": {"$ref": "#/$defs/money"}
+      }
+    },
+    "fairMarketValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "effectiveDate", "expirationDate", "shareClassValuations"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 50},
+        "effectiveDate": {"$ref": "#/$defs/stringValue"},
+        "expirationDate": {"$ref": "#/$defs/stringValue"},
+        "shareClassValuations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/shareClassValuation"}}
+      }
+    },
+    "draftStakeholder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "email"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 256},
+        "email": {"type": "string", "minLength": 1, "maxLength": 100},
+        "employeeId": {"type": "string", "minLength": 1, "maxLength": 100},
+        "type": {"type": "string", "enum": ["STAKEHOLDER_TYPE_INDIVIDUAL", "STAKEHOLDER_TYPE_NON_INDIVIDUAL"]},
+        "relationship": {"type": "string", "enum": ["STAKEHOLDER_RELATIONSHIP_ADVISOR", "STAKEHOLDER_RELATIONSHIP_EX_ADVISOR", "STAKEHOLDER_RELATIONSHIP_BOARD_MEMBER", "STAKEHOLDER_RELATIONSHIP_CONSULTANT", "STAKEHOLDER_RELATIONSHIP_EX_CONSULTANT", "STAKEHOLDER_RELATIONSHIP_EMPLOYEE", "STAKEHOLDER_RELATIONSHIP_EX_EMPLOYEE", "STAKEHOLDER_RELATIONSHIP_EXECUTIVE", "STAKEHOLDER_RELATIONSHIP_FOUNDER", "STAKEHOLDER_RELATIONSHIP_INVESTOR", "STAKEHOLDER_RELATIONSHIP_INTERNATIONAL_EMPLOYEE", "STAKEHOLDER_RELATIONSHIP_OFFICER", "STAKEHOLDER_RELATIONSHIP_OTHER", "STAKEHOLDER_RELATIONSHIP_EX_BOARD_MEMBER", "STAKEHOLDER_RELATIONSHIP_EX_INTERNATIONAL_EMPLOYEE"]}
+      }
+    },
+    "draftOptionGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "draftOptionGrantSetId", "issuerId", "state", "stockOptionType", "quantity", "stakeholder", "createTime", "updateTime"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "draftOptionGrantSetId": {"type": "string", "minLength": 1},
+        "issuerId": {"type": "string", "minLength": 1, "maxLength": 50},
+        "state": {"type": "string", "enum": ["DRAFT_SECURITY_STATE_DRAFTING", "DRAFT_SECURITY_STATE_PENDING_BOARD_APPROVAL", "DRAFT_SECURITY_STATE_ISSUED"]},
+        "stockOptionType": {"type": "string", "enum": ["STOCK_OPTION_TYPE_ISO", "STOCK_OPTION_TYPE_NSO", "STOCK_OPTION_TYPE_INTL", "STOCK_OPTION_TYPE_EMI", "STOCK_OPTION_TYPE_CSOP", "STOCK_OPTION_TYPE_102_CG", "STOCK_OPTION_TYPE_102_OI", "STOCK_OPTION_TYPE_NON_TRUSTEE", "STOCK_OPTION_TYPE_3I", "STOCK_OPTION_TYPE_UNAPPROVED"]},
+        "grantReason": {"type": "string", "enum": ["GRANT_REASON_NEW_HIRE", "GRANT_REASON_MERIT", "GRANT_REASON_PROMOTION", "GRANT_REASON_REFRESH", "GRANT_REASON_CORPORATE_TRANSACTION", "GRANT_REASON_RELATIONSHIP_CHANGE", "GRANT_REASON_RETENTION", "GRANT_REASON_ADVISOR", "GRANT_REASON_CONSULTANT", "GRANT_REASON_BOARD"]},
+        "quantity": {"$ref": "#/$defs/stringValue"},
+        "earlyExercise": {"type": "boolean"},
+        "exercisePrice": {"$ref": "#/$defs/money"},
+        "stakeholder": {"$ref": "#/$defs/draftStakeholder"},
+        "notes": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "createTime": {"$ref": "#/$defs/stringValue"},
+        "updateTime": {"$ref": "#/$defs/stringValue"}
+      }
+    }
+  }
+}

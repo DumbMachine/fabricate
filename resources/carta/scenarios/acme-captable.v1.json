@@ -1,0 +1,84 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "carta.acme-captable.v1",
+  "$resource": "carta",
+  "$resourceVersion": "v1",
+  "state": {
+    "issuer": {
+      "id": "issuer-acme",
+      "legalName": "Acme",
+      "doingBusinessAsName": "Acme",
+      "website": "https://acme.example"
+    },
+    "stakeholders": [
+      {
+        "id": "stk-val",
+        "issuerId": "issuer-acme",
+        "fullName": "Val Ortega",
+        "email": "val@acme.example",
+        "relationship": "EMPLOYEE",
+        "entityType": "INDIVIDUAL",
+        "address": {"country": "IND"}
+      },
+      {
+        "id": "stk-harbor",
+        "issuerId": "issuer-acme",
+        "fullName": "Harbor Capital",
+        "relationship": "INVESTOR",
+        "entityType": "CORPORATION"
+      }
+    ],
+    "certificates": [
+      {
+        "id": "cert-harbor-ps",
+        "issuerId": "issuer-acme",
+        "stakeholderId": "stk-harbor",
+        "shareClassName": "Preferred",
+        "securityLabel": "PS-1",
+        "issueDate": {"value": "2025-06-18"},
+        "quantity": {"value": "250000"},
+        "pricePerShare": {
+          "currencyCode": {"value": "USD"},
+          "amount": {"value": "1.00"}
+        }
+      }
+    ],
+    "optionGrants": [
+      {
+        "id": "og-val",
+        "issuerId": "issuer-acme",
+        "stakeholderId": "stk-val",
+        "equityIncentivePlanName": "Acme Equity Incentive Plan",
+        "securityLabel": "ES-1",
+        "stockOptionType": "ISO",
+        "issueDate": {"value": "2026-03-01"},
+        "quantity": {"value": "40000"},
+        "outstandingQuantity": {"value": "40000"},
+        "exercisePrice": {
+          "currencyCode": {"value": "USD"},
+          "amount": {"value": "0.42"}
+        }
+      }
+    ],
+    "fairMarketValues": [
+      {
+        "id": "fmv-2026",
+        "effectiveDate": {"value": "2026-01-15"},
+        "expirationDate": {"value": "2027-01-14"},
+        "shareClassValuations": [
+          {
+            "shareClassId": "sc-common",
+            "shareClassName": "Common",
+            "common": true,
+            "price": {
+              "currencyCode": {"value": "USD"},
+              "amount": {"value": "0.42"}
+            }
+          }
+        ]
+      }
+    ],
+    "draftOptionGrants": []
+  }
+}

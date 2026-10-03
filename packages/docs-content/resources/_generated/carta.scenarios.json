@@ -1,0 +1,25 @@
+{
+  "integration": "carta",
+  "scenarios": [
+    {
+      "id": "carta.acme-captable.v1",
+      "counts": {
+        "certificates": 1,
+        "draftOptionGrants": 0,
+        "fairMarketValues": 1,
+        "optionGrants": 1,
+        "stakeholders": 2
+      }
+    },
+    {
+      "id": "carta.minimal.v1",
+      "counts": {
+        "certificates": 0,
+        "draftOptionGrants": 0,
+        "fairMarketValues": 0,
+        "optionGrants": 0,
+        "stakeholders": 0
+      }
+    }
+  ]
+}

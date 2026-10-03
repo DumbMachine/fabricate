@@ -1,0 +1,561 @@
+openapi: 3.0.3
+info:
+  title: Ironclad Public API
+  version: v1
+  description: >-
+    Curated Ironclad Public API v1 surface for workflows and records.
+    Paths are the full public paths on na1.ironcladapp.com. The vendor
+    server URL already includes /public/api/v1; this document inlines that
+    prefix so clients and the transparent proxy share one path. Omitted
+    workflow status filters return active workflows, matching the published
+    list behavior. Auth on this resource is a synthetic bearer token.
+servers:
+  - url: https://na1.ironcladapp.com
+    description: US production API.
+security:
+  - bearerAuth: []
+tags:
+  - name: Workflows
+  - name: Records
+paths:
+  /public/api/v1/workflows:
+    get:
+      operationId: list-all-workflows
+      summary: List all workflows.
+      description: >-
+        Lists workflows. When status is omitted, only active workflows are
+        returned. Active workflows are those in Create, Review, Sign, or
+        Archive. Repeat status or pass a comma-separated list to include
+        more than one status.
+      tags: [Workflows]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: status
+          in: query
+          description: Workflow statuses to include. Defaults to active.
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [active, paused, completed, cancelled]
+          style: form
+          explode: true
+        - name: template
+          in: query
+          description: Filter workflows to a template id.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Workflow page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/WorkflowPage'}
+    post:
+      operationId: launch-a-new-workflow
+      summary: Create a workflow synchronously.
+      tags: [Workflows]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/LaunchWorkflowRequest'}
+      responses:
+        '200':
+          description: Launched workflow.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Workflow'}
+        '400':
+          description: The workflow could not be launched.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+  /public/api/v1/workflows/{id}:
+    get:
+      operationId: retrieve-a-workflow
+      summary: Retrieve a workflow.
+      tags: [Workflows]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Workflow.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Workflow'}
+        '404':
+          description: Workflow does not exist.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+  /public/api/v1/workflows/{id}/comments:
+    get:
+      operationId: list-all-comments-in-a-workflow
+      summary: List all comments on a workflow.
+      tags: [Workflows]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Comment page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CommentPage'}
+        '404':
+          description: Workflow does not exist.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+    post:
+      operationId: create-a-comment-on-a-workflow
+      summary: Create a comment on a workflow.
+      tags: [Workflows]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateCommentRequest'}
+      responses:
+        '200':
+          description: Created comment.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Comment'}
+        '400':
+          description: The comment could not be created.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+        '404':
+          description: Workflow does not exist.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+  /public/api/v1/workflows/{id}/approvals:
+    get:
+      operationId: list-all-workflow-approvals
+      summary: List all workflow approvals.
+      tags: [Workflows]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Triggered approval groups and role assignees.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/WorkflowApprovals'}
+        '404':
+          description: Workflow does not exist.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+  /public/api/v1/records:
+    get:
+      operationId: list-all-records
+      summary: List all records.
+      tags: [Records]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Record page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordPage'}
+  /public/api/v1/records/{id}:
+    get:
+      operationId: retrieve-a-record
+      summary: Retrieve a record.
+      tags: [Records]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Record.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Record'}
+        '404':
+          description: Record does not exist.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+    patch:
+      operationId: update-record-metadata
+      summary: Update record metadata.
+      tags: [Records]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/UpdateRecordRequest'}
+      responses:
+        '200':
+          description: Updated record.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Record'}
+        '400':
+          description: The record could not be updated.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+        '404':
+          description: Record does not exist.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ErrorModel'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Environment- and service-scoped synthetic bearer token.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier or Ironclad id.
+      schema: {type: string, minLength: 1}
+    Page:
+      name: page
+      in: query
+      description: Zero-based page number.
+      schema: {type: integer, minimum: 0}
+    PageSize:
+      name: pageSize
+      in: query
+      description: Page size. Defaults to 20.
+      schema: {type: integer, minimum: 1, maximum: 100}
+  schemas:
+    ErrorModel:
+      type: object
+      required: [code, message]
+      properties:
+        code: {type: string}
+        message: {type: string}
+        param: {type: string}
+    WorkflowPage:
+      type: object
+      required: [page, pageSize, count, list]
+      properties:
+        page: {type: integer, minimum: 0}
+        pageSize: {type: integer, minimum: 0}
+        count: {type: integer, minimum: 0}
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/Workflow'}
+    Workflow:
+      type: object
+      required:
+        - id
+        - ironcladId
+        - title
+        - template
+        - step
+        - schema
+        - attributes
+        - isCancelled
+        - isComplete
+        - status
+        - creator
+        - created
+        - lastUpdated
+        - roles
+        - approvals
+        - signatures
+        - recordIds
+        - isRevertibleToReview
+      properties:
+        id: {type: string}
+        ironcladId: {type: string}
+        title: {type: string}
+        template: {type: string}
+        step:
+          type: string
+          enum: [Review, Sign, Archive, Complete]
+        schema: {$ref: '#/components/schemas/WorkflowAttributeMap'}
+        attributes: {$ref: '#/components/schemas/WorkflowAttributes'}
+        isCancelled: {type: boolean}
+        isComplete: {type: boolean}
+        status:
+          type: string
+          enum: [active, paused, completed, cancelled]
+        creator: {$ref: '#/components/schemas/WorkflowCreator'}
+        created: {type: string}
+        lastUpdated: {type: string}
+        roles:
+          type: array
+          items: {$ref: '#/components/schemas/WorkflowRole'}
+        approvals: {$ref: '#/components/schemas/WorkflowState'}
+        signatures: {$ref: '#/components/schemas/WorkflowState'}
+        recordIds:
+          type: array
+          items: {type: string}
+        isRevertibleToReview: {type: boolean}
+    WorkflowAttributeMap:
+      type: object
+      required: [counterpartyName]
+      properties:
+        counterpartyName: {$ref: '#/components/schemas/AttributeSchema'}
+        counterpartyEmail: {$ref: '#/components/schemas/AttributeSchema'}
+        docusignEnvelopeId: {$ref: '#/components/schemas/AttributeSchema'}
+        draft: {$ref: '#/components/schemas/AttributeSchema'}
+    AttributeSchema:
+      type: object
+      required: [type, displayName, propertyKey, readOnly]
+      properties:
+        type: {type: string}
+        displayName: {type: string}
+        propertyKey: {type: string}
+        readOnly: {type: boolean}
+    WorkflowAttributes:
+      type: object
+      required: [counterpartyName]
+      properties:
+        counterpartyName: {type: string}
+        counterpartyEmail: {type: string}
+        docusignEnvelopeId: {type: string}
+        draft:
+          type: array
+          items: {$ref: '#/components/schemas/WorkflowDocument'}
+    WorkflowDocument:
+      type: object
+      required: [version, versionNumber, filename, key, download]
+      properties:
+        version: {type: string}
+        versionNumber: {type: integer}
+        filename: {type: string}
+        key: {type: string}
+        download: {type: string}
+    WorkflowCreator:
+      type: object
+      required: [id, displayName, email, title]
+      properties:
+        id: {type: string}
+        displayName: {type: string}
+        email: {type: string}
+        title: {type: string}
+    WorkflowRole:
+      type: object
+      required: [id, displayName, assignees]
+      properties:
+        id: {type: string}
+        displayName: {type: string}
+        assignees:
+          type: array
+          items: {$ref: '#/components/schemas/WorkflowAssignee'}
+    WorkflowAssignee:
+      type: object
+      required: [userName, userId, email]
+      properties:
+        userName: {type: string}
+        userId: {type: string}
+        email: {type: string}
+    WorkflowState:
+      type: object
+      required: [state]
+      properties:
+        state:
+          type: string
+          enum: [not_started, completed, in_progress, not_applicable]
+        url: {type: string}
+        message: {type: string}
+    LaunchWorkflowRequest:
+      type: object
+      additionalProperties: false
+      required: [template, attributes]
+      properties:
+        template: {type: string, minLength: 1}
+        attributes: {$ref: '#/components/schemas/LaunchAttributes'}
+    LaunchAttributes:
+      type: object
+      additionalProperties: false
+      required: [counterpartyName]
+      properties:
+        counterpartyName: {type: string, minLength: 1}
+        counterpartyEmail: {type: string}
+        docusignEnvelopeId: {type: string}
+    CommentPage:
+      type: object
+      required: [page, pageSize, count, list]
+      properties:
+        page: {type: integer, minimum: 0}
+        pageSize: {type: integer, minimum: 0}
+        count: {type: integer, minimum: 0}
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/Comment'}
+    Comment:
+      type: object
+      required: [id, commentMessage, timestamp, isExternal, author, mentionedUserDetails, addedParticipants, reactions]
+      properties:
+        id: {type: string}
+        commentMessage: {type: string}
+        timestamp: {type: string}
+        isExternal: {type: boolean}
+        author: {$ref: '#/components/schemas/CommentAuthor'}
+        mentionedUserDetails:
+          type: array
+          items: {$ref: '#/components/schemas/MentionedUser'}
+        addedParticipants:
+          type: array
+          items: {type: string}
+        reactions:
+          type: array
+          items: {$ref: '#/components/schemas/CommentReaction'}
+    CommentAuthor:
+      type: object
+      required: [type, companyName, displayName, email, userId]
+      properties:
+        type: {type: string, enum: [internalUser]}
+        companyName: {type: string}
+        displayName: {type: string}
+        email: {type: string}
+        userId: {type: string}
+    MentionedUser:
+      type: object
+      required: [id, displayName, email]
+      properties:
+        id: {type: string}
+        displayName: {type: string}
+        email: {type: string}
+    CommentReaction:
+      type: object
+      required: [emojiId]
+      properties:
+        emojiId: {type: string}
+    CreateCommentRequest:
+      type: object
+      additionalProperties: false
+      required: [comment]
+      properties:
+        comment: {type: string, minLength: 1}
+        addUsersToWorkflow: {type: boolean}
+        repliedToActivityFeedMessageId: {type: string}
+    WorkflowApprovals:
+      type: object
+      required: [workflowId, title, approvalGroups, roles]
+      properties:
+        workflowId: {type: string}
+        title: {type: string}
+        approvalGroups:
+          type: array
+          items: {$ref: '#/components/schemas/ApprovalGroup'}
+        roles:
+          type: array
+          items: {$ref: '#/components/schemas/WorkflowRole'}
+    ApprovalGroup:
+      type: object
+      required: [reviewers, status, order]
+      properties:
+        reviewers:
+          type: array
+          items: {$ref: '#/components/schemas/ApprovalReviewer'}
+        status:
+          type: string
+          enum: [pending, approved, active]
+        order: {type: integer, minimum: 0}
+    ApprovalReviewer:
+      type: object
+      required: [role, displayName, reviewerType, status]
+      properties:
+        role: {type: string}
+        displayName: {type: string}
+        reviewerType: {type: string}
+        status:
+          type: string
+          enum: [pending, approved]
+    RecordPage:
+      type: object
+      required: [page, pageSize, count, list]
+      properties:
+        page: {type: integer, minimum: 0}
+        pageSize: {type: integer, minimum: 0}
+        count: {type: integer, minimum: 0}
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/Record'}
+    Record:
+      type: object
+      required: [id, ironcladId, type, name, lastUpdated, properties, attachments, links, source, contractStatus]
+      properties:
+        id: {type: string}
+        ironcladId: {type: string}
+        type: {type: string}
+        name: {type: string}
+        lastUpdated: {type: string}
+        properties: {$ref: '#/components/schemas/RecordProperties'}
+        attachments: {$ref: '#/components/schemas/RecordAttachments'}
+        links:
+          type: array
+          items: {$ref: '#/components/schemas/RecordLink'}
+        source: {$ref: '#/components/schemas/RecordSource'}
+        contractStatus: {$ref: '#/components/schemas/ContractStatus'}
+    RecordProperties:
+      type: object
+      required: [counterpartyName]
+      properties:
+        counterpartyName: {$ref: '#/components/schemas/StringProperty'}
+        docusignEnvelopeId: {$ref: '#/components/schemas/StringProperty'}
+    StringProperty:
+      type: object
+      required: [type, value]
+      properties:
+        type: {type: string, enum: [string]}
+        value: {type: string}
+    RecordAttachments:
+      type: object
+      properties:
+        signedCopy: {$ref: '#/components/schemas/Attachment'}
+        draft: {$ref: '#/components/schemas/Attachment'}
+    Attachment:
+      type: object
+      required: [filename, href]
+      properties:
+        filename: {type: string}
+        contentType: {type: string}
+        href: {type: string}
+    RecordLink:
+      type: object
+      required: [recordId]
+      properties:
+        recordId: {type: string}
+    RecordSource:
+      type: object
+      required: [type, workflowId]
+      properties:
+        type: {type: string, enum: [workflow]}
+        workflowId: {type: string}
+    ContractStatus:
+      type: object
+      required: [status, enhancedStatus]
+      properties:
+        status:
+          type: string
+          enum: [active, inactive, indeterminate]
+        enhancedStatus: {type: string}
+    UpdateRecordRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        name: {type: string}
+        addProperties: {$ref: '#/components/schemas/RecordPropertiesPatch'}
+        removeProperties:
+          type: array
+          items: {type: string}
+    RecordPropertiesPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        counterpartyName: {$ref: '#/components/schemas/StringProperty'}
+        docusignEnvelopeId: {$ref: '#/components/schemas/StringProperty'}

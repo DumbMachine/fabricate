@@ -1,0 +1,145 @@
+---
+title: Chargebee
+description: Customers, subscriptions, invoices, transactions, and comments.
+sidebar:
+  icon: https://logos.composio.dev/api/chargebee
+---
+
+<ResourceCoverage resource="chargebee" />
+
+Customers, subscriptions, invoices, transactions, and comments. Local Chargebee
+API v2 that keeps SaaS billing state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Chargebee API v2 |
+| Auth | Synthetic bearer token. Chargebee's live API uses HTTP Basic with the API key as the username and an empty password. |
+| Hosts | `acme.chargebee.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-chargebee.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_CHARGEBEE_TOKEN" \
+      "$FAB_CHARGEBEE_URL/api/v2/subscriptions"'
+```
+
+The service is named `chargebee` in the example manifest, so the variables are
+`FAB_CHARGEBEE_URL` and `FAB_CHARGEBEE_TOKEN`.
+
+The list is the three Acme SaaS subscriptions. TinyShop Pro is `non_renewing`
+because Marco requested cancellation under the 30-day guarantee. Invoice
+amounts are minor units: `INV-4812` is `124000` cents (1240.00 USD), with
+duplicate payments `pay_saas_4812` and `pay_saas_4812b`.
+
+```json
+{
+  "list": [
+    {
+      "subscription": {
+        "id": "sub_tinyshop_pro",
+        "customer_id": "cus_tinyshop",
+        "status": "non_renewing",
+        "currency_code": "USD",
+        "cancel_reason_code": "30-day guarantee"
+      },
+      "customer": {
+        "id": "cus_tinyshop",
+        "company": "TinyShop",
+        "email": "marco@tinyshop.example"
+      }
+    },
+    {
+      "subscription": {
+        "id": "sub_fernworks_platform",
+        "customer_id": "cus_fernworks",
+        "status": "active",
+        "currency_code": "USD"
+      },
+      "customer": {
+        "id": "cus_fernworks",
+        "company": "Fernworks",
+        "email": "priya@fernworks.example"
+      }
+    },
+    {
+      "subscription": {
+        "id": "sub_northwind_checkout",
+        "customer_id": "cus_northwind",
+        "status": "active",
+        "currency_code": "USD"
+      },
+      "customer": {
+        "id": "cus_northwind",
+        "company": "Northwind Traders",
+        "email": "dana@northwind.example"
+      }
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Chargebee URLs and follows standard
+proxy and CA environment variables. This one-paste check calls the Acme site
+hostname; replace the final `curl` with your app. Omit `$FAB_CHARGEBEE_TOKEN`
+here: the proxy replaces `Authorization` on routed hosts with the environment's
+ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-chargebee.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://acme.chargebee.com/api/v2/subscriptions
+```
+
+Fabricate handles `acme.chargebee.com` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="chargebee"
+  descriptions={{
+    "chargebee.minimal.v1": "An empty Chargebee site for a clean test.",
+    "chargebee.acme-billing.v1": "Northwind duplicate INV-4812, paid Fernworks platform, and TinyShop Pro non-renewing under the 30-day guarantee.",
+  }}
+/>
+
+Peek at the committed Acme billing world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="chargebee"
+  scenario="acme-billing.v1"
+  collection="subscriptions"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Chargebee check ran against the Acme Chargebee
+environment with curl:
+
+<IntegrationCompatibility resource="chargebee" />
+
+## Supported operations
+
+<SupportedOperations resource="chargebee" />

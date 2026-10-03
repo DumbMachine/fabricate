@@ -1,0 +1,420 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Statuspage API
+  version: v1
+  description: >-
+    Curated Statuspage API v1 contract supported by Fabricate. Pages,
+    components, and incidents from https://developer.statuspage.io/. Every
+    operation in this document has stateful behavior. Statuspage sends
+    `Authorization: OAuth`; this contract accepts the bearer token Fabricate
+    injects.
+servers:
+  - url: https://api.statuspage.io
+security:
+  - bearerAuth: []
+tags:
+  - name: Pages
+  - name: Components
+  - name: Incidents
+paths:
+  /v1/pages:
+    get:
+      operationId: listPages
+      summary: List pages visible to the API key.
+      tags: [Pages]
+      responses:
+        '200':
+          description: Pages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Page'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/pages/{page_id}:
+    get:
+      operationId: getPage
+      summary: Get one page.
+      tags: [Pages]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Page'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/pages/{page_id}/components:
+    get:
+      operationId: listComponents
+      summary: List components on a page.
+      tags: [Components]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Components.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Component'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createComponent
+      summary: Create a component.
+      tags: [Components]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateComponentRequest'}
+      responses:
+        '201':
+          description: Created component.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Component'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/pages/{page_id}/components/{component_id}:
+    get:
+      operationId: getComponent
+      summary: Get a component.
+      tags: [Components]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/ComponentId'
+      responses:
+        '200':
+          description: Component.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Component'}
+        default: {$ref: '#/components/responses/Error'}
+    patch:
+      operationId: updateComponent
+      summary: Update a component.
+      tags: [Components]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/ComponentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/UpdateComponentRequest'}
+      responses:
+        '200':
+          description: Updated component.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Component'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/pages/{page_id}/incidents:
+    get:
+      operationId: listIncidents
+      summary: List incidents on a page.
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/IncidentQuery'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Incidents.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Incident'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createIncident
+      summary: Create a realtime incident.
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateIncidentRequest'}
+      responses:
+        '201':
+          description: Created incident.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Incident'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/pages/{page_id}/incidents/unresolved:
+    get:
+      operationId: listUnresolvedIncidents
+      summary: List incidents that are not resolved or completed.
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Unresolved incidents.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Incident'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/pages/{page_id}/incidents/{incident_id}:
+    get:
+      operationId: getIncident
+      summary: Get an incident.
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/IncidentId'
+      responses:
+        '200':
+          description: Incident.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Incident'}
+        default: {$ref: '#/components/responses/Error'}
+    patch:
+      operationId: updateIncident
+      summary: Update an incident and append an incident update when status or body changes.
+      tags: [Incidents]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+        - $ref: '#/components/parameters/IncidentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/UpdateIncidentRequest'}
+      responses:
+        '200':
+          description: Updated incident.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Incident'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Stand-in for Statuspage's `Authorization: OAuth` API key. Fabricate
+        injects `Bearer <token>` from the secret key `token`.
+  parameters:
+    PageId:
+      name: page_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ComponentId:
+      name: component_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    IncidentId:
+      name: incident_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    PageNumber:
+      name: page
+      in: query
+      schema: {type: integer, minimum: 1, default: 1}
+    PerPage:
+      name: per_page
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 100, default: 100}
+    Limit:
+      name: limit
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 100, default: 100}
+    IncidentQuery:
+      name: q
+      in: query
+      description: Search incident name, status, postmortem body, and update bodies.
+      schema: {type: string}
+  responses:
+    Error:
+      description: Statuspage error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
+  schemas:
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error: {type: string}
+    Page:
+      type: object
+      required: [id, name, subdomain, created_at, updated_at]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        subdomain: {type: string}
+        domain: {type: string}
+        url: {type: string}
+        page_description: {type: string}
+        time_zone: {type: string}
+        created_at: {type: string}
+        updated_at: {type: string}
+    ComponentStatus:
+      type: string
+      enum: [operational, degraded_performance, partial_outage, major_outage, under_maintenance]
+    Component:
+      type: object
+      required: [id, page_id, name, description, status, position, showcase, group, only_show_if_degraded, created_at, updated_at]
+      properties:
+        id: {type: string}
+        page_id: {type: string}
+        name: {type: string}
+        description: {type: string}
+        status: {$ref: '#/components/schemas/ComponentStatus'}
+        position: {type: integer, minimum: 0}
+        showcase: {type: boolean}
+        group: {type: boolean}
+        only_show_if_degraded: {type: boolean}
+        created_at: {type: string}
+        updated_at: {type: string}
+    ComponentWrite:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string, minLength: 1}
+        description: {type: string}
+        status: {$ref: '#/components/schemas/ComponentStatus'}
+        position: {type: integer, minimum: 0}
+        showcase: {type: boolean}
+        only_show_if_degraded: {type: boolean}
+    ComponentPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        name: {type: string, minLength: 1}
+        description: {type: string}
+        status: {$ref: '#/components/schemas/ComponentStatus'}
+        position: {type: integer, minimum: 0}
+        showcase: {type: boolean}
+        only_show_if_degraded: {type: boolean}
+    CreateComponentRequest:
+      type: object
+      additionalProperties: false
+      required: [component]
+      properties:
+        component: {$ref: '#/components/schemas/ComponentWrite'}
+    UpdateComponentRequest:
+      type: object
+      additionalProperties: false
+      required: [component]
+      properties:
+        component: {$ref: '#/components/schemas/ComponentPatch'}
+    IncidentStatus:
+      type: string
+      enum: [investigating, identified, monitoring, resolved, scheduled, in_progress, verifying, completed, postmortem]
+    IncidentImpact:
+      type: string
+      enum: [none, minor, major, critical]
+    AffectedComponent:
+      type: object
+      required: [code, name, old_status, new_status]
+      properties:
+        code: {type: string}
+        name: {type: string}
+        old_status: {$ref: '#/components/schemas/ComponentStatus'}
+        new_status: {$ref: '#/components/schemas/ComponentStatus'}
+    IncidentUpdate:
+      type: object
+      required: [id, incident_id, body, status, created_at, updated_at, display_at, deliver_notifications, wants_twitter_update, affected_components]
+      properties:
+        id: {type: string}
+        incident_id: {type: string}
+        body: {type: string}
+        status: {$ref: '#/components/schemas/IncidentStatus'}
+        created_at: {type: string}
+        updated_at: {type: string}
+        display_at: {type: string}
+        deliver_notifications: {type: boolean}
+        wants_twitter_update: {type: boolean}
+        affected_components:
+          type: array
+          items: {$ref: '#/components/schemas/AffectedComponent'}
+    Incident:
+      type: object
+      required: [id, page_id, name, status, impact, created_at, updated_at, shortlink, components, incident_updates]
+      properties:
+        id: {type: string}
+        page_id: {type: string}
+        name: {type: string}
+        status: {$ref: '#/components/schemas/IncidentStatus'}
+        impact: {$ref: '#/components/schemas/IncidentImpact'}
+        impact_override: {$ref: '#/components/schemas/IncidentImpact'}
+        created_at: {type: string}
+        updated_at: {type: string}
+        resolved_at: {type: string}
+        monitoring_at: {type: string}
+        postmortem_body: {type: string}
+        shortlink: {type: string}
+        components:
+          type: array
+          items: {$ref: '#/components/schemas/Component'}
+        incident_updates:
+          type: array
+          items: {$ref: '#/components/schemas/IncidentUpdate'}
+    IncidentWrite:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string, minLength: 1}
+        status: {$ref: '#/components/schemas/IncidentStatus'}
+        body: {type: string}
+        impact_override: {$ref: '#/components/schemas/IncidentImpact'}
+        component_ids:
+          type: array
+          items: {type: string, minLength: 1}
+        components:
+          type: object
+          additionalProperties: {$ref: '#/components/schemas/ComponentStatus'}
+        deliver_notifications: {type: boolean}
+        wants_twitter_update: {type: boolean}
+    IncidentPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        name: {type: string, minLength: 1}
+        status: {$ref: '#/components/schemas/IncidentStatus'}
+        body: {type: string}
+        impact_override: {$ref: '#/components/schemas/IncidentImpact'}
+        component_ids:
+          type: array
+          items: {type: string, minLength: 1}
+        components:
+          type: object
+          additionalProperties: {$ref: '#/components/schemas/ComponentStatus'}
+        deliver_notifications: {type: boolean}
+        wants_twitter_update: {type: boolean}
+    CreateIncidentRequest:
+      type: object
+      additionalProperties: false
+      required: [incident]
+      properties:
+        incident: {$ref: '#/components/schemas/IncidentWrite'}
+    UpdateIncidentRequest:
+      type: object
+      additionalProperties: false
+      required: [incident]
+      properties:
+        incident: {$ref: '#/components/schemas/IncidentPatch'}

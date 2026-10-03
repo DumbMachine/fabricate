@@ -1,0 +1,172 @@
+{
+  "id": "bamboohr-read",
+  "title": "List seeded employees",
+  "environment": {
+    "label": "Acme's BambooHR",
+    "manifest": "environments/acme-bamboohr.yaml"
+  },
+  "command": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-bamboohr.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS \"https://acme.bamboohr.com/api/v1/employees?fields=workEmail,departmentName,employmentStatus,hireDate\"",
+  "output": {
+    "_links": {
+      "self": {
+        "href": "https://acme.bamboohr.com/api/v1/employees"
+      }
+    },
+    "data": [
+      {
+        "_restrictedFields": [],
+        "employeeId": "101",
+        "employmentStatus": "Active",
+        "firstName": "Val",
+        "jobTitleName": "Operator",
+        "lastName": "Ortega",
+        "photoUrl": null,
+        "preferredName": "Val",
+        "status": "Active",
+        "workEmail": "val@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "Finance",
+        "employeeId": "102",
+        "employmentStatus": "Active",
+        "firstName": "Aisha",
+        "jobTitleName": "Finance",
+        "lastName": "Rahman",
+        "photoUrl": null,
+        "preferredName": "Aisha",
+        "status": "Active",
+        "workEmail": "aisha@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "Logistics",
+        "employeeId": "103",
+        "employmentStatus": "Active",
+        "firstName": "Ravi",
+        "jobTitleName": "Logistics",
+        "lastName": "Mehta",
+        "photoUrl": null,
+        "preferredName": "Ravi",
+        "status": "Active",
+        "workEmail": "ravi@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "People",
+        "employeeId": "104",
+        "employmentStatus": "Active",
+        "firstName": "Nina",
+        "jobTitleName": "HR",
+        "lastName": "Kapoor",
+        "photoUrl": null,
+        "preferredName": "Nina",
+        "status": "Active",
+        "workEmail": "nina@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "People",
+        "employeeId": "105",
+        "employmentStatus": "Active",
+        "firstName": "Leo",
+        "jobTitleName": "Recruiting",
+        "lastName": "Park",
+        "photoUrl": null,
+        "preferredName": "Leo",
+        "status": "Active",
+        "workEmail": "leo@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "Support",
+        "employeeId": "106",
+        "employmentStatus": "Active",
+        "firstName": "Sam",
+        "jobTitleName": "Support",
+        "lastName": "Adeyemi",
+        "photoUrl": null,
+        "preferredName": "Sam",
+        "status": "Active",
+        "workEmail": "sam@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "Legal",
+        "employeeId": "107",
+        "employmentStatus": "Active",
+        "firstName": "Iris",
+        "jobTitleName": "Legal",
+        "lastName": "Berg",
+        "photoUrl": null,
+        "preferredName": "Iris",
+        "status": "Active",
+        "workEmail": "iris@acme.example"
+      },
+      {
+        "_restrictedFields": [],
+        "departmentName": "Support",
+        "employeeId": "190",
+        "employmentStatus": "Onboarding",
+        "firstName": "Jordan",
+        "hireDate": "2026-09-08",
+        "jobTitleName": "Support Engineer",
+        "lastName": "Hale",
+        "photoUrl": null,
+        "preferredName": "Jordan",
+        "status": "Inactive",
+        "workEmail": "jordan.hale@acme.example"
+      }
+    ],
+    "meta": {
+      "page": {
+        "limit": 250,
+        "nextCursor": null,
+        "prevCursor": null
+      },
+      "total": 8
+    }
+  },
+  "provenance": {
+    "algorithm": "docs-examples-root-v1",
+    "digest": "sha256:c9e0c493a0fe97e9e19fd71020ac663f576bb99988b1190a44836a2995c5d425",
+    "roots": [
+      {
+        "path": "cli/run.go",
+        "digest": "sha256:952ee0374bd0bc40caac1e8808c2fb82eb385ead47dd40f9023d4910a0187623"
+      },
+      {
+        "path": "engine/http",
+        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+      },
+      {
+        "path": "environment",
+        "digest": "sha256:19f5fa8429b3e9bb474fd6017504dc66cc7f1d1039ffb418d701935ae2e08ff9"
+      },
+      {
+        "path": "environments/acme-bamboohr.yaml",
+        "digest": "sha256:d6f7592e20bbc683cf1c54acd88974e5d547bbadea421b3718b92e04ecb535b0"
+      },
+      {
+        "path": "httpresource",
+        "digest": "sha256:37a2ba36c22aceb4f79ac60060b9820004e3e63e90bd26c674f8be54d8333919"
+      },
+      {
+        "path": "packages/docs-content/resources/_examples/bamboohr-read.json",
+        "digest": "sha256:f0596c5bc3810d7032fab62c5c12429cd381370c232f6d5aed948c01d86eff3d"
+      },
+      {
+        "path": "requestlog",
+        "digest": "sha256:fd3ddc6bbc63fc619cf24e179134455e2ae5787d60a627ae823525943d6be905"
+      },
+      {
+        "path": "resources/bamboohr",
+        "digest": "sha256:46aa29cc80de07b1c0aa49513cf5aa04e0d55195bd03004e5d91a5645f2a39e5"
+      },
+      {
+        "path": "scenario",
+        "digest": "sha256:d7b598291cfad6a1cbd287a7b94ed37f2508e5264b48de7c1ec24dc421f86104"
+      }
+    ]
+  }
+}

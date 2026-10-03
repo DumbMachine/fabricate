@@ -1,0 +1,14 @@
+{
+  "id": "statuspage-read",
+  "title": "List seeded incidents",
+  "environment": "environments/acme-statuspage.yaml",
+  "environmentLabel": "Acme Statuspage",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/statuspage-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-statuspage.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.statuspage.io/v1/pages/page-acme/incidents",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.statuspage.io/v1/pages/page-acme/incidents"
+  ]
+}

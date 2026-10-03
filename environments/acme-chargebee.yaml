@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-chargebee
+
+services:
+  chargebee:
+    resource: chargebee
+    scenario: chargebee.acme-billing.v1

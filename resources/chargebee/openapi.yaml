@@ -1,0 +1,708 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Chargebee API
+  version: v2
+  description: >-
+    Curated Chargebee API v2 contract for the Acme site. Paths, envelopes, and
+    field names follow the official Product Catalog 2.0 reference. Amounts are
+    minor currency units (cents). Live Chargebee authenticates with HTTP Basic;
+    this contract accepts the synthetic bearer token Fabricate injects.
+servers:
+  - url: https://acme.chargebee.com
+security:
+  - bearerAuth: []
+tags:
+  - name: Customers
+  - name: Subscriptions
+  - name: Invoices
+  - name: Transactions
+  - name: Comments
+paths:
+  /api/v2/customers:
+    get:
+      operationId: listCustomers
+      summary: Lists customers.
+      tags: [Customers]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/IdIs'
+        - $ref: '#/components/parameters/EmailIs'
+      responses:
+        '200':
+          description: Customer list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CustomerList'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/customers/{customer-id}:
+    get:
+      operationId: retrieveCustomer
+      summary: Retrieves a customer.
+      tags: [Customers]
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CustomerEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/subscriptions:
+    get:
+      operationId: listSubscriptions
+      summary: Lists subscriptions.
+      tags: [Subscriptions]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/IdIs'
+        - $ref: '#/components/parameters/CustomerIdIs'
+        - $ref: '#/components/parameters/StatusIs'
+      responses:
+        '200':
+          description: Subscription list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SubscriptionList'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/subscriptions/{subscription-id}:
+    get:
+      operationId: retrieveSubscription
+      summary: Retrieves a subscription.
+      tags: [Subscriptions]
+      parameters:
+        - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '200':
+          description: Subscription and its customer.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SubscriptionEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/subscriptions/{subscription-id}/cancel_for_items:
+    post:
+      operationId: cancelSubscriptionForItems
+      summary: Cancels a subscription immediately or at the end of the term.
+      tags: [Subscriptions]
+      parameters:
+        - $ref: '#/components/parameters/SubscriptionId'
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema: {$ref: '#/components/schemas/CancelSubscriptionRequest'}
+      responses:
+        '200':
+          description: Cancelled or non-renewing subscription.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SubscriptionEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/invoices:
+    get:
+      operationId: listInvoices
+      summary: Lists invoices.
+      tags: [Invoices]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/IdIs'
+        - $ref: '#/components/parameters/CustomerIdIs'
+        - $ref: '#/components/parameters/SubscriptionIdIs'
+        - $ref: '#/components/parameters/StatusIs'
+      responses:
+        '200':
+          description: Invoice list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/InvoiceList'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/invoices/{invoice-id}:
+    get:
+      operationId: retrieveInvoice
+      summary: Retrieves an invoice.
+      tags: [Invoices]
+      parameters:
+        - $ref: '#/components/parameters/InvoiceId'
+      responses:
+        '200':
+          description: Invoice.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/InvoiceEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/transactions:
+    get:
+      operationId: listTransactions
+      summary: Lists transactions.
+      tags: [Transactions]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/IdIs'
+        - $ref: '#/components/parameters/CustomerIdIs'
+        - $ref: '#/components/parameters/SubscriptionIdIs'
+        - $ref: '#/components/parameters/StatusIs'
+      responses:
+        '200':
+          description: Transaction list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TransactionList'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/transactions/{transaction-id}:
+    get:
+      operationId: retrieveTransaction
+      summary: Retrieves a transaction.
+      tags: [Transactions]
+      parameters:
+        - $ref: '#/components/parameters/TransactionId'
+      responses:
+        '200':
+          description: Transaction.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TransactionEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/comments:
+    get:
+      operationId: listComments
+      summary: Lists comments, newest first.
+      tags: [Comments]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/EntityType'
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        '200':
+          description: Comment list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CommentList'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createComment
+      summary: Creates a user comment on a customer, subscription, or invoice.
+      tags: [Comments]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema: {$ref: '#/components/schemas/CreateCommentRequest'}
+      responses:
+        '200':
+          description: Created comment.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CommentEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Chargebee's live API uses HTTP Basic with the
+        API key as the username and an empty password. Fabricate's proxy
+        overwrites Authorization with Bearer, so this stand-in is what the
+        resource accepts.
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      description: Page size. Chargebee's default is 10 and the maximum is 100.
+      schema: {type: integer, minimum: 1, maximum: 100, default: 10}
+    Offset:
+      name: offset
+      in: query
+      description: Cursor returned as next_offset. This resource uses a decimal index.
+      schema: {type: string}
+    IncludeDeleted:
+      name: include_deleted
+      in: query
+      schema: {type: boolean, default: false}
+    IdIs:
+      name: id[is]
+      in: query
+      schema: {type: string}
+    EmailIs:
+      name: email[is]
+      in: query
+      schema: {type: string}
+    CustomerIdIs:
+      name: customer_id[is]
+      in: query
+      schema: {type: string}
+    SubscriptionIdIs:
+      name: subscription_id[is]
+      in: query
+      schema: {type: string}
+    StatusIs:
+      name: status[is]
+      in: query
+      schema: {type: string}
+    CustomerId:
+      name: customer-id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    SubscriptionId:
+      name: subscription-id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    InvoiceId:
+      name: invoice-id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    TransactionId:
+      name: transaction-id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    EntityType:
+      name: entity_type
+      in: query
+      schema:
+        type: string
+        enum: [customer, subscription, invoice]
+    EntityId:
+      name: entity_id
+      in: query
+      schema: {type: string}
+  responses:
+    Error:
+      description: Chargebee-style error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [message, type, api_error_code, error_code, error_msg, http_status_code]
+      properties:
+        message: {type: string}
+        type: {type: string, enum: [invalid_request]}
+        api_error_code: {type: string}
+        error_code: {type: string}
+        error_msg: {type: string}
+        http_status_code: {type: integer}
+    Customer:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - first_name
+        - last_name
+        - email
+        - phone
+        - company
+        - auto_collection
+        - net_term_days
+        - allow_direct_debit
+        - created_at
+        - taxability
+        - updated_at
+        - pii_cleared
+        - resource_version
+        - deleted
+        - object
+        - preferred_currency_code
+        - promotional_credits
+        - refundable_credits
+        - excess_payments
+        - unbilled_charges
+      properties:
+        id: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        email: {type: string}
+        phone: {type: string}
+        company: {type: string}
+        auto_collection: {type: string, enum: [on, off]}
+        net_term_days: {type: integer, format: int64}
+        allow_direct_debit: {type: boolean}
+        created_at: {type: integer, format: int64}
+        taxability: {type: string, enum: [taxable, exempt]}
+        updated_at: {type: integer, format: int64}
+        pii_cleared: {type: string}
+        resource_version: {type: integer, format: int64}
+        deleted: {type: boolean}
+        object: {type: string, enum: [customer]}
+        preferred_currency_code: {type: string}
+        promotional_credits: {type: integer, format: int64}
+        refundable_credits: {type: integer, format: int64}
+        excess_payments: {type: integer, format: int64}
+        unbilled_charges: {type: integer, format: int64}
+    CustomerEnvelope:
+      type: object
+      additionalProperties: false
+      required: [customer]
+      properties:
+        customer: {$ref: '#/components/schemas/Customer'}
+    CustomerListEntry:
+      type: object
+      additionalProperties: false
+      required: [customer]
+      properties:
+        customer: {$ref: '#/components/schemas/Customer'}
+    CustomerList:
+      type: object
+      additionalProperties: false
+      required: [list]
+      properties:
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/CustomerListEntry'}
+        next_offset: {type: string}
+    SubscriptionItem:
+      type: object
+      additionalProperties: false
+      required: [item_price_id, item_type, quantity, unit_price, amount, free_quantity, billing_cycles, object]
+      properties:
+        item_price_id: {type: string}
+        item_type: {type: string, enum: [plan, addon, charge]}
+        quantity: {type: integer, format: int64}
+        unit_price: {type: integer, format: int64}
+        amount: {type: integer, format: int64}
+        free_quantity: {type: integer, format: int64}
+        billing_cycles: {type: integer, format: int64}
+        object: {type: string, enum: [subscription_item]}
+    Subscription:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - customer_id
+        - currency_code
+        - status
+        - billing_period
+        - billing_period_unit
+        - created_at
+        - started_at
+        - activated_at
+        - current_term_start
+        - current_term_end
+        - due_invoices_count
+        - total_dues
+        - mrr
+        - has_scheduled_changes
+        - has_scheduled_advance_invoices
+        - deleted
+        - decommissioned
+        - resource_version
+        - updated_at
+        - object
+        - subscription_items
+      properties:
+        id: {type: string}
+        customer_id: {type: string}
+        currency_code: {type: string}
+        status:
+          type: string
+          enum: [future, in_trial, active, non_renewing, paused, cancelled]
+        billing_period: {type: integer, format: int64}
+        billing_period_unit: {type: string, enum: [day, week, month, year]}
+        created_at: {type: integer, format: int64}
+        started_at: {type: integer, format: int64}
+        activated_at: {type: integer, format: int64}
+        current_term_start: {type: integer, format: int64}
+        current_term_end: {type: integer, format: int64}
+        next_billing_at: {type: integer, format: int64}
+        cancelled_at: {type: integer, format: int64}
+        cancel_reason_code: {type: string}
+        remaining_billing_cycles: {type: integer, format: int64}
+        due_invoices_count: {type: integer, format: int64}
+        due_since: {type: integer, format: int64}
+        total_dues: {type: integer, format: int64}
+        mrr: {type: integer, format: int64}
+        has_scheduled_changes: {type: boolean}
+        has_scheduled_advance_invoices: {type: boolean}
+        deleted: {type: boolean}
+        decommissioned: {type: boolean}
+        resource_version: {type: integer, format: int64}
+        updated_at: {type: integer, format: int64}
+        object: {type: string, enum: [subscription]}
+        subscription_items:
+          type: array
+          items: {$ref: '#/components/schemas/SubscriptionItem'}
+    SubscriptionEnvelope:
+      type: object
+      additionalProperties: false
+      required: [subscription, customer]
+      properties:
+        subscription: {$ref: '#/components/schemas/Subscription'}
+        customer: {$ref: '#/components/schemas/Customer'}
+    SubscriptionListEntry:
+      type: object
+      additionalProperties: false
+      required: [subscription, customer]
+      properties:
+        subscription: {$ref: '#/components/schemas/Subscription'}
+        customer: {$ref: '#/components/schemas/Customer'}
+    SubscriptionList:
+      type: object
+      additionalProperties: false
+      required: [list]
+      properties:
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/SubscriptionListEntry'}
+        next_offset: {type: string}
+    CancelSubscriptionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        cancel_option:
+          type: string
+          enum: [immediately, end_of_term, specific_date]
+        end_of_term: {type: boolean}
+        cancel_at: {type: integer, format: int64}
+        cancel_reason_code: {type: string, maxLength: 100}
+    LineItem:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - customer_id
+        - subscription_id
+        - date_from
+        - date_to
+        - description
+        - entity_id
+        - entity_type
+        - quantity
+        - unit_amount
+        - amount
+        - discount_amount
+        - tax_amount
+        - object
+      properties:
+        id: {type: string}
+        customer_id: {type: string}
+        subscription_id: {type: string}
+        date_from: {type: integer, format: int64}
+        date_to: {type: integer, format: int64}
+        description: {type: string}
+        entity_id: {type: string}
+        entity_type: {type: string, enum: [plan_item_price, addon_item_price, charge_item_price]}
+        quantity: {type: integer, format: int64}
+        unit_amount: {type: integer, format: int64}
+        amount: {type: integer, format: int64}
+        discount_amount: {type: integer, format: int64}
+        tax_amount: {type: integer, format: int64}
+        object: {type: string, enum: [line_item]}
+    LinkedPayment:
+      type: object
+      additionalProperties: false
+      required: [txn_id, txn_status, txn_date, txn_amount, applied_amount, applied_at]
+      properties:
+        txn_id: {type: string}
+        txn_status: {type: string, enum: [success, failure, voided, in_progress]}
+        txn_date: {type: integer, format: int64}
+        txn_amount: {type: integer, format: int64}
+        applied_amount: {type: integer, format: int64}
+        applied_at: {type: integer, format: int64}
+    Invoice:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - customer_id
+        - subscription_id
+        - recurring
+        - status
+        - date
+        - due_date
+        - net_term_days
+        - price_type
+        - currency_code
+        - exchange_rate
+        - sub_total
+        - tax
+        - total
+        - amount_paid
+        - amount_due
+        - amount_adjusted
+        - credits_applied
+        - write_off_amount
+        - amount_to_collect
+        - round_off_amount
+        - first_invoice
+        - deleted
+        - resource_version
+        - updated_at
+        - object
+        - line_items
+        - linked_payments
+      properties:
+        id: {type: string}
+        customer_id: {type: string}
+        subscription_id: {type: string}
+        recurring: {type: boolean}
+        status:
+          type: string
+          enum: [paid, posted, payment_due, not_paid, voided, pending]
+        date: {type: integer, format: int64}
+        due_date: {type: integer, format: int64}
+        paid_at: {type: integer, format: int64}
+        net_term_days: {type: integer, format: int64}
+        price_type: {type: string, enum: [tax_exclusive, tax_inclusive]}
+        currency_code: {type: string}
+        exchange_rate: {type: integer, format: int64}
+        sub_total: {type: integer, format: int64}
+        tax: {type: integer, format: int64}
+        total: {type: integer, format: int64}
+        amount_paid: {type: integer, format: int64}
+        amount_due: {type: integer, format: int64}
+        amount_adjusted: {type: integer, format: int64}
+        credits_applied: {type: integer, format: int64}
+        write_off_amount: {type: integer, format: int64}
+        amount_to_collect: {type: integer, format: int64}
+        round_off_amount: {type: integer, format: int64}
+        first_invoice: {type: boolean}
+        deleted: {type: boolean}
+        resource_version: {type: integer, format: int64}
+        updated_at: {type: integer, format: int64}
+        object: {type: string, enum: [invoice]}
+        line_items:
+          type: array
+          items: {$ref: '#/components/schemas/LineItem'}
+        linked_payments:
+          type: array
+          items: {$ref: '#/components/schemas/LinkedPayment'}
+    InvoiceEnvelope:
+      type: object
+      additionalProperties: false
+      required: [invoice]
+      properties:
+        invoice: {$ref: '#/components/schemas/Invoice'}
+    InvoiceListEntry:
+      type: object
+      additionalProperties: false
+      required: [invoice]
+      properties:
+        invoice: {$ref: '#/components/schemas/Invoice'}
+    InvoiceList:
+      type: object
+      additionalProperties: false
+      required: [list]
+      properties:
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/InvoiceListEntry'}
+        next_offset: {type: string}
+    Transaction:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - customer_id
+        - subscription_id
+        - invoice_id
+        - type
+        - status
+        - amount
+        - amount_unused
+        - currency_code
+        - date
+        - payment_method
+        - gateway
+        - exchange_rate
+        - deleted
+        - resource_version
+        - updated_at
+        - object
+      properties:
+        id: {type: string}
+        customer_id: {type: string}
+        subscription_id: {type: string}
+        invoice_id: {type: string}
+        type: {type: string, enum: [payment, refund]}
+        status: {type: string, enum: [success, failure, voided, in_progress]}
+        amount: {type: integer, format: int64}
+        amount_unused: {type: integer, format: int64}
+        currency_code: {type: string}
+        date: {type: integer, format: int64}
+        payment_method: {type: string, enum: [card, cash, bank_transfer, other]}
+        gateway: {type: string}
+        exchange_rate: {type: integer, format: int64}
+        deleted: {type: boolean}
+        resource_version: {type: integer, format: int64}
+        updated_at: {type: integer, format: int64}
+        object: {type: string, enum: [transaction]}
+    TransactionEnvelope:
+      type: object
+      additionalProperties: false
+      required: [transaction]
+      properties:
+        transaction: {$ref: '#/components/schemas/Transaction'}
+    TransactionListEntry:
+      type: object
+      additionalProperties: false
+      required: [transaction]
+      properties:
+        transaction: {$ref: '#/components/schemas/Transaction'}
+    TransactionList:
+      type: object
+      additionalProperties: false
+      required: [list]
+      properties:
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/TransactionListEntry'}
+        next_offset: {type: string}
+    Comment:
+      type: object
+      additionalProperties: false
+      required: [id, entity_type, entity_id, notes, added_by, type, created_at, object]
+      properties:
+        id: {type: string}
+        entity_type: {type: string, enum: [customer, subscription, invoice]}
+        entity_id: {type: string}
+        notes: {type: string}
+        added_by: {type: string}
+        type: {type: string, enum: [user, system]}
+        created_at: {type: integer, format: int64}
+        object: {type: string, enum: [comment]}
+    CommentEnvelope:
+      type: object
+      additionalProperties: false
+      required: [comment]
+      properties:
+        comment: {$ref: '#/components/schemas/Comment'}
+    CommentListEntry:
+      type: object
+      additionalProperties: false
+      required: [comment]
+      properties:
+        comment: {$ref: '#/components/schemas/Comment'}
+    CommentList:
+      type: object
+      additionalProperties: false
+      required: [list]
+      properties:
+        list:
+          type: array
+          items: {$ref: '#/components/schemas/CommentListEntry'}
+        next_offset: {type: string}
+    CreateCommentRequest:
+      type: object
+      additionalProperties: false
+      required: [entity_type, entity_id, notes]
+      properties:
+        entity_type:
+          type: string
+          enum: [customer, subscription, invoice]
+        entity_id: {type: string, minLength: 1, maxLength: 100}
+        notes: {type: string, minLength: 1, maxLength: 1000}
+        added_by: {type: string, maxLength: 100}

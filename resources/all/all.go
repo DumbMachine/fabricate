@@ -8,36 +8,48 @@ import (
 	"github.com/dumbmachine/fabricate/httpresource"
 	"github.com/dumbmachine/fabricate/resources/asana"
 	"github.com/dumbmachine/fabricate/resources/attio"
+	"github.com/dumbmachine/fabricate/resources/bamboohr"
+	"github.com/dumbmachine/fabricate/resources/carta"
+	"github.com/dumbmachine/fabricate/resources/chargebee"
 	"github.com/dumbmachine/fabricate/resources/close"
 	"github.com/dumbmachine/fabricate/resources/cloudflare"
 	"github.com/dumbmachine/fabricate/resources/digitalocean"
 	"github.com/dumbmachine/fabricate/resources/gmail"
 	"github.com/dumbmachine/fabricate/resources/hubspot"
 	"github.com/dumbmachine/fabricate/resources/intercom"
+	"github.com/dumbmachine/fabricate/resources/ironclad"
 	"github.com/dumbmachine/fabricate/resources/mailchimp"
 	"github.com/dumbmachine/fabricate/resources/mailgun"
 	"github.com/dumbmachine/fabricate/resources/pipedrive"
 	"github.com/dumbmachine/fabricate/resources/razorpay"
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
+	"github.com/dumbmachine/fabricate/resources/statuspage"
+	"github.com/dumbmachine/fabricate/resources/zohobooks"
 )
 
 func Registry() *httpresource.Registry {
 	registry, err := httpresource.NewRegistry(
 		asana.NewResource(),
 		attio.NewResource(),
+		bamboohr.NewResource(),
+		carta.NewResource(),
+		chargebee.NewResource(),
 		close.NewResource(),
 		cloudflare.NewResource(),
 		digitalocean.NewResource(),
 		gmail.NewResource(),
 		hubspot.NewResource(),
 		intercom.NewResource(),
+		ironclad.NewResource(),
 		mailchimp.NewResource(),
 		mailgun.NewResource(),
 		pipedrive.NewResource(),
 		razorpay.NewResource(),
 		resend.NewResource(),
 		sendgrid.NewResource(),
+		statuspage.NewResource(),
+		zohobooks.NewResource(),
 	)
 	if err != nil {
 		panic(fmt.Sprintf("official HTTP resource registry: %v", err))

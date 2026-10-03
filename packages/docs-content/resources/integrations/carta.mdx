@@ -1,0 +1,118 @@
+---
+title: Carta
+description: Stakeholders, certificates, option grants, fair market values, and draft option grants.
+sidebar:
+  icon: https://logos.composio.dev/api/carta
+---
+
+<ResourceCoverage resource="carta" />
+
+Stakeholders, certificates, option grants, fair market values, and draft
+option grants. Local Carta API Platform v1alpha1 that keeps cap table state
+across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Carta API Platform v1alpha1 |
+| Auth | Synthetic bearer token. Carta's live API is approval-gated OAuth 2.0. |
+| Hosts | `api.carta.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-carta.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_CARTA_TOKEN" \
+      "$FAB_CARTA_URL/v1alpha1/issuers/issuer-acme/stakeholders"'
+```
+
+The service is named `carta` in the example manifest, so the variables are
+`FAB_CARTA_URL` and `FAB_CARTA_TOKEN`.
+
+The response is Acme's cap table:
+
+```json
+{
+  "stakeholders": [
+    {
+      "address": {"country": "IND"},
+      "email": "val@acme.example",
+      "entityType": "INDIVIDUAL",
+      "fullName": "Val Ortega",
+      "id": "stk-val",
+      "issuerId": "issuer-acme",
+      "relationship": "EMPLOYEE"
+    },
+    {
+      "entityType": "CORPORATION",
+      "fullName": "Harbor Capital",
+      "id": "stk-harbor",
+      "issuerId": "issuer-acme",
+      "relationship": "INVESTOR"
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Carta URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Carta's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_CARTA_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-carta.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.carta.com/v1alpha1/issuers/issuer-acme/stakeholders
+```
+
+Fabricate handles `api.carta.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="carta"
+  descriptions={{
+    "carta.minimal.v1": "An empty Acme issuer for a clean test.",
+    "carta.acme-captable.v1": "Val Ortega's option grant, Harbor Capital preferred stock, and the 2026 fair market value.",
+  }}
+/>
+
+Peek at the committed Acme cap table. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="carta"
+  scenario="acme-captable.v1"
+  collection="stakeholders"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Carta check ran against the Acme Carta
+environment with curl:
+
+<IntegrationCompatibility resource="carta" />
+
+## Supported operations
+
+<SupportedOperations resource="carta" />

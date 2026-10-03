@@ -1,0 +1,14 @@
+{
+  "id": "bamboohr-read",
+  "title": "List seeded employees",
+  "environment": "environments/acme-bamboohr.yaml",
+  "environmentLabel": "Acme's BambooHR",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/bamboohr-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-bamboohr.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS \"https://acme.bamboohr.com/api/v1/employees?fields=workEmail,departmentName,employmentStatus,hireDate\"",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://acme.bamboohr.com/api/v1/employees?fields=workEmail,departmentName,employmentStatus,hireDate"
+  ]
+}

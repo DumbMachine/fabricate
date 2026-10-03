@@ -1,0 +1,240 @@
+---
+title: BambooHR
+description: Employees, departments, time off types, and time off requests.
+sidebar:
+  icon: https://logos.composio.dev/api/bamboohr
+---
+
+<ResourceCoverage resource="bamboohr" />
+
+Employees, departments, time off types, and time off requests. Local BambooHR
+v1 for the Acme company subdomain that keeps people and time off across
+requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | BambooHR v1 |
+| Auth | Synthetic bearer token. BambooHR production uses HTTP Basic (API key as the username). |
+| Hosts | `acme.bamboohr.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+BambooHR authenticates with HTTP Basic: the API key is the username and the
+password can be any string. Fabricate accepts `Authorization: Bearer` instead.
+The proxy overwrites `Authorization` on `acme.bamboohr.com` with the
+environment's ephemeral bearer token, so existing clients keep working without
+a Basic header.
+
+The employee `status` field is only `Active` or `Inactive`. Jordan Hale's
+Onboarding value is `employmentStatus`, with `hireDate` `2026-09-08` and
+`status` `Inactive`.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-bamboohr.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_BAMBOOHR_TOKEN" \
+      "$FAB_BAMBOOHR_URL/api/v1/employees?fields=workEmail,departmentName,employmentStatus,hireDate"'
+```
+
+The service is named `bamboohr` in the example manifest, so the variables are
+`FAB_BAMBOOHR_URL` and `FAB_BAMBOOHR_TOKEN`.
+
+The response is the Acme roster:
+
+```json
+{
+  "_links": {
+    "self": {
+      "href": "https://acme.bamboohr.com/api/v1/employees"
+    }
+  },
+  "data": [
+    {
+      "_restrictedFields": [],
+      "employeeId": "101",
+      "employmentStatus": "Active",
+      "firstName": "Val",
+      "jobTitleName": "Operator",
+      "lastName": "Ortega",
+      "photoUrl": null,
+      "preferredName": "Val",
+      "status": "Active",
+      "workEmail": "val@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "Finance",
+      "employeeId": "102",
+      "employmentStatus": "Active",
+      "firstName": "Aisha",
+      "jobTitleName": "Finance",
+      "lastName": "Rahman",
+      "photoUrl": null,
+      "preferredName": "Aisha",
+      "status": "Active",
+      "workEmail": "aisha@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "Logistics",
+      "employeeId": "103",
+      "employmentStatus": "Active",
+      "firstName": "Ravi",
+      "jobTitleName": "Logistics",
+      "lastName": "Mehta",
+      "photoUrl": null,
+      "preferredName": "Ravi",
+      "status": "Active",
+      "workEmail": "ravi@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "People",
+      "employeeId": "104",
+      "employmentStatus": "Active",
+      "firstName": "Nina",
+      "jobTitleName": "HR",
+      "lastName": "Kapoor",
+      "photoUrl": null,
+      "preferredName": "Nina",
+      "status": "Active",
+      "workEmail": "nina@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "People",
+      "employeeId": "105",
+      "employmentStatus": "Active",
+      "firstName": "Leo",
+      "jobTitleName": "Recruiting",
+      "lastName": "Park",
+      "photoUrl": null,
+      "preferredName": "Leo",
+      "status": "Active",
+      "workEmail": "leo@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "Support",
+      "employeeId": "106",
+      "employmentStatus": "Active",
+      "firstName": "Sam",
+      "jobTitleName": "Support",
+      "lastName": "Adeyemi",
+      "photoUrl": null,
+      "preferredName": "Sam",
+      "status": "Active",
+      "workEmail": "sam@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "Legal",
+      "employeeId": "107",
+      "employmentStatus": "Active",
+      "firstName": "Iris",
+      "jobTitleName": "Legal",
+      "lastName": "Berg",
+      "photoUrl": null,
+      "preferredName": "Iris",
+      "status": "Active",
+      "workEmail": "iris@acme.example"
+    },
+    {
+      "_restrictedFields": [],
+      "departmentName": "Support",
+      "employeeId": "190",
+      "employmentStatus": "Onboarding",
+      "firstName": "Jordan",
+      "hireDate": "2026-09-08",
+      "jobTitleName": "Support Engineer",
+      "lastName": "Hale",
+      "photoUrl": null,
+      "preferredName": "Jordan",
+      "status": "Inactive",
+      "workEmail": "jordan.hale@acme.example"
+    }
+  ],
+  "meta": {
+    "page": {
+      "limit": 250,
+      "nextCursor": null,
+      "prevCursor": null
+    },
+    "total": 8
+  }
+}
+```
+
+Ravi Mehta (`103`) is out 2026-08-28 through 2026-08-29. The same direct URL
+with this path returns that request:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-bamboohr.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_BAMBOOHR_TOKEN" \
+      "$FAB_BAMBOOHR_URL/api/v1/time_off/requests?start=2026-08-01&end=2026-08-31"'
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal BambooHR company URL and follows
+standard proxy and CA environment variables. This one-paste check calls
+Acme's production hostname; replace the final `curl` with your app. Omit
+`$FAB_BAMBOOHR_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-bamboohr.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS "https://acme.bamboohr.com/api/v1/employees?fields=workEmail,departmentName,employmentStatus,hireDate"
+```
+
+Fabricate handles `acme.bamboohr.com` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="bamboohr"
+  descriptions={{
+    "bamboohr.minimal.v1": "An empty Acme company for a clean test.",
+    "bamboohr.acme-people.v1": "Acme employees and departments, with Ravi out for a warehouse visit and Jordan Hale onboarding.",
+  }}
+/>
+
+Peek at the committed Acme people world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="bamboohr"
+  scenario="acme-people.v1"
+  collection="employees"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest BambooHR check ran against the Acme BambooHR
+environment with curl:
+
+<IntegrationCompatibility resource="bamboohr" />
+
+## Supported operations
+
+<SupportedOperations resource="bamboohr" />

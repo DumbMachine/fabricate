@@ -1,0 +1,22 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "statuspage.minimal.v1",
+  "$resource": "statuspage",
+  "$resourceVersion": "v1",
+  "state": {
+    "page": {
+      "id": "page-acme",
+      "name": "Acme Status",
+      "subdomain": "status.acme.example",
+      "domain": "status.acme.example",
+      "url": "https://status.acme.example",
+      "pageDescription": "",
+      "timeZone": "Asia/Kolkata",
+      "createdAt": "2026-01-15T00:00:00Z",
+      "updatedAt": "2026-08-26T12:00:00Z"
+    },
+    "components": [],
+    "incidents": []
+  }
+}

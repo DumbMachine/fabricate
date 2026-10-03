@@ -1,0 +1,14 @@
+{
+  "id": "chargebee-read",
+  "title": "List seeded subscriptions",
+  "environment": "environments/acme-chargebee.yaml",
+  "environmentLabel": "Acme Chargebee",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/chargebee-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-chargebee.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://acme.chargebee.com/api/v2/subscriptions",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://acme.chargebee.com/api/v2/subscriptions"
+  ]
+}

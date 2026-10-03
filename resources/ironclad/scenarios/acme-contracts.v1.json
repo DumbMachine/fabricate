@@ -1,0 +1,156 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "ironclad.acme-contracts.v1",
+  "$resource": "ironclad",
+  "$resourceVersion": "v1",
+  "state": {
+    "currentUser": {
+      "id": "user-iris",
+      "displayName": "Iris Berg",
+      "email": "iris@acme.example",
+      "title": "Legal",
+      "companyName": "Acme"
+    },
+    "workflows": [
+      {
+        "id": "wf-delhivery-msa",
+        "ironcladId": "IC-210",
+        "title": "Delhivery MSA",
+        "template": "tmpl-msa",
+        "step": "Review",
+        "status": "active",
+        "isCancelled": false,
+        "isComplete": false,
+        "counterpartyName": "Delhivery",
+        "recordIds": [],
+        "roleId": "legal",
+        "roleDisplayName": "Legal",
+        "assigneeId": "user-iris",
+        "created": "2026-08-12T08:00:00Z",
+        "lastUpdated": "2026-08-26T09:30:00Z",
+        "creatorId": "user-iris"
+      },
+      {
+        "id": "wf-fernworks-msa",
+        "ironcladId": "IC-204",
+        "title": "Fernworks MSA",
+        "template": "tmpl-msa",
+        "step": "Complete",
+        "status": "completed",
+        "isCancelled": false,
+        "isComplete": true,
+        "counterpartyName": "Priya Nair",
+        "counterpartyEmail": "priya@fernworks.example",
+        "docusignEnvelopeId": "env-fernworks-msa",
+        "filename": "Fernworks-MSA.pdf",
+        "recordIds": ["rec-fernworks-msa"],
+        "roleId": "legal",
+        "roleDisplayName": "Legal",
+        "assigneeId": "user-iris",
+        "created": "2026-08-10T09:00:00Z",
+        "lastUpdated": "2026-08-20T15:30:00Z",
+        "creatorId": "user-iris"
+      },
+      {
+        "id": "wf-tinyshop-cancel",
+        "ironcladId": "IC-209",
+        "title": "TinyShop cancellation",
+        "template": "tmpl-cancellation",
+        "step": "Review",
+        "status": "active",
+        "isCancelled": false,
+        "isComplete": false,
+        "counterpartyName": "Marco Silva",
+        "counterpartyEmail": "marco@tinyshop.example",
+        "docusignEnvelopeId": "env-tinyshop-refund",
+        "filename": "TinyShop-cancellation.pdf",
+        "recordIds": ["rec-tinyshop-cancel"],
+        "roleId": "legal",
+        "roleDisplayName": "Legal",
+        "assigneeId": "user-iris",
+        "created": "2026-08-22T10:15:00Z",
+        "lastUpdated": "2026-08-25T11:20:00Z",
+        "creatorId": "user-iris"
+      }
+    ],
+    "records": [
+      {
+        "id": "rec-fernworks-msa",
+        "ironcladId": "IC-R204",
+        "type": "masterServiceAgreement",
+        "name": "Fernworks MSA",
+        "lastUpdated": "2026-08-20T15:30:00Z",
+        "counterpartyName": "Priya Nair",
+        "docusignEnvelopeId": "env-fernworks-msa",
+        "filename": "Fernworks-MSA.pdf",
+        "workflowId": "wf-fernworks-msa",
+        "contractStatus": "active",
+        "enhancedStatus": "executed"
+      },
+      {
+        "id": "rec-tinyshop-cancel",
+        "ironcladId": "IC-R209",
+        "type": "cancellationAgreement",
+        "name": "TinyShop cancellation",
+        "lastUpdated": "2026-08-25T11:20:00Z",
+        "counterpartyName": "Marco Silva",
+        "docusignEnvelopeId": "env-tinyshop-refund",
+        "filename": "TinyShop-cancellation.pdf",
+        "workflowId": "wf-tinyshop-cancel",
+        "contractStatus": "indeterminate",
+        "enhancedStatus": "unknown"
+      }
+    ],
+    "comments": [
+      {
+        "id": "cmt-fernworks-msa",
+        "workflowId": "wf-fernworks-msa",
+        "commentMessage": "Signed copy filed as Fernworks-MSA.pdf on DocuSign envelope env-fernworks-msa.",
+        "timestamp": "2026-08-20T15:40:00Z",
+        "authorId": "user-iris"
+      }
+    ],
+    "approvals": [
+      {
+        "workflowId": "wf-delhivery-msa",
+        "approvalGroups": [
+          {
+            "role": "legal",
+            "displayName": "Legal",
+            "reviewerType": "role",
+            "reviewerStatus": "pending",
+            "status": "active",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "workflowId": "wf-fernworks-msa",
+        "approvalGroups": [
+          {
+            "role": "legal",
+            "displayName": "Legal",
+            "reviewerType": "role",
+            "reviewerStatus": "approved",
+            "status": "approved",
+            "order": 1
+          }
+        ]
+      },
+      {
+        "workflowId": "wf-tinyshop-cancel",
+        "approvalGroups": [
+          {
+            "role": "legal",
+            "displayName": "Legal",
+            "reviewerType": "role",
+            "reviewerStatus": "pending",
+            "status": "active",
+            "order": 1
+          }
+        ]
+      }
+    ]
+  }
+}

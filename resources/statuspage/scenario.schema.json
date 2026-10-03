@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/statuspage/scenario-v1.json",
+  "title": "Fabricate Statuspage scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["page", "components", "incidents"],
+  "properties": {
+    "page": {"$ref": "#/$defs/page"},
+    "components": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/component"}
+    },
+    "incidents": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/incident"}
+    }
+  },
+  "$defs": {
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "subdomain", "domain", "url", "pageDescription", "timeZone", "createdAt", "updatedAt"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "subdomain": {"type": "string", "minLength": 1},
+        "domain": {"type": "string"},
+        "url": {"type": "string"},
+        "pageDescription": {"type": "string"},
+        "timeZone": {"type": "string"},
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string", "minLength": 1}
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "pageId", "name", "description", "status", "position", "showcase", "group", "onlyShowIfDegraded", "createdAt", "updatedAt"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "pageId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string"},
+        "status": {
+          "type": "string",
+          "enum": ["operational", "degraded_performance", "partial_outage", "major_outage", "under_maintenance"]
+        },
+        "position": {"type": "integer", "minimum": 0},
+        "showcase": {"type": "boolean"},
+        "group": {"type": "boolean"},
+        "onlyShowIfDegraded": {"type": "boolean"},
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string", "minLength": 1}
+      }
+    },
+    "affected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["componentId", "oldStatus", "newStatus"],
+      "properties": {
+        "componentId": {"type": "string", "minLength": 1},
+        "oldStatus": {
+          "type": "string",
+          "enum": ["operational", "degraded_performance", "partial_outage", "major_outage", "under_maintenance"]
+        },
+        "newStatus": {
+          "type": "string",
+          "enum": ["operational", "degraded_performance", "partial_outage", "major_outage", "under_maintenance"]
+        }
+      }
+    },
+    "update": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "body", "createdAt", "updatedAt", "displayAt", "deliverNotifications", "wantsTwitterUpdate", "affected"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "status": {
+          "type": "string",
+          "enum": ["investigating", "identified", "monitoring", "resolved", "scheduled", "in_progress", "verifying", "completed", "postmortem"]
+        },
+        "body": {"type": "string"},
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string", "minLength": 1},
+        "displayAt": {"type": "string", "minLength": 1},
+        "deliverNotifications": {"type": "boolean"},
+        "wantsTwitterUpdate": {"type": "boolean"},
+        "affected": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/affected"}
+        }
+      }
+    },
+    "incident": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "pageId", "name", "status", "impact", "impactOverride", "componentIds", "createdAt", "updatedAt", "resolvedAt", "monitoringAt", "postmortemBody", "updates"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "pageId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "status": {
+          "type": "string",
+          "enum": ["investigating", "identified", "monitoring", "resolved", "scheduled", "in_progress", "verifying", "completed", "postmortem"]
+        },
+        "impact": {"type": "string", "enum": ["none", "minor", "major", "critical"]},
+        "impactOverride": {"type": "string"},
+        "componentIds": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string", "minLength": 1},
+        "resolvedAt": {"type": "string"},
+        "monitoringAt": {"type": "string"},
+        "postmortemBody": {"type": "string"},
+        "updates": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/update"}
+        }
+      }
+    }
+  }
+}

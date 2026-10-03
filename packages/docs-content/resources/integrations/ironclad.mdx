@@ -1,0 +1,323 @@
+---
+title: Ironclad
+description: Workflows, records, comments, and approvals.
+sidebar:
+  icon: https://logos.composio.dev/api/ironclad
+---
+
+<ResourceCoverage resource="ironclad" />
+
+Workflows, records, comments, and approvals. Local Ironclad Public API v1
+that keeps contract state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Ironclad Public API v1 |
+| Auth | Synthetic bearer token |
+| Hosts | `na1.ironcladapp.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-ironclad.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_IRONCLAD_TOKEN" \
+      "$FAB_IRONCLAD_URL/public/api/v1/workflows?status=active&status=completed"'
+```
+
+The service is named `ironclad` in the example manifest, so the variables are
+`FAB_IRONCLAD_URL` and `FAB_IRONCLAD_TOKEN`.
+
+An omitted `status` filter returns active workflows only. This request repeats
+`status` so the completed Fernworks MSA is included with the two workflows
+still in review.
+
+The response is the Acme contract repository:
+
+```json
+{
+  "count": 3,
+  "list": [
+    {
+      "approvals": {
+        "state": "in_progress",
+        "url": "/public/api/v1/workflows/wf-delhivery-msa/approvals"
+      },
+      "attributes": {
+        "counterpartyName": "Delhivery"
+      },
+      "created": "2026-08-12T08:00:00Z",
+      "creator": {
+        "displayName": "Iris Berg",
+        "email": "iris@acme.example",
+        "id": "user-iris",
+        "title": "Legal"
+      },
+      "id": "wf-delhivery-msa",
+      "ironcladId": "IC-210",
+      "isCancelled": false,
+      "isComplete": false,
+      "isRevertibleToReview": false,
+      "lastUpdated": "2026-08-26T09:30:00Z",
+      "recordIds": [],
+      "roles": [
+        {
+          "assignees": [
+            {
+              "email": "iris@acme.example",
+              "userId": "user-iris",
+              "userName": "Iris Berg"
+            }
+          ],
+          "displayName": "Legal",
+          "id": "legal"
+        }
+      ],
+      "schema": {
+        "counterpartyName": {
+          "displayName": "Counterparty Name",
+          "propertyKey": "counterpartyName",
+          "readOnly": false,
+          "type": "string"
+        }
+      },
+      "signatures": {
+        "state": "not_started"
+      },
+      "status": "active",
+      "step": "Review",
+      "template": "tmpl-msa",
+      "title": "Delhivery MSA"
+    },
+    {
+      "approvals": {
+        "state": "completed"
+      },
+      "attributes": {
+        "counterpartyEmail": "priya@fernworks.example",
+        "counterpartyName": "Priya Nair",
+        "docusignEnvelopeId": "env-fernworks-msa",
+        "draft": [
+          {
+            "download": "/public/api/v1/workflows/wf-fernworks-msa/document/signedCopy/download",
+            "filename": "Fernworks-MSA.pdf",
+            "key": "signedCopy",
+            "version": "v1",
+            "versionNumber": 1
+          }
+        ]
+      },
+      "created": "2026-08-10T09:00:00Z",
+      "creator": {
+        "displayName": "Iris Berg",
+        "email": "iris@acme.example",
+        "id": "user-iris",
+        "title": "Legal"
+      },
+      "id": "wf-fernworks-msa",
+      "ironcladId": "IC-204",
+      "isCancelled": false,
+      "isComplete": true,
+      "isRevertibleToReview": false,
+      "lastUpdated": "2026-08-20T15:30:00Z",
+      "recordIds": [
+        "rec-fernworks-msa"
+      ],
+      "roles": [
+        {
+          "assignees": [
+            {
+              "email": "iris@acme.example",
+              "userId": "user-iris",
+              "userName": "Iris Berg"
+            }
+          ],
+          "displayName": "Legal",
+          "id": "legal"
+        }
+      ],
+      "schema": {
+        "counterpartyEmail": {
+          "displayName": "Counterparty Email",
+          "propertyKey": "counterpartyEmail",
+          "readOnly": false,
+          "type": "string"
+        },
+        "counterpartyName": {
+          "displayName": "Counterparty Name",
+          "propertyKey": "counterpartyName",
+          "readOnly": false,
+          "type": "string"
+        },
+        "docusignEnvelopeId": {
+          "displayName": "DocuSign Envelope",
+          "propertyKey": "docusignEnvelopeId",
+          "readOnly": false,
+          "type": "string"
+        },
+        "draft": {
+          "displayName": "Draft",
+          "propertyKey": "draft",
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "signatures": {
+        "state": "completed"
+      },
+      "status": "completed",
+      "step": "Complete",
+      "template": "tmpl-msa",
+      "title": "Fernworks MSA"
+    },
+    {
+      "approvals": {
+        "state": "in_progress",
+        "url": "/public/api/v1/workflows/wf-tinyshop-cancel/approvals"
+      },
+      "attributes": {
+        "counterpartyEmail": "marco@tinyshop.example",
+        "counterpartyName": "Marco Silva",
+        "docusignEnvelopeId": "env-tinyshop-refund",
+        "draft": [
+          {
+            "download": "/public/api/v1/workflows/wf-tinyshop-cancel/document/draft/download",
+            "filename": "TinyShop-cancellation.pdf",
+            "key": "draft",
+            "version": "v1",
+            "versionNumber": 1
+          }
+        ]
+      },
+      "created": "2026-08-22T10:15:00Z",
+      "creator": {
+        "displayName": "Iris Berg",
+        "email": "iris@acme.example",
+        "id": "user-iris",
+        "title": "Legal"
+      },
+      "id": "wf-tinyshop-cancel",
+      "ironcladId": "IC-209",
+      "isCancelled": false,
+      "isComplete": false,
+      "isRevertibleToReview": false,
+      "lastUpdated": "2026-08-25T11:20:00Z",
+      "recordIds": [
+        "rec-tinyshop-cancel"
+      ],
+      "roles": [
+        {
+          "assignees": [
+            {
+              "email": "iris@acme.example",
+              "userId": "user-iris",
+              "userName": "Iris Berg"
+            }
+          ],
+          "displayName": "Legal",
+          "id": "legal"
+        }
+      ],
+      "schema": {
+        "counterpartyEmail": {
+          "displayName": "Counterparty Email",
+          "propertyKey": "counterpartyEmail",
+          "readOnly": false,
+          "type": "string"
+        },
+        "counterpartyName": {
+          "displayName": "Counterparty Name",
+          "propertyKey": "counterpartyName",
+          "readOnly": false,
+          "type": "string"
+        },
+        "docusignEnvelopeId": {
+          "displayName": "DocuSign Envelope",
+          "propertyKey": "docusignEnvelopeId",
+          "readOnly": false,
+          "type": "string"
+        },
+        "draft": {
+          "displayName": "Draft",
+          "propertyKey": "draft",
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "signatures": {
+        "state": "not_started"
+      },
+      "status": "active",
+      "step": "Review",
+      "template": "tmpl-cancellation",
+      "title": "TinyShop cancellation"
+    }
+  ],
+  "page": 0,
+  "pageSize": 20
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Ironclad URLs and follows standard proxy
+and CA environment variables. This one-paste check calls Ironclad's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_IRONCLAD_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-ironclad.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS "https://na1.ironcladapp.com/public/api/v1/workflows?status=active&status=completed"
+```
+
+Fabricate handles `na1.ironcladapp.com` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="ironclad"
+  descriptions={{
+    "ironclad.minimal.v1": "An empty Acme contract repository.",
+    "ironclad.acme-contracts.v1": "Fernworks MSA completed, TinyShop cancellation in review, and the Delhivery MSA waiting on Iris.",
+  }}
+/>
+
+Peek at the committed Acme contract world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="ironclad"
+  scenario="acme-contracts.v1"
+  collection="workflows"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Ironclad check ran against the Acme Ironclad
+environment with curl:
+
+<IntegrationCompatibility resource="ironclad" />
+
+## Supported operations
+
+<SupportedOperations resource="ironclad" />

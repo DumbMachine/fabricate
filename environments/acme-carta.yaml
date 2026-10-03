@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-carta
+
+services:
+  carta:
+    resource: carta
+    scenario: carta.acme-captable.v1

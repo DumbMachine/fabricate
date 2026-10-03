@@ -1,0 +1,670 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Zoho Books API
+  version: v3
+  description: >-
+    Curated Zoho Books API v3 contract. Every operation has stateful behavior.
+    Public paths start with /books/v3/ on www.zohoapis.com. Undeclared Books
+    operations are not advertised.
+servers:
+  - url: https://www.zohoapis.com
+security:
+  - bearerAuth: []
+tags:
+  - name: Organizations
+  - name: Contacts
+  - name: Invoices
+  - name: CreditNotes
+  - name: CustomerPayments
+paths:
+  /books/v3/organizations:
+    get:
+      operationId: listOrganizations
+      summary: Lists Zoho Books organizations visible to the token.
+      tags: [Organizations]
+      responses:
+        "200":
+          description: Organization list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/OrganizationList"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/organizations/{organization_id}:
+    get:
+      operationId: getOrganization
+      summary: Gets one Zoho Books organization.
+      tags: [Organizations]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Organization.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/OrganizationEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/contacts:
+    get:
+      operationId: listContacts
+      summary: Lists contacts in the organization.
+      tags: [Contacts]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: email
+          in: query
+          description: Exact contact email.
+          schema: {type: string}
+        - name: contact_name
+          in: query
+          description: Case-insensitive substring of contact_name.
+          schema: {type: string}
+      responses:
+        "200":
+          description: Contact list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ContactList"}
+        default: {$ref: "#/components/responses/Error"}
+    post:
+      operationId: createContact
+      summary: Creates a contact.
+      tags: [Contacts]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ContactWrite"}
+      responses:
+        "201":
+          description: Created contact.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ContactEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/contacts/{contact_id}:
+    get:
+      operationId: getContact
+      summary: Gets a contact.
+      tags: [Contacts]
+      parameters:
+        - $ref: "#/components/parameters/ContactId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Contact.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ContactEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/invoices:
+    get:
+      operationId: listInvoices
+      summary: Lists invoices in the organization.
+      tags: [Invoices]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: invoice_number
+          in: query
+          schema: {type: string}
+        - name: status
+          in: query
+          schema: {type: string}
+        - name: customer_id
+          in: query
+          schema: {type: string}
+        - name: reference_number
+          in: query
+          schema: {type: string}
+      responses:
+        "200":
+          description: Invoice list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/InvoiceList"}
+        default: {$ref: "#/components/responses/Error"}
+    post:
+      operationId: createInvoice
+      summary: Creates an invoice. The invoice is stored and returned by later reads.
+      tags: [Invoices]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - name: ignore_auto_number_generation
+          in: query
+          description: >-
+            Accepted for compatibility with Zoho Books. A non-empty
+            invoice_number in the body is stored either way.
+          schema: {type: boolean}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/InvoiceWrite"}
+      responses:
+        "201":
+          description: Created invoice.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/InvoiceEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/invoices/{invoice_id}:
+    get:
+      operationId: getInvoice
+      summary: Gets an invoice, including line items and notes.
+      tags: [Invoices]
+      parameters:
+        - $ref: "#/components/parameters/InvoiceId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Invoice.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/InvoiceEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/creditnotes:
+    get:
+      operationId: listCreditNotes
+      summary: Lists credit notes in the organization.
+      tags: [CreditNotes]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: creditnote_number
+          in: query
+          schema: {type: string}
+        - name: customer_id
+          in: query
+          schema: {type: string}
+        - name: reference_number
+          in: query
+          schema: {type: string}
+      responses:
+        "200":
+          description: Credit note list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CreditNoteList"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/creditnotes/{creditnote_id}:
+    get:
+      operationId: getCreditNote
+      summary: Gets a credit note.
+      tags: [CreditNotes]
+      parameters:
+        - $ref: "#/components/parameters/CreditNoteId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Credit note.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CreditNoteEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/customerpayments:
+    get:
+      operationId: listCustomerPayments
+      summary: Lists customer payments in the organization.
+      tags: [CustomerPayments]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: customer_id
+          in: query
+          schema: {type: string}
+        - name: reference_number
+          in: query
+          schema: {type: string}
+      responses:
+        "200":
+          description: Customer payment list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CustomerPaymentList"}
+        default: {$ref: "#/components/responses/Error"}
+    post:
+      operationId: createCustomerPayment
+      summary: Records a customer payment. The payment is stored and returned by later reads.
+      tags: [CustomerPayments]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/CustomerPaymentWrite"}
+      responses:
+        "201":
+          description: Created customer payment.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CustomerPaymentEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /books/v3/customerpayments/{payment_id}:
+    get:
+      operationId: getCustomerPayment
+      summary: Gets a customer payment, including the invoices it applies to.
+      tags: [CustomerPayments]
+      parameters:
+        - $ref: "#/components/parameters/PaymentId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Customer payment.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CustomerPaymentEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Zoho Books production uses
+        Authorization: Zoho-oauthtoken. Fabricate accepts Bearer because the
+        proxy injects one.
+  parameters:
+    OrganizationId:
+      name: organization_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    OrganizationQuery:
+      name: organization_id
+      in: query
+      required: true
+      description: Acme organization id is org-acme.
+      schema: {type: string, minLength: 1}
+    ContactId:
+      name: contact_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    InvoiceId:
+      name: invoice_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    CreditNoteId:
+      name: creditnote_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    PaymentId:
+      name: payment_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    Page:
+      name: page
+      in: query
+      schema: {type: integer, minimum: 1, default: 1}
+    PerPage:
+      name: per_page
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 200, default: 200}
+  responses:
+    Error:
+      description: Zoho Books error envelope.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/Error"}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+    PageContext:
+      type: object
+      additionalProperties: false
+      required: [page, per_page, has_more_page, applied_filter, sort_column, sort_order]
+      properties:
+        page: {type: integer}
+        per_page: {type: integer}
+        has_more_page: {type: boolean}
+        applied_filter: {type: string}
+        sort_column: {type: string}
+        sort_order: {type: string}
+    Address:
+      type: object
+      additionalProperties: false
+      properties:
+        address: {type: string}
+        city: {type: string}
+        state: {type: string}
+        zip: {type: string}
+        country: {type: string}
+        phone: {type: string}
+    Organization:
+      type: object
+      additionalProperties: false
+      required:
+        - organization_id
+        - name
+        - contact_name
+        - email
+        - is_default_org
+        - language_code
+        - fiscal_year_start_month
+        - account_created_date
+        - time_zone
+        - is_org_active
+        - currency_code
+        - currency_symbol
+        - currency_format
+        - price_precision
+      properties:
+        organization_id: {type: string}
+        name: {type: string}
+        contact_name: {type: string}
+        email: {type: string, format: email}
+        is_default_org: {type: boolean}
+        language_code: {type: string}
+        fiscal_year_start_month: {type: integer}
+        account_created_date: {type: string}
+        time_zone: {type: string}
+        is_org_active: {type: boolean}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        currency_format: {type: string}
+        price_precision: {type: integer}
+    OrganizationList:
+      type: object
+      additionalProperties: false
+      required: [code, message, organizations]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        organizations:
+          type: array
+          items: {$ref: "#/components/schemas/Organization"}
+    OrganizationEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, organization]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        organization: {$ref: "#/components/schemas/Organization"}
+    Contact:
+      type: object
+      additionalProperties: false
+      required: [contact_id, contact_name, company_name, contact_type, status, currency_code]
+      properties:
+        contact_id: {type: string}
+        contact_name: {type: string}
+        company_name: {type: string}
+        contact_type: {type: string, enum: [customer, vendor]}
+        customer_sub_type: {type: string, enum: [individual, business]}
+        status: {type: string, enum: [active, inactive]}
+        email: {type: string}
+        phone: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        notes: {type: string}
+        outstanding_receivable_amount: {type: number, format: double}
+        billing_address: {$ref: "#/components/schemas/Address"}
+        created_time: {type: string}
+    ContactList:
+      type: object
+      additionalProperties: false
+      required: [code, message, contacts, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        contacts:
+          type: array
+          items: {$ref: "#/components/schemas/Contact"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    ContactEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, contact]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        contact: {$ref: "#/components/schemas/Contact"}
+    ContactWrite:
+      type: object
+      additionalProperties: false
+      required: [contact_name]
+      properties:
+        contact_name: {type: string, minLength: 1}
+        company_name: {type: string}
+        contact_type: {type: string, enum: [customer, vendor]}
+        customer_sub_type: {type: string, enum: [individual, business]}
+        email: {type: string}
+        phone: {type: string}
+        first_name: {type: string}
+        last_name: {type: string}
+        currency_code: {type: string, enum: [INR, USD]}
+        notes: {type: string}
+        billing_address: {$ref: "#/components/schemas/Address"}
+    LineItem:
+      type: object
+      additionalProperties: false
+      required: [name, rate, quantity, item_total]
+      properties:
+        line_item_id: {type: string}
+        name: {type: string}
+        description: {type: string}
+        rate: {type: number, format: double}
+        quantity: {type: number, format: double}
+        item_total: {type: number, format: double}
+    LineItemWrite:
+      type: object
+      additionalProperties: false
+      required: [name, rate, quantity]
+      properties:
+        name: {type: string, minLength: 1}
+        description: {type: string}
+        rate: {type: number, format: double, minimum: 0}
+        quantity: {type: number, format: double, minimum: 0, exclusiveMinimum: true}
+    Invoice:
+      type: object
+      additionalProperties: false
+      required:
+        - invoice_id
+        - invoice_number
+        - customer_id
+        - customer_name
+        - status
+        - date
+        - due_date
+        - currency_code
+        - total
+        - balance
+      properties:
+        invoice_id: {type: string}
+        invoice_number: {type: string}
+        customer_id: {type: string}
+        customer_name: {type: string}
+        status:
+          type: string
+          enum: [draft, sent, overdue, paid, void, unpaid, partially_paid, viewed]
+        date: {type: string}
+        due_date: {type: string}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        reference_number: {type: string}
+        notes: {type: string}
+        total: {type: number, format: double}
+        balance: {type: number, format: double}
+        created_time: {type: string}
+        line_items:
+          type: array
+          items: {$ref: "#/components/schemas/LineItem"}
+    InvoiceList:
+      type: object
+      additionalProperties: false
+      required: [code, message, invoices, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        invoices:
+          type: array
+          items: {$ref: "#/components/schemas/Invoice"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    InvoiceEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, invoice]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        invoice: {$ref: "#/components/schemas/Invoice"}
+    InvoiceWrite:
+      type: object
+      additionalProperties: false
+      required: [customer_id, line_items]
+      properties:
+        customer_id: {type: string, minLength: 1}
+        invoice_number: {type: string}
+        status:
+          type: string
+          enum: [draft, sent, overdue, paid, void, unpaid, partially_paid, viewed]
+        date: {type: string}
+        due_date: {type: string}
+        currency_code: {type: string, enum: [INR, USD]}
+        reference_number: {type: string}
+        notes: {type: string}
+        line_items:
+          type: array
+          minItems: 1
+          items: {$ref: "#/components/schemas/LineItemWrite"}
+    CreditNote:
+      type: object
+      additionalProperties: false
+      required:
+        - creditnote_id
+        - creditnote_number
+        - customer_id
+        - customer_name
+        - status
+        - date
+        - currency_code
+        - total
+        - balance
+      properties:
+        creditnote_id: {type: string}
+        creditnote_number: {type: string}
+        customer_id: {type: string}
+        customer_name: {type: string}
+        invoice_id: {type: string}
+        status: {type: string, enum: [draft, open, closed, void]}
+        date: {type: string}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        reference_number: {type: string}
+        notes: {type: string}
+        total: {type: number, format: double}
+        balance: {type: number, format: double}
+        created_time: {type: string}
+    CreditNoteList:
+      type: object
+      additionalProperties: false
+      required: [code, message, creditnotes, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        creditnotes:
+          type: array
+          items: {$ref: "#/components/schemas/CreditNote"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    CreditNoteEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, creditnote]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        creditnote: {$ref: "#/components/schemas/CreditNote"}
+    PaymentInvoice:
+      type: object
+      additionalProperties: false
+      required: [invoice_id, amount_applied]
+      properties:
+        invoice_id: {type: string}
+        invoice_number: {type: string}
+        date: {type: string}
+        invoice_amount: {type: number, format: double}
+        amount_applied: {type: number, format: double}
+        balance_amount: {type: number, format: double}
+    PaymentInvoiceWrite:
+      type: object
+      additionalProperties: false
+      required: [invoice_id, amount_applied]
+      properties:
+        invoice_id: {type: string, minLength: 1}
+        amount_applied: {type: number, format: double, minimum: 0, exclusiveMinimum: true}
+    CustomerPayment:
+      type: object
+      additionalProperties: false
+      required: [payment_id, customer_id, customer_name, payment_mode, amount, date, currency_code]
+      properties:
+        payment_id: {type: string}
+        customer_id: {type: string}
+        customer_name: {type: string}
+        payment_mode:
+          type: string
+          enum: [check, cash, creditcard, banktransfer, bankremittance, autotransaction, others]
+        amount: {type: number, format: double}
+        date: {type: string}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        reference_number: {type: string}
+        description: {type: string}
+        created_time: {type: string}
+        invoices:
+          type: array
+          items: {$ref: "#/components/schemas/PaymentInvoice"}
+    CustomerPaymentList:
+      type: object
+      additionalProperties: false
+      required: [code, message, customer_payments, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        customer_payments:
+          type: array
+          items: {$ref: "#/components/schemas/CustomerPayment"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    CustomerPaymentEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, payment]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        payment: {$ref: "#/components/schemas/CustomerPayment"}
+    CustomerPaymentWrite:
+      type: object
+      additionalProperties: false
+      required: [customer_id, payment_mode, amount, date, invoices]
+      properties:
+        customer_id: {type: string, minLength: 1}
+        payment_mode:
+          type: string
+          enum: [check, cash, creditcard, banktransfer, bankremittance, autotransaction, others]
+        amount: {type: number, format: double, minimum: 0, exclusiveMinimum: true}
+        date: {type: string, minLength: 10}
+        currency_code: {type: string, enum: [INR, USD]}
+        reference_number: {type: string}
+        description: {type: string}
+        invoices:
+          type: array
+          minItems: 1
+          items: {$ref: "#/components/schemas/PaymentInvoiceWrite"}

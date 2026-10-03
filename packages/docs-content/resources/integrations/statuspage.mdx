@@ -1,0 +1,196 @@
+---
+title: Statuspage
+description: Pages, components, and incidents.
+sidebar:
+  icon: https://logos.composio.dev/api/statuspage
+---
+
+<ResourceCoverage resource="statuspage" />
+
+Pages, components, and incidents. Local Statuspage v1 that keeps status state
+across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Statuspage v1 |
+| Auth | Synthetic bearer token. Statuspage's API key is `Authorization: OAuth`; Fabricate accepts `Bearer` because the proxy injects it. |
+| Hosts | `api.statuspage.io` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-statuspage.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_STATUSPAGE_TOKEN" \
+      "$FAB_STATUSPAGE_URL/v1/pages/page-acme/incidents"'
+```
+
+The service is named `statuspage` in the example manifest, so the variables are
+`FAB_STATUSPAGE_URL` and `FAB_STATUSPAGE_TOKEN`.
+
+The response is the Acme status page. Checkout is `degraded_performance`,
+which is Statuspage's degraded status, while the double charge on INV-4812 is
+investigating. Order tracking is operational, and the NDR delay for order
+10483 is resolved:
+
+```json
+[
+  {
+    "components": [
+      {
+        "created_at": "2026-01-15T00:00:00Z",
+        "description": "Acme App checkout.",
+        "group": false,
+        "id": "comp-checkout",
+        "name": "Checkout",
+        "only_show_if_degraded": false,
+        "page_id": "page-acme",
+        "position": 1,
+        "showcase": true,
+        "status": "degraded_performance",
+        "updated_at": "2026-08-26T11:40:00Z"
+      }
+    ],
+    "created_at": "2026-08-26T08:15:00Z",
+    "id": "inc-double-charge",
+    "impact": "minor",
+    "incident_updates": [
+      {
+        "affected_components": [
+          {
+            "code": "comp-checkout",
+            "name": "Checkout",
+            "new_status": "degraded_performance",
+            "old_status": "operational"
+          }
+        ],
+        "body": "Northwind Traders was charged twice for invoice INV-4812 (1240 USD). Payments pay_saas_4812 and pay_saas_4812b are the duplicate. Checkout is degraded while finance investigates.",
+        "created_at": "2026-08-26T08:15:00Z",
+        "deliver_notifications": true,
+        "display_at": "2026-08-26T11:40:00Z",
+        "id": "upd-double-charge",
+        "incident_id": "inc-double-charge",
+        "status": "investigating",
+        "updated_at": "2026-08-26T11:40:00Z",
+        "wants_twitter_update": false
+      }
+    ],
+    "name": "Checkout double-charge on INV-4812",
+    "page_id": "page-acme",
+    "shortlink": "https://status.acme.example/incidents/inc-double-charge",
+    "status": "investigating",
+    "updated_at": "2026-08-26T11:40:00Z"
+  },
+  {
+    "components": [
+      {
+        "created_at": "2026-01-15T00:00:00Z",
+        "description": "Acme Goods shipment tracking.",
+        "group": false,
+        "id": "comp-order-tracking",
+        "name": "Order tracking",
+        "only_show_if_degraded": false,
+        "page_id": "page-acme",
+        "position": 2,
+        "showcase": true,
+        "status": "operational",
+        "updated_at": "2026-08-25T18:20:00Z"
+      }
+    ],
+    "created_at": "2026-08-24T17:10:00Z",
+    "id": "inc-ndr-10483",
+    "impact": "minor",
+    "incident_updates": [
+      {
+        "affected_components": [
+          {
+            "code": "comp-order-tracking",
+            "name": "Order tracking",
+            "new_status": "operational",
+            "old_status": "degraded_performance"
+          }
+        ],
+        "body": "NDR notifications for Acme Goods order 10483 are flowing again. Shiprocket AWB SR10483AWB (Bluedart) had reported the customer was not available.",
+        "created_at": "2026-08-25T18:20:00Z",
+        "deliver_notifications": true,
+        "display_at": "2026-08-25T18:20:00Z",
+        "id": "upd-ndr-10483",
+        "incident_id": "inc-ndr-10483",
+        "status": "resolved",
+        "updated_at": "2026-08-25T18:20:00Z",
+        "wants_twitter_update": false
+      }
+    ],
+    "name": "NDR notifications delayed",
+    "page_id": "page-acme",
+    "resolved_at": "2026-08-25T18:20:00Z",
+    "shortlink": "https://status.acme.example/incidents/inc-ndr-10483",
+    "status": "resolved",
+    "updated_at": "2026-08-25T18:20:00Z"
+  }
+]
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Statuspage URLs and follows standard
+proxy and CA environment variables. This one-paste check calls Statuspage's
+normal production hostname; replace the final `curl` with your app. Omit
+`$FAB_STATUSPAGE_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-statuspage.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://api.statuspage.io/v1/pages/page-acme/incidents
+```
+
+Fabricate handles `api.statuspage.io` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="statuspage"
+  descriptions={{
+    "statuspage.minimal.v1": "Page page-acme with no components or incidents.",
+    "statuspage.acme-status.v1": "Checkout is degraded during the INV-4812 double charge, and a resolved NDR delay cites order 10483.",
+  }}
+/>
+
+Peek at the committed Acme status page. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="statuspage"
+  scenario="acme-status.v1"
+  collection="incidents"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Statuspage check ran against the Acme
+Statuspage environment with curl:
+
+<IntegrationCompatibility resource="statuspage" />
+
+## Supported operations
+
+<SupportedOperations resource="statuspage" />

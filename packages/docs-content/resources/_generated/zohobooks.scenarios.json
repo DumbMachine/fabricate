@@ -1,0 +1,23 @@
+{
+  "integration": "zohobooks",
+  "scenarios": [
+    {
+      "id": "zohobooks.acme-ledger.v1",
+      "counts": {
+        "contacts": 27,
+        "creditNotes": 1,
+        "customerPayments": 5,
+        "invoices": 7
+      }
+    },
+    {
+      "id": "zohobooks.minimal.v1",
+      "counts": {
+        "contacts": 0,
+        "creditNotes": 0,
+        "customerPayments": 0,
+        "invoices": 0
+      }
+    }
+  ]
+}

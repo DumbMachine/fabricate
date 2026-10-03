@@ -1,0 +1,60 @@
+{
+  "integration": "ironclad",
+  "api": "Ironclad v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/public/api/v1/records",
+      "operationId": "ListAllRecords",
+      "summary": "List all records."
+    },
+    {
+      "method": "GET",
+      "path": "/public/api/v1/records/{id}",
+      "operationId": "RetrieveARecord",
+      "summary": "Retrieve a record."
+    },
+    {
+      "method": "PATCH",
+      "path": "/public/api/v1/records/{id}",
+      "operationId": "UpdateRecordMetadata",
+      "summary": "Update record metadata."
+    },
+    {
+      "method": "GET",
+      "path": "/public/api/v1/workflows",
+      "operationId": "ListAllWorkflows",
+      "summary": "List all workflows."
+    },
+    {
+      "method": "POST",
+      "path": "/public/api/v1/workflows",
+      "operationId": "LaunchANewWorkflow",
+      "summary": "Create a workflow synchronously."
+    },
+    {
+      "method": "GET",
+      "path": "/public/api/v1/workflows/{id}",
+      "operationId": "RetrieveAWorkflow",
+      "summary": "Retrieve a workflow."
+    },
+    {
+      "method": "GET",
+      "path": "/public/api/v1/workflows/{id}/approvals",
+      "operationId": "ListAllWorkflowApprovals",
+      "summary": "List all workflow approvals."
+    },
+    {
+      "method": "GET",
+      "path": "/public/api/v1/workflows/{id}/comments",
+      "operationId": "ListAllCommentsInAWorkflow",
+      "summary": "List all comments on a workflow."
+    },
+    {
+      "method": "POST",
+      "path": "/public/api/v1/workflows/{id}/comments",
+      "operationId": "CreateACommentOnAWorkflow",
+      "summary": "Create a comment on a workflow."
+    }
+  ]
+}

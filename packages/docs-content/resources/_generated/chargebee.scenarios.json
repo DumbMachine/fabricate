@@ -1,0 +1,25 @@
+{
+  "integration": "chargebee",
+  "scenarios": [
+    {
+      "id": "chargebee.acme-billing.v1",
+      "counts": {
+        "comments": 1,
+        "customers": 3,
+        "invoices": 3,
+        "subscriptions": 3,
+        "transactions": 2
+      }
+    },
+    {
+      "id": "chargebee.minimal.v1",
+      "counts": {
+        "comments": 0,
+        "customers": 0,
+        "invoices": 0,
+        "subscriptions": 0,
+        "transactions": 0
+      }
+    }
+  ]
+}

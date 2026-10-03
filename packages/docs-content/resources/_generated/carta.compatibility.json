@@ -1,0 +1,44 @@
+{
+  "api": "Carta API Platform v1alpha1",
+  "environment": {
+    "label": "Acme Carta",
+    "manifest": "environments/acme-carta.yaml",
+    "messages": 2
+  },
+  "integration": "carta",
+  "modes": {
+    "direct": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List stakeholders",
+    "write": "Create draft option grant",
+    "persistence": "Confirm the draft note"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:36:21.391Z",
+  "testedCommit": "192ecd6f8db2cf2870647bfe730165ffafda338e"
+}

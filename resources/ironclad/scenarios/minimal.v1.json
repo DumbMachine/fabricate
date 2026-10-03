@@ -1,0 +1,20 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "ironclad.minimal.v1",
+  "$resource": "ironclad",
+  "$resourceVersion": "v1",
+  "state": {
+    "currentUser": {
+      "id": "user-iris",
+      "displayName": "Iris Berg",
+      "email": "iris@acme.example",
+      "title": "Legal",
+      "companyName": "Acme"
+    },
+    "workflows": [],
+    "records": [],
+    "comments": [],
+    "approvals": []
+  }
+}

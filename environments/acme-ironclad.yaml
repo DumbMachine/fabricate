@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-ironclad
+
+services:
+  ironclad:
+    resource: ironclad
+    scenario: ironclad.acme-contracts.v1

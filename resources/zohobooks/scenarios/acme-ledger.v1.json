@@ -1,0 +1,654 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "zohobooks.acme-ledger.v1",
+  "$resource": "zohobooks",
+  "$resourceVersion": "v3",
+  "state": {
+    "organization": {
+      "organizationId": "org-acme",
+      "name": "Acme",
+      "contactName": "Aisha Rahman",
+      "email": "aisha@acme.example",
+      "currencyCode": "INR",
+      "currencySymbol": "₹",
+      "timeZone": "Asia/Kolkata",
+      "isOrgActive": true
+    },
+    "contacts": [
+      {
+        "contactId": "contact-acme",
+        "contactName": "Acme",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "aisha@acme.example",
+        "phone": "+91-80-4123-0102",
+        "currencyCode": "INR",
+        "notes": "HubSpot company 201. Domain acme.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-adatum",
+        "contactName": "Adatum",
+        "companyName": "Adatum",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "owen@adatum.example",
+        "phone": "+1-312-555-0160",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 207. Domain adatum.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-aisha",
+        "contactName": "Aisha Rahman",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "aisha@acme.example",
+        "phone": "+91-80-4123-0102",
+        "firstName": "Aisha",
+        "lastName": "Rahman",
+        "currencyCode": "INR",
+        "notes": "Finance. Zoho Books owner. Approves POs.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-anita",
+        "contactName": "Anita Desai",
+        "companyName": "TinyShop",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "anita.desai@consumer.example",
+        "phone": "+91-98200-10491",
+        "firstName": "Anita",
+        "lastName": "Desai",
+        "currencyCode": "INR",
+        "notes": "Consumer on the TinyShop client order.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-brightpath",
+        "contactName": "Brightpath",
+        "companyName": "Brightpath",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "sofia@brightpath.example",
+        "phone": "+1-415-555-0194",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 206. Domain brightpath.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-contoso",
+        "contactName": "Contoso",
+        "companyName": "Contoso",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "mei.chen@contoso.example",
+        "phone": "+1-206-555-0148",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 203. Domain contoso.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-dana",
+        "contactName": "Dana Whitfield",
+        "companyName": "Northwind Traders",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "dana@northwind.example",
+        "phone": "+91-99000-48120",
+        "firstName": "Dana",
+        "lastName": "Whitfield",
+        "currencyCode": "INR",
+        "notes": "Northwind buyer. SaaS billing contact and shop customer on the refunded order.",
+        "status": "active",
+        "billingAddress": {
+          "address": "18 Harbor Road",
+          "city": "Pune",
+          "state": "MH",
+          "zip": "411001",
+          "country": "IN"
+        }
+      },
+      {
+        "contactId": "contact-fabrikam",
+        "contactName": "Fabrikam",
+        "companyName": "Fabrikam",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "leila@fabrikam.example",
+        "phone": "+1-425-555-0172",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 205. Domain fabrikam.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-fernworks",
+        "contactName": "Fernworks",
+        "companyName": "Fernworks",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "priya@fernworks.example",
+        "phone": "+91-98450-11223",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 204. Domain fernworks.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-helixbio",
+        "contactName": "Helix Bio",
+        "companyName": "Helix Bio",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "noah@helixbio.example",
+        "phone": "+1-617-555-0133",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 208. Domain helixbio.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-iris",
+        "contactName": "Iris Berg",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "iris@acme.example",
+        "phone": "+91-80-4123-0107",
+        "firstName": "Iris",
+        "lastName": "Berg",
+        "currencyCode": "INR",
+        "notes": "Legal.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-jordan",
+        "contactName": "Jordan Hale",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "jordan.hale@acme.example",
+        "phone": "+91-80-4123-0190",
+        "firstName": "Jordan",
+        "lastName": "Hale",
+        "currencyCode": "INR",
+        "notes": "Accepted offer, not started.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-jules",
+        "contactName": "Jules Okonkwo",
+        "companyName": "Northwind Traders",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "jules@northwind.example",
+        "phone": "+91-99000-48121",
+        "firstName": "Jules",
+        "lastName": "Okonkwo",
+        "currencyCode": "INR",
+        "notes": "Northwind ops. Client shop contact.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-leila",
+        "contactName": "Leila Haddad",
+        "companyName": "Fabrikam",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "leila@fabrikam.example",
+        "phone": "+1-425-555-0172",
+        "firstName": "Leila",
+        "lastName": "Haddad",
+        "currencyCode": "USD",
+        "notes": "Fabrikam compliance. SCIM export request req_7Q4K2.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-leo",
+        "contactName": "Leo Park",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "leo@acme.example",
+        "phone": "+91-80-4123-0105",
+        "firstName": "Leo",
+        "lastName": "Park",
+        "currencyCode": "INR",
+        "notes": "Recruiting.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-marco",
+        "contactName": "Marco Silva",
+        "companyName": "TinyShop",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "marco@tinyshop.example",
+        "phone": "+91-98111-22008",
+        "firstName": "Marco",
+        "lastName": "Silva",
+        "currencyCode": "INR",
+        "notes": "TinyShop owner. Shop customer on the NDR order. SaaS cancellation requester.",
+        "status": "active",
+        "billingAddress": {
+          "address": "7 Linking Road",
+          "city": "Mumbai",
+          "state": "MH",
+          "zip": "400050",
+          "country": "IN"
+        }
+      },
+      {
+        "contactId": "contact-mei",
+        "contactName": "Mei Chen",
+        "companyName": "Contoso",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "mei.chen@contoso.example",
+        "phone": "+1-206-555-0148",
+        "firstName": "Mei",
+        "lastName": "Chen",
+        "currencyCode": "USD",
+        "notes": "Contoso IT. SAML login loop, org slug contoso-eu.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-nina",
+        "contactName": "Nina Kapoor",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "nina@acme.example",
+        "phone": "+91-80-4123-0104",
+        "firstName": "Nina",
+        "lastName": "Kapoor",
+        "currencyCode": "INR",
+        "notes": "HR.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-noah",
+        "contactName": "Noah Patel",
+        "companyName": "Helix Bio",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "noah@helixbio.example",
+        "phone": "+1-617-555-0133",
+        "firstName": "Noah",
+        "lastName": "Patel",
+        "currencyCode": "USD",
+        "notes": "Helix Bio sales trial.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-northwind",
+        "contactName": "Northwind Traders",
+        "companyName": "Northwind Traders",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "dana@northwind.example",
+        "phone": "+91-99000-48120",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 202. Domain northwind.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-owen",
+        "contactName": "Owen Brooks",
+        "companyName": "Adatum",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "owen@adatum.example",
+        "phone": "+1-312-555-0160",
+        "firstName": "Owen",
+        "lastName": "Brooks",
+        "currencyCode": "USD",
+        "notes": "Adatum. Domain TXT acme-domain-verification=adatum-7f31 still pending.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-priya",
+        "contactName": "Priya Nair",
+        "companyName": "Fernworks",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "priya@fernworks.example",
+        "phone": "+91-98450-11223",
+        "firstName": "Priya",
+        "lastName": "Nair",
+        "currencyCode": "INR",
+        "notes": "Fernworks. Shop customer on the in-transit order. SaaS expansion.",
+        "status": "active",
+        "billingAddress": {
+          "address": "42 Residency Road",
+          "city": "Bengaluru",
+          "state": "KA",
+          "zip": "560025",
+          "country": "IN"
+        }
+      },
+      {
+        "contactId": "contact-ravi",
+        "contactName": "Ravi Mehta",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "ravi@acme.example",
+        "phone": "+91-80-4123-0103",
+        "firstName": "Ravi",
+        "lastName": "Mehta",
+        "currencyCode": "INR",
+        "notes": "Logistics. Shiprocket and warehouse BLR-1.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-sam",
+        "contactName": "Sam Adeyemi",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "sam@acme.example",
+        "phone": "+91-80-4123-0106",
+        "firstName": "Sam",
+        "lastName": "Adeyemi",
+        "currencyCode": "INR",
+        "notes": "Support.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-sofia",
+        "contactName": "Sofia Marin",
+        "companyName": "Brightpath",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "sofia@brightpath.example",
+        "phone": "+1-415-555-0194",
+        "firstName": "Sofia",
+        "lastName": "Marin",
+        "currencyCode": "USD",
+        "notes": "Brightpath. API key rotation, closed.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-tinyshop",
+        "contactName": "TinyShop",
+        "companyName": "TinyShop",
+        "contactType": "customer",
+        "customerSubType": "business",
+        "email": "marco@tinyshop.example",
+        "phone": "+91-98111-22008",
+        "currencyCode": "USD",
+        "notes": "HubSpot company 209. Domain tinyshop.example.",
+        "status": "active"
+      },
+      {
+        "contactId": "contact-val",
+        "contactName": "Val Ortega",
+        "companyName": "Acme",
+        "contactType": "customer",
+        "customerSubType": "individual",
+        "email": "val@acme.example",
+        "phone": "+91-80-4123-0101",
+        "firstName": "Val",
+        "lastName": "Ortega",
+        "currencyCode": "INR",
+        "notes": "Acme operator. Okta admin.",
+        "status": "active"
+      }
+    ],
+    "invoices": [
+      {
+        "invoiceId": "INV-10482",
+        "invoiceNumber": "INV-10482",
+        "customerId": "contact-priya",
+        "status": "paid",
+        "date": "2026-08-25",
+        "dueDate": "2026-09-09",
+        "currencyCode": "INR",
+        "referenceNumber": "10482",
+        "notes": "Acme Goods order 10482 for Priya Nair.",
+        "lineItems": [
+          {
+            "name": "Acme Field Tee",
+            "description": "AG-TEE-02",
+            "rate": 1499,
+            "quantity": 1
+          },
+          {
+            "name": "Acme Ceramic Mug",
+            "description": "AG-MUG-01",
+            "rate": 799,
+            "quantity": 2
+          }
+        ],
+        "total": 3097,
+        "balance": 0
+      },
+      {
+        "invoiceId": "INV-10483",
+        "invoiceNumber": "INV-10483",
+        "customerId": "contact-marco",
+        "status": "paid",
+        "date": "2026-08-24",
+        "dueDate": "2026-09-08",
+        "currencyCode": "INR",
+        "referenceNumber": "10483",
+        "notes": "Acme Goods order 10483. Paid. No credit note.",
+        "lineItems": [
+          {
+            "name": "Acme Field Notebook",
+            "description": "AG-NOTE-03",
+            "rate": 499,
+            "quantity": 1
+          }
+        ],
+        "total": 499,
+        "balance": 0
+      },
+      {
+        "invoiceId": "INV-10484",
+        "invoiceNumber": "INV-10484",
+        "customerId": "contact-dana",
+        "status": "void",
+        "date": "2026-08-22",
+        "dueDate": "2026-09-06",
+        "currencyCode": "INR",
+        "referenceNumber": "10484",
+        "notes": "Void. Shop refund rfnd_Acme10484 is credit note CN-10484 and is not SaaS invoice INV-4812.",
+        "lineItems": [
+          {
+            "name": "Acme Field Tee",
+            "description": "AG-TEE-02",
+            "rate": 1499,
+            "quantity": 1
+          }
+        ],
+        "total": 1499,
+        "balance": 0
+      },
+      {
+        "invoiceId": "INV-10490",
+        "invoiceNumber": "INV-10490",
+        "customerId": "contact-jules",
+        "status": "paid",
+        "date": "2026-08-23",
+        "dueDate": "2026-09-07",
+        "currencyCode": "INR",
+        "referenceNumber": "10490",
+        "notes": "Northwind Market order 10490.",
+        "lineItems": [
+          {
+            "name": "Northwind Travel Kettle",
+            "description": "NW-KETTLE-01",
+            "rate": 2499,
+            "quantity": 1
+          }
+        ],
+        "total": 2499,
+        "balance": 0
+      },
+      {
+        "invoiceId": "INV-1188",
+        "invoiceNumber": "INV-1188",
+        "customerId": "contact-tinyshop",
+        "status": "sent",
+        "date": "2026-08-01",
+        "dueDate": "2026-08-16",
+        "currencyCode": "USD",
+        "referenceNumber": "sub_tinyshop_pro",
+        "notes": "Cancellation requested under the 30-day guarantee. Not refunded.",
+        "lineItems": [
+          {
+            "name": "TinyShop annual Pro",
+            "description": "Acme App Pro",
+            "rate": 1188,
+            "quantity": 1
+          }
+        ],
+        "total": 1188,
+        "balance": 1188
+      },
+      {
+        "invoiceId": "INV-2207",
+        "invoiceNumber": "INV-2207",
+        "customerId": "contact-fernworks",
+        "status": "paid",
+        "date": "2026-07-15",
+        "dueDate": "2026-07-30",
+        "currencyCode": "USD",
+        "referenceNumber": "sub_fernworks_platform",
+        "notes": "Fernworks platform expansion. Paid.",
+        "lineItems": [
+          {
+            "name": "Acme platform",
+            "description": "Fernworks annual upgrade",
+            "rate": 8900,
+            "quantity": 1
+          }
+        ],
+        "total": 8900,
+        "balance": 0
+      },
+      {
+        "invoiceId": "INV-4812",
+        "invoiceNumber": "INV-4812",
+        "customerId": "contact-northwind",
+        "status": "sent",
+        "date": "2026-08-18",
+        "dueDate": "2026-09-02",
+        "currencyCode": "USD",
+        "referenceNumber": "sub_northwind_checkout",
+        "notes": "Duplicate charge for Northwind Traders. Payments pay_saas_4812 and pay_saas_4812b.",
+        "lineItems": [
+          {
+            "name": "Acme Checkout",
+            "description": "August invoice",
+            "rate": 1240,
+            "quantity": 1
+          }
+        ],
+        "total": 1240,
+        "balance": 1240
+      }
+    ],
+    "creditNotes": [
+      {
+        "creditnoteId": "CN-10484",
+        "creditnoteNumber": "CN-10484",
+        "customerId": "contact-dana",
+        "invoiceId": "INV-10484",
+        "status": "closed",
+        "date": "2026-08-22",
+        "currencyCode": "INR",
+        "referenceNumber": "rfnd_Acme10484",
+        "notes": "Shop refund rfnd_Acme10484 for void invoice INV-10484. Distinct from SaaS invoice INV-4812.",
+        "total": 1499,
+        "balance": 0
+      }
+    ],
+    "customerPayments": [
+      {
+        "paymentId": "pay_Acme10482",
+        "customerId": "contact-priya",
+        "paymentMode": "others",
+        "amount": 3097,
+        "date": "2026-08-25",
+        "currencyCode": "INR",
+        "referenceNumber": "10482",
+        "description": "UPI capture for Acme Goods order 10482.",
+        "invoices": [
+          {
+            "invoiceId": "INV-10482",
+            "amountApplied": 3097
+          }
+        ]
+      },
+      {
+        "paymentId": "pay_Acme10483",
+        "customerId": "contact-marco",
+        "paymentMode": "creditcard",
+        "amount": 499,
+        "date": "2026-08-24",
+        "currencyCode": "INR",
+        "referenceNumber": "10483",
+        "description": "Card capture for Acme Goods order 10483.",
+        "invoices": [
+          {
+            "invoiceId": "INV-10483",
+            "amountApplied": 499
+          }
+        ]
+      },
+      {
+        "paymentId": "pay_NW10490",
+        "customerId": "contact-jules",
+        "paymentMode": "others",
+        "amount": 2499,
+        "date": "2026-08-23",
+        "currencyCode": "INR",
+        "referenceNumber": "10490",
+        "description": "Captured payment for Northwind Market order 10490.",
+        "invoices": [
+          {
+            "invoiceId": "INV-10490",
+            "amountApplied": 2499
+          }
+        ]
+      },
+      {
+        "paymentId": "pay_saas_4812",
+        "customerId": "contact-northwind",
+        "paymentMode": "creditcard",
+        "amount": 1240,
+        "date": "2026-08-18",
+        "currencyCode": "USD",
+        "referenceNumber": "INV-4812",
+        "description": "Duplicate SaaS charge on INV-4812.",
+        "invoices": [
+          {
+            "invoiceId": "INV-4812",
+            "amountApplied": 1240
+          }
+        ]
+      },
+      {
+        "paymentId": "pay_saas_4812b",
+        "customerId": "contact-northwind",
+        "paymentMode": "creditcard",
+        "amount": 1240,
+        "date": "2026-08-18",
+        "currencyCode": "USD",
+        "referenceNumber": "INV-4812",
+        "description": "Duplicate SaaS charge on INV-4812.",
+        "invoices": [
+          {
+            "invoiceId": "INV-4812",
+            "amountApplied": 1240
+          }
+        ]
+      }
+    ]
+  }
+}
