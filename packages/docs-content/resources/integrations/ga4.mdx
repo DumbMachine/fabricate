@@ -1,0 +1,159 @@
+---
+title: Google Analytics 4
+description: Properties, reports, metadata, compatibility, and audience exports.
+sidebar:
+  icon: https://logos.composio.dev/api/google-analytics
+---
+
+<ResourceCoverage resource="ga4" />
+
+Properties, reports, metadata, compatibility, and audience exports. Local
+Google Analytics Data API v1beta that keeps report rows and audience exports
+across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Google Analytics Data API v1beta |
+| Auth | Synthetic bearer token |
+| Hosts | `analyticsdata.googleapis.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-ga4.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_GA4_TOKEN" -H "Content-Type: application/json" \
+      -d "{\"dateRanges\":[{\"startDate\":\"2026-08-01\",\"endDate\":\"2026-08-26\"}],\"dimensions\":[{\"name\":\"transactionId\"},{\"name\":\"sessionSource\"},{\"name\":\"sessionMedium\"},{\"name\":\"sessionCampaignName\"},{\"name\":\"eventName\"}],\"metrics\":[{\"name\":\"eventCount\"}]}" \
+      "$FAB_GA4_URL/v1beta/properties/309712345:runReport"'
+```
+
+The service is named `ga4` in the example manifest, so the variables are
+`FAB_GA4_URL` and `FAB_GA4_TOKEN`.
+
+The response is the Acme Goods purchase and refund report. `10482` is the
+WhatsApp campaign, `10483` is Google ads, and `10484` is the refund event:
+
+```json
+{
+  "dimensionHeaders": [
+    {"name": "transactionId"},
+    {"name": "sessionSource"},
+    {"name": "sessionMedium"},
+    {"name": "sessionCampaignName"},
+    {"name": "eventName"}
+  ],
+  "kind": "analyticsData#runReport",
+  "metadata": {
+    "currencyCode": "INR",
+    "timeZone": "Asia/Kolkata"
+  },
+  "metricHeaders": [
+    {"name": "eventCount", "type": "TYPE_INTEGER"}
+  ],
+  "rowCount": 3,
+  "rows": [
+    {
+      "dimensionValues": [
+        {"value": "10482"},
+        {"value": "whatsapp"},
+        {"value": "gupshup"},
+        {"value": "monsoon-tee"},
+        {"value": "purchase"}
+      ],
+      "metricValues": [
+        {"value": "1"}
+      ]
+    },
+    {
+      "dimensionValues": [
+        {"value": "10483"},
+        {"value": "google"},
+        {"value": "cpc"},
+        {"value": "(not set)"},
+        {"value": "purchase"}
+      ],
+      "metricValues": [
+        {"value": "1"}
+      ]
+    },
+    {
+      "dimensionValues": [
+        {"value": "10484"},
+        {"value": "(not set)"},
+        {"value": "(not set)"},
+        {"value": "(not set)"},
+        {"value": "refund"}
+      ],
+      "metricValues": [
+        {"value": "1"}
+      ]
+    }
+  ]
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Analytics Data API URLs and follows
+standard proxy and CA environment variables. This one-paste check calls the
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_GA4_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-ga4.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS -H 'Content-Type: application/json' \
+      -d '{"dateRanges":[{"startDate":"2026-08-01","endDate":"2026-08-26"}],"dimensions":[{"name":"transactionId"},{"name":"sessionSource"},{"name":"sessionMedium"},{"name":"sessionCampaignName"},{"name":"eventName"}],"metrics":[{"name":"eventCount"}]}' \
+      https://analyticsdata.googleapis.com/v1beta/properties/309712345:runReport
+```
+
+Fabricate handles `analyticsdata.googleapis.com` locally. Other hosts are
+forwarded unchanged; set `proxy.unknown_hosts: reject` for an isolated,
+fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="ga4"
+  descriptions={{
+    "ga4.minimal.v1": "Empty properties, events, and audience exports.",
+    "ga4.acme-properties.v1": "Acme Goods and Acme App, with Goods purchase and refund rows for orders 10482, 10483, and 10484.",
+  }}
+/>
+
+Peek at the committed Acme properties world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="ga4"
+  scenario="acme-properties.v1"
+  collection="events"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Google Analytics 4 check ran against the Acme
+Google Analytics 4 environment with curl:
+
+<IntegrationCompatibility resource="ga4" />
+
+## Supported operations
+
+<SupportedOperations resource="ga4" />

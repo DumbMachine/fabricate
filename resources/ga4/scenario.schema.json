@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/ga4/scenario-v1.json",
+  "title": "Fabricate Google Analytics 4 scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["properties", "events", "audienceExports"],
+  "properties": {
+    "properties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["propertyId", "displayName", "currencyCode", "timeZone"],
+        "properties": {
+          "propertyId": {"type": "string", "pattern": "^[0-9]+$"},
+          "displayName": {"type": "string", "minLength": 1},
+          "currencyCode": {"type": "string", "pattern": "^[A-Z]{3}$"},
+          "timeZone": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "propertyId",
+          "date",
+          "eventName",
+          "transactionId",
+          "sessionSource",
+          "sessionMedium",
+          "sessionCampaignName",
+          "eventCount",
+          "transactions",
+          "purchaseRevenue",
+          "itemRefundAmount"
+        ],
+        "properties": {
+          "propertyId": {"type": "string", "pattern": "^[0-9]+$"},
+          "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "eventName": {"type": "string", "minLength": 1},
+          "transactionId": {"type": "string", "minLength": 1},
+          "sessionSource": {"type": "string"},
+          "sessionMedium": {"type": "string"},
+          "sessionCampaignName": {"type": "string"},
+          "eventCount": {"type": "integer", "minimum": 0},
+          "transactions": {"type": "integer", "minimum": 0},
+          "purchaseRevenue": {"type": "integer", "minimum": 0},
+          "itemRefundAmount": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "audienceExports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "propertyId",
+          "audience",
+          "audienceDisplayName",
+          "dimensions",
+          "state",
+          "rowCount",
+          "percentageCompleted",
+          "beginCreatingTime",
+          "creationQuotaTokensCharged",
+          "errorMessage"
+        ],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "propertyId": {"type": "string", "pattern": "^[0-9]+$"},
+          "audience": {"type": "string", "minLength": 1},
+          "audienceDisplayName": {"type": "string"},
+          "dimensions": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1}
+          },
+          "state": {"type": "string", "enum": ["CREATING", "ACTIVE", "FAILED"]},
+          "rowCount": {"type": "integer", "minimum": 0},
+          "percentageCompleted": {"type": "number", "minimum": 0, "maximum": 100},
+          "beginCreatingTime": {"type": "string", "minLength": 1},
+          "creationQuotaTokensCharged": {"type": "integer", "minimum": 0},
+          "errorMessage": {"type": "string"}
+        }
+      }
+    }
+  }
+}

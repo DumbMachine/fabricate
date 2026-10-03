@@ -1,0 +1,44 @@
+{
+  "api": "Google Analytics Data API v1beta",
+  "environment": {
+    "label": "Acme Google Analytics 4",
+    "manifest": "environments/acme-ga4.yaml",
+    "messages": 3
+  },
+  "integration": "ga4",
+  "modes": {
+    "direct": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Run Acme Goods report",
+    "write": "Create audience export",
+    "persistence": "Confirm audience export"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:46:35.407Z",
+  "testedCommit": "cf828c20e9312117c84b7f119c0b4dd71b041e06"
+}

@@ -1,0 +1,12 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "ga4.minimal.v1",
+  "$resource": "ga4",
+  "$resourceVersion": "v1beta",
+  "state": {
+    "properties": [],
+    "events": [],
+    "audienceExports": []
+  }
+}

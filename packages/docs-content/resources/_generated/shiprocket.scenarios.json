@@ -1,0 +1,23 @@
+{
+  "integration": "shiprocket",
+  "scenarios": [
+    {
+      "id": "shiprocket.acme-shipments.v1",
+      "counts": {
+        "couriers": 2,
+        "orders": 3,
+        "pickups": 1,
+        "returns": 1
+      }
+    },
+    {
+      "id": "shiprocket.minimal.v1",
+      "counts": {
+        "couriers": 0,
+        "orders": 0,
+        "pickups": 0,
+        "returns": 0
+      }
+    }
+  ]
+}

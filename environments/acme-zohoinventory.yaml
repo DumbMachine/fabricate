@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-zohoinventory
+
+services:
+  zohoinventory:
+    resource: zohoinventory
+    scenario: zohoinventory.acme-stock.v1

@@ -1,0 +1,23 @@
+{
+  "integration": "zohoinventory",
+  "scenarios": [
+    {
+      "id": "zohoinventory.acme-stock.v1",
+      "counts": {
+        "items": 3,
+        "purchaseOrders": 1,
+        "salesOrders": 2,
+        "warehouses": 1
+      }
+    },
+    {
+      "id": "zohoinventory.minimal.v1",
+      "counts": {
+        "items": 0,
+        "purchaseOrders": 0,
+        "salesOrders": 0,
+        "warehouses": 0
+      }
+    }
+  ]
+}

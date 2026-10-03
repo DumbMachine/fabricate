@@ -1,0 +1,29 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "zohoinventory.minimal.v1",
+  "$resource": "zohoinventory",
+  "$resourceVersion": "v1",
+  "state": {
+    "organization": {
+      "organizationId": "org-acme",
+      "name": "Acme Goods",
+      "contactName": "Aisha Rahman",
+      "email": "aisha@acme.example",
+      "isDefaultOrg": true,
+      "languageCode": "en",
+      "fiscalYearStartMonth": 3,
+      "accountCreatedDate": "2024-04-01",
+      "timeZone": "Asia/Kolkata",
+      "isOrgActive": true,
+      "currencyCode": "INR",
+      "currencySymbol": "₹",
+      "currencyFormat": "###,##0.00",
+      "pricePrecision": 2
+    },
+    "warehouses": [],
+    "items": [],
+    "salesOrders": [],
+    "purchaseOrders": []
+  }
+}

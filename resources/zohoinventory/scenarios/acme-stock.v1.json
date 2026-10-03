@@ -1,0 +1,200 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "zohoinventory.acme-stock.v1",
+  "$resource": "zohoinventory",
+  "$resourceVersion": "v1",
+  "state": {
+    "organization": {
+      "organizationId": "org-acme",
+      "name": "Acme Goods",
+      "contactName": "Aisha Rahman",
+      "email": "aisha@acme.example",
+      "isDefaultOrg": true,
+      "languageCode": "en",
+      "fiscalYearStartMonth": 3,
+      "accountCreatedDate": "2024-04-01",
+      "timeZone": "Asia/Kolkata",
+      "isOrgActive": true,
+      "currencyCode": "INR",
+      "currencySymbol": "₹",
+      "currencyFormat": "###,##0.00",
+      "pricePrecision": 2
+    },
+    "warehouses": [
+      {
+        "warehouseId": "wh-blr-1",
+        "warehouseName": "BLR-1",
+        "address": "18 Industrial Layout",
+        "city": "Bengaluru",
+        "state": "KA",
+        "zip": "560058",
+        "country": "IN",
+        "phone": "+91-80-4123-0103",
+        "email": "ravi@acme.example",
+        "isPrimary": true,
+        "status": "active"
+      }
+    ],
+    "items": [
+      {
+        "itemId": "item-ag-mug-01",
+        "name": "Acme Ceramic Mug",
+        "sku": "AG-MUG-01",
+        "description": "Acme Ceramic Mug",
+        "status": "active",
+        "unit": "qty",
+        "rate": 799,
+        "purchaseRate": 799,
+        "stockOnHand": 120,
+        "productType": "goods",
+        "itemType": "inventory",
+        "warehouseId": "wh-blr-1"
+      },
+      {
+        "itemId": "item-ag-note-03",
+        "name": "Acme Field Notebook",
+        "sku": "AG-NOTE-03",
+        "description": "Acme Field Notebook",
+        "status": "active",
+        "unit": "qty",
+        "rate": 499,
+        "purchaseRate": 499,
+        "stockOnHand": 200,
+        "productType": "goods",
+        "itemType": "inventory",
+        "warehouseId": "wh-blr-1"
+      },
+      {
+        "itemId": "item-ag-tee-02",
+        "name": "Acme Field Tee",
+        "sku": "AG-TEE-02",
+        "description": "Acme Field Tee",
+        "status": "active",
+        "unit": "qty",
+        "rate": 1499,
+        "purchaseRate": 1499,
+        "stockOnHand": 48,
+        "productType": "goods",
+        "itemType": "inventory",
+        "warehouseId": "wh-blr-1"
+      }
+    ],
+    "salesOrders": [
+      {
+        "salesorderId": "so-10482",
+        "salesorderNumber": "SO-10482",
+        "referenceNumber": "10482",
+        "date": "2026-08-25",
+        "status": "confirmed",
+        "currencyCode": "INR",
+        "total": 3097,
+        "createdTime": "2026-08-25T09:14:00Z",
+        "warehouseId": "wh-blr-1",
+        "customer": {
+          "customerId": "customer-priya",
+          "name": "Priya Nair",
+          "email": "priya@fernworks.example",
+          "phone": "+91-98450-11223"
+        },
+        "shippingAddress": {
+          "address": "42 Residency Road",
+          "city": "Bengaluru",
+          "state": "KA",
+          "zip": "560025",
+          "country": "IN"
+        },
+        "lineItems": [
+          {
+            "lineItemId": "soli-10482-tee",
+            "itemId": "item-ag-tee-02",
+            "name": "Acme Field Tee",
+            "sku": "AG-TEE-02",
+            "rate": 1499,
+            "quantity": 1,
+            "itemTotal": 1499,
+            "itemOrder": 0
+          },
+          {
+            "lineItemId": "soli-10482-mug",
+            "itemId": "item-ag-mug-01",
+            "name": "Acme Ceramic Mug",
+            "sku": "AG-MUG-01",
+            "rate": 799,
+            "quantity": 2,
+            "itemTotal": 1598,
+            "itemOrder": 1
+          }
+        ]
+      },
+      {
+        "salesorderId": "so-10483",
+        "salesorderNumber": "SO-10483",
+        "referenceNumber": "10483",
+        "date": "2026-08-24",
+        "status": "confirmed",
+        "currencyCode": "INR",
+        "total": 499,
+        "createdTime": "2026-08-24T16:40:00Z",
+        "warehouseId": "wh-blr-1",
+        "customer": {
+          "customerId": "customer-marco",
+          "name": "Marco Silva",
+          "email": "marco@tinyshop.example",
+          "phone": "+91-98111-22008"
+        },
+        "shippingAddress": {
+          "address": "7 Linking Road",
+          "city": "Mumbai",
+          "state": "MH",
+          "zip": "400050",
+          "country": "IN"
+        },
+        "lineItems": [
+          {
+            "lineItemId": "soli-10483-note",
+            "itemId": "item-ag-note-03",
+            "name": "Acme Field Notebook",
+            "sku": "AG-NOTE-03",
+            "rate": 499,
+            "quantity": 1,
+            "itemTotal": 499,
+            "itemOrder": 0
+          }
+        ]
+      }
+    ],
+    "purchaseOrders": [
+      {
+        "purchaseorderId": "po-7721",
+        "purchaseorderNumber": "PO-7721",
+        "date": "2026-08-26",
+        "status": "pending_approval",
+        "currencyCode": "INR",
+        "total": 799,
+        "createdTime": "2026-08-26T08:00:00Z",
+        "lastModifiedTime": "2026-08-26T08:00:00Z",
+        "warehouseId": "wh-blr-1",
+        "vendor": {
+          "vendorId": "vendor-clay-co",
+          "name": "Clay & Co"
+        },
+        "approverName": "Aisha Rahman",
+        "approverEmail": "aisha@acme.example",
+        "lineItems": [
+          {
+            "lineItemId": "poli-7721-mug",
+            "itemId": "item-ag-mug-01",
+            "name": "Acme Ceramic Mug",
+            "sku": "AG-MUG-01",
+            "purchaseRate": 799,
+            "quantity": 1,
+            "itemTotal": 799,
+            "itemOrder": 0
+          }
+        ],
+        "comments": []
+      }
+    ]
+  }
+}

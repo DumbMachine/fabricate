@@ -16,6 +16,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "cloudflare", label: "Cloudflare"},
   {id: "digitalocean", label: "DigitalOcean"},
   {id: "docusign", label: "DocuSign"},
+  {id: "ga4", label: "Google Analytics 4"},
   {id: "gainsight", label: "Gainsight"},
   {id: "gmail", label: "Gmail"},
   {id: "googledrive", label: "Google Drive"},
@@ -34,11 +35,13 @@ export const integrations: IntegrationEntry[] = [
   {id: "razorpay", label: "Razorpay"},
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
+  {id: "shiprocket", label: "Shiprocket"},
   {id: "shopify", label: "Shopify", planned: true},
   {id: "slack", label: "Slack"},
   {id: "statuspage", label: "Statuspage"},
   {id: "vanta", label: "Vanta"},
   {id: "zohobooks", label: "Zoho Books"},
+  {id: "zohoinventory", label: "Zoho Inventory"},
 ];
 
 export function composioLogo(id: string, theme?: "dark"): string {

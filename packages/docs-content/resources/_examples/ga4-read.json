@@ -1,0 +1,18 @@
+{
+  "id": "ga4-read",
+  "title": "Run the Acme Goods purchase report",
+  "environment": "environments/acme-ga4.yaml",
+  "environmentLabel": "Acme Google Analytics 4",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/ga4-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-ga4.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS -H 'Content-Type: application/json' \\\n      -d '{\"dateRanges\":[{\"startDate\":\"2026-08-01\",\"endDate\":\"2026-08-26\"}],\"dimensions\":[{\"name\":\"transactionId\"},{\"name\":\"sessionSource\"},{\"name\":\"sessionMedium\"},{\"name\":\"sessionCampaignName\"},{\"name\":\"eventName\"}],\"metrics\":[{\"name\":\"eventCount\"}]}' \\\n      https://analyticsdata.googleapis.com/v1beta/properties/309712345:runReport",
+  "argv": [
+    "curl",
+    "-sS",
+    "-H",
+    "Content-Type: application/json",
+    "-d",
+    "{\"dateRanges\":[{\"startDate\":\"2026-08-01\",\"endDate\":\"2026-08-26\"}],\"dimensions\":[{\"name\":\"transactionId\"},{\"name\":\"sessionSource\"},{\"name\":\"sessionMedium\"},{\"name\":\"sessionCampaignName\"},{\"name\":\"eventName\"}],\"metrics\":[{\"name\":\"eventCount\"}]}",
+    "https://analyticsdata.googleapis.com/v1beta/properties/309712345:runReport"
+  ]
+}

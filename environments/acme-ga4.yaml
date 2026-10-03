@@ -1,0 +1,8 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-ga4
+services:
+  ga4:
+    resource: ga4
+    scenario: ga4.acme-properties.v1

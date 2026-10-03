@@ -1,0 +1,592 @@
+openapi: 3.0.3
+info:
+  title: Google Analytics Data API
+  version: v1beta
+  description: >-
+    Curated Google Analytics Data API v1beta surface supported by Fabricate.
+    Paths are the public REST paths. Custom methods keep Google's
+    `:method` suffix, for example `/v1beta/properties/309712345:runReport`.
+    int64 fields are JSON strings, matching the discovery document's JSON
+    mapping. Cohort specs, comparisons, pivots, and quota accounting are not
+    part of this surface.
+servers:
+  - url: https://analyticsdata.googleapis.com
+security:
+  - bearerAuth: []
+tags:
+  - name: properties
+  - name: audienceExports
+paths:
+  /v1beta/properties/{property}:runReport:
+    post:
+      operationId: properties.runReport
+      summary: Returns a customized report of Google Analytics event data.
+      tags: [properties]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RunReportRequest'}
+      responses:
+        '200':
+          description: Report table.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RunReportResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}:batchRunReports:
+    post:
+      operationId: properties.batchRunReports
+      summary: Returns multiple reports for one Google Analytics property.
+      tags: [properties]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/BatchRunReportsRequest'}
+      responses:
+        '200':
+          description: Batch of report tables.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/BatchRunReportsResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}:runRealtimeReport:
+    post:
+      operationId: properties.runRealtimeReport
+      summary: Returns a realtime report for the last minutes of event data.
+      tags: [properties]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RunRealtimeReportRequest'}
+      responses:
+        '200':
+          description: Realtime report table.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RunRealtimeReportResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}:checkCompatibility:
+    post:
+      operationId: properties.checkCompatibility
+      summary: Lists whether dimensions and metrics can be used together.
+      tags: [properties]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CheckCompatibilityRequest'}
+      responses:
+        '200':
+          description: Compatibility of each requested dimension and metric.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CheckCompatibilityResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}/metadata:
+    get:
+      operationId: properties.getMetadata
+      summary: Returns dimensions and metrics accepted by reporting methods.
+      tags: [properties]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+      responses:
+        '200':
+          description: Metadata catalog for the property.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Metadata'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}/audienceExports:
+    get:
+      operationId: properties.audienceExports.list
+      summary: Lists audience exports for a property.
+      tags: [audienceExports]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: Audience exports.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListAudienceExportsResponse'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: properties.audienceExports.create
+      summary: Creates an audience export and stores it for later retrieval.
+      tags: [audienceExports]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/AudienceExport'}
+      responses:
+        '200':
+          description: Completed long-running operation whose response is the audience export.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Operation'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}/audienceExports/{audienceExport}:
+    get:
+      operationId: properties.audienceExports.get
+      summary: Gets configuration metadata for an audience export.
+      tags: [audienceExports]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+        - $ref: '#/components/parameters/AudienceExportId'
+      responses:
+        '200':
+          description: Audience export.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/AudienceExport'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1beta/properties/{property}/audienceExports/{audienceExport}:query:
+    post:
+      operationId: properties.audienceExports.query
+      summary: Retrieves users from an audience export.
+      tags: [audienceExports]
+      parameters:
+        - $ref: '#/components/parameters/PropertyId'
+        - $ref: '#/components/parameters/AudienceExportId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/QueryAudienceExportRequest'}
+      responses:
+        '200':
+          description: Audience export rows.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/QueryAudienceExportResponse'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Environment- and service-scoped synthetic bearer token.
+  parameters:
+    PropertyId:
+      name: property
+      in: path
+      required: true
+      description: Numeric Google Analytics property id, as in `/v1beta/properties/309712345:runReport`.
+      schema: {type: string, pattern: '^[0-9]+$'}
+    AudienceExportId:
+      name: audienceExport
+      in: path
+      required: true
+      description: Audience export id, the final segment of `properties/{property}/audienceExports/{audienceExport}`.
+      schema: {type: string, pattern: '^[^/:]+$'}
+    PageSize:
+      name: pageSize
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 1000}
+    PageToken:
+      name: pageToken
+      in: query
+      schema: {type: string}
+  responses:
+    Error:
+      description: Google API error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorEnvelope'}
+  schemas:
+    RunReportRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        dimensions: {type: array, maxItems: 9, items: {$ref: '#/components/schemas/Dimension'}}
+        metrics: {type: array, maxItems: 10, items: {$ref: '#/components/schemas/Metric'}}
+        dateRanges: {type: array, maxItems: 4, items: {$ref: '#/components/schemas/DateRange'}}
+        dimensionFilter: {$ref: '#/components/schemas/FilterExpression'}
+        metricFilter: {$ref: '#/components/schemas/FilterExpression'}
+        offset: {type: string, description: int64 encoded as a decimal string.}
+        limit: {type: string, description: int64 encoded as a decimal string.}
+        metricAggregations:
+          type: array
+          items:
+            type: string
+            enum: [TOTAL, MINIMUM, MAXIMUM, COUNT]
+        orderBys: {type: array, items: {$ref: '#/components/schemas/OrderBy'}}
+        currencyCode: {type: string}
+        keepEmptyRows: {type: boolean}
+        returnPropertyQuota: {type: boolean}
+        property: {type: string, description: Ignored when it repeats the URL property. Must refer to the same property when set.}
+    RunReportResponse:
+      type: object
+      additionalProperties: false
+      required: [kind, dimensionHeaders, metricHeaders, rows, rowCount, metadata]
+      properties:
+        kind: {type: string}
+        dimensionHeaders: {type: array, items: {$ref: '#/components/schemas/DimensionHeader'}}
+        metricHeaders: {type: array, items: {$ref: '#/components/schemas/MetricHeader'}}
+        rows: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        totals: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        maximums: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        minimums: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        rowCount: {type: integer, minimum: 0}
+        metadata: {$ref: '#/components/schemas/ResponseMetaData'}
+    BatchRunReportsRequest:
+      type: object
+      additionalProperties: false
+      required: [requests]
+      properties:
+        requests: {type: array, minItems: 1, maxItems: 5, items: {$ref: '#/components/schemas/RunReportRequest'}}
+    BatchRunReportsResponse:
+      type: object
+      additionalProperties: false
+      required: [kind, reports]
+      properties:
+        kind: {type: string}
+        reports: {type: array, items: {$ref: '#/components/schemas/RunReportResponse'}}
+    RunRealtimeReportRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        dimensions: {type: array, maxItems: 9, items: {$ref: '#/components/schemas/Dimension'}}
+        metrics: {type: array, maxItems: 10, items: {$ref: '#/components/schemas/Metric'}}
+        minuteRanges: {type: array, maxItems: 2, items: {$ref: '#/components/schemas/MinuteRange'}}
+        dimensionFilter: {$ref: '#/components/schemas/FilterExpression'}
+        metricFilter: {$ref: '#/components/schemas/FilterExpression'}
+        limit: {type: string}
+        orderBys: {type: array, items: {$ref: '#/components/schemas/OrderBy'}}
+        metricAggregations:
+          type: array
+          items: {type: string, enum: [TOTAL, MINIMUM, MAXIMUM, COUNT]}
+        returnPropertyQuota: {type: boolean}
+    RunRealtimeReportResponse:
+      type: object
+      additionalProperties: false
+      required: [kind, dimensionHeaders, metricHeaders, rows, rowCount]
+      properties:
+        kind: {type: string}
+        dimensionHeaders: {type: array, items: {$ref: '#/components/schemas/DimensionHeader'}}
+        metricHeaders: {type: array, items: {$ref: '#/components/schemas/MetricHeader'}}
+        rows: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        totals: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        maximums: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        minimums: {type: array, items: {$ref: '#/components/schemas/Row'}}
+        rowCount: {type: integer, minimum: 0}
+    CheckCompatibilityRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        dimensions: {type: array, items: {$ref: '#/components/schemas/Dimension'}}
+        metrics: {type: array, items: {$ref: '#/components/schemas/Metric'}}
+        dimensionFilter: {$ref: '#/components/schemas/FilterExpression'}
+        metricFilter: {$ref: '#/components/schemas/FilterExpression'}
+        compatibilityFilter:
+          type: string
+          enum: [COMPATIBILITY_UNSPECIFIED, COMPATIBLE, INCOMPATIBLE]
+    CheckCompatibilityResponse:
+      type: object
+      additionalProperties: false
+      required: [dimensionCompatibilities, metricCompatibilities]
+      properties:
+        dimensionCompatibilities: {type: array, items: {$ref: '#/components/schemas/DimensionCompatibility'}}
+        metricCompatibilities: {type: array, items: {$ref: '#/components/schemas/MetricCompatibility'}}
+    DimensionCompatibility:
+      type: object
+      additionalProperties: false
+      required: [compatibility, dimensionMetadata]
+      properties:
+        compatibility: {type: string, enum: [COMPATIBILITY_UNSPECIFIED, COMPATIBLE, INCOMPATIBLE]}
+        dimensionMetadata: {$ref: '#/components/schemas/DimensionMetadata'}
+    MetricCompatibility:
+      type: object
+      additionalProperties: false
+      required: [compatibility, metricMetadata]
+      properties:
+        compatibility: {type: string, enum: [COMPATIBILITY_UNSPECIFIED, COMPATIBLE, INCOMPATIBLE]}
+        metricMetadata: {$ref: '#/components/schemas/MetricMetadata'}
+    Metadata:
+      type: object
+      additionalProperties: false
+      required: [name, dimensions, metrics]
+      properties:
+        name: {type: string}
+        dimensions: {type: array, items: {$ref: '#/components/schemas/DimensionMetadata'}}
+        metrics: {type: array, items: {$ref: '#/components/schemas/MetricMetadata'}}
+    DimensionMetadata:
+      type: object
+      additionalProperties: false
+      required: [apiName, uiName, description, category, customDefinition]
+      properties:
+        apiName: {type: string}
+        uiName: {type: string}
+        description: {type: string}
+        category: {type: string}
+        customDefinition: {type: boolean}
+        deprecatedApiNames: {type: array, items: {type: string}}
+    MetricMetadata:
+      type: object
+      additionalProperties: false
+      required: [apiName, uiName, description, category, type, customDefinition]
+      properties:
+        apiName: {type: string}
+        uiName: {type: string}
+        description: {type: string}
+        category: {type: string}
+        type:
+          type: string
+          enum: [METRIC_TYPE_UNSPECIFIED, TYPE_INTEGER, TYPE_FLOAT, TYPE_CURRENCY]
+        customDefinition: {type: boolean}
+        deprecatedApiNames: {type: array, items: {type: string}}
+    DateRange:
+      type: object
+      additionalProperties: false
+      required: [startDate, endDate]
+      properties:
+        startDate: {type: string}
+        endDate: {type: string}
+        name: {type: string}
+    MinuteRange:
+      type: object
+      additionalProperties: false
+      properties:
+        startMinutesAgo: {type: integer, minimum: 0}
+        endMinutesAgo: {type: integer, minimum: 0}
+        name: {type: string}
+    Dimension:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string, minLength: 1}
+    Metric:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string, minLength: 1}
+    DimensionHeader:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string}
+    MetricHeader:
+      type: object
+      additionalProperties: false
+      required: [name, type]
+      properties:
+        name: {type: string}
+        type:
+          type: string
+          enum: [METRIC_TYPE_UNSPECIFIED, TYPE_INTEGER, TYPE_FLOAT, TYPE_CURRENCY]
+    DimensionValue:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value: {type: string}
+    MetricValue:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value: {type: string}
+    Row:
+      type: object
+      additionalProperties: false
+      required: [dimensionValues, metricValues]
+      properties:
+        dimensionValues: {type: array, items: {$ref: '#/components/schemas/DimensionValue'}}
+        metricValues: {type: array, items: {$ref: '#/components/schemas/MetricValue'}}
+    ResponseMetaData:
+      type: object
+      additionalProperties: false
+      required: [currencyCode, timeZone]
+      properties:
+        currencyCode: {type: string}
+        timeZone: {type: string}
+        dataLossFromOtherRow: {type: boolean}
+        subjectToThresholding: {type: boolean}
+    OrderBy:
+      type: object
+      additionalProperties: false
+      properties:
+        desc: {type: boolean}
+        dimension: {$ref: '#/components/schemas/DimensionOrderBy'}
+        metric: {$ref: '#/components/schemas/MetricOrderBy'}
+    DimensionOrderBy:
+      type: object
+      additionalProperties: false
+      required: [dimensionName]
+      properties:
+        dimensionName: {type: string}
+        orderType:
+          type: string
+          enum: [ORDER_TYPE_UNSPECIFIED, ALPHANUMERIC, CASE_INSENSITIVE_ALPHANUMERIC, NUMERIC]
+    MetricOrderBy:
+      type: object
+      additionalProperties: false
+      required: [metricName]
+      properties:
+        metricName: {type: string}
+    FilterExpression:
+      type: object
+      additionalProperties: false
+      properties:
+        andGroup: {$ref: '#/components/schemas/FilterExpressionList'}
+        orGroup: {$ref: '#/components/schemas/FilterExpressionList'}
+        notExpression: {$ref: '#/components/schemas/FilterExpression'}
+        filter: {$ref: '#/components/schemas/Filter'}
+    FilterExpressionList:
+      type: object
+      additionalProperties: false
+      required: [expressions]
+      properties:
+        expressions: {type: array, items: {$ref: '#/components/schemas/FilterExpression'}}
+    Filter:
+      type: object
+      additionalProperties: false
+      required: [fieldName]
+      properties:
+        fieldName: {type: string}
+        stringFilter: {$ref: '#/components/schemas/StringFilter'}
+        inListFilter: {$ref: '#/components/schemas/InListFilter'}
+        numericFilter: {$ref: '#/components/schemas/NumericFilter'}
+    StringFilter:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        matchType:
+          type: string
+          enum: [MATCH_TYPE_UNSPECIFIED, EXACT, BEGINS_WITH, ENDS_WITH, CONTAINS, FULL_REGEXP, PARTIAL_REGEXP]
+        value: {type: string}
+        caseSensitive: {type: boolean}
+    InListFilter:
+      type: object
+      additionalProperties: false
+      required: [values]
+      properties:
+        values: {type: array, items: {type: string}}
+        caseSensitive: {type: boolean}
+    NumericFilter:
+      type: object
+      additionalProperties: false
+      required: [operation, value]
+      properties:
+        operation:
+          type: string
+          enum: [OPERATION_UNSPECIFIED, EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL]
+        value: {$ref: '#/components/schemas/NumericValue'}
+    NumericValue:
+      type: object
+      additionalProperties: false
+      properties:
+        int64Value: {type: string}
+        doubleValue: {type: number}
+    AudienceExport:
+      type: object
+      additionalProperties: false
+      properties:
+        name: {type: string}
+        audience: {type: string}
+        audienceDisplayName: {type: string}
+        dimensions: {type: array, items: {$ref: '#/components/schemas/AudienceDimension'}}
+        state: {type: string, enum: [STATE_UNSPECIFIED, CREATING, ACTIVE, FAILED]}
+        beginCreatingTime: {type: string}
+        creationQuotaTokensCharged: {type: integer}
+        rowCount: {type: integer, minimum: 0}
+        percentageCompleted: {type: number}
+        errorMessage: {type: string}
+    AudienceDimension:
+      type: object
+      additionalProperties: false
+      required: [dimensionName]
+      properties:
+        dimensionName: {type: string, minLength: 1}
+    ListAudienceExportsResponse:
+      type: object
+      additionalProperties: false
+      required: [audienceExports]
+      properties:
+        audienceExports: {type: array, items: {$ref: '#/components/schemas/AudienceExport'}}
+        nextPageToken: {type: string}
+    QueryAudienceExportRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        offset: {type: string}
+        limit: {type: string}
+    QueryAudienceExportResponse:
+      type: object
+      additionalProperties: false
+      required: [audienceExport, audienceRows, rowCount]
+      properties:
+        audienceExport: {$ref: '#/components/schemas/AudienceExport'}
+        audienceRows: {type: array, items: {$ref: '#/components/schemas/AudienceRow'}}
+        rowCount: {type: integer, minimum: 0}
+    AudienceRow:
+      type: object
+      additionalProperties: false
+      required: [dimensionValues]
+      properties:
+        dimensionValues: {type: array, items: {$ref: '#/components/schemas/AudienceDimensionValue'}}
+    AudienceDimensionValue:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value: {type: string}
+    Operation:
+      type: object
+      additionalProperties: false
+      required: [name, done, response]
+      properties:
+        name: {type: string}
+        done: {type: boolean}
+        response: {$ref: '#/components/schemas/AudienceExport'}
+        error: {$ref: '#/components/schemas/Status'}
+    Status:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+    ErrorDetail:
+      type: object
+      additionalProperties: false
+      required: [message, domain, reason]
+      properties:
+        message: {type: string}
+        domain: {type: string}
+        reason: {type: string}
+    ErrorBody:
+      type: object
+      additionalProperties: false
+      required: [code, message, status, errors]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        status: {type: string}
+        errors: {type: array, items: {$ref: '#/components/schemas/ErrorDetail'}}
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error: {$ref: '#/components/schemas/ErrorBody'}

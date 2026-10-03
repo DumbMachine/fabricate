@@ -1,0 +1,72 @@
+{
+  "integration": "zohoinventory",
+  "api": "Zoho Inventory v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/inventory/v1/items",
+      "operationId": "ListItems",
+      "summary": "Lists items in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/items/{item_id}",
+      "operationId": "GetItem",
+      "summary": "Gets an item, including warehouse stock."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/organizations",
+      "operationId": "ListOrganizations",
+      "summary": "Lists Zoho Inventory organizations visible to the token."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/organizations/{organization_id}",
+      "operationId": "GetOrganization",
+      "summary": "Gets one Zoho Inventory organization."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/purchaseorders",
+      "operationId": "ListPurchaseOrders",
+      "summary": "Lists purchase orders in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/purchaseorders/{purchaseorder_id}",
+      "operationId": "GetPurchaseOrder",
+      "summary": "Gets a purchase order, including lines, approver, and comments."
+    },
+    {
+      "method": "POST",
+      "path": "/inventory/v1/purchaseorders/{purchaseorder_id}/approve",
+      "operationId": "ApprovePurchaseOrder",
+      "summary": "Approves a purchase order that is pending approval. The new status is returned by a later read."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/salesorders",
+      "operationId": "ListSalesOrders",
+      "summary": "Lists sales orders in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/salesorders/{salesorder_id}",
+      "operationId": "GetSalesOrder",
+      "summary": "Gets a sales order, including line items and the shipping address."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/settings/warehouses",
+      "operationId": "ListWarehouses",
+      "summary": "Lists warehouses in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/inventory/v1/settings/warehouses/{warehouse_id}",
+      "operationId": "GetWarehouse",
+      "summary": "Gets a warehouse."
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+---
+title: Shiprocket
+description: Shipments, tracking, couriers, non-delivery reports, and returns.
+sidebar:
+  icon: https://logos.composio.dev/api/shiprocket
+---
+
+<ResourceCoverage resource="shiprocket" />
+
+Shipments, tracking, couriers, non-delivery reports, and returns. Local
+Shiprocket v1 that keeps shipment state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Shiprocket v1 external |
+| Auth | Synthetic bearer token. `POST /v1/external/auth/login` returns that token; direct calls send `Authorization: Bearer`. |
+| Hosts | `apiv2.shiprocket.in` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Production Shiprocket exchanges an API user's email and password at
+`POST /v1/external/auth/login` for a JWT, then sends `Authorization: Bearer`.
+Fabricate's proxy overwrites that header with the environment's synthetic
+bearer, and this resource checks that bearer. Calling login with a non-empty
+email and password returns the scenario API user and the same synthetic token
+in Shiprocket's login JSON. The password is not checked and is not stored.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-shiprocket.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SHIPROCKET_TOKEN" \
+      "$FAB_SHIPROCKET_URL/v1/external/courier/track/awb/SR10482AWB"'
+```
+
+The service is named `shiprocket` in the example manifest, so the variables
+are `FAB_SHIPROCKET_URL` and `FAB_SHIPROCKET_TOKEN`.
+
+The response is Acme Goods order 10482, in transit with Delhivery:
+
+```json
+{
+  "tracking_data": {
+    "track_status": 1,
+    "shipment_status": 18,
+    "shipment_track": [
+      {
+        "id": "20482",
+        "awb_code": "SR10482AWB",
+        "courier_company_id": 10,
+        "courier_name": "Delhivery",
+        "shipment_id": "20482",
+        "order_id": "10482",
+        "channel_order_id": "10482",
+        "channel_name": "Acme Goods",
+        "pickup_date": "",
+        "delivered_date": "",
+        "packages": 1,
+        "current_status": "in_transit",
+        "delivered_to": "",
+        "destination": "Bengaluru",
+        "consignee_name": "Priya Nair",
+        "origin": "Bengaluru"
+      }
+    ],
+    "shipment_track_activities": [
+      {
+        "date": "2026-08-25 09:14",
+        "status": "in_transit",
+        "activity": "In transit",
+        "location": "Bengaluru",
+        "sr-status": "18",
+        "sr-status-label": "in_transit"
+      }
+    ],
+    "track_url": "https://shiprocket.co/tracking/SR10482AWB",
+    "etd": ""
+  }
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Shiprocket URLs and follows standard
+proxy and CA environment variables. This one-paste check calls Shiprocket's
+normal production hostname; replace the final `curl` with your app. Omit
+`$FAB_SHIPROCKET_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-shiprocket.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://apiv2.shiprocket.in/v1/external/courier/track/awb/SR10482AWB
+```
+
+Fabricate handles `apiv2.shiprocket.in` locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="shiprocket"
+  descriptions={{
+    "shiprocket.minimal.v1": "An empty courier and shipment list for a clean test.",
+    "shiprocket.acme-shipments.v1": "Acme Goods and Northwind Market shipments, including in-transit 10482, NDR 10483, delivered 10490, and return RET-10484.",
+  }}
+/>
+
+Peek at the committed Acme shipment world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="shiprocket"
+  scenario="acme-shipments.v1"
+  collection="orders"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Shiprocket check ran against the Acme
+Shiprocket environment with curl:
+
+<IntegrationCompatibility resource="shiprocket" />
+
+## Supported operations
+
+<SupportedOperations resource="shiprocket" />

@@ -1,0 +1,154 @@
+---
+title: Zoho Inventory
+description: Organizations, warehouses, items, sales orders, and purchase orders.
+sidebar:
+  icon: https://logos.composio.dev/api/zoho
+---
+
+<ResourceCoverage resource="zohoinventory" />
+
+Organizations, warehouses, items, sales orders, and purchase orders. Local
+Zoho Inventory API v1 that keeps stock and purchase-order approval across
+requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Zoho Inventory API v1 |
+| Auth | Synthetic bearer token. Zoho Inventory live API uses `Authorization: Zoho-oauthtoken`. |
+| Hosts | `www.zohoapis.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-zohoinventory.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_ZOHOINVENTORY_TOKEN" \
+      "$FAB_ZOHOINVENTORY_URL/inventory/v1/items?organization_id=org-acme"'
+```
+
+The service is named `zohoinventory` in the example manifest, so the variables
+are `FAB_ZOHOINVENTORY_URL` and `FAB_ZOHOINVENTORY_TOKEN`. Every Inventory call
+except the organization list and get takes `organization_id=org-acme`.
+
+The response is the Acme Goods catalog on hand at BLR-1:
+
+```json
+{
+  "code": 0,
+  "items": [
+    {
+      "description": "Acme Ceramic Mug",
+      "item_id": "item-ag-mug-01",
+      "item_type": "inventory",
+      "name": "Acme Ceramic Mug",
+      "product_type": "goods",
+      "purchase_rate": 799,
+      "rate": 799,
+      "sku": "AG-MUG-01",
+      "status": "active",
+      "stock_on_hand": 120,
+      "unit": "qty"
+    },
+    {
+      "description": "Acme Field Notebook",
+      "item_id": "item-ag-note-03",
+      "item_type": "inventory",
+      "name": "Acme Field Notebook",
+      "product_type": "goods",
+      "purchase_rate": 499,
+      "rate": 499,
+      "sku": "AG-NOTE-03",
+      "status": "active",
+      "stock_on_hand": 200,
+      "unit": "qty"
+    },
+    {
+      "description": "Acme Field Tee",
+      "item_id": "item-ag-tee-02",
+      "item_type": "inventory",
+      "name": "Acme Field Tee",
+      "product_type": "goods",
+      "purchase_rate": 1499,
+      "rate": 1499,
+      "sku": "AG-TEE-02",
+      "status": "active",
+      "stock_on_hand": 48,
+      "unit": "qty"
+    }
+  ],
+  "message": "success",
+  "page_context": {
+    "applied_filter": "Status.All",
+    "has_more_page": false,
+    "page": 1,
+    "per_page": 200,
+    "sort_column": "sku",
+    "sort_order": "A"
+  }
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Zoho Inventory URLs and follows standard
+proxy and CA environment variables. This one-paste check calls Zoho's normal
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_ZOHOINVENTORY_TOKEN` here: the proxy replaces `Authorization` on routed
+hosts with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-zohoinventory.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS "https://www.zohoapis.com/inventory/v1/items?organization_id=org-acme"
+```
+
+Fabricate handles `www.zohoapis.com` paths under `/inventory/` locally. Paths
+outside that prefix, including Zoho Books under `/books/`, are not this
+resource. Other hosts are forwarded unchanged; set `proxy.unknown_hosts: reject`
+for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="zohoinventory"
+  descriptions={{
+    "zohoinventory.minimal.v1": "An empty Acme organization for a clean test.",
+    "zohoinventory.acme-stock.v1": "Acme Goods stock at BLR-1, sales orders SO-10482 and SO-10483, and purchase order PO-7721.",
+  }}
+/>
+
+Peek at the committed Acme stock world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="zohoinventory"
+  scenario="acme-stock.v1"
+  collection="items"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Zoho Inventory check ran against the Acme Zoho
+Inventory environment with curl:
+
+<IntegrationCompatibility resource="zohoinventory" />
+
+## Supported operations
+
+<SupportedOperations resource="zohoinventory" />

@@ -1,0 +1,21 @@
+{
+  "integration": "ga4",
+  "scenarios": [
+    {
+      "id": "ga4.acme-properties.v1",
+      "counts": {
+        "audienceExports": 0,
+        "events": 3,
+        "properties": 2
+      }
+    },
+    {
+      "id": "ga4.minimal.v1",
+      "counts": {
+        "audienceExports": 0,
+        "events": 0,
+        "properties": 0
+      }
+    }
+  ]
+}

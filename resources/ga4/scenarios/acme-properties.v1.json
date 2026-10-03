@@ -1,0 +1,65 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "ga4.acme-properties.v1",
+  "$resource": "ga4",
+  "$resourceVersion": "v1beta",
+  "state": {
+    "properties": [
+      {
+        "propertyId": "309700001",
+        "displayName": "Acme App",
+        "currencyCode": "USD",
+        "timeZone": "Asia/Kolkata"
+      },
+      {
+        "propertyId": "309712345",
+        "displayName": "Acme Goods",
+        "currencyCode": "INR",
+        "timeZone": "Asia/Kolkata"
+      }
+    ],
+    "events": [
+      {
+        "propertyId": "309712345",
+        "date": "2026-08-22",
+        "eventName": "refund",
+        "transactionId": "10484",
+        "sessionSource": "",
+        "sessionMedium": "",
+        "sessionCampaignName": "",
+        "eventCount": 1,
+        "transactions": 0,
+        "purchaseRevenue": 0,
+        "itemRefundAmount": 1499
+      },
+      {
+        "propertyId": "309712345",
+        "date": "2026-08-24",
+        "eventName": "purchase",
+        "transactionId": "10483",
+        "sessionSource": "google",
+        "sessionMedium": "cpc",
+        "sessionCampaignName": "",
+        "eventCount": 1,
+        "transactions": 1,
+        "purchaseRevenue": 499,
+        "itemRefundAmount": 0
+      },
+      {
+        "propertyId": "309712345",
+        "date": "2026-08-25",
+        "eventName": "purchase",
+        "transactionId": "10482",
+        "sessionSource": "whatsapp",
+        "sessionMedium": "gupshup",
+        "sessionCampaignName": "monsoon-tee",
+        "eventCount": 1,
+        "transactions": 1,
+        "purchaseRevenue": 3097,
+        "itemRefundAmount": 0
+      }
+    ],
+    "audienceExports": []
+  }
+}

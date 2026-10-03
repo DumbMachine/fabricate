@@ -1,0 +1,44 @@
+{
+  "api": "Zoho Inventory API v1",
+  "environment": {
+    "label": "Acme Zoho Inventory",
+    "manifest": "environments/acme-zohoinventory.yaml",
+    "messages": 3
+  },
+  "integration": "zohoinventory",
+  "modes": {
+    "direct": {
+      "messagesAfter": 3,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 3,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List items, sales orders, and purchase orders",
+    "write": "Approve purchase order",
+    "persistence": "Confirm approval persisted"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:46:39.774Z",
+  "testedCommit": "cf828c20e9312117c84b7f119c0b4dd71b041e06"
+}

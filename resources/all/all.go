@@ -17,6 +17,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/cloudflare"
 	"github.com/dumbmachine/fabricate/resources/digitalocean"
 	"github.com/dumbmachine/fabricate/resources/docusign"
+	"github.com/dumbmachine/fabricate/resources/ga4"
 	"github.com/dumbmachine/fabricate/resources/gainsight"
 	"github.com/dumbmachine/fabricate/resources/gmail"
 	"github.com/dumbmachine/fabricate/resources/googledrive"
@@ -34,10 +35,12 @@ import (
 	"github.com/dumbmachine/fabricate/resources/razorpay"
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
+	"github.com/dumbmachine/fabricate/resources/shiprocket"
 	"github.com/dumbmachine/fabricate/resources/slack"
 	"github.com/dumbmachine/fabricate/resources/statuspage"
 	"github.com/dumbmachine/fabricate/resources/vanta"
 	"github.com/dumbmachine/fabricate/resources/zohobooks"
+	"github.com/dumbmachine/fabricate/resources/zohoinventory"
 )
 
 func Registry() *httpresource.Registry {
@@ -53,6 +56,7 @@ func Registry() *httpresource.Registry {
 		cloudflare.NewResource(),
 		digitalocean.NewResource(),
 		docusign.NewResource(),
+		ga4.NewResource(),
 		gainsight.NewResource(),
 		gmail.NewResource(),
 		googledrive.NewResource(),
@@ -70,10 +74,12 @@ func Registry() *httpresource.Registry {
 		razorpay.NewResource(),
 		resend.NewResource(),
 		sendgrid.NewResource(),
+		shiprocket.NewResource(),
 		slack.NewResource(),
 		statuspage.NewResource(),
 		vanta.NewResource(),
 		zohobooks.NewResource(),
+		zohoinventory.NewResource(),
 	)
 	if err != nil {
 		panic(fmt.Sprintf("official HTTP resource registry: %v", err))

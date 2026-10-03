@@ -1,0 +1,834 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Shiprocket API
+  version: v1
+  description: >-
+    Curated Shiprocket external API (v1) supported by Fabricate. Paths are the
+    public paths on apiv2.shiprocket.in. Every operation has stateful behavior.
+    Undeclared Shiprocket operations are not advertised.
+servers:
+  - url: https://apiv2.shiprocket.in
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+  - name: Orders
+  - name: Returns
+  - name: Couriers
+  - name: Tracking
+  - name: NDR
+  - name: Settings
+paths:
+  /v1/external/auth/login:
+    post:
+      operationId: login
+      summary: Exchange API user credentials for the synthetic bearer token.
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/LoginRequest'}
+      responses:
+        '200':
+          description: Login accepted. The token is the environment bearer.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/LoginResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/orders:
+    get:
+      operationId: listOrders
+      summary: List orders and their shipments.
+      tags: [Orders]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: Order page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/OrderList'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/orders/show/{id}:
+    get:
+      operationId: getOrder
+      summary: Get one order by Shiprocket id or channel order id.
+      tags: [Orders]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Order.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/OrderEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/orders/create/adhoc:
+    post:
+      operationId: createAdhocOrder
+      summary: Create a custom order and its shipment.
+      tags: [Orders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateOrderRequest'}
+      responses:
+        '200':
+          description: Created order.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CreateOrderResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/orders/cancel:
+    post:
+      operationId: cancelOrders
+      summary: Cancel orders by id.
+      tags: [Orders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CancelOrdersRequest'}
+      responses:
+        '200':
+          description: Orders cancelled.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/MessageResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/orders/create/return:
+    post:
+      operationId: createReturnOrder
+      summary: Create a return for an order.
+      tags: [Returns]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateOrderRequest'}
+      responses:
+        '200':
+          description: Created return.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CreateReturnResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/orders/processing/return:
+    get:
+      operationId: listReturnOrders
+      summary: List return orders.
+      tags: [Returns]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Return page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ReturnList'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/courier/courierListWithCounts:
+    get:
+      operationId: listCouriers
+      summary: List courier partners enabled for the account.
+      tags: [Couriers]
+      parameters:
+        - name: type
+          in: query
+          description: active, inactive, or all. Omitted means active.
+          schema: {type: string, enum: [active, inactive, all]}
+      responses:
+        '200':
+          description: Courier list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CourierList'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/courier/serviceability:
+    get:
+      operationId: checkServiceability
+      summary: List couriers that can carry a shipment between two pincodes.
+      tags: [Couriers]
+      parameters:
+        - name: pickup_postcode
+          in: query
+          schema: {type: string}
+        - name: delivery_postcode
+          in: query
+          schema: {type: string}
+        - name: weight
+          in: query
+          schema: {type: number, minimum: 0}
+        - name: cod
+          in: query
+          schema: {type: integer, enum: [0, 1]}
+      responses:
+        '200':
+          description: Serviceable couriers.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ServiceabilityResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/courier/assign/awb:
+    post:
+      operationId: assignAwb
+      summary: Assign an AWB and courier to a shipment.
+      tags: [Couriers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/AssignAwbRequest'}
+      responses:
+        '200':
+          description: AWB assigned.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/AssignAwbResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/courier/track/awb/{awb_code}:
+    get:
+      operationId: trackByAwb
+      summary: Track a shipment by AWB.
+      tags: [Tracking]
+      parameters:
+        - $ref: '#/components/parameters/AwbCode'
+      responses:
+        '200':
+          description: Tracking.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TrackingResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/courier/track/shipment/{shipment_id}:
+    get:
+      operationId: trackByShipment
+      summary: Track a shipment by shipment id.
+      tags: [Tracking]
+      parameters:
+        - $ref: '#/components/parameters/ShipmentId'
+      responses:
+        '200':
+          description: Tracking.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TrackingResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/ndr/all:
+    get:
+      operationId: listNdr
+      summary: List shipments in non-delivery report status.
+      tags: [NDR]
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: NDR page.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/NdrList'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/ndr/{awb}:
+    get:
+      operationId: getNdr
+      summary: Get one NDR shipment by AWB.
+      tags: [NDR]
+      parameters:
+        - $ref: '#/components/parameters/Awb'
+      responses:
+        '200':
+          description: NDR shipment.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/NdrEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/ndr/{awb}/action:
+    post:
+      operationId: actOnNdr
+      summary: Record a re-attempt or RTO action on an NDR shipment.
+      tags: [NDR]
+      parameters:
+        - $ref: '#/components/parameters/Awb'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/NdrActionRequest'}
+      responses:
+        '200':
+          description: Updated NDR shipment.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/NdrEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/external/settings/company/pickup:
+    get:
+      operationId: listPickups
+      summary: List pickup locations.
+      tags: [Settings]
+      responses:
+        '200':
+          description: Pickup locations.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PickupList'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token from the environment secret `token`. Production
+        Shiprocket sends the JWT returned by POST /v1/external/auth/login.
+        Fabricate accepts the bearer the proxy injects. Login returns that
+        same token.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    Awb:
+      name: awb
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    AwbCode:
+      name: awb_code
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ShipmentId:
+      name: shipment_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    Page:
+      name: page
+      in: query
+      schema: {type: integer, minimum: 1, default: 1}
+    PerPage:
+      name: per_page
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 100, default: 15}
+    Search:
+      name: search
+      in: query
+      schema: {type: string}
+  responses:
+    Error:
+      description: Shiprocket-style error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorBody'}
+  schemas:
+    ErrorBody:
+      type: object
+      required: [message, status_code]
+      properties:
+        message: {type: string}
+        status_code: {type: integer}
+    MessageResponse:
+      type: object
+      required: [status_code, message]
+      properties:
+        status_code: {type: integer}
+        message: {type: string}
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required: [email, password]
+      properties:
+        email: {type: string, format: email}
+        password: {type: string, minLength: 1}
+    LoginResponse:
+      type: object
+      required: [id, company_id, email, first_name, last_name, created_at, token]
+      properties:
+        id: {type: integer}
+        company_id: {type: integer}
+        email: {type: string, format: email}
+        first_name: {type: string}
+        last_name: {type: string}
+        created_at: {type: string}
+        token: {type: string}
+    OrderItemInput:
+      type: object
+      additionalProperties: false
+      required: [name, sku, units, selling_price]
+      properties:
+        name: {type: string, minLength: 1}
+        sku: {type: string, minLength: 1}
+        units: {type: integer, minimum: 1}
+        selling_price: {type: number, minimum: 0}
+    CreateOrderRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - order_id
+        - order_date
+        - billing_customer_name
+        - billing_address
+        - billing_city
+        - billing_pincode
+        - billing_state
+        - billing_country
+        - billing_email
+        - billing_phone
+        - shipping_is_billing
+        - order_items
+        - payment_method
+        - sub_total
+        - length
+        - breadth
+        - height
+        - weight
+      properties:
+        order_id: {type: string, minLength: 1, maxLength: 50}
+        order_date: {type: string, minLength: 1}
+        pickup_location: {type: string}
+        billing_customer_name: {type: string, minLength: 1}
+        billing_last_name: {type: string}
+        billing_address: {type: string, minLength: 1}
+        billing_address_2: {type: string}
+        billing_city: {type: string, minLength: 1}
+        billing_pincode: {type: string, minLength: 1}
+        billing_state: {type: string, minLength: 1}
+        billing_country: {type: string, minLength: 1}
+        billing_email: {type: string, format: email}
+        billing_phone: {type: string, minLength: 1}
+        shipping_is_billing: {type: boolean}
+        shipping_customer_name: {type: string}
+        shipping_last_name: {type: string}
+        shipping_address: {type: string}
+        shipping_address_2: {type: string}
+        shipping_city: {type: string}
+        shipping_pincode: {type: string}
+        shipping_state: {type: string}
+        shipping_country: {type: string}
+        shipping_email: {type: string}
+        shipping_phone: {type: string}
+        order_items:
+          type: array
+          minItems: 1
+          items: {$ref: '#/components/schemas/OrderItemInput'}
+        payment_method: {type: string, enum: [Prepaid, COD]}
+        sub_total: {type: integer, minimum: 0}
+        length: {type: number, minimum: 0.5}
+        breadth: {type: number, minimum: 0.5}
+        height: {type: number, minimum: 0.5}
+        weight: {type: number, minimum: 0, exclusiveMinimum: true}
+    CreateOrderResponse:
+      type: object
+      required:
+        - order_id
+        - channel_order_id
+        - shipment_id
+        - status
+        - status_code
+        - onboarding_completed_now
+        - awb_code
+        - courier_company_id
+        - courier_name
+      properties:
+        order_id: {type: string}
+        channel_order_id: {type: string}
+        shipment_id: {type: string}
+        status: {type: string}
+        status_code: {type: integer}
+        onboarding_completed_now: {type: integer}
+        awb_code: {type: string}
+        courier_company_id: {type: integer}
+        courier_name: {type: string}
+    CreateReturnResponse:
+      type: object
+      required: [id, order_id, shipment_id, status, status_code, forward_shipment_status]
+      properties:
+        id: {type: string}
+        order_id: {type: string}
+        shipment_id: {type: string}
+        status: {type: string}
+        status_code: {type: integer}
+        forward_shipment_status: {type: string}
+    CancelOrdersRequest:
+      type: object
+      additionalProperties: false
+      required: [ids]
+      properties:
+        ids:
+          type: array
+          minItems: 1
+          items: {type: string, minLength: 1}
+    Product:
+      type: object
+      required: [name, sku, units, selling_price]
+      properties:
+        name: {type: string}
+        sku: {type: string}
+        units: {type: integer}
+        selling_price: {type: string}
+    Shipment:
+      type: object
+      required: [id, order_id, awb, courier, courier_id, status]
+      properties:
+        id: {type: string}
+        order_id: {type: string}
+        awb: {type: string}
+        courier: {type: string}
+        courier_id: {type: integer}
+        status: {type: string}
+        weight: {type: number}
+    Order:
+      type: object
+      required:
+        - id
+        - channel_order_id
+        - channel_name
+        - customer_name
+        - customer_email
+        - customer_phone
+        - customer_address
+        - customer_city
+        - customer_state
+        - customer_pincode
+        - customer_country
+        - pickup_location
+        - payment_status
+        - total
+        - status
+        - status_code
+        - payment_method
+        - created_at
+        - products
+        - shipments
+      properties:
+        id: {type: string}
+        channel_order_id: {type: string}
+        channel_name: {type: string}
+        customer_name: {type: string}
+        customer_email: {type: string}
+        customer_phone: {type: string}
+        customer_address: {type: string}
+        customer_city: {type: string}
+        customer_state: {type: string}
+        customer_pincode: {type: string}
+        customer_country: {type: string}
+        pickup_location: {type: string}
+        payment_status: {type: string}
+        total: {type: string}
+        status: {type: string}
+        status_code: {type: integer}
+        payment_method: {type: string}
+        created_at: {type: string}
+        products:
+          type: array
+          items: {$ref: '#/components/schemas/Product'}
+        shipments:
+          type: array
+          items: {$ref: '#/components/schemas/Shipment'}
+    OrderEnvelope:
+      type: object
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/Order'}
+    Pagination:
+      type: object
+      required: [total, count, per_page, current_page, total_pages]
+      properties:
+        total: {type: integer, minimum: 0}
+        count: {type: integer, minimum: 0}
+        per_page: {type: integer, minimum: 0}
+        current_page: {type: integer, minimum: 1}
+        total_pages: {type: integer, minimum: 0}
+    Meta:
+      type: object
+      required: [pagination]
+      properties:
+        pagination: {$ref: '#/components/schemas/Pagination'}
+    OrderList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/Order'}
+        meta: {$ref: '#/components/schemas/Meta'}
+    ReturnOrder:
+      type: object
+      required:
+        - id
+        - order_id
+        - shipment_id
+        - channel_name
+        - status
+        - forward_shipment_status
+        - customer_name
+        - customer_email
+        - customer_phone
+        - customer_address
+        - customer_city
+        - customer_state
+        - customer_pincode
+        - customer_country
+        - pickup_location
+        - total
+        - created_at
+        - products
+        - awb
+        - courier
+      properties:
+        id: {type: string}
+        order_id: {type: string}
+        shipment_id: {type: string}
+        channel_name: {type: string}
+        status: {type: string}
+        forward_shipment_status: {type: string}
+        customer_name: {type: string}
+        customer_email: {type: string}
+        customer_phone: {type: string}
+        customer_address: {type: string}
+        customer_city: {type: string}
+        customer_state: {type: string}
+        customer_pincode: {type: string}
+        customer_country: {type: string}
+        pickup_location: {type: string}
+        total: {type: string}
+        created_at: {type: string}
+        products:
+          type: array
+          items: {$ref: '#/components/schemas/Product'}
+        awb: {type: string}
+        courier: {type: string}
+    ReturnList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/ReturnOrder'}
+        meta: {$ref: '#/components/schemas/Meta'}
+    Courier:
+      type: object
+      required: [id, name, status]
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        status: {type: integer}
+    CourierList:
+      type: object
+      required: [total_courier_count, courier_count, courier_data]
+      properties:
+        total_courier_count: {type: integer, minimum: 0}
+        courier_count: {type: integer, minimum: 0}
+        courier_data:
+          type: array
+          items: {$ref: '#/components/schemas/Courier'}
+    ServiceableCourier:
+      type: object
+      required: [courier_company_id, courier_name, rate, estimated_delivery_days]
+      properties:
+        courier_company_id: {type: integer}
+        courier_name: {type: string}
+        rate: {type: number}
+        estimated_delivery_days: {type: string}
+    ServiceabilityResponse:
+      type: object
+      required: [status, data]
+      properties:
+        status: {type: integer}
+        data:
+          type: object
+          required: [available_courier_companies]
+          properties:
+            available_courier_companies:
+              type: array
+              items: {$ref: '#/components/schemas/ServiceableCourier'}
+    AssignAwbRequest:
+      type: object
+      additionalProperties: false
+      required: [shipment_id]
+      properties:
+        shipment_id: {type: string, minLength: 1}
+        courier_id: {type: integer}
+    AwbAssignment:
+      type: object
+      required: [awb_code, courier_company_id, courier_name, shipment_id, order_id, channel_order_id]
+      properties:
+        awb_code: {type: string}
+        courier_company_id: {type: integer}
+        courier_name: {type: string}
+        shipment_id: {type: string}
+        order_id: {type: string}
+        channel_order_id: {type: string}
+    AssignAwbResponse:
+      type: object
+      required: [awb_assign_status, response]
+      properties:
+        awb_assign_status: {type: integer}
+        response:
+          type: object
+          required: [data]
+          properties:
+            data: {$ref: '#/components/schemas/AwbAssignment'}
+    ShipmentTrackActivity:
+      type: object
+      required: [date, status, activity, location, sr-status, sr-status-label]
+      properties:
+        date: {type: string}
+        status: {type: string}
+        activity: {type: string}
+        location: {type: string}
+        sr-status: {type: string}
+        sr-status-label: {type: string}
+    ShipmentTrack:
+      type: object
+      required:
+        - id
+        - awb_code
+        - courier_company_id
+        - courier_name
+        - shipment_id
+        - order_id
+        - channel_order_id
+        - channel_name
+        - pickup_date
+        - delivered_date
+        - packages
+        - current_status
+        - delivered_to
+        - destination
+        - consignee_name
+        - origin
+      properties:
+        id: {type: string}
+        awb_code: {type: string}
+        courier_company_id: {type: integer}
+        courier_name: {type: string}
+        shipment_id: {type: string}
+        order_id: {type: string}
+        channel_order_id: {type: string}
+        channel_name: {type: string}
+        pickup_date: {type: string}
+        delivered_date: {type: string}
+        weight: {type: string}
+        packages: {type: integer, minimum: 0}
+        current_status: {type: string}
+        delivered_to: {type: string}
+        destination: {type: string}
+        consignee_name: {type: string}
+        origin: {type: string}
+    TrackingData:
+      type: object
+      required: [track_status, shipment_status, shipment_track, shipment_track_activities, track_url, etd]
+      properties:
+        track_status: {type: integer}
+        shipment_status: {type: integer}
+        shipment_track:
+          type: array
+          items: {$ref: '#/components/schemas/ShipmentTrack'}
+        shipment_track_activities:
+          type: array
+          items: {$ref: '#/components/schemas/ShipmentTrackActivity'}
+        track_url: {type: string}
+        etd: {type: string}
+    TrackingResponse:
+      type: object
+      required: [tracking_data]
+      properties:
+        tracking_data: {$ref: '#/components/schemas/TrackingData'}
+    NdrShipment:
+      type: object
+      required:
+        - id
+        - shipment_id
+        - channel_order_id
+        - channel_name
+        - customer_name
+        - customer_email
+        - customer_phone
+        - customer_address
+        - customer_city
+        - customer_state
+        - customer_pincode
+        - status
+        - status_code
+        - reason
+        - attempts
+        - ndr_action
+        - comments
+        - courier
+        - awb_code
+      properties:
+        id: {type: string}
+        shipment_id: {type: string}
+        channel_order_id: {type: string}
+        channel_name: {type: string}
+        customer_name: {type: string}
+        customer_email: {type: string}
+        customer_phone: {type: string}
+        customer_address: {type: string}
+        customer_city: {type: string}
+        customer_state: {type: string}
+        customer_pincode: {type: string}
+        status: {type: string}
+        status_code: {type: integer}
+        reason: {type: string}
+        attempts: {type: integer, minimum: 0}
+        ndr_action: {type: string}
+        comments: {type: string}
+        courier: {type: string}
+        awb_code: {type: string}
+    NdrEnvelope:
+      type: object
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/NdrShipment'}
+    NdrList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/NdrShipment'}
+        meta: {$ref: '#/components/schemas/Meta'}
+    NdrActionRequest:
+      type: object
+      additionalProperties: false
+      required: [action]
+      properties:
+        action: {type: string, enum: [re-attempt, rto]}
+        comments: {type: string}
+    PickupAddress:
+      type: object
+      required: [id, pickup_location, name, email, phone, address, address_2, city, state, country, pin_code]
+      properties:
+        id: {type: string}
+        pickup_location: {type: string}
+        name: {type: string}
+        email: {type: string}
+        phone: {type: string}
+        address: {type: string}
+        address_2: {type: string}
+        city: {type: string}
+        state: {type: string}
+        country: {type: string}
+        pin_code: {type: string}
+    PickupList:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required: [shipping_address]
+          properties:
+            shipping_address:
+              type: array
+              items: {$ref: '#/components/schemas/PickupAddress'}
