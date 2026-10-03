@@ -1,0 +1,41 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "shopify.minimal.v1",
+  "$resource": "shopify",
+  "$resourceVersion": "2024-10",
+  "state": {
+    "currentShop": "acme-goods.myshopify.com",
+    "shops": [
+      {
+        "id": 501,
+        "name": "Acme Goods",
+        "email": "val@acme.example",
+        "domain": "acme-goods.myshopify.com",
+        "myshopifyDomain": "acme-goods.myshopify.com",
+        "currency": "INR",
+        "country": "IN",
+        "countryCode": "IN",
+        "countryName": "India",
+        "province": "Karnataka",
+        "provinceCode": "KA",
+        "city": "Bengaluru",
+        "address1": "18 Industrial Layout",
+        "zip": "560058",
+        "phone": "+91-80-4123-0101",
+        "shopOwner": "Val Ortega",
+        "ianaTimezone": "Asia/Kolkata",
+        "timezone": "(GMT+05:30) Asia/Kolkata",
+        "moneyFormat": "₹{{amount}}",
+        "primaryLocale": "en",
+        "weightUnit": "kg",
+        "createdAt": "2026-01-15T00:00:00Z"
+      }
+    ],
+    "products": [],
+    "customers": [],
+    "orders": [],
+    "fulfillments": [],
+    "refunds": []
+  }
+}

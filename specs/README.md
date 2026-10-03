@@ -25,8 +25,10 @@ and Access & Onboarding environments.
 ## Deliberately deferred
 
 - **Shopify:** Shopify does not publish a maintained official OpenAPI artifact,
-  and its Admin REST API is legacy in favor of GraphQL. Do not add an
-  unverified community REST specification.
+  and its Admin REST API is legacy in favor of GraphQL. The runnable resource
+  in `resources/shopify` is a curated Admin REST 2024-10 surface transcribed
+  from the official docs. Do not add an unverified community REST specification
+  to this folder.
 - **Google Admin Directory:** Google publishes an official Discovery document,
   not native OpenAPI. Convert and validate that source using the existing
   Access discovery-to-OpenAPI path before importing it.

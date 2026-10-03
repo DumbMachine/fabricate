@@ -1,0 +1,42 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-company-ops
+
+services:
+  support-mail:
+    resource: gmail
+    scenario: gmail.acme-corp.v1
+  inbox:
+    resource: intercom
+    scenario: intercom.acme-inbox.v1
+  board:
+    resource: asana
+    scenario: asana.acme-sprint.v1
+  crm:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1
+  okta:
+    resource: okta
+    scenario: okta.acme-org.v1
+  bamboohr:
+    resource: bamboohr
+    scenario: bamboohr.acme-people.v1
+  chargebee:
+    resource: chargebee
+    scenario: chargebee.acme-billing.v1
+  zohobooks:
+    resource: zohobooks
+    scenario: zohobooks.acme-ledger.v1
+  gainsight:
+    resource: gainsight
+    scenario: gainsight.acme-success.v1
+  jsm:
+    resource: jsm
+    scenario: jsm.acme-desk.v1
+  slack:
+    resource: slack
+    scenario: slack.acme-workspace.v1
+  googledrive:
+    resource: googledrive
+    scenario: googledrive.acme-drive.v1

@@ -1,0 +1,14 @@
+{
+  "id": "shopify-read",
+  "title": "Read Acme Goods order 10482",
+  "environment": "environments/acme-shopify.yaml",
+  "environmentLabel": "Acme Goods Shopify",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/shopify-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-shopify.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json"
+  ]
+}

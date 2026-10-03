@@ -1,40 +1,202 @@
 ---
-title: Shopify (planned)
-description: A Shopify Admin API resource is deferred until Shopify publishes a maintained official OpenAPI artifact.
+title: Shopify
+description: Shop, products, variants, customers, orders, fulfillments, and refunds.
 sidebar:
   icon: https://logos.composio.dev/api/shopify
 ---
 
-<ResourceCoverage planned />
+<ResourceCoverage resource="shopify" />
 
-> **Planned, not available yet.** This page records why Fabricate does not
-> ship a Shopify resource. It does not describe a runnable environment.
+Shop, products, variants, customers, orders, fulfillments, and refunds. Local
+Shopify Admin REST 2024-10 that keeps shop state across requests.
 
-Shopify does not publish a maintained official OpenAPI description of its
-Admin API. Admin REST is also legacy in favor of GraphQL. Fabricate will not
-import an unverified community REST specification or invent one.
+## Integration
 
-That deferral is recorded in `specs/README.md` with the other catalog
-inputs. Gmail, Asana, HubSpot, and Intercom are compiled from official
-OpenAPI documents stored next to each resource; Shopify is not in that set.
+| | Details |
+| --- | --- |
+| API | Shopify Admin REST 2024-10 |
+| Auth | Bearer token or `X-Shopify-Access-Token` |
+| Hosts | `acme-goods.myshopify.com`, `northwind-market.myshopify.com`, `tinyshop.myshopify.com`, `fernworks-studio.myshopify.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
 
-## What a first surface would need
+### Start it with a direct URL
 
-A later Shopify resource should start from an official contract Shopify
-maintains, not a reconstructed REST subset. The useful first slice for
-agent workflows is still shop and order context:
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
 
-- Shop identity and the current sales channel.
-- Products, variants, and inventory that explain what a customer bought.
-- Orders, fulfillments, and refunds tied to a support or billing incident.
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-shopify.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_SHOPIFY_TOKEN" \
+      "$FAB_SHOPIFY_URL/admin/api/2024-10/orders/10482.json"'
+```
 
-## Deliberately outside a first surface
+The service is named `shopify` in the example manifest, so the variables are
+`FAB_SHOPIFY_URL` and `FAB_SHOPIFY_TOKEN`. A direct request can send that
+token as `Authorization: Bearer` or as `X-Shopify-Access-Token`. When the
+`Host` header is not one of the shop domains above, the server uses the
+scenario's current shop, Acme Goods.
 
-- Storefront APIs, checkout, and payment capture.
-- Theme, asset, and App Bridge surfaces.
-- Webhook delivery, Shopify Flow, and Plus-only admin features.
-- A hand-written stand-in for Admin REST now that GraphQL is the supported
-  Admin API.
+The response is Acme Goods order 10482:
 
-Until Shopify publishes a maintained official OpenAPI artifact that can be
-stored in full next to the resource, this integration stays planned.
+```json
+{
+  "order": {
+    "admin_graphql_api_id": "gid://shopify/Order/10482",
+    "billing_address": {
+      "address1": "42 Residency Road",
+      "city": "Bengaluru",
+      "country": "India",
+      "country_code": "IN",
+      "first_name": "Priya",
+      "last_name": "Nair",
+      "phone": "+91-98450-11223",
+      "province": "Karnataka",
+      "province_code": "KA",
+      "zip": "560025"
+    },
+    "created_at": "2026-08-25T09:14:00Z",
+    "currency": "INR",
+    "current_total_price": "3097.00",
+    "customer": {
+      "admin_graphql_api_id": "gid://shopify/Customer/3001",
+      "created_at": "2026-08-25T09:14:00Z",
+      "currency": "INR",
+      "email": "priya@fernworks.example",
+      "first_name": "Priya",
+      "id": 3001,
+      "last_name": "Nair",
+      "orders_count": 1,
+      "phone": "+91-98450-11223",
+      "state": "enabled",
+      "total_spent": "3097.00",
+      "updated_at": "2026-08-25T09:14:00Z",
+      "verified_email": true
+    },
+    "email": "priya@fernworks.example",
+    "financial_status": "paid",
+    "fulfillment_status": "fulfilled",
+    "id": 10482,
+    "line_items": [
+      {
+        "fulfillment_status": "fulfilled",
+        "id": 5001,
+        "name": "Acme Field Tee",
+        "price": "1499.00",
+        "product_id": 1002,
+        "quantity": 1,
+        "requires_shipping": true,
+        "sku": "AG-TEE-02",
+        "taxable": true,
+        "title": "Acme Field Tee",
+        "variant_id": 2002
+      },
+      {
+        "fulfillment_status": "fulfilled",
+        "id": 5002,
+        "name": "Acme Ceramic Mug",
+        "price": "799.00",
+        "product_id": 1001,
+        "quantity": 2,
+        "requires_shipping": true,
+        "sku": "AG-MUG-01",
+        "taxable": true,
+        "title": "Acme Ceramic Mug",
+        "variant_id": 2001
+      }
+    ],
+    "name": "#10482",
+    "note_attributes": [
+      {
+        "name": "razorpay_order_id",
+        "value": "order_Acme10482"
+      },
+      {
+        "name": "razorpay_payment_id",
+        "value": "pay_Acme10482"
+      }
+    ],
+    "order_number": 10482,
+    "payment_gateway_names": [
+      "razorpay"
+    ],
+    "phone": "+91-98450-11223",
+    "shipping_address": {
+      "address1": "42 Residency Road",
+      "city": "Bengaluru",
+      "country": "India",
+      "country_code": "IN",
+      "first_name": "Priya",
+      "last_name": "Nair",
+      "phone": "+91-98450-11223",
+      "province": "Karnataka",
+      "province_code": "KA",
+      "zip": "560025"
+    },
+    "subtotal_price": "3097.00",
+    "total_discounts": "0.00",
+    "total_price": "3097.00",
+    "total_tax": "0.00",
+    "updated_at": "2026-08-25T09:14:00Z"
+  }
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Shopify shop URL and follows standard
+proxy and CA environment variables. This one-paste check calls Acme Goods'
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_SHOPIFY_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-shopify.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json
+```
+
+Fabricate handles the four shop hosts locally. Other hosts are forwarded
+unchanged; set `proxy.unknown_hosts: reject` for an isolated, fail-closed
+conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="shopify"
+  descriptions={{
+    "shopify.minimal.v1": "An empty Acme Goods catalog.",
+    "shopify.acme-goods.v1": "Acme Goods products and orders 10482, 10483, and 10484.",
+    "shopify.acme-agency.v1": "All four shops, client SKUs, and orders 10482, 10483, 10484, 10490, and 10491.",
+  }}
+/>
+
+Peek at the committed Acme Goods world. The table fetches the official
+scenario JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="shopify"
+  scenario="acme-goods.v1"
+  collection="orders"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Shopify check ran against the Acme Goods
+Shopify environment with curl:
+
+<IntegrationCompatibility resource="shopify" />
+
+## Supported operations
+
+<SupportedOperations resource="shopify" />

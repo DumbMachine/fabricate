@@ -1,0 +1,253 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "shopify.acme-goods.v1",
+  "$resource": "shopify",
+  "$resourceVersion": "2024-10",
+  "state": {
+    "currentShop": "acme-goods.myshopify.com",
+    "shops": [
+      {
+        "id": 501,
+        "name": "Acme Goods",
+        "email": "val@acme.example",
+        "domain": "acme-goods.myshopify.com",
+        "myshopifyDomain": "acme-goods.myshopify.com",
+        "currency": "INR",
+        "country": "IN",
+        "countryCode": "IN",
+        "countryName": "India",
+        "province": "Karnataka",
+        "provinceCode": "KA",
+        "city": "Bengaluru",
+        "address1": "18 Industrial Layout",
+        "zip": "560058",
+        "phone": "+91-80-4123-0101",
+        "shopOwner": "Val Ortega",
+        "ianaTimezone": "Asia/Kolkata",
+        "timezone": "(GMT+05:30) Asia/Kolkata",
+        "moneyFormat": "₹{{amount}}",
+        "primaryLocale": "en",
+        "weightUnit": "kg",
+        "createdAt": "2026-01-15T00:00:00Z"
+      }
+    ],
+    "products": [
+      {
+        "id": 1001,
+        "shop": "acme-goods.myshopify.com",
+        "title": "Acme Ceramic Mug",
+        "vendor": "Acme Goods",
+        "productType": "Mug",
+        "status": "active",
+        "createdAt": "2026-06-01T00:00:00Z",
+        "variants": [
+          {"id": 2001, "title": "Default Title", "sku": "AG-MUG-01", "price": "799.00", "inventoryQuantity": 120}
+        ]
+      },
+      {
+        "id": 1002,
+        "shop": "acme-goods.myshopify.com",
+        "title": "Acme Field Tee",
+        "vendor": "Acme Goods",
+        "productType": "Apparel",
+        "status": "active",
+        "createdAt": "2026-06-01T00:00:00Z",
+        "variants": [
+          {"id": 2002, "title": "Default Title", "sku": "AG-TEE-02", "price": "1499.00", "inventoryQuantity": 48}
+        ]
+      },
+      {
+        "id": 1003,
+        "shop": "acme-goods.myshopify.com",
+        "title": "Acme Field Notebook",
+        "vendor": "Acme Goods",
+        "productType": "Stationery",
+        "status": "active",
+        "createdAt": "2026-06-01T00:00:00Z",
+        "variants": [
+          {"id": 2003, "title": "Default Title", "sku": "AG-NOTE-03", "price": "499.00", "inventoryQuantity": 200}
+        ]
+      }
+    ],
+    "customers": [
+      {
+        "id": 3001,
+        "shop": "acme-goods.myshopify.com",
+        "email": "priya@fernworks.example",
+        "firstName": "Priya",
+        "lastName": "Nair",
+        "phone": "+91-98450-11223",
+        "createdAt": "2026-08-25T09:14:00Z"
+      },
+      {
+        "id": 3002,
+        "shop": "acme-goods.myshopify.com",
+        "email": "marco@tinyshop.example",
+        "firstName": "Marco",
+        "lastName": "Silva",
+        "phone": "+91-98111-22008",
+        "createdAt": "2026-08-24T16:40:00Z"
+      },
+      {
+        "id": 3003,
+        "shop": "acme-goods.myshopify.com",
+        "email": "dana@northwind.example",
+        "firstName": "Dana",
+        "lastName": "Whitfield",
+        "phone": "+91-99000-48120",
+        "createdAt": "2026-08-22T11:05:00Z"
+      }
+    ],
+    "orders": [
+      {
+        "id": 10482,
+        "shop": "acme-goods.myshopify.com",
+        "name": "#10482",
+        "email": "priya@fernworks.example",
+        "phone": "+91-98450-11223",
+        "createdAt": "2026-08-25T09:14:00Z",
+        "currency": "INR",
+        "financialStatus": "paid",
+        "fulfillmentStatus": "fulfilled",
+        "totalPrice": "3097.00",
+        "subtotalPrice": "3097.00",
+        "customerId": 3001,
+        "gateway": "razorpay",
+        "noteAttributes": [
+          {"name": "razorpay_order_id", "value": "order_Acme10482"},
+          {"name": "razorpay_payment_id", "value": "pay_Acme10482"}
+        ],
+        "lineItems": [
+          {"id": 5001, "variantId": 2002, "productId": 1002, "title": "Acme Field Tee", "sku": "AG-TEE-02", "quantity": 1, "price": "1499.00"},
+          {"id": 5002, "variantId": 2001, "productId": 1001, "title": "Acme Ceramic Mug", "sku": "AG-MUG-01", "quantity": 2, "price": "799.00"}
+        ],
+        "shippingAddress": {
+          "firstName": "Priya",
+          "lastName": "Nair",
+          "address1": "42 Residency Road",
+          "city": "Bengaluru",
+          "province": "Karnataka",
+          "provinceCode": "KA",
+          "country": "India",
+          "countryCode": "IN",
+          "zip": "560025",
+          "phone": "+91-98450-11223"
+        }
+      },
+      {
+        "id": 10483,
+        "shop": "acme-goods.myshopify.com",
+        "name": "#10483",
+        "email": "marco@tinyshop.example",
+        "phone": "+91-98111-22008",
+        "createdAt": "2026-08-24T16:40:00Z",
+        "currency": "INR",
+        "financialStatus": "paid",
+        "fulfillmentStatus": "fulfilled",
+        "totalPrice": "499.00",
+        "subtotalPrice": "499.00",
+        "customerId": 3002,
+        "gateway": "razorpay",
+        "note": "Customer not available",
+        "noteAttributes": [
+          {"name": "razorpay_payment_id", "value": "pay_Acme10483"}
+        ],
+        "lineItems": [
+          {"id": 5003, "variantId": 2003, "productId": 1003, "title": "Acme Field Notebook", "sku": "AG-NOTE-03", "quantity": 1, "price": "499.00"}
+        ],
+        "shippingAddress": {
+          "firstName": "Marco",
+          "lastName": "Silva",
+          "address1": "7 Linking Road",
+          "city": "Mumbai",
+          "province": "Maharashtra",
+          "provinceCode": "MH",
+          "country": "India",
+          "countryCode": "IN",
+          "zip": "400050",
+          "phone": "+91-98111-22008"
+        }
+      },
+      {
+        "id": 10484,
+        "shop": "acme-goods.myshopify.com",
+        "name": "#10484",
+        "email": "dana@northwind.example",
+        "phone": "+91-99000-48120",
+        "createdAt": "2026-08-22T11:05:00Z",
+        "currency": "INR",
+        "financialStatus": "refunded",
+        "totalPrice": "1499.00",
+        "subtotalPrice": "1499.00",
+        "customerId": 3003,
+        "gateway": "razorpay",
+        "note": "Shiprocket return RET-10484",
+        "noteAttributes": [
+          {"name": "razorpay_payment_id", "value": "pay_Acme10484"}
+        ],
+        "lineItems": [
+          {"id": 5004, "variantId": 2002, "productId": 1002, "title": "Acme Field Tee", "sku": "AG-TEE-02", "quantity": 1, "price": "1499.00"}
+        ],
+        "shippingAddress": {
+          "firstName": "Dana",
+          "lastName": "Whitfield",
+          "address1": "18 Harbor Road",
+          "city": "Pune",
+          "province": "Maharashtra",
+          "provinceCode": "MH",
+          "country": "India",
+          "countryCode": "IN",
+          "zip": "411001",
+          "phone": "+91-99000-48120"
+        }
+      }
+    ],
+    "fulfillments": [
+      {
+        "id": 40482,
+        "shop": "acme-goods.myshopify.com",
+        "orderId": 10482,
+        "status": "success",
+        "shipmentStatus": "in_transit",
+        "trackingCompany": "Delhivery",
+        "trackingNumber": "SR10482AWB",
+        "createdAt": "2026-08-25T09:14:00Z"
+      },
+      {
+        "id": 40483,
+        "shop": "acme-goods.myshopify.com",
+        "orderId": 10483,
+        "status": "success",
+        "shipmentStatus": "attempted_delivery",
+        "trackingCompany": "Bluedart",
+        "trackingNumber": "SR10483AWB",
+        "createdAt": "2026-08-24T16:40:00Z"
+      },
+      {
+        "id": 40484,
+        "shop": "acme-goods.myshopify.com",
+        "orderId": 10484,
+        "status": "cancelled",
+        "shipmentStatus": "failure",
+        "createdAt": "2026-08-22T11:05:00Z"
+      }
+    ],
+    "refunds": [
+      {
+        "id": 60484,
+        "shop": "acme-goods.myshopify.com",
+        "orderId": 10484,
+        "createdAt": "2026-08-26T08:00:00Z",
+        "note": "rfnd_Acme10484",
+        "currency": "INR",
+        "gateway": "razorpay",
+        "authorization": "rfnd_Acme10484",
+        "amount": "1499.00",
+        "lineItems": [
+          {"id": 70484, "lineItemId": 5004, "quantity": 1, "restockType": "return", "subtotal": "1499.00"}
+        ]
+      }
+    ]
+  }
+}

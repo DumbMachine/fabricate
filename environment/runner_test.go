@@ -205,6 +205,89 @@ func TestRuntimeServesAcmeBillingOps(t *testing.T) {
 	assertContains(t, deal, "billing-ops hubspot", "INV-4812")
 }
 
+func TestRuntimeServesAcmeGoodsShop(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	spec, err := Load(filepath.Join("..", "environments", "acme-goods-shop.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runtime, err := Start(context.Background(), spec, all.Registry(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = runtime.Close(context.Background()) })
+	client := runtimeProxyClient(t, runtime)
+	token := func(name string) string { return runtime.Services[name].Token }
+
+	order := authorizedGET(t, client, "https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json", token("shopify"))
+	assertContains(t, order, "shopify 10482", "10482", "priya@fernworks.example", "AG-TEE-02")
+
+	payment := authorizedGET(t, client, "https://api.razorpay.com/v1/payments/pay_Acme10482", token("razorpay"))
+	assertContains(t, payment, "razorpay 10482", "pay_Acme10482", "309700")
+
+	shipment := authorizedGET(t, client, "https://apiv2.shiprocket.in/v1/external/courier/track/awb/SR10482AWB", token("shiprocket"))
+	assertContains(t, shipment, "shiprocket 10482", "SR10482AWB", "Delhivery")
+
+	salesOrder := authorizedGET(t, client, "https://www.zohoapis.com/inventory/v1/salesorders/so-10482?organization_id=org-acme", token("zohoinventory"))
+	assertContains(t, salesOrder, "inventory 10482", "SO-10482", "AG-MUG-01")
+
+	invoice := authorizedGET(t, client, "https://www.zohoapis.com/books/v3/invoices/INV-10482?organization_id=org-acme", token("zohobooks"))
+	assertContains(t, invoice, "books 10482", "INV-10482")
+}
+
+func TestRuntimeServesAcmeCommerceAgency(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	spec, err := Load(filepath.Join("..", "environments", "acme-commerce-agency.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runtime, err := Start(context.Background(), spec, all.Registry(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = runtime.Close(context.Background()) })
+	client := runtimeProxyClient(t, runtime)
+	token := runtime.Services["shopify"].Token
+
+	goods := authorizedGET(t, client, "https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json", token)
+	northwind := authorizedGET(t, client, "https://northwind-market.myshopify.com/admin/api/2024-10/orders/10490.json", token)
+	tiny := authorizedGET(t, client, "https://tinyshop.myshopify.com/admin/api/2024-10/orders/10491.json", token)
+	assertContains(t, goods, "agency acme goods", "10482", "priya@fernworks.example")
+	assertContains(t, northwind, "agency northwind", "10490", "jules@northwind.example")
+	assertContains(t, tiny, "agency tinyshop", "10491", "anita.desai@consumer.example")
+
+	action := authorizedGET(t, client, "https://api.impact.com/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482", runtime.Services["impact"].Token)
+	assertContains(t, action, "impact 10482", "act_10482", "partner_northwind")
+}
+
+func TestRuntimeServesAcmeCompanyOps(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	spec, err := Load(filepath.Join("..", "environments", "acme-company-ops.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runtime, err := Start(context.Background(), spec, all.Registry(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = runtime.Close(context.Background()) })
+	client := runtimeProxyClient(t, runtime)
+	token := func(name string) string { return runtime.Services[name].Token }
+
+	mail := authorizedGET(t, client, "https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001", token("support-mail"))
+	invoice := authorizedGET(t, client, "https://www.zohoapis.com/books/v3/invoices/INV-4812?organization_id=org-acme", token("zohobooks"))
+	subscription := authorizedGET(t, client, "https://acme.chargebee.com/api/v2/subscriptions/sub_northwind_checkout", token("chargebee"))
+	request := authorizedGET(t, client, "https://acme.atlassian.net/rest/servicedeskapi/request/ITSM-4812", token("jsm"))
+	user := authorizedGET(t, client, "https://acme.okta.com/api/v1/users/00u-val", token("okta"))
+	file := authorizedGET(t, client, "https://www.googleapis.com/drive/v3/files/file-inv-4812-northwind", token("googledrive"))
+	assertContains(t, mail, "company gmail", "INV-4812")
+	assertContains(t, invoice, "company books", "INV-4812")
+	assertContains(t, subscription, "company chargebee", "sub_northwind_checkout")
+	assertContains(t, request, "company jsm", "ITSM-4812")
+	assertContains(t, user, "company okta", "val@acme.example")
+	assertContains(t, file, "company drive", "INV-4812-northwind.pdf")
+}
+
 func authorizedGET(t *testing.T, client *http.Client, rawURL, token string) string {
 	t.Helper()
 	request, err := http.NewRequest(http.MethodGet, rawURL, nil)

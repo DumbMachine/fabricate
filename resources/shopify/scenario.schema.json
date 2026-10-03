@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/shopify/scenario-v1.json",
+  "title": "Fabricate Shopify scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["currentShop", "shops", "products", "customers", "orders", "fulfillments", "refunds"],
+  "properties": {
+    "currentShop": {"type": "string", "minLength": 1},
+    "shops": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/shop"}
+    },
+    "products": {"type": "array", "items": {"$ref": "#/$defs/product"}},
+    "customers": {"type": "array", "items": {"$ref": "#/$defs/customer"}},
+    "orders": {"type": "array", "items": {"$ref": "#/$defs/order"}},
+    "fulfillments": {"type": "array", "items": {"$ref": "#/$defs/fulfillment"}},
+    "refunds": {"type": "array", "items": {"$ref": "#/$defs/refund"}}
+  },
+  "$defs": {
+    "shop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "email", "domain", "myshopifyDomain", "currency", "country", "countryCode", "countryName", "phone", "shopOwner", "ianaTimezone", "timezone", "moneyFormat", "primaryLocale", "weightUnit", "createdAt"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "name": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "format": "email"},
+        "domain": {"type": "string", "minLength": 1},
+        "myshopifyDomain": {"type": "string", "minLength": 1},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "country": {"type": "string", "minLength": 1},
+        "countryCode": {"type": "string", "minLength": 2, "maxLength": 2},
+        "countryName": {"type": "string", "minLength": 1},
+        "province": {"type": "string"},
+        "provinceCode": {"type": "string"},
+        "city": {"type": "string"},
+        "address1": {"type": "string"},
+        "zip": {"type": "string"},
+        "phone": {"type": "string", "minLength": 1},
+        "shopOwner": {"type": "string", "minLength": 1},
+        "ianaTimezone": {"type": "string", "minLength": 1},
+        "timezone": {"type": "string", "minLength": 1},
+        "moneyFormat": {"type": "string", "minLength": 1},
+        "primaryLocale": {"type": "string", "minLength": 1},
+        "weightUnit": {"type": "string", "minLength": 1},
+        "createdAt": {"type": "string", "minLength": 1}
+      }
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "shop", "title", "vendor", "status", "createdAt", "variants"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "shop": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "vendor": {"type": "string", "minLength": 1},
+        "productType": {"type": "string"},
+        "status": {"type": "string", "enum": ["active", "draft", "archived"]},
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string"},
+        "variants": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/variant"}}
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "sku", "price"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "title": {"type": "string", "minLength": 1},
+        "sku": {"type": "string", "minLength": 1},
+        "price": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$"},
+        "inventoryQuantity": {"type": "integer", "minimum": 0}
+      }
+    },
+    "customer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "shop", "email", "firstName", "lastName", "createdAt"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "shop": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "format": "email"},
+        "firstName": {"type": "string"},
+        "lastName": {"type": "string"},
+        "phone": {"type": "string"},
+        "createdAt": {"type": "string", "minLength": 1}
+      }
+    },
+    "order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "shop", "name", "createdAt", "currency", "financialStatus", "totalPrice", "subtotalPrice", "customerId", "lineItems"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "shop": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "email": {"type": "string"},
+        "phone": {"type": "string"},
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string"},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "financialStatus": {"type": "string", "enum": ["pending", "authorized", "partially_paid", "paid", "partially_refunded", "refunded", "voided"]},
+        "fulfillmentStatus": {"type": "string", "enum": ["fulfilled", "partial", "restocked"]},
+        "totalPrice": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$"},
+        "subtotalPrice": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$"},
+        "customerId": {"type": "integer", "minimum": 1},
+        "lineItems": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/lineItem"}},
+        "shippingAddress": {"$ref": "#/$defs/address"},
+        "note": {"type": "string"},
+        "gateway": {"type": "string"},
+        "noteAttributes": {"type": "array", "items": {"$ref": "#/$defs/noteAttribute"}},
+        "cancelledAt": {"type": "string"},
+        "closedAt": {"type": "string"}
+      }
+    },
+    "lineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "quantity", "price"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "variantId": {"type": "integer", "minimum": 1},
+        "productId": {"type": "integer", "minimum": 1},
+        "title": {"type": "string", "minLength": 1},
+        "sku": {"type": "string"},
+        "quantity": {"type": "integer", "minimum": 1},
+        "price": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$"}
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address1", "city", "provinceCode", "country", "countryCode", "zip"],
+      "properties": {
+        "firstName": {"type": "string"},
+        "lastName": {"type": "string"},
+        "address1": {"type": "string", "minLength": 1},
+        "city": {"type": "string", "minLength": 1},
+        "province": {"type": "string"},
+        "provinceCode": {"type": "string", "minLength": 1},
+        "country": {"type": "string", "minLength": 1},
+        "countryCode": {"type": "string", "minLength": 2},
+        "zip": {"type": "string", "minLength": 1},
+        "phone": {"type": "string"}
+      }
+    },
+    "noteAttribute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "value": {"type": "string"}
+      }
+    },
+    "fulfillment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "shop", "orderId", "status", "createdAt"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "shop": {"type": "string", "minLength": 1},
+        "orderId": {"type": "integer", "minimum": 1},
+        "status": {"type": "string", "enum": ["pending", "open", "success", "cancelled", "error", "failure"]},
+        "shipmentStatus": {"type": "string", "enum": ["label_printed", "label_purchased", "attempted_delivery", "ready_for_pickup", "confirmed", "in_transit", "out_for_delivery", "delivered", "failure"]},
+        "trackingCompany": {"type": "string"},
+        "trackingNumber": {"type": "string"},
+        "trackingUrl": {"type": "string"},
+        "createdAt": {"type": "string", "minLength": 1},
+        "updatedAt": {"type": "string"}
+      }
+    },
+    "refund": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "shop", "orderId", "createdAt", "currency", "amount", "lineItems"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "shop": {"type": "string", "minLength": 1},
+        "orderId": {"type": "integer", "minimum": 1},
+        "createdAt": {"type": "string", "minLength": 1},
+        "note": {"type": "string"},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "gateway": {"type": "string"},
+        "authorization": {"type": "string"},
+        "amount": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$"},
+        "lineItems": {"type": "array", "items": {"$ref": "#/$defs/refundLine"}}
+      }
+    },
+    "refundLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "lineItemId", "quantity", "restockType", "subtotal"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "lineItemId": {"type": "integer", "minimum": 1},
+        "quantity": {"type": "integer", "minimum": 1},
+        "restockType": {"type": "string", "enum": ["no_restock", "cancel", "return"]},
+        "subtotal": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$"}
+      }
+    }
+  }
+}

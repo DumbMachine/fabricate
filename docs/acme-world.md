@@ -301,3 +301,22 @@ services:
 
 Shopify's single-service environment uses `shopify.acme-goods.v1`. The agency
 scenario is selected by composed environments, not by that file.
+
+## Composed environments
+
+These manifests start several resources from the scenarios above. One Shopify
+service covers every shop domain. Zoho Books (`/books/`) and Zoho Inventory
+(`/inventory/`) share `www.zohoapis.com`. Gmail (`/gmail/`) and Google Drive
+(`/drive/`) share `www.googleapis.com`.
+
+- `acme-goods-shop`: in-house Acme Goods. Shopify `shopify.acme-goods.v1` plus
+  Razorpay, Shiprocket, Zoho Books, Zoho Inventory, Gupshup, Slack, Drive, GA4,
+  Redshift, and Airbyte. Order `10482` is the join key.
+- `acme-commerce-agency`: the same operator running four shops. Shopify
+  `shopify.acme-agency.v1` plus Razorpay, Shiprocket, Zoho Books, Gupshup,
+  Slack, and impact.com. Host selects the shop: `10482` on Acme Goods, `10490`
+  on Northwind Market, `10491` on TinyShop.
+- `acme-company-ops`: Acme App people and the SaaS incidents. Gmail, Intercom,
+  Asana, HubSpot, Okta, BambooHR, Chargebee, Zoho Books, Gainsight, Jira
+  Service Management, Slack, and Drive. `INV-4812` is the join key, and it
+  stays distinct from shop refund `10484`.

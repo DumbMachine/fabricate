@@ -1,0 +1,14 @@
+{
+  "id": "acme-goods-shop-10482",
+  "title": "Read order 10482 across the shop",
+  "environment": "environments/acme-goods-shop.yaml",
+  "environmentLabel": "Acme Goods Shop",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/acme-goods-shop-10482.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-goods-shop.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json\n      echo\n      curl -sS https://api.razorpay.com/v1/payments/pay_Acme10482\n      echo\n      curl -sS https://apiv2.shiprocket.in/v1/external/courier/track/awb/SR10482AWB\n      echo\n      curl -sS \"https://www.zohoapis.com/inventory/v1/salesorders/so-10482?organization_id=org-acme\"\n      echo\n      curl -sS \"https://www.zohoapis.com/books/v3/invoices/INV-10482?organization_id=org-acme\"\n    '",
+  "argv": [
+    "sh",
+    "-c",
+    "curl -sS https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json\necho\ncurl -sS https://api.razorpay.com/v1/payments/pay_Acme10482\necho\ncurl -sS https://apiv2.shiprocket.in/v1/external/courier/track/awb/SR10482AWB\necho\ncurl -sS \"https://www.zohoapis.com/inventory/v1/salesorders/so-10482?organization_id=org-acme\"\necho\ncurl -sS \"https://www.zohoapis.com/books/v3/invoices/INV-10482?organization_id=org-acme\""
+  ]
+}

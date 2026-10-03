@@ -38,6 +38,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
 	"github.com/dumbmachine/fabricate/resources/shiprocket"
+	"github.com/dumbmachine/fabricate/resources/shopify"
 	"github.com/dumbmachine/fabricate/resources/slack"
 	"github.com/dumbmachine/fabricate/resources/statuspage"
 	"github.com/dumbmachine/fabricate/resources/vanta"
@@ -79,6 +80,7 @@ func Registry() *httpresource.Registry {
 		resend.NewResource(),
 		sendgrid.NewResource(),
 		shiprocket.NewResource(),
+		shopify.NewResource(),
 		slack.NewResource(),
 		statuspage.NewResource(),
 		vanta.NewResource(),

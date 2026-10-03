@@ -38,7 +38,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
   {id: "shiprocket", label: "Shiprocket"},
-  {id: "shopify", label: "Shopify", planned: true},
+  {id: "shopify", label: "Shopify"},
   {id: "slack", label: "Slack"},
   {id: "statuspage", label: "Statuspage"},
   {id: "vanta", label: "Vanta"},

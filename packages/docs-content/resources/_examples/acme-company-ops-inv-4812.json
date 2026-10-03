@@ -1,0 +1,14 @@
+{
+  "id": "acme-company-ops-inv-4812",
+  "title": "Read INV-4812 across company ops",
+  "environment": "environments/acme-company-ops.yaml",
+  "environmentLabel": "Acme Company Ops",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/acme-company-ops-inv-4812.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-company-ops.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\n      echo\n      curl -sS https://acme.chargebee.com/api/v2/subscriptions/sub_northwind_checkout\n      echo\n      curl -sS \"https://www.zohoapis.com/books/v3/invoices/INV-4812?organization_id=org-acme\"\n      echo\n      curl -sS https://acme.atlassian.net/rest/servicedeskapi/request/ITSM-4812\n      echo\n      curl -sS https://acme.okta.com/api/v1/users/00u-val\n    '",
+  "argv": [
+    "sh",
+    "-c",
+    "curl -sS https://gmail.googleapis.com/gmail/v1/users/me/messages/msg-0001\necho\ncurl -sS https://acme.chargebee.com/api/v2/subscriptions/sub_northwind_checkout\necho\ncurl -sS \"https://www.zohoapis.com/books/v3/invoices/INV-4812?organization_id=org-acme\"\necho\ncurl -sS https://acme.atlassian.net/rest/servicedeskapi/request/ITSM-4812\necho\ncurl -sS https://acme.okta.com/api/v1/users/00u-val"
+  ]
+}

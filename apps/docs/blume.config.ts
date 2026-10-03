@@ -104,6 +104,18 @@ export default defineConfig({
                 label: "Acme's Gmail",
                 href: "/resources/environments/acme-gmail",
               },
+              {
+                label: "Acme Goods Shop",
+                href: "/resources/environments/acme-goods-shop",
+              },
+              {
+                label: "Acme Commerce Agency",
+                href: "/resources/environments/acme-commerce-agency",
+              },
+              {
+                label: "Acme Company Ops",
+                href: "/resources/environments/acme-company-ops",
+              },
             ],
           },
         ],
