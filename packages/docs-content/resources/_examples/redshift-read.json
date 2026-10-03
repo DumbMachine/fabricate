@@ -1,0 +1,20 @@
+{
+  "id": "redshift-read",
+  "title": "Query seeded orders",
+  "environment": "environments/acme-redshift.yaml",
+  "environmentLabel": "Acme Redshift",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/redshift-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-redshift.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://redshift-data.us-east-1.amazonaws.com/ \\\n      -H 'Content-Type: application/x-amz-json-1.1' \\\n      -H 'X-Amz-Target: RedshiftData.ExecuteStatement' \\\n      -d '{\"ClusterIdentifier\":\"acme-warehouse\",\"Database\":\"analytics\",\"Sql\":\"SELECT * FROM commerce.orders\"}'",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://redshift-data.us-east-1.amazonaws.com/",
+    "-H",
+    "Content-Type: application/x-amz-json-1.1",
+    "-H",
+    "X-Amz-Target: RedshiftData.ExecuteStatement",
+    "-d",
+    "{\"ClusterIdentifier\":\"acme-warehouse\",\"Database\":\"analytics\",\"Sql\":\"SELECT * FROM commerce.orders\"}"
+  ]
+}

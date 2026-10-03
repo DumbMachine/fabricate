@@ -1,0 +1,432 @@
+openapi: 3.0.3
+info:
+  title: Amazon Redshift Data API
+  version: "2012-12-01"
+  description: >-
+    Curated Amazon Redshift Data API surface supported by Fabricate.
+    Production clients POST / on redshift-data.us-east-1.amazonaws.com with
+    Content-Type application/x-amz-json-1.1 and X-Amz-Target
+    RedshiftData.<Operation>. Fabricate also accepts POST /<Operation>.
+    The production API signs requests with AWS SigV4. Fabricate accepts
+    Authorization Bearer because the proxy injects a bearer token.
+    ExecuteStatement runs a single SELECT against commerce.orders,
+    commerce.payments, commerce.shipments, or commerce.saas_invoices.
+    Any other SQL returns ValidationException.
+servers:
+  - url: https://redshift-data.us-east-1.amazonaws.com
+    description: Amazon Redshift Data API endpoint for us-east-1.
+security:
+  - bearerAuth: []
+tags:
+  - name: Statements
+    description: Run, describe, fetch, and list SQL statements.
+paths:
+  /ExecuteStatement:
+    post:
+      operationId: ExecuteStatement
+      summary: Runs one SQL statement.
+      description: >-
+        Runs one SQL statement on cluster acme-warehouse. AWS JSON clients
+        send this as POST / with header X-Amz-Target: RedshiftData.ExecuteStatement.
+        Fabricate accepts that header form and this explicit path. Only a
+        single SELECT of commerce.orders, commerce.payments,
+        commerce.shipments, or commerce.saas_invoices is executed.
+      tags: [Statements]
+      parameters:
+        - $ref: "#/components/parameters/XAmzTarget"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ExecuteStatementInput"}
+      responses:
+        "200":
+          description: The statement finished and its identifier is ready for DescribeStatement and GetStatementResult.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ExecuteStatementOutput"}
+        default:
+          $ref: "#/components/responses/Error"
+  /DescribeStatement:
+    post:
+      operationId: DescribeStatement
+      summary: Describes one SQL statement.
+      description: >-
+        Returns status, SQL text, and row counts for a statement id from
+        ExecuteStatement. A successful SELECT is FINISHED. AWS JSON clients
+        send POST / with X-Amz-Target: RedshiftData.DescribeStatement.
+      tags: [Statements]
+      parameters:
+        - $ref: "#/components/parameters/XAmzTarget"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/DescribeStatementInput"}
+      responses:
+        "200":
+          description: Statement description.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/DescribeStatementOutput"}
+        default:
+          $ref: "#/components/responses/Error"
+  /GetStatementResult:
+    post:
+      operationId: GetStatementResult
+      summary: Fetches JSON results for one statement.
+      description: >-
+        Returns the cached JSON result of a statement id from ExecuteStatement.
+        AWS JSON clients send POST / with X-Amz-Target: RedshiftData.GetStatementResult.
+      tags: [Statements]
+      parameters:
+        - $ref: "#/components/parameters/XAmzTarget"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/GetStatementResultInput"}
+      responses:
+        "200":
+          description: Column metadata and records.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/GetStatementResultOutput"}
+        default:
+          $ref: "#/components/responses/Error"
+  /ListStatements:
+    post:
+      operationId: ListStatements
+      summary: Lists SQL statements.
+      description: >-
+        Lists statements run through ExecuteStatement. Finished statements are
+        returned when Status is omitted. AWS JSON clients send POST / with
+        X-Amz-Target: RedshiftData.ListStatements.
+      tags: [Statements]
+      parameters:
+        - $ref: "#/components/parameters/XAmzTarget"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ListStatementsInput"}
+      responses:
+        "200":
+          description: Statement page.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ListStatementsOutput"}
+        default:
+          $ref: "#/components/responses/Error"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Environment-scoped synthetic bearer token. The production Redshift Data
+        API uses AWS SigV4. Fabricate accepts Authorization Bearer because the
+        proxy injects a bearer token.
+  parameters:
+    XAmzTarget:
+      name: X-Amz-Target
+      in: header
+      required: false
+      description: >-
+        AWS JSON 1.1 target. Production clients POST / with
+        RedshiftData.ExecuteStatement, RedshiftData.DescribeStatement,
+        RedshiftData.GetStatementResult, or RedshiftData.ListStatements.
+        Explicit POST /<Operation> paths do not require the header. When both
+        are present they must name the same operation.
+      schema:
+        type: string
+        enum:
+          - RedshiftData.ExecuteStatement
+          - RedshiftData.DescribeStatement
+          - RedshiftData.GetStatementResult
+          - RedshiftData.ListStatements
+  responses:
+    Error:
+      description: Redshift Data API exception.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/DataAPIError"}
+  schemas:
+    ExecuteStatementInput:
+      type: object
+      additionalProperties: false
+      required: [Sql]
+      properties:
+        ClientToken:
+          type: string
+          minLength: 1
+          maxLength: 64
+          description: Idempotency token. A repeat call with the same token returns the original statement.
+        ClusterIdentifier:
+          type: string
+          minLength: 1
+          maxLength: 63
+          pattern: "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+          description: Provisioned cluster identifier. This warehouse serves acme-warehouse.
+        Database:
+          type: string
+          minLength: 1
+          maxLength: 64
+          description: Database name. This cluster serves analytics.
+        DbUser:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Database user. This cluster serves the user acme when the field is omitted.
+        Parameters:
+          type: array
+          minItems: 1
+          items: {$ref: "#/components/schemas/SqlParameter"}
+          description: Named parameters referenced from Sql as :name.
+        ResultFormat:
+          type: string
+          description: JSON is executed. CSV is rejected because GetStatementResult returns JSON.
+          enum: [JSON, CSV]
+        SecretArn:
+          type: string
+          minLength: 1
+          maxLength: 2048
+        SessionId:
+          type: string
+          minLength: 1
+          maxLength: 128
+        SessionKeepAliveSeconds:
+          type: integer
+          minimum: 0
+          maximum: 86400
+        Sql:
+          type: string
+          minLength: 1
+          maxLength: 16000
+          description: One SELECT against a seeded commerce table.
+        StatementName:
+          type: string
+          maxLength: 2048
+        WaitTimeSeconds:
+          type: integer
+          minimum: 1
+          maximum: 30
+        WithEvent:
+          type: boolean
+          description: Accepted and ignored. Fabricate does not emit EventBridge events.
+        WorkgroupName:
+          type: string
+          minLength: 1
+          maxLength: 128
+    ExecuteStatementOutput:
+      type: object
+      additionalProperties: false
+      required: [ClusterIdentifier, CreatedAt, Database, DbUser, HasResultSet, Id, RedshiftPid, Status]
+      properties:
+        ClusterIdentifier: {type: string}
+        CreatedAt:
+          type: integer
+          format: int64
+          description: Unix epoch seconds, the AWS JSON 1.1 timestamp encoding.
+        Database: {type: string}
+        DbGroups:
+          type: array
+          items: {type: string}
+        DbUser: {type: string}
+        HasResultSet: {type: boolean}
+        Id: {type: string}
+        RedshiftPid:
+          type: integer
+          format: int64
+        SecretArn: {type: string}
+        SessionId: {type: string}
+        Status:
+          type: string
+          description: FINISHED when the SELECT completes.
+        WorkgroupName: {type: string}
+    DescribeStatementInput:
+      type: object
+      additionalProperties: false
+      required: [Id]
+      properties:
+        Id:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Statement identifier returned by ExecuteStatement.
+        WaitTimeSeconds:
+          type: integer
+          minimum: 1
+          maximum: 30
+    DescribeStatementOutput:
+      type: object
+      additionalProperties: false
+      required:
+        - ClusterIdentifier
+        - CreatedAt
+        - Database
+        - DbUser
+        - Duration
+        - HasResultSet
+        - Id
+        - QueryString
+        - RedshiftPid
+        - RedshiftQueryId
+        - ResultFormat
+        - ResultRows
+        - ResultSize
+        - Status
+        - UpdatedAt
+      properties:
+        ClusterIdentifier: {type: string}
+        CreatedAt: {type: integer, format: int64}
+        Database: {type: string}
+        DbUser: {type: string}
+        Duration:
+          type: integer
+          format: int64
+          description: Statement runtime in nanoseconds.
+        Error: {type: string}
+        HasResultSet: {type: boolean}
+        Id: {type: string}
+        QueryParameters:
+          type: array
+          items: {$ref: "#/components/schemas/SqlParameter"}
+        QueryString: {type: string}
+        RedshiftPid: {type: integer, format: int64}
+        RedshiftQueryId: {type: integer, format: int64}
+        ResultFormat: {type: string}
+        ResultRows: {type: integer, format: int64}
+        ResultSize: {type: integer, format: int64}
+        SecretArn: {type: string}
+        SessionId: {type: string}
+        Status: {type: string}
+        UpdatedAt: {type: integer, format: int64}
+        WorkgroupName: {type: string}
+    GetStatementResultInput:
+      type: object
+      additionalProperties: false
+      required: [Id]
+      properties:
+        Id:
+          type: string
+          minLength: 1
+          maxLength: 128
+        NextToken: {type: string, minLength: 1, maxLength: 1024}
+        WaitTimeSeconds: {type: integer, minimum: 1, maximum: 30}
+    GetStatementResultOutput:
+      type: object
+      additionalProperties: false
+      required: [ColumnMetadata, Records, TotalNumRows]
+      properties:
+        ColumnMetadata:
+          type: array
+          items: {$ref: "#/components/schemas/ColumnMetadata"}
+        NextToken: {type: string}
+        Records:
+          type: array
+          items:
+            type: array
+            items: {$ref: "#/components/schemas/Field"}
+        TotalNumRows: {type: integer, format: int64}
+    ListStatementsInput:
+      type: object
+      additionalProperties: false
+      properties:
+        ClusterIdentifier:
+          type: string
+          minLength: 1
+          maxLength: 63
+          pattern: "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+        Database: {type: string, minLength: 1, maxLength: 64}
+        MaxResults: {type: integer, minimum: 0, maximum: 100}
+        NextToken: {type: string, minLength: 1, maxLength: 1024}
+        RoleLevel: {type: boolean}
+        StatementName: {type: string, maxLength: 2048}
+        Status:
+          type: string
+          enum: [SUBMITTED, PICKED, STARTED, FINISHED, ABORTED, FAILED, ALL]
+        WorkgroupName: {type: string, minLength: 1, maxLength: 128}
+    ListStatementsOutput:
+      type: object
+      additionalProperties: false
+      required: [Statements]
+      properties:
+        NextToken: {type: string}
+        Statements:
+          type: array
+          items: {$ref: "#/components/schemas/StatementData"}
+    StatementData:
+      type: object
+      additionalProperties: false
+      required: [CreatedAt, Id, IsBatchStatement, QueryString, ResultFormat, Status, UpdatedAt]
+      properties:
+        CreatedAt: {type: integer, format: int64}
+        Id: {type: string}
+        IsBatchStatement: {type: boolean}
+        QueryParameters:
+          type: array
+          items: {$ref: "#/components/schemas/SqlParameter"}
+        QueryString: {type: string}
+        ResultFormat: {type: string}
+        SecretArn: {type: string}
+        StatementName: {type: string}
+        Status: {type: string}
+        UpdatedAt: {type: integer, format: int64}
+    SqlParameter:
+      type: object
+      additionalProperties: false
+      required: [name, value]
+      properties:
+        name: {type: string, minLength: 1, maxLength: 128}
+        value: {type: string}
+    ColumnMetadata:
+      type: object
+      additionalProperties: false
+      required:
+        - isCaseSensitive
+        - isCurrency
+        - isSigned
+        - label
+        - length
+        - name
+        - nullable
+        - precision
+        - scale
+        - schemaName
+        - tableName
+        - typeName
+      properties:
+        columnDefault: {type: string}
+        isCaseSensitive: {type: boolean}
+        isCurrency: {type: boolean}
+        isSigned: {type: boolean}
+        label: {type: string}
+        length: {type: integer}
+        name: {type: string}
+        nullable: {type: integer, description: "0 not nullable, 1 nullable."}
+        precision: {type: integer}
+        scale: {type: integer}
+        schemaName: {type: string}
+        tableName: {type: string}
+        typeName: {type: string}
+    Field:
+      type: object
+      additionalProperties: false
+      description: UNION. Exactly one member is set.
+      properties:
+        blobValue: {type: string, format: byte}
+        booleanValue: {type: boolean}
+        doubleValue: {type: number, format: double}
+        isNull: {type: boolean}
+        longValue: {type: integer, format: int64}
+        stringValue: {type: string}
+    DataAPIError:
+      type: object
+      additionalProperties: false
+      required: ["__type", Message]
+      properties:
+        __type: {type: string}
+        Message: {type: string}
+        ResourceId: {type: string}
+        StatementId: {type: string}

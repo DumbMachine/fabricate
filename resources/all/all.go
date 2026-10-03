@@ -33,6 +33,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/outreach"
 	"github.com/dumbmachine/fabricate/resources/pipedrive"
 	"github.com/dumbmachine/fabricate/resources/razorpay"
+	"github.com/dumbmachine/fabricate/resources/redshift"
 	"github.com/dumbmachine/fabricate/resources/resend"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
 	"github.com/dumbmachine/fabricate/resources/shiprocket"
@@ -72,6 +73,7 @@ func Registry() *httpresource.Registry {
 		outreach.NewResource(),
 		pipedrive.NewResource(),
 		razorpay.NewResource(),
+		redshift.NewResource(),
 		resend.NewResource(),
 		sendgrid.NewResource(),
 		shiprocket.NewResource(),

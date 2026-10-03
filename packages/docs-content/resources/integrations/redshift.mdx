@@ -1,0 +1,228 @@
+---
+title: Amazon Redshift
+description: Statements, orders, payments, shipments, and SaaS invoices.
+sidebar:
+  icon: https://logos.composio.dev/api/redshift
+---
+
+<ResourceCoverage resource="redshift" />
+
+Statements, orders, payments, shipments, and SaaS invoices. Local Amazon
+Redshift Data API that keeps statement results across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Amazon Redshift Data API 2012-12-01 (AWS JSON 1.1) |
+| Auth | Synthetic bearer token. The production API signs requests with AWS SigV4; Fabricate accepts `Authorization: Bearer` because the proxy injects a bearer token. |
+| Hosts | `redshift-data.us-east-1.amazonaws.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Production clients `POST /` with `Content-Type: application/x-amz-json-1.1`
+and `X-Amz-Target: RedshiftData.ExecuteStatement` (also
+`RedshiftData.DescribeStatement`, `RedshiftData.GetStatementResult`, and
+`RedshiftData.ListStatements`). Fabricate accepts that header form and the
+explicit paths `POST /ExecuteStatement`, `POST /DescribeStatement`,
+`POST /GetStatementResult`, and `POST /ListStatements`. When the path and the
+header are both present, they must name the same operation.
+
+The seeded warehouse is cluster `acme-warehouse`, database `analytics`, schema
+`commerce`, database user `acme`. `ExecuteStatement` runs a single `SELECT`
+against `commerce.orders`, `commerce.payments`, `commerce.shipments`, or
+`commerce.saas_invoices`. Any other SQL returns `ValidationException`. A
+successful statement is `FINISHED`, and its `Id` stays available for
+`DescribeStatement` and `GetStatementResult`.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-redshift.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'body=$(curl -sS -H "Authorization: Bearer $FAB_REDSHIFT_TOKEN" -H "Content-Type: application/x-amz-json-1.1" -H "X-Amz-Target: RedshiftData.ExecuteStatement" -d "{\"ClusterIdentifier\":\"acme-warehouse\",\"Database\":\"analytics\",\"Sql\":\"SELECT invoice_id, amount_usd, currency, status, payment_id, duplicate_payment_id FROM commerce.saas_invoices\"}" "$FAB_REDSHIFT_URL/")
+id=$(printf "%s" "$body" | python3 -c "import json,sys; print(json.load(sys.stdin)[\"Id\"])")
+curl -sS -H "Authorization: Bearer $FAB_REDSHIFT_TOKEN" -H "Content-Type: application/x-amz-json-1.1" -H "X-Amz-Target: RedshiftData.GetStatementResult" -d "{\"Id\":\"$id\"}" "$FAB_REDSHIFT_URL/"'
+```
+
+The service is named `redshift` in the example manifest, so the variables are
+`FAB_REDSHIFT_URL` and `FAB_REDSHIFT_TOKEN`.
+
+The response is the Acme SaaS invoice row:
+
+```json
+{
+  "ColumnMetadata": [
+    {
+      "isCaseSensitive": true,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "invoice_id",
+      "length": 256,
+      "name": "invoice_id",
+      "nullable": 0,
+      "precision": 256,
+      "scale": 0,
+      "schemaName": "commerce",
+      "tableName": "saas_invoices",
+      "typeName": "varchar"
+    },
+    {
+      "isCaseSensitive": false,
+      "isCurrency": false,
+      "isSigned": true,
+      "label": "amount_usd",
+      "length": 8,
+      "name": "amount_usd",
+      "nullable": 0,
+      "precision": 19,
+      "scale": 0,
+      "schemaName": "commerce",
+      "tableName": "saas_invoices",
+      "typeName": "int8"
+    },
+    {
+      "isCaseSensitive": true,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "currency",
+      "length": 256,
+      "name": "currency",
+      "nullable": 0,
+      "precision": 256,
+      "scale": 0,
+      "schemaName": "commerce",
+      "tableName": "saas_invoices",
+      "typeName": "varchar"
+    },
+    {
+      "isCaseSensitive": true,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "status",
+      "length": 256,
+      "name": "status",
+      "nullable": 0,
+      "precision": 256,
+      "scale": 0,
+      "schemaName": "commerce",
+      "tableName": "saas_invoices",
+      "typeName": "varchar"
+    },
+    {
+      "isCaseSensitive": true,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "payment_id",
+      "length": 256,
+      "name": "payment_id",
+      "nullable": 0,
+      "precision": 256,
+      "scale": 0,
+      "schemaName": "commerce",
+      "tableName": "saas_invoices",
+      "typeName": "varchar"
+    },
+    {
+      "isCaseSensitive": true,
+      "isCurrency": false,
+      "isSigned": false,
+      "label": "duplicate_payment_id",
+      "length": 256,
+      "name": "duplicate_payment_id",
+      "nullable": 0,
+      "precision": 256,
+      "scale": 0,
+      "schemaName": "commerce",
+      "tableName": "saas_invoices",
+      "typeName": "varchar"
+    }
+  ],
+  "Records": [
+    [
+      {
+        "stringValue": "INV-4812"
+      },
+      {
+        "longValue": 1240
+      },
+      {
+        "stringValue": "USD"
+      },
+      {
+        "stringValue": "sent"
+      },
+      {
+        "stringValue": "pay_saas_4812"
+      },
+      {
+        "stringValue": "pay_saas_4812b"
+      }
+    ]
+  ],
+  "TotalNumRows": 1
+}
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Redshift Data API URL and follows
+standard proxy and CA environment variables. This one-paste check calls the
+production hostname; replace the final `curl` with your app. Omit
+`$FAB_REDSHIFT_TOKEN` here: the proxy replaces `Authorization` on routed hosts
+with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-redshift.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://redshift-data.us-east-1.amazonaws.com/ \
+      -H 'Content-Type: application/x-amz-json-1.1' \
+      -H 'X-Amz-Target: RedshiftData.ExecuteStatement' \
+      -d '{"ClusterIdentifier":"acme-warehouse","Database":"analytics","Sql":"SELECT * FROM commerce.orders"}'
+```
+
+Fabricate handles `redshift-data.us-east-1.amazonaws.com` locally. Other hosts
+are forwarded unchanged; set `proxy.unknown_hosts: reject` for an isolated,
+fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="redshift"
+  descriptions={{
+    "redshift.minimal.v1": "Empty commerce tables on cluster acme-warehouse.",
+    "redshift.acme-warehouse.v1": "Acme Goods orders 10482, 10483, and 10484, with payments, shipments, and SaaS invoice INV-4812.",
+  }}
+/>
+
+Peek at the committed Acme warehouse. The table fetches the official scenario
+JSON and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="redshift"
+  scenario="acme-warehouse.v1"
+  collection="orders"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Redshift check ran against the Acme Redshift
+environment with curl:
+
+<IntegrationCompatibility resource="redshift" />
+
+## Supported operations
+
+<SupportedOperations resource="redshift" />

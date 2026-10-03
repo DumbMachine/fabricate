@@ -1,0 +1,44 @@
+{
+  "api": "Amazon Redshift Data API 2012-12-01",
+  "environment": {
+    "label": "Acme Redshift",
+    "manifest": "environments/acme-redshift.yaml",
+    "messages": 10
+  },
+  "integration": "redshift",
+  "modes": {
+    "direct": {
+      "messagesAfter": 2,
+      "messagesBefore": 1,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 2,
+      "messagesBefore": 1,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Query commerce.orders",
+    "write": "Execute a saas_invoices statement",
+    "persistence": "DescribeStatement and GetStatementResult"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:48:21.242Z",
+  "testedCommit": "81c91f20a55e3cc8f21040a594b5836820402d61"
+}

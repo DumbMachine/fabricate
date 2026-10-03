@@ -1,0 +1,23 @@
+{
+  "integration": "redshift",
+  "scenarios": [
+    {
+      "id": "redshift.acme-warehouse.v1",
+      "counts": {
+        "orders": 3,
+        "payments": 3,
+        "saasInvoices": 1,
+        "shipments": 3
+      }
+    },
+    {
+      "id": "redshift.minimal.v1",
+      "counts": {
+        "orders": 0,
+        "payments": 0,
+        "saasInvoices": 0,
+        "shipments": 0
+      }
+    }
+  ]
+}

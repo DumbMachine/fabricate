@@ -1,0 +1,136 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "redshift.acme-warehouse.v1",
+  "$resource": "redshift",
+  "$resourceVersion": "2012-12-01",
+  "state": {
+    "clusterIdentifier": "acme-warehouse",
+    "database": "analytics",
+    "schema": "commerce",
+    "dbUser": "acme",
+    "orders": [
+      {
+        "order_id": "10482",
+        "placed_at": "2026-08-25T09:14:00Z",
+        "customer_name": "Priya Nair",
+        "customer_email": "priya@fernworks.example",
+        "customer_phone": "+91-98450-11223",
+        "ship_to": "42 Residency Road, Bengaluru, KA 560025, IN",
+        "lines": "1 x AG-TEE-02; 2 x AG-MUG-01",
+        "merchandise_inr": 3097,
+        "merchandise_paise": 309700,
+        "currency": "INR",
+        "shop": "Acme Goods",
+        "status": "in_transit"
+      },
+      {
+        "order_id": "10483",
+        "placed_at": "2026-08-24T16:40:00Z",
+        "customer_name": "Marco Silva",
+        "customer_email": "marco@tinyshop.example",
+        "customer_phone": "+91-98111-22008",
+        "ship_to": "7 Linking Road, Mumbai, MH 400050, IN",
+        "lines": "1 x AG-NOTE-03",
+        "merchandise_inr": 499,
+        "merchandise_paise": 49900,
+        "currency": "INR",
+        "shop": "Acme Goods",
+        "status": "ndr"
+      },
+      {
+        "order_id": "10484",
+        "placed_at": "2026-08-22T11:05:00Z",
+        "customer_name": "Dana Whitfield",
+        "customer_email": "dana@northwind.example",
+        "customer_phone": "+91-99000-48120",
+        "ship_to": "18 Harbor Road, Pune, MH 411001, IN",
+        "lines": "1 x AG-TEE-02",
+        "merchandise_inr": 1499,
+        "merchandise_paise": 149900,
+        "currency": "INR",
+        "shop": "Acme Goods",
+        "status": "refunded"
+      }
+    ],
+    "payments": [
+      {
+        "payment_id": "pay_Acme10482",
+        "order_id": "10482",
+        "razorpay_order_id": "order_Acme10482",
+        "status": "captured",
+        "method": "upi",
+        "amount_paise": 309700,
+        "currency": "INR",
+        "refund_id": null,
+        "captured": true
+      },
+      {
+        "payment_id": "pay_Acme10483",
+        "order_id": "10483",
+        "razorpay_order_id": null,
+        "status": "captured",
+        "method": "card",
+        "amount_paise": 49900,
+        "currency": "INR",
+        "refund_id": null,
+        "captured": true
+      },
+      {
+        "payment_id": "pay_Acme10484",
+        "order_id": "10484",
+        "razorpay_order_id": null,
+        "status": "refunded",
+        "method": null,
+        "amount_paise": 149900,
+        "currency": "INR",
+        "refund_id": "rfnd_Acme10484",
+        "captured": true
+      }
+    ],
+    "shipments": [
+      {
+        "order_id": "10482",
+        "awb": "SR10482AWB",
+        "courier": "Delhivery",
+        "status": "in_transit",
+        "ndr_reason": null,
+        "return_id": null,
+        "channel": "Acme Goods"
+      },
+      {
+        "order_id": "10483",
+        "awb": "SR10483AWB",
+        "courier": "Bluedart",
+        "status": "ndr",
+        "ndr_reason": "Customer not available",
+        "return_id": null,
+        "channel": "Acme Goods"
+      },
+      {
+        "order_id": "10484",
+        "awb": null,
+        "courier": null,
+        "status": "cancelled",
+        "ndr_reason": null,
+        "return_id": "RET-10484",
+        "channel": "Acme Goods"
+      }
+    ],
+    "saasInvoices": [
+      {
+        "invoice_id": "INV-4812",
+        "customer_name": "Northwind Traders",
+        "contact_email": "dana@northwind.example",
+        "amount_usd": 1240,
+        "currency": "USD",
+        "status": "sent",
+        "payment_id": "pay_saas_4812",
+        "duplicate_payment_id": "pay_saas_4812b",
+        "hubspot_deal_id": "301",
+        "chargebee_subscription": "sub_northwind_checkout",
+        "chargebee_customer": "cus_northwind"
+      }
+    ]
+  }
+}

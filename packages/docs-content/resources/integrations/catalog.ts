@@ -33,6 +33,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "outreach", label: "Outreach"},
   {id: "pipedrive", label: "Pipedrive"},
   {id: "razorpay", label: "Razorpay"},
+  {id: "redshift", label: "Amazon Redshift"},
   {id: "resend", label: "Resend"},
   {id: "sendgrid", label: "SendGrid"},
   {id: "shiprocket", label: "Shiprocket"},

@@ -1,0 +1,17 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "redshift.minimal.v1",
+  "$resource": "redshift",
+  "$resourceVersion": "2012-12-01",
+  "state": {
+    "clusterIdentifier": "acme-warehouse",
+    "database": "analytics",
+    "schema": "commerce",
+    "dbUser": "acme",
+    "orders": [],
+    "payments": [],
+    "shipments": [],
+    "saasInvoices": []
+  }
+}
