@@ -1,0 +1,503 @@
+openapi: 3.0.3
+info:
+  title: Okta Admin Management API
+  version: "2024-07"
+  description: >-
+    Curated Okta Management API for acme.okta.com. Operations and field names
+    are transcribed from Okta's official management spec. Only the operations
+    in this document are implemented. Okta API tokens use
+    `Authorization: SSWS {token}`; this contract accepts
+    `Authorization: Bearer {token}` because Fabricate's proxy injects that
+    bearer stand-in.
+servers:
+  - url: https://acme.okta.com
+security:
+  - bearerAuth: []
+tags:
+  - name: User
+    description: Operations to manage users in your org.
+  - name: Group
+    description: Operations to manage groups and their members.
+  - name: Application
+    description: Operations to manage apps in your org.
+  - name: ApplicationUsers
+    description: Operations to list users assigned to an app.
+paths:
+  /api/v1/users:
+    get:
+      operationId: listUsers
+      summary: List all users
+      description: >-
+        Lists users in your org, with pagination in most cases. This operation
+        omits users that have a status of DEPROVISIONED. To return those users,
+        use a filter or search query instead. The `q` parameter matches a
+        startsWith comparison against firstName, lastName, or email and also
+        omits DEPROVISIONED users.
+      tags: [User]
+      parameters:
+        - name: q
+          in: query
+          description: Finds users whose firstName, lastName, or email starts with this value.
+          schema: {type: string}
+        - name: search
+          in: query
+          description: >-
+            Searches users with `eq` expressions on id, status, profile.login,
+            profile.email, profile.firstName, and profile.lastName. String
+            values are case insensitive. Returned users include DEPROVISIONED.
+          schema: {type: string}
+        - name: filter
+          in: query
+          description: >-
+            Filters users with `eq` expressions on the same properties as
+            search. Property names and string values are case sensitive.
+            Returned users include DEPROVISIONED.
+          schema: {type: string}
+        - $ref: '#/components/parameters/queryAfter'
+        - $ref: '#/components/parameters/queryLimit'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/User'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createUser
+      summary: Create a user
+      description: >-
+        Creates a new user in your Okta org with or without credentials.
+        Activation defaults to true, which stores the user as ACTIVE. Set
+        activate to false to store the user as STAGED. Passwords are accepted
+        and not stored or returned.
+      tags: [User]
+      parameters:
+        - name: activate
+          in: query
+          description: Executes an activation lifecycle operation when creating the user.
+          schema: {type: boolean, default: true}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateUserRequest'}
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/User'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/users/{id}:
+    get:
+      operationId: getUser
+      summary: Retrieve a user
+      description: >-
+        Retrieves a user from your Okta org. `id` may be the user id, the
+        login, or an unambiguous login shortname.
+      tags: [User]
+      parameters:
+        - $ref: '#/components/parameters/pathId'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/User'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/groups:
+    get:
+      operationId: listGroups
+      summary: List all groups
+      description: >-
+        Lists all groups with pagination support. `q` matches group names with
+        startsWith. filter and search accept `eq` expressions on id, type, and
+        profile.name.
+      tags: [Group]
+      parameters:
+        - name: q
+          in: query
+          description: Finds a group whose name starts with this value.
+          schema: {type: string}
+        - name: search
+          in: query
+          description: Case-insensitive `eq` search on id, type, and profile.name.
+          schema: {type: string}
+        - name: filter
+          in: query
+          description: Case-sensitive `eq` filter on id, type, and profile.name.
+          schema: {type: string}
+        - $ref: '#/components/parameters/queryAfter'
+        - $ref: '#/components/parameters/queryLimit'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Group'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/groups/{groupId}/users:
+    get:
+      operationId: listGroupUsers
+      summary: List all member users
+      description: Lists all users that are a member of a group.
+      tags: [Group]
+      parameters:
+        - $ref: '#/components/parameters/pathGroupId'
+        - $ref: '#/components/parameters/queryAfter'
+        - $ref: '#/components/parameters/queryLimit'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/User'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/apps:
+    get:
+      operationId: listApplications
+      summary: List all applications
+      description: >-
+        Lists all apps in the org with pagination. `q` matches name or label
+        with startsWith. filter accepts `eq` expressions on id, status, name,
+        and label.
+      tags: [Application]
+      parameters:
+        - name: q
+          in: query
+          description: Searches for apps whose name or label starts with this value.
+          schema: {type: string}
+        - name: filter
+          in: query
+          description: Case-sensitive `eq` filter on id, status, name, and label.
+          schema: {type: string}
+        - $ref: '#/components/parameters/queryAfter'
+        - $ref: '#/components/parameters/queryLimit'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Application'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/apps/{appId}:
+    get:
+      operationId: getApplication
+      summary: Retrieve an application
+      description: Retrieves an application from your Okta organization by id.
+      tags: [Application]
+      parameters:
+        - $ref: '#/components/parameters/pathAppId'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Application'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v1/apps/{appId}/users:
+    get:
+      operationId: listApplicationUsers
+      summary: List all application users
+      description: Lists all assigned users for an app.
+      tags: [ApplicationUsers]
+      parameters:
+        - $ref: '#/components/parameters/pathAppId'
+        - $ref: '#/components/parameters/queryAfter'
+        - $ref: '#/components/parameters/queryLimit'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/AppUser'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Okta's API token header is
+        `Authorization: SSWS {API Token}`. Fabricate accepts
+        `Authorization: Bearer {token}` as that stand-in.
+  parameters:
+    pathId:
+      name: id
+      description: An ID, login, or login shortname (as long as the shortname is unambiguous) of an existing Okta user.
+      in: path
+      required: true
+      schema: {type: string}
+    pathGroupId:
+      name: groupId
+      description: The id of the group.
+      in: path
+      required: true
+      schema: {type: string, example: 00g1emaKYZTWRYYRRTSK}
+    pathAppId:
+      name: appId
+      description: Application ID.
+      in: path
+      required: true
+      schema: {type: string, example: 0oafxqCAJWWGELFTYASJ}
+    queryAfter:
+      name: after
+      in: query
+      description: Opaque pagination cursor. Pass the id of the last object from the previous page.
+      schema: {type: string}
+    queryLimit:
+      name: limit
+      in: query
+      description: Specifies the number of results in a page.
+      schema: {type: integer, minimum: 1, maximum: 200}
+  responses:
+    Error:
+      description: Okta error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    UserStatus:
+      description: The current status of the user.
+      type: string
+      enum: [ACTIVE, DEPROVISIONED, LOCKED_OUT, PASSWORD_EXPIRED, PROVISIONED, RECOVERY, STAGED, SUSPENDED]
+    UserProfile:
+      description: Default profile properties for a user.
+      type: object
+      additionalProperties: false
+      required: [email, login]
+      properties:
+        firstName:
+          type: string
+          description: Given name of the user (givenName).
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          description: The family name of the user (familyName).
+          minLength: 1
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          description: The primary email address of the user.
+          minLength: 5
+          maxLength: 100
+        login:
+          type: string
+          description: The unique identifier for the user (username).
+          minLength: 5
+          maxLength: 100
+        primaryPhone:
+          type: string
+          description: The primary phone number of the user.
+          maxLength: 100
+        title:
+          type: string
+          description: The user's title, such as Vice President.
+        department:
+          type: string
+          description: Name of the user's department.
+    UserCredentials:
+      description: Primary authentication credentials. The password value is not stored or returned.
+      type: object
+      additionalProperties: false
+      properties:
+        password:
+          type: object
+          additionalProperties: false
+          properties:
+            value: {type: string}
+    CreateUserRequest:
+      type: object
+      additionalProperties: false
+      required: [profile]
+      properties:
+        profile: {$ref: '#/components/schemas/UserProfile'}
+        credentials: {$ref: '#/components/schemas/UserCredentials'}
+        groupIds:
+          type: array
+          description: Group IDs the user is added to at creation.
+          items: {type: string}
+    User:
+      type: object
+      additionalProperties: false
+      required: [id, status, created, lastUpdated, profile]
+      properties:
+        id:
+          type: string
+          description: The unique key for the user.
+        status: {$ref: '#/components/schemas/UserStatus'}
+        created:
+          type: string
+          description: The timestamp when the user was created.
+        activated:
+          type: string
+          description: The timestamp when the user status transitioned to ACTIVE.
+        statusChanged:
+          type: string
+          description: The timestamp when the status of the user last changed.
+        lastLogin:
+          type: string
+          description: The timestamp of the last login.
+        lastUpdated:
+          type: string
+          description: The timestamp when the user was last updated.
+        profile: {$ref: '#/components/schemas/UserProfile'}
+    GroupType:
+      description: Determines how a group's profile and memberships are managed.
+      type: string
+      enum: [APP_GROUP, BUILT_IN, OKTA_GROUP]
+    OktaUserGroupProfile:
+      description: Profile for a group that is not imported from Active Directory.
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name:
+          type: string
+          description: Name of the group.
+        description:
+          type: string
+          description: Description of the group.
+    Group:
+      type: object
+      additionalProperties: false
+      required: [id, type, created, lastUpdated, lastMembershipUpdated, profile]
+      properties:
+        id:
+          type: string
+          description: Unique ID for the group.
+        type: {$ref: '#/components/schemas/GroupType'}
+        created:
+          type: string
+          description: Timestamp when the group was created.
+        lastUpdated:
+          type: string
+          description: Timestamp when the group's profile was last updated.
+        lastMembershipUpdated:
+          type: string
+          description: Timestamp when the group's memberships were last updated.
+        objectClass:
+          type: array
+          description: Determines the group's profile.
+          items: {type: string}
+        profile: {$ref: '#/components/schemas/OktaUserGroupProfile'}
+    ApplicationLifecycleStatus:
+      description: App instance status.
+      type: string
+      enum: [ACTIVE, DELETED, INACTIVE]
+    ApplicationSignOnMode:
+      description: Authentication mode for the app.
+      type: string
+      enum: [AUTO_LOGIN, BASIC_AUTH, BOOKMARK, BROWSER_PLUGIN, OPENID_CONNECT, SAML_1_1, SAML_2_0, SECURE_PASSWORD_STORE, WS_FEDERATION]
+    ApplicationSettingsNotes:
+      description: App notes visible to either the admin or end user.
+      type: object
+      additionalProperties: false
+      properties:
+        admin:
+          type: string
+          description: An app message that's visible to admins.
+        enduser:
+          type: string
+          description: A message that's visible in the End-User Dashboard.
+    SamlApplicationSettingsSignOn:
+      description: SAML 2.0 sign-on attributes. This curated contract stores the ACS URL.
+      type: object
+      additionalProperties: false
+      properties:
+        ssoAcsUrl:
+          type: string
+          description: Single Sign-On Assertion Consumer Service (ACS) URL.
+    ApplicationSettings:
+      description: App settings.
+      type: object
+      additionalProperties: false
+      properties:
+        notes: {$ref: '#/components/schemas/ApplicationSettingsNotes'}
+        signOn: {$ref: '#/components/schemas/SamlApplicationSettingsSignOn'}
+    Application:
+      type: object
+      additionalProperties: false
+      required: [id, name, label, status, signOnMode, created, lastUpdated]
+      properties:
+        id:
+          type: string
+          description: Unique ID for the app instance.
+        name:
+          type: string
+          description: Unique key for the app definition.
+        label:
+          type: string
+          description: User-defined display name for the app.
+        status: {$ref: '#/components/schemas/ApplicationLifecycleStatus'}
+        signOnMode: {$ref: '#/components/schemas/ApplicationSignOnMode'}
+        created:
+          type: string
+          description: Timestamp when the application object was created.
+        lastUpdated:
+          type: string
+          description: Timestamp when the application object was last updated.
+        settings: {$ref: '#/components/schemas/ApplicationSettings'}
+    AppUserStatus:
+      description: Status of an application user.
+      type: string
+      enum: [ACTIVE, APPROVED, DEPROVISIONED, IMPLICIT, IMPORTED, INACTIVE, MATCHED, PENDING, PROVISIONED, REVOKED, STAGED, SUSPENDED, UNASSIGNED]
+    AppUserProfile:
+      description: Profile properties for an application user assignment.
+      type: object
+      additionalProperties: false
+      properties:
+        email: {type: string, format: email}
+        login: {type: string}
+    AppUser:
+      description: A user's assignment to an app.
+      type: object
+      additionalProperties: false
+      required: [id, scope, status]
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the Okta user.
+        scope:
+          type: string
+          description: Indicates if the assignment is direct (USER) or by group membership (GROUP).
+          enum: [USER, GROUP]
+        status: {$ref: '#/components/schemas/AppUserStatus'}
+        profile: {$ref: '#/components/schemas/AppUserProfile'}
+    ErrorCause:
+      type: object
+      additionalProperties: false
+      properties:
+        errorSummary: {type: string}
+    Error:
+      title: Error
+      type: object
+      additionalProperties: false
+      properties:
+        errorCauses:
+          type: array
+          items: {$ref: '#/components/schemas/ErrorCause'}
+        errorCode:
+          type: string
+          description: An Okta code for this type of error.
+        errorId:
+          type: string
+          description: A unique identifier for this error.
+        errorLink:
+          type: string
+          description: An Okta code for this type of error.
+        errorSummary:
+          type: string
+          description: A short description of what caused this error.

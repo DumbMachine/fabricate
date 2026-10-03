@@ -1,0 +1,204 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "okta.acme-org.v1",
+  "$resource": "okta",
+  "$resourceVersion": "2024-07",
+  "state": {
+    "users": [
+      {
+        "id": "00u-val",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Val",
+          "lastName": "Ortega",
+          "email": "val@acme.example",
+          "login": "val@acme.example",
+          "primaryPhone": "+91-80-4123-0101",
+          "title": "Okta admin"
+        }
+      },
+      {
+        "id": "00u-aisha",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Aisha",
+          "lastName": "Rahman",
+          "email": "aisha@acme.example",
+          "login": "aisha@acme.example",
+          "primaryPhone": "+91-80-4123-0102",
+          "department": "Finance"
+        }
+      },
+      {
+        "id": "00u-ravi",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Ravi",
+          "lastName": "Mehta",
+          "email": "ravi@acme.example",
+          "login": "ravi@acme.example",
+          "primaryPhone": "+91-80-4123-0103",
+          "department": "Logistics"
+        }
+      },
+      {
+        "id": "00u-nina",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Nina",
+          "lastName": "Kapoor",
+          "email": "nina@acme.example",
+          "login": "nina@acme.example",
+          "primaryPhone": "+91-80-4123-0104",
+          "department": "HR"
+        }
+      },
+      {
+        "id": "00u-leo",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Leo",
+          "lastName": "Park",
+          "email": "leo@acme.example",
+          "login": "leo@acme.example",
+          "primaryPhone": "+91-80-4123-0105",
+          "department": "Recruiting"
+        }
+      },
+      {
+        "id": "00u-sam",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Sam",
+          "lastName": "Adeyemi",
+          "email": "sam@acme.example",
+          "login": "sam@acme.example",
+          "primaryPhone": "+91-80-4123-0106",
+          "department": "Support"
+        }
+      },
+      {
+        "id": "00u-iris",
+        "status": "ACTIVE",
+        "created": "2024-02-01T09:00:00.000Z",
+        "activated": "2024-02-01T09:10:00.000Z",
+        "statusChanged": "2024-02-01T09:10:00.000Z",
+        "lastLogin": "2026-08-26T08:30:00.000Z",
+        "lastUpdated": "2026-08-20T15:00:00.000Z",
+        "profile": {
+          "firstName": "Iris",
+          "lastName": "Berg",
+          "email": "iris@acme.example",
+          "login": "iris@acme.example",
+          "primaryPhone": "+91-80-4123-0107",
+          "department": "Legal"
+        }
+      },
+      {
+        "id": "00u-jordan",
+        "status": "STAGED",
+        "created": "2026-08-20T11:00:00.000Z",
+        "statusChanged": "2026-08-20T11:00:00.000Z",
+        "lastUpdated": "2026-08-20T11:00:00.000Z",
+        "profile": {
+          "firstName": "Jordan",
+          "lastName": "Hale",
+          "email": "jordan.hale@acme.example",
+          "login": "jordan.hale@acme.example",
+          "primaryPhone": "+91-80-4123-0190"
+        }
+      },
+      {
+        "id": "00u-contractor",
+        "status": "DEPROVISIONED",
+        "created": "2023-11-01T09:00:00.000Z",
+        "activated": "2023-11-01T09:10:00.000Z",
+        "statusChanged": "2026-06-01T00:00:00.000Z",
+        "lastUpdated": "2026-06-01T00:00:00.000Z",
+        "profile": {
+          "email": "old.contractor@acme.example",
+          "login": "old.contractor@acme.example"
+        }
+      }
+    ],
+    "groups": [
+      {
+        "id": "00g-finance",
+        "type": "OKTA_GROUP",
+        "created": "2024-02-01T10:00:00.000Z",
+        "lastUpdated": "2024-02-01T10:00:00.000Z",
+        "lastMembershipUpdated": "2026-08-01T00:00:00.000Z",
+        "profile": {"name": "Finance"},
+        "userIds": ["00u-aisha", "00u-val"]
+      },
+      {
+        "id": "00g-support",
+        "type": "OKTA_GROUP",
+        "created": "2024-02-01T10:00:00.000Z",
+        "lastUpdated": "2024-02-01T10:00:00.000Z",
+        "lastMembershipUpdated": "2026-08-01T00:00:00.000Z",
+        "profile": {"name": "Support"},
+        "userIds": ["00u-sam", "00u-val"]
+      }
+    ],
+    "apps": [
+      {
+        "id": "0oa-acme-checkout",
+        "name": "acme_checkout",
+        "label": "Acme Checkout",
+        "status": "ACTIVE",
+        "signOnMode": "SAML_2_0",
+        "created": "2025-04-01T12:00:00.000Z",
+        "lastUpdated": "2026-08-26T09:00:00.000Z",
+        "settings": {
+          "notes": {"admin": "The SAML ACS for contoso-eu is misconfigured."},
+          "signOn": {"ssoAcsUrl": "https://contoso-eu.example/saml/acs"}
+        }
+      },
+      {
+        "id": "0oa-shopify-admin",
+        "name": "shopify",
+        "label": "Shopify Admin",
+        "status": "ACTIVE",
+        "signOnMode": "OPENID_CONNECT",
+        "created": "2025-04-01T12:00:00.000Z",
+        "lastUpdated": "2026-08-26T09:00:00.000Z"
+      }
+    ],
+    "appUsers": [
+      {"appId": "0oa-shopify-admin", "userId": "00u-val", "scope": "USER", "status": "ACTIVE"},
+      {"appId": "0oa-shopify-admin", "userId": "00u-ravi", "scope": "USER", "status": "ACTIVE"}
+    ]
+  }
+}

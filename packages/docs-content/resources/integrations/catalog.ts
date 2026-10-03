@@ -30,6 +30,7 @@ export const integrations: IntegrationEntry[] = [
   {id: "jsm", label: "Jira Service Management"},
   {id: "mailchimp", label: "Mailchimp"},
   {id: "mailgun", label: "Mailgun"},
+  {id: "okta", label: "Okta"},
   {id: "outreach", label: "Outreach"},
   {id: "pipedrive", label: "Pipedrive"},
   {id: "razorpay", label: "Razorpay"},

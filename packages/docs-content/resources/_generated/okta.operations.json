@@ -1,0 +1,54 @@
+{
+  "integration": "okta",
+  "api": "Okta 2024-07",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/v1/apps",
+      "operationId": "listApplications",
+      "summary": "List all applications"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/apps/{appId}",
+      "operationId": "getApplication",
+      "summary": "Retrieve an application"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/apps/{appId}/users",
+      "operationId": "listApplicationUsers",
+      "summary": "List all application users"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/groups",
+      "operationId": "listGroups",
+      "summary": "List all groups"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/groups/{groupId}/users",
+      "operationId": "listGroupUsers",
+      "summary": "List all member users"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users",
+      "operationId": "listUsers",
+      "summary": "List all users"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/users",
+      "operationId": "createUser",
+      "summary": "Create a user"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/{id}",
+      "operationId": "getUser",
+      "summary": "Retrieve a user"
+    }
+  ]
+}

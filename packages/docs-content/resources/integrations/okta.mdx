@@ -1,0 +1,127 @@
+---
+title: Okta
+description: Users, groups, and applications.
+sidebar:
+  icon: https://logos.composio.dev/api/okta
+---
+
+<ResourceCoverage resource="okta" />
+
+Users, groups, and applications. Local Okta Management API 2024-07 that keeps
+directory state across requests.
+
+## Integration
+
+| | Details |
+| --- | --- |
+| API | Okta Management API 2024-07 |
+| Auth | Bearer stand-in for Okta `SSWS` API tokens |
+| Hosts | `acme.okta.com` |
+| Direct URL | Yes |
+| Transparent proxy | Yes |
+
+Okta API tokens authenticate with `Authorization: SSWS <api_token>`. Fabricate's
+direct URL and transparent proxy both present `Authorization: Bearer <token>`,
+and this resource accepts that bearer value.
+
+### Start it with a direct URL
+
+Use `fab run` without `--proxy`. The command below downloads Fabricate's
+example manifest directly, so you do not need to clone this repository.
+Fabricate injects a URL and a short-lived token for the service name in that
+manifest.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-okta.yaml | \
+  fab run /dev/stdin -- \
+    sh -c 'curl -sS -H "Authorization: Bearer $FAB_OKTA_TOKEN" \
+      "$FAB_OKTA_URL/api/v1/users"'
+```
+
+The service is named `okta` in the example manifest, so the variables are
+`FAB_OKTA_URL` and `FAB_OKTA_TOKEN`.
+
+The response includes the Acme directory. Jordan Hale is `STAGED`.
+`old.contractor@acme.example` is `DEPROVISIONED` and omitted until you pass a
+`search` or `filter`:
+
+```json
+[
+  {
+    "id": "00u-val",
+    "status": "ACTIVE",
+    "profile": {
+      "firstName": "Val",
+      "lastName": "Ortega",
+      "email": "val@acme.example",
+      "login": "val@acme.example",
+      "primaryPhone": "+91-80-4123-0101",
+      "title": "Okta admin"
+    }
+  },
+  {
+    "id": "00u-jordan",
+    "status": "STAGED",
+    "profile": {
+      "firstName": "Jordan",
+      "lastName": "Hale",
+      "email": "jordan.hale@acme.example",
+      "login": "jordan.hale@acme.example",
+      "primaryPhone": "+91-80-4123-0190"
+    }
+  }
+]
+```
+
+### Start it through the proxy
+
+Use this when your app uses the normal Okta org URL and follows standard proxy
+and CA environment variables. This one-paste check calls Acme's Okta hostname;
+replace the final `curl` with your app. Omit `$FAB_OKTA_TOKEN` here: the proxy
+replaces `Authorization` on routed hosts with the environment's ephemeral token.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-okta.yaml | \
+  fab run /dev/stdin --proxy -- \
+    curl -sS https://acme.okta.com/api/v1/users
+```
+
+Fabricate handles `acme.okta.com` locally. Other hosts are forwarded unchanged;
+set `proxy.unknown_hosts: reject` for an isolated, fail-closed conformance test.
+
+The proxy will not help an application that pins certificates or ignores proxy
+settings. In that case, use the direct URL.
+
+## Scenarios
+
+<ResourceScenarios
+  resource="okta"
+  descriptions={{
+    "okta.minimal.v1": "An empty Acme org.",
+    "okta.acme-org.v1": "Acme employees, Jordan staged, the deprovisioned contractor, Finance and Support, and the Checkout and Shopify Admin apps.",
+  }}
+/>
+
+Peek at the committed Acme org. The table fetches the official scenario JSON
+and stops at 25 rows.
+
+### Seeded data
+
+<ScenarioPeek
+  resource="okta"
+  scenario="acme-org.v1"
+  collection="users"
+/>
+
+## Compatibility verification
+
+Fabricate works through any client that can reach an API: `curl`, application
+code, or an official SDK. We continuously test integrations to ensure they
+behave as expected. The latest Okta check ran against the Acme Okta
+environment with curl:
+
+<IntegrationCompatibility resource="okta" />
+
+## Supported operations
+
+<SupportedOperations resource="okta" />

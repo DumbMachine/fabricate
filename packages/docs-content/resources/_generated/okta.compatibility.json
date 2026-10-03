@@ -1,0 +1,44 @@
+{
+  "api": "Okta Management API 2024-07",
+  "environment": {
+    "label": "Acme Okta",
+    "manifest": "environments/acme-okta.yaml",
+    "messages": 9
+  },
+  "integration": "okta",
+  "modes": {
+    "direct": {
+      "messagesAfter": 9,
+      "messagesBefore": 8,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 9,
+      "messagesBefore": 8,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List users",
+    "write": "Create user",
+    "persistence": "Confirm created user"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:54:42.295Z",
+  "testedCommit": "d4b162f2af8a885f9d7b195c95023b248003f565"
+}

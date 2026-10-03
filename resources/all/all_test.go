@@ -4,7 +4,7 @@ import "testing"
 
 func TestRegistryContainsOfficialResources(t *testing.T) {
 	registry := Registry()
-	want := []string{"airbyte", "asana", "attio", "bamboohr", "canny", "carta", "chargebee", "close", "cloudflare", "digitalocean", "docusign", "ga4", "gainsight", "gmail", "googledrive", "greenhouse", "gupshup", "hubspot", "impact", "intercom", "ironclad", "jsm", "mailchimp", "mailgun", "outreach", "pipedrive", "razorpay", "redshift", "resend", "sendgrid", "shiprocket", "slack", "statuspage", "vanta", "zohobooks", "zohoinventory"}
+	want := []string{"airbyte", "asana", "attio", "bamboohr", "canny", "carta", "chargebee", "close", "cloudflare", "digitalocean", "docusign", "ga4", "gainsight", "gmail", "googledrive", "greenhouse", "gupshup", "hubspot", "impact", "intercom", "ironclad", "jsm", "mailchimp", "mailgun", "okta", "outreach", "pipedrive", "razorpay", "redshift", "resend", "sendgrid", "shiprocket", "slack", "statuspage", "vanta", "zohobooks", "zohoinventory"}
 	for _, id := range want {
 		if _, ok := registry.Get(id); !ok {
 			t.Fatalf("%s is not registered", id)

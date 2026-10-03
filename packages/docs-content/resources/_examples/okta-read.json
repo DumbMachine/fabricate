@@ -1,0 +1,14 @@
+{
+  "id": "okta-read",
+  "title": "List seeded users",
+  "environment": "environments/acme-okta.yaml",
+  "environmentLabel": "Acme's Okta",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/okta-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-okta.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://acme.okta.com/api/v1/users",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://acme.okta.com/api/v1/users"
+  ]
+}

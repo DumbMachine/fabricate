@@ -30,6 +30,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/jsm"
 	"github.com/dumbmachine/fabricate/resources/mailchimp"
 	"github.com/dumbmachine/fabricate/resources/mailgun"
+	"github.com/dumbmachine/fabricate/resources/okta"
 	"github.com/dumbmachine/fabricate/resources/outreach"
 	"github.com/dumbmachine/fabricate/resources/pipedrive"
 	"github.com/dumbmachine/fabricate/resources/razorpay"
@@ -70,6 +71,7 @@ func Registry() *httpresource.Registry {
 		jsm.NewResource(),
 		mailchimp.NewResource(),
 		mailgun.NewResource(),
+		okta.NewResource(),
 		outreach.NewResource(),
 		pipedrive.NewResource(),
 		razorpay.NewResource(),
