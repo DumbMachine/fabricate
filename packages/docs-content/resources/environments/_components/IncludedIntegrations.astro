@@ -1,5 +1,6 @@
 ---
 import {formatScenarioCounts, loadScenarioCatalog, scenarioFacts} from "../../_components/generated";
+import {composioLogo} from "../../integrations/catalog";
 
 interface IncludedService {
   data: string;
@@ -13,9 +14,8 @@ interface IncludedService {
 
 const {services} = Astro.props as {services: IncludedService[]};
 const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
-const logo = (resource: string, theme?: "dark") =>
-  `https://logos.composio.dev/api/${resource}${theme === "dark" ? "?theme=dark" : ""}`;
 const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBase}${href.startsWith("/") ? href : `/${href}`}`);
+const logo = (resource: string, theme?: "dark") => toDocsHref(composioLogo(resource, theme));
 const countsFor = (entry: IncludedService) =>
   formatScenarioCounts(scenarioFacts(loadScenarioCatalog(entry.resource), entry.scenario));
 ---

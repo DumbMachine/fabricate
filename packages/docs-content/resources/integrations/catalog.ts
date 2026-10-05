@@ -46,8 +46,20 @@ export const integrations: IntegrationEntry[] = [
   {id: "zohoinventory", label: "Zoho Inventory"},
 ];
 
-export function composioLogo(id: string, theme?: "dark"): string {
-  return `https://logos.composio.dev/api/${id}${theme === "dark" ? "?theme=dark" : ""}`;
+// Local marks in apps/docs/public/integrations. Most are the Composio
+// logo-cdn asset. These resource ids use a different toolkit slug:
+// digitalocean is digital_ocean, ga4 is google_analytics, gainsight is
+// gainsight_px, jsm is jira, and redshift is amazon_redshift. Zoho Books and
+// Zoho Inventory use the distinct product marks from Composio's open-logos
+// set; the logo-cdn files for those two slugs are the same Zoho square.
+// Carta, Gupshup, impact.com, Ironclad, and Shiprocket are not in either
+// set; their files are the vendor marks.
+const logoExtension: Record<string, string> = {
+  shiprocket: "png",
+};
+
+export function composioLogo(id: string, _theme?: "dark"): string {
+  return `/integrations/${id}.${logoExtension[id] ?? "svg"}`;
 }
 
 export function integrationSidebarItems(): {href: string; icon?: string; label: string}[] {

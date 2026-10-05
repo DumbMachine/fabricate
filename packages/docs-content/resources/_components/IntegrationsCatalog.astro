@@ -19,8 +19,8 @@ const cards = integrations
     {cards.map((card) => (
       <li>
         <a class:list={["card", card.planned && "card--planned"]} href={toDocsHref(card.href)}>
-          <img class="logo-light" src={composioLogo(card.id)} width="56" height="56" alt="" />
-          <img class="logo-dark" src={composioLogo(card.id, "dark")} width="56" height="56" alt="" />
+          <img class="logo-light" src={toDocsHref(composioLogo(card.id))} width="56" height="56" alt="" />
+          <img class="logo-dark" src={toDocsHref(composioLogo(card.id, "dark"))} width="56" height="56" alt="" />
           <span class="copy">
             <h2>{card.label}</h2>
             {card.planned ? (
