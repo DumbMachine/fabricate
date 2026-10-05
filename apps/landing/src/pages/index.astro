@@ -1,4 +1,5 @@
 ---
+import {rewriteFabricateGitRef} from "../../../../packages/docs-content/git-ref.ts";
 import CommandCopy from "../components/CommandCopy.astro";
 import Header from "../components/Header.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -13,10 +14,11 @@ const docsHref =
   import.meta.env.PUBLIC_DOCS_URL ||
   `${siteUrl.replace(/\/$/, "")}${docsBase}`;
 const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
-const installCommand =
-  "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh";
+const installCommand = rewriteFabricateGitRef(
+  "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/install.sh | sh",
+);
 const consultHref = "https://cal.com/dumbmachine/30min";
-const agentPrompt = `You are setting up Fabricate in this repository.
+const agentPrompt = rewriteFabricateGitRef(`You are setting up Fabricate in this repository.
 
 Fabricate runs reproducible local environments with real, stateful provider data. Start with the Acme Gmail environment and keep the application's normal provider SDK behavior intact.
 
@@ -31,7 +33,7 @@ Fabricate runs reproducible local environments with real, stateful provider data
 5. If the app must retain Gmail's normal production hostname, use --proxy. Fabricate injects proxy, CA, service URL, and short-lived token variables only into the wrapped process.
 6. Fabricate runs this Gmail environment directly; no external service is required.
 
-Report the exact command you recommend, which environment variables the wrapped app receives, and why direct URL or proxy mode is appropriate. Then wait for my approval before making changes.`;
+Report the exact command you recommend, which environment variables the wrapped app receives, and why direct URL or proxy mode is appropriate. Then wait for my approval before making changes.`);
 
 const services = [
   ["Gmail", "gmail"],

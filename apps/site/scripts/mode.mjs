@@ -1,7 +1,7 @@
+import { execFileSync, spawn } from "node:child_process";
 import { copyFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(scriptDir, "..", "..", "..");
@@ -31,11 +31,35 @@ const docsOrigin = mode === "development"
 const siteUrl = app === "docs" ? docsOrigin : landingOrigin;
 const docsUrl = `${docsOrigin.replace(/\/$/, "")}${docsBase}`;
 const appRoot = resolve(repositoryRoot, "apps", app);
+// Published docs stay on main unless FABRICATE_GIT_REF is set. A development
+// server follows the checked-out branch so example URLs fetch that branch.
+const safeGitRef = (value) => {
+  const candidate = (value || "").trim();
+  if (!candidate || candidate === "HEAD" || candidate.includes("..") || !/^[A-Za-z0-9._/-]+$/.test(candidate)) {
+    return "main";
+  }
+  return candidate;
+};
+const gitRef = (() => {
+  const configured = process.env.FABRICATE_GIT_REF?.trim();
+  if (configured) return safeGitRef(configured);
+  if (mode !== "development") return "main";
+  try {
+    const branch = execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+      cwd: repositoryRoot,
+      encoding: "utf8",
+    }).trim();
+    return safeGitRef(branch);
+  } catch {
+    return "main";
+  }
+})();
 const env = {
   ...process.env,
   FABRICATE_SITE_MODE: mode,
   PUBLIC_FABRICATE_SITE_MODE: mode,
   PUBLIC_FABRICATE_COMMAND: command,
+  PUBLIC_FABRICATE_GIT_REF: gitRef,
   PUBLIC_FABRICATE_SITE_URL: siteUrl,
   PUBLIC_FABRICATE_DOCS_BASE: docsBase,
   PUBLIC_FABRICATE_DOCS_URL: docsUrl,
