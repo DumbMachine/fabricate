@@ -132,17 +132,18 @@ func (r *Runtime) Close(ctx context.Context) error {
 }
 
 func hostPrefix(descriptor httpresource.Descriptor, host string) string {
-	prefix := "/"
-	if value, ok := descriptor.HostPrefixes[host]; ok && strings.TrimSpace(value) != "" {
-		prefix = strings.TrimSpace(value)
+	if value, ok := descriptor.HostPrefixes[host]; ok && value != "" {
+		return value
 	}
-	if !strings.HasPrefix(prefix, "/") {
-		prefix = "/" + prefix
+	return "/"
+}
+
+func descriptorClaims(descriptor httpresource.Descriptor) []httpresource.ProxyRoute {
+	claims := make([]httpresource.ProxyRoute, 0, len(descriptor.ProviderHosts)+len(descriptor.ProxyRoutes))
+	for _, host := range descriptor.ProviderHosts {
+		claims = append(claims, httpresource.ProxyRoute{Host: host, PathPrefix: hostPrefix(descriptor, host)})
 	}
-	if prefix != "/" && !strings.HasSuffix(prefix, "/") {
-		prefix += "/"
-	}
-	return prefix
+	return append(claims, descriptor.ProxyRoutes...)
 }
 
 func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
@@ -153,10 +154,8 @@ func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
 	claimed := map[string]string{}
 	var routes []proxyengine.Route
 	for name, service := range r.Services {
-		descriptor := service.Resource.Descriptor()
-		for _, host := range descriptor.ProviderHosts {
-			prefix := hostPrefix(descriptor, host)
-			key := normalizeRouteKey(host + prefix)
+		for _, claim := range descriptorClaims(service.Resource.Descriptor()) {
+			key := normalizeRouteKey(claim.Host + claim.PathPrefix)
 			selected := name
 			if override, ok := explicit[key]; ok {
 				selected = override
@@ -168,21 +167,14 @@ func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
 				return nil, fmt.Errorf("environment: proxy route %s is claimed by %q and %q; select one with proxy.hosts", key, previous, name)
 			}
 			claimed[key] = name
-			routes = append(routes, proxyengine.Route{Host: host, PathPrefix: prefix, Target: service.URL, Token: service.Token, Service: name})
-		}
-		if descriptor.ID == "gmail" {
-			key := normalizeRouteKey("oauth2.googleapis.com/token")
-			selected := name
-			if override, ok := explicit[key]; ok {
-				selected = override
+			route := proxyengine.Route{
+				Host: claim.Host, PathPrefix: claim.PathPrefix, Token: service.Token,
+				OAuthToken: claim.OAuthToken, Service: name,
 			}
-			if selected == name {
-				if previous, exists := claimed[key]; exists && previous != name {
-					return nil, fmt.Errorf("environment: OAuth proxy route is ambiguous between %q and %q", previous, name)
-				}
-				claimed[key] = name
-				routes = append(routes, proxyengine.Route{Host: "oauth2.googleapis.com", PathPrefix: "/token", Token: service.Token, OAuthToken: true, Service: name})
+			if !claim.OAuthToken {
+				route.Target = service.URL
 			}
+			routes = append(routes, route)
 		}
 	}
 	for route, name := range explicit {

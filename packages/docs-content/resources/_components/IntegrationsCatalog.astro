@@ -1,5 +1,5 @@
 ---
-import {composioLogo, integrations} from "../integrations/catalog";
+import {integrationIcon, integrations} from "../integrations/catalog";
 import {formatCountLabel, loadResourceCoverage} from "./generated";
 
 const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
@@ -19,8 +19,7 @@ const cards = integrations
     {cards.map((card) => (
       <li>
         <a class:list={["card", card.planned && "card--planned"]} href={toDocsHref(card.href)}>
-          <img class="logo-light" src={toDocsHref(composioLogo(card.id))} width="56" height="56" alt="" />
-          <img class="logo-dark" src={toDocsHref(composioLogo(card.id, "dark"))} width="56" height="56" alt="" />
+          <img class="logo" src={toDocsHref(integrationIcon(card.id))} width="56" height="56" alt="" />
           <span class="copy">
             <h2>{card.label}</h2>
             {card.planned ? (
@@ -77,9 +76,9 @@ const cards = integrations
   .card--planned {
     opacity: .72;
   }
-  .logo-light,
-  .logo-dark {
+  .logo {
     border-radius: 12px;
+    display: block;
     flex: none;
     height: 56px;
     margin: 0;
@@ -87,10 +86,6 @@ const cards = integrations
     object-fit: contain;
     width: 56px;
   }
-  .logo-light { display: block; }
-  .logo-dark { display: none; }
-  :global(:root[data-theme="dark"]) .logo-light { display: none; }
-  :global(:root[data-theme="dark"]) .logo-dark { display: block; }
   .copy {
     display: flex;
     flex-direction: column;

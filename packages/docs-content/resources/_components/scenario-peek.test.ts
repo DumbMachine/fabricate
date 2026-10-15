@@ -54,19 +54,16 @@ test("officialScenarioSource maps catalog ids onto the committed JSON path", () 
   );
   assert.equal(officialScenarioSource("asana", "not a file"), null);
 
-  const previous = process.env.PUBLIC_FABRICATE_GIT_REF;
-  process.env.PUBLIC_FABRICATE_GIT_REF = "cursor/marque-resources-f1bf";
-  try {
-    const branched = officialScenarioSource("asana", "asana.acme-sprint.v1");
-    assert.ok(branched);
-    assert.equal(
-      branched.rawURL,
-      "https://raw.githubusercontent.com/DumbMachine/fabricate/cursor/marque-resources-f1bf/resources/asana/scenarios/acme-sprint.v1.json",
-    );
-  } finally {
-    if (previous === undefined) delete process.env.PUBLIC_FABRICATE_GIT_REF;
-    else process.env.PUBLIC_FABRICATE_GIT_REF = previous;
-  }
+  const branched = officialScenarioSource("asana", "asana.acme-sprint.v1", "cursor/marque-resources-f1bf");
+  assert.ok(branched);
+  assert.equal(
+    branched.rawURL,
+    "https://raw.githubusercontent.com/DumbMachine/fabricate/cursor/marque-resources-f1bf/resources/asana/scenarios/acme-sprint.v1.json",
+  );
+  assert.equal(
+    officialScenarioSource("asana", "asana.acme-sprint.v1", "../main")?.rawURL,
+    "https://raw.githubusercontent.com/DumbMachine/fabricate/main/resources/asana/scenarios/acme-sprint.v1.json",
+  );
 });
 
 test("peekTitle derives the catalog id from an official path", () => {

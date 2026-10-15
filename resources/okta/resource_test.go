@@ -241,7 +241,7 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 		}
 	}
 	contract := resource.Contract()
-	if got, want := resource.Descriptor().OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
+	if got, want := resource.Descriptor().OpenAPIDigest, scenario.Digest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
 	}
 	if hosts := resource.Descriptor().ProviderHosts; len(hosts) != 1 || hosts[0] != "acme.okta.com" || resource.Descriptor().HostPrefixes != nil {

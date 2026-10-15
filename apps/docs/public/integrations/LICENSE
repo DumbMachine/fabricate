@@ -1,3 +1,7 @@
+Files are named after the Fabricate resource id. Composio logo-cdn slugs
+that differ from those ids were saved under the resource id:
+digital_ocean, google_analytics, gainsight_px, jira, and amazon_redshift.
+
 The SVG marks in this directory, other than carta.svg, gupshup.svg,
 impact.svg, ironclad.svg, shiprocket.png, zohobooks.svg, and
 zohoinventory.svg, are copied from

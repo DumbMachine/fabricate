@@ -26,10 +26,13 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 	}
 	return httpresource.Descriptor{
 		ID: "gmail", DisplayName: "Gmail", Version: "v1", OpenAPIVersion: "3.0.3",
-		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
+		OpenAPIDigest: scenario.Digest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"gmail.googleapis.com", "www.googleapis.com"},
 		HostPrefixes:  map[string]string{"www.googleapis.com": "/gmail/"},
-		SDK:           httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true},
+		ProxyRoutes: []httpresource.ProxyRoute{{
+			Host: "oauth2.googleapis.com", PathPrefix: "/token", OAuthToken: true,
+		}},
+		SDK: httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true},
 	}
 }
 
@@ -57,8 +60,4 @@ func (*Resource) Scenario(id string) (scenario.Document, error) {
 
 func (*Resource) NewServer(ctx context.Context, dependencies httpresource.ServerDependencies) (httpresource.Server, error) {
 	return newServer(ctx, dependencies)
-}
-
-func httpresourceDigest(raw []byte) string {
-	return scenarioDigest(raw)
 }

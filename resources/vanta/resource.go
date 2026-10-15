@@ -25,7 +25,7 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 	}
 	return httpresource.Descriptor{
 		ID: "vanta", DisplayName: "Vanta", Version: "v1", OpenAPIVersion: "3.0.3",
-		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
+		OpenAPIDigest: scenario.Digest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"api.vanta.com"},
 		SDK:           httpresource.SDKDescriptor{Package: "curl", Language: "http", DirectTest: true, ProxyTest: true},
 	}
@@ -55,8 +55,4 @@ func (*Resource) Scenario(id string) (scenario.Document, error) {
 
 func (*Resource) NewServer(ctx context.Context, dependencies httpresource.ServerDependencies) (httpresource.Server, error) {
 	return newServer(ctx, dependencies)
-}
-
-func httpresourceDigest(raw []byte) string {
-	return scenarioDigest(raw)
 }

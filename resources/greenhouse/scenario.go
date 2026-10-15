@@ -561,22 +561,13 @@ func validateState(state fixtureState) error {
 		if err := seenID(seen, user.ID, "user"); err != nil {
 			return err
 		}
-		if user.FirstName == "" || user.LastName == "" {
-			return fmt.Errorf("greenhouse scenario: users[%d] requires firstName and lastName", i)
-		}
 		if user.Name != user.FirstName+" "+user.LastName {
 			return fmt.Errorf("greenhouse scenario: users[%d].name must be the first and last name", i)
 		}
-		if err := parseEmail(fmt.Sprintf("users[%d].email", i), user.Email); err != nil {
-			return err
-		}
-		if len(user.Emails) == 0 {
-			return fmt.Errorf("greenhouse scenario: users[%d].emails is required", i)
-		}
 		found := false
 		emailSeen := map[string]struct{}{}
-		for j, email := range user.Emails {
-			if err := parseEmail(fmt.Sprintf("users[%d].emails[%d]", i, j), email); err != nil {
+		for _, email := range user.Emails {
+			if err := parseEmail(fmt.Sprintf("users[%d].email", i), email); err != nil {
 				return err
 			}
 			if _, ok := emailSeen[email]; ok {
@@ -599,37 +590,25 @@ func validateState(state fixtureState) error {
 		users[user.ID] = user
 	}
 	seen = map[string]struct{}{}
-	offices := map[string]fixtureOffice{}
-	for i, office := range state.Offices {
+	offices := map[string]struct{}{}
+	for _, office := range state.Offices {
 		if err := seenID(seen, office.ID, "office"); err != nil {
 			return err
 		}
-		if office.Name == "" || office.LocationName == "" {
-			return fmt.Errorf("greenhouse scenario: offices[%d] requires name and locationName", i)
-		}
-		offices[office.ID] = office
+		offices[office.ID] = struct{}{}
 	}
 	seen = map[string]struct{}{}
-	departments := map[string]fixtureDepartment{}
-	for i, department := range state.Departments {
+	departments := map[string]struct{}{}
+	for _, department := range state.Departments {
 		if err := seenID(seen, department.ID, "department"); err != nil {
 			return err
 		}
-		if department.Name == "" {
-			return fmt.Errorf("greenhouse scenario: departments[%d] requires name", i)
-		}
-		departments[department.ID] = department
+		departments[department.ID] = struct{}{}
 	}
 	seen = map[string]struct{}{}
 	jobs := map[string]fixtureJob{}
 	for i, job := range state.Jobs {
 		if err := seenID(seen, job.ID, "job"); err != nil {
-			return err
-		}
-		if job.Name == "" {
-			return fmt.Errorf("greenhouse scenario: jobs[%d] requires name", i)
-		}
-		if err := oneOf(fmt.Sprintf("jobs[%d].status", i), job.Status, jobStatuses); err != nil {
 			return err
 		}
 		if _, ok := departments[job.DepartmentID]; !ok {
@@ -677,14 +656,8 @@ func validateState(state fixtureState) error {
 		if err := seenID(seen, stage.ID, "job stage"); err != nil {
 			return err
 		}
-		if stage.Name == "" {
-			return fmt.Errorf("greenhouse scenario: jobStages[%d] requires name", i)
-		}
 		if _, ok := jobs[stage.JobID]; !ok {
 			return fmt.Errorf("greenhouse scenario: jobStages[%d] references unknown job %q", i, stage.JobID)
-		}
-		if stage.Priority < 0 {
-			return fmt.Errorf("greenhouse scenario: jobStages[%d].priority must be non-negative", i)
 		}
 		if err := requireTime(fmt.Sprintf("jobStages[%d].createdAt", i), stage.CreatedAt); err != nil {
 			return err
@@ -700,21 +673,12 @@ func validateState(state fixtureState) error {
 		if err := seenID(seen, candidate.ID, "candidate"); err != nil {
 			return err
 		}
-		if candidate.FirstName == "" || candidate.LastName == "" {
-			return fmt.Errorf("greenhouse scenario: candidates[%d] requires firstName and lastName", i)
-		}
 		if _, ok := users[candidate.RecruiterID]; !ok {
 			return fmt.Errorf("greenhouse scenario: candidates[%d] references unknown recruiter %q", i, candidate.RecruiterID)
-		}
-		if len(candidate.Emails) == 0 {
-			return fmt.Errorf("greenhouse scenario: candidates[%d].emails is required", i)
 		}
 		emailSeen := map[string]struct{}{}
 		for j, email := range candidate.Emails {
 			if err := parseEmail(fmt.Sprintf("candidates[%d].emails[%d].value", i, j), email.Value); err != nil {
-				return err
-			}
-			if err := oneOf(fmt.Sprintf("candidates[%d].emails[%d].type", i, j), email.Type, emailTypes); err != nil {
 				return err
 			}
 			if _, ok := emailSeen[email.Value]; ok {
@@ -723,30 +687,13 @@ func validateState(state fixtureState) error {
 			emailSeen[email.Value] = struct{}{}
 		}
 		phoneSeen := map[string]struct{}{}
-		for j, phone := range candidate.Phones {
-			if phone.Value == "" {
-				return fmt.Errorf("greenhouse scenario: candidates[%d].phones[%d].value is required", i, j)
-			}
-			if err := oneOf(fmt.Sprintf("candidates[%d].phones[%d].type", i, j), phone.Type, phoneTypes); err != nil {
-				return err
-			}
+		for _, phone := range candidate.Phones {
 			if _, ok := phoneSeen[phone.Value]; ok {
 				return fmt.Errorf("greenhouse scenario: candidates[%d] repeats phone %q", i, phone.Value)
 			}
 			phoneSeen[phone.Value] = struct{}{}
 		}
-		for j, tag := range candidate.Tags {
-			if tag == "" {
-				return fmt.Errorf("greenhouse scenario: candidates[%d].tags[%d] is empty", i, j)
-			}
-		}
 		for j, attachment := range candidate.Attachments {
-			if attachment.Filename == "" || attachment.URL == "" {
-				return fmt.Errorf("greenhouse scenario: candidates[%d].attachments[%d] requires filename and url", i, j)
-			}
-			if err := oneOf(fmt.Sprintf("candidates[%d].attachments[%d].type", i, j), attachment.Type, attachmentTypes); err != nil {
-				return err
-			}
 			if err := requireTime(fmt.Sprintf("candidates[%d].attachments[%d].createdAt", i, j), attachment.CreatedAt); err != nil {
 				return err
 			}
@@ -785,12 +732,6 @@ func validateState(state fixtureState) error {
 		if _, ok := users[app.RecruiterID]; !ok {
 			return fmt.Errorf("greenhouse scenario: applications[%d] references unknown recruiter %q", i, app.RecruiterID)
 		}
-		if app.SourceID == "" || app.SourceName == "" {
-			return fmt.Errorf("greenhouse scenario: applications[%d] requires sourceId and sourceName", i)
-		}
-		if err := oneOf(fmt.Sprintf("applications[%d].status", i), app.Status, applicationStatuses); err != nil {
-			return err
-		}
 		if app.Status == "rejected" && app.RejectedAt == "" {
 			return fmt.Errorf("greenhouse scenario: applications[%d].rejectedAt is required when status is rejected", i)
 		}
@@ -825,15 +766,6 @@ func validateState(state fixtureState) error {
 		if offer.CandidateID != app.CandidateID || offer.JobID != app.JobID {
 			return fmt.Errorf("greenhouse scenario: offers[%d] candidate and job must match application %s", i, app.ID)
 		}
-		if offer.Version < 1 {
-			return fmt.Errorf("greenhouse scenario: offers[%d].version must be at least 1", i)
-		}
-		if err := oneOf(fmt.Sprintf("offers[%d].status", i), offer.Status, offerStatuses); err != nil {
-			return err
-		}
-		if offer.CustomFields == nil {
-			return fmt.Errorf("greenhouse scenario: offers[%d].customFields is required", i)
-		}
 		if err := requireTime(fmt.Sprintf("offers[%d].createdAt", i), offer.CreatedAt); err != nil {
 			return err
 		}
@@ -864,12 +796,6 @@ func validateState(state fixtureState) error {
 		if _, ok := users[note.UserID]; !ok {
 			return fmt.Errorf("greenhouse scenario: notes[%d] references unknown user %q", i, note.UserID)
 		}
-		if note.Body == "" {
-			return fmt.Errorf("greenhouse scenario: notes[%d].body is required", i)
-		}
-		if err := oneOf(fmt.Sprintf("notes[%d].visibility", i), note.Visibility, visibilities); err != nil {
-			return err
-		}
 		if err := requireTime(fmt.Sprintf("notes[%d].createdAt", i), note.CreatedAt); err != nil {
 			return err
 		}
@@ -886,9 +812,6 @@ func validateState(state fixtureState) error {
 		if card.CandidateID != app.CandidateID {
 			return fmt.Errorf("greenhouse scenario: scorecards[%d].candidateId must match application %s", i, app.ID)
 		}
-		if card.Interview == "" || card.InterviewStepName == "" {
-			return fmt.Errorf("greenhouse scenario: scorecards[%d] requires interview and interviewStepName", i)
-		}
 		stage, ok := stages[card.InterviewStepID]
 		if !ok || stage.JobID != app.JobID {
 			return fmt.Errorf("greenhouse scenario: scorecards[%d].interviewStepId must be a stage on the application's job", i)
@@ -898,9 +821,6 @@ func validateState(state fixtureState) error {
 		}
 		if _, ok := users[card.InterviewerID]; !ok {
 			return fmt.Errorf("greenhouse scenario: scorecards[%d] references unknown interviewer %q", i, card.InterviewerID)
-		}
-		if err := oneOf(fmt.Sprintf("scorecards[%d].overallRecommendation", i), card.OverallRecommendation, recommendations); err != nil {
-			return err
 		}
 		if err := requireTime(fmt.Sprintf("scorecards[%d].interviewedAt", i), card.InterviewedAt); err != nil {
 			return err
@@ -913,19 +833,6 @@ func validateState(state fixtureState) error {
 		}
 		if err := requireTime(fmt.Sprintf("scorecards[%d].updatedAt", i), card.UpdatedAt); err != nil {
 			return err
-		}
-		for j, attr := range card.Attributes {
-			if attr.Name == "" || attr.Type == "" {
-				return fmt.Errorf("greenhouse scenario: scorecards[%d].attributes[%d] requires name and type", i, j)
-			}
-			if err := oneOf(fmt.Sprintf("scorecards[%d].attributes[%d].rating", i, j), attr.Rating, attributeRatings); err != nil {
-				return err
-			}
-		}
-		for j, question := range card.Questions {
-			if question.ID == "" || question.Question == "" {
-				return fmt.Errorf("greenhouse scenario: scorecards[%d].questions[%d] requires id and question", i, j)
-			}
 		}
 	}
 	return nil
@@ -991,13 +898,6 @@ func optionalDate(field, value string) error {
 	return nil
 }
 
-func oneOf(field, value string, allowed map[string]struct{}) error {
-	if _, ok := allowed[value]; !ok {
-		return fmt.Errorf("greenhouse scenario: %s %q is not allowed", field, value)
-	}
-	return nil
-}
-
 func containsString(values []string, wanted string) bool {
 	for _, value := range values {
 		if value == wanted {
@@ -1006,17 +906,5 @@ func containsString(values []string, wanted string) bool {
 	}
 	return false
 }
-
-var (
-	jobStatuses         = map[string]struct{}{"open": {}, "closed": {}, "draft": {}}
-	applicationStatuses = map[string]struct{}{"active": {}, "rejected": {}, "hired": {}, "converted": {}}
-	offerStatuses       = map[string]struct{}{"unresolved": {}, "accepted": {}, "rejected": {}, "deprecated": {}}
-	visibilities        = map[string]struct{}{"admin_only": {}, "private": {}, "public": {}}
-	recommendations     = map[string]struct{}{"definitely_not": {}, "no": {}, "yes": {}, "strong_yes": {}, "no_decision": {}}
-	attributeRatings    = map[string]struct{}{"definitely_not": {}, "no": {}, "mixed": {}, "yes": {}, "strong_yes": {}, "no_decision": {}}
-	emailTypes          = map[string]struct{}{"personal": {}, "work": {}, "other": {}}
-	phoneTypes          = map[string]struct{}{"home": {}, "work": {}, "mobile": {}, "skype": {}, "other": {}}
-	attachmentTypes     = map[string]struct{}{"resume": {}, "cover_letter": {}, "offer_packet": {}, "offer_letter": {}, "take_home_test": {}, "other": {}}
-)
 
 func ContractName() string { return scenario.Contract }

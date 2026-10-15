@@ -32,24 +32,17 @@ const siteUrl = app === "docs" ? docsOrigin : landingOrigin;
 const docsUrl = `${docsOrigin.replace(/\/$/, "")}${docsBase}`;
 const appRoot = resolve(repositoryRoot, "apps", app);
 // Published docs stay on main unless FABRICATE_GIT_REF is set. A development
-// server follows the checked-out branch so example URLs fetch that branch.
-const safeGitRef = (value) => {
-  const candidate = (value || "").trim();
-  if (!candidate || candidate === "HEAD" || candidate.includes("..") || !/^[A-Za-z0-9._/-]+$/.test(candidate)) {
-    return "main";
-  }
-  return candidate;
-};
+// server follows the checked-out branch. git-ref.ts sanitizes the value.
 const gitRef = (() => {
   const configured = process.env.FABRICATE_GIT_REF?.trim();
-  if (configured) return safeGitRef(configured);
+  if (configured) return configured;
   if (mode !== "development") return "main";
   try {
     const branch = execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
       cwd: repositoryRoot,
       encoding: "utf8",
     }).trim();
-    return safeGitRef(branch);
+    return branch || "main";
   } catch {
     return "main";
   }

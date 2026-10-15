@@ -33,6 +33,8 @@ make docs-operations
 Implement `httpresource.Resource`:
 
 - a stable descriptor ID and provider host allowlist;
+- `HostPrefixes` only for a shared host, using `/` or a slash-bounded prefix;
+- `ProxyRoutes` for a host outside that allowlist, such as an OAuth token route;
 - the embedded OpenAPI and scenario contracts;
 - strict scenario lookup and validation;
 - SQLite `Initialize`, `Load`, and `Dump` with round-trip fidelity;

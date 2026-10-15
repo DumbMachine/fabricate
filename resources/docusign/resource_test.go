@@ -274,7 +274,7 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 		t.Fatalf("hosts = %v prefixes = %v", descriptor.ProviderHosts, descriptor.HostPrefixes)
 	}
 	contract := resource.Contract()
-	if got, want := descriptor.OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
+	if got, want := descriptor.OpenAPIDigest, scenario.Digest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
 	}
 	if formatAPITime(time.Date(2026, 8, 26, 12, 0, 0, 0, time.UTC)) != "2026-08-26T12:00:00.0000000Z" {

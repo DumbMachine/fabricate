@@ -163,7 +163,7 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 		t.Fatalf("compiled operation count = %d, want 20", len(seen))
 	}
 	contract := resource.Contract()
-	if got, want := resource.Descriptor().OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
+	if got, want := resource.Descriptor().OpenAPIDigest, scenario.Digest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
 	}
 }

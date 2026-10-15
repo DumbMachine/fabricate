@@ -22,10 +22,19 @@ type Descriptor struct {
 	ScenarioVersion int      `json:"scenario_version"`
 	ProviderHosts   []string `json:"provider_hosts"`
 	// HostPrefixes narrows a shared provider host to a path prefix so two
-	// resources can share a hostname. The key is the host; the value is a
-	// prefix such as "/books/". Hosts absent from the map claim the whole host.
+	// resources can share a hostname. The key is a ProviderHosts entry. The
+	// value is "/" or a slash-bounded prefix such as "/books/". Hosts absent
+	// from the map claim the whole host.
 	HostPrefixes map[string]string `json:"host_prefixes,omitempty"`
-	SDK          SDKDescriptor     `json:"sdk"`
+	// ProxyRoutes are claims outside ProviderHosts, such as an OAuth token host.
+	ProxyRoutes []ProxyRoute  `json:"proxy_routes,omitempty"`
+	SDK         SDKDescriptor `json:"sdk"`
+}
+
+type ProxyRoute struct {
+	Host       string `json:"host"`
+	PathPrefix string `json:"path_prefix"`
+	OAuthToken bool   `json:"oauth_token,omitempty"`
 }
 
 type SDKDescriptor struct {

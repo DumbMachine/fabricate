@@ -335,7 +335,9 @@ export default function ScenarioPeek({
   resource,
   scenario,
 }: Props) {
-  const resolved = resource && scenario ? officialScenarioSource(resource, scenario) : null;
+  const resolved = resource && scenario
+    ? officialScenarioSource(resource, scenario, import.meta.env.PUBLIC_FABRICATE_GIT_REF)
+    : null;
   const rawURL = resolved?.rawURL;
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();

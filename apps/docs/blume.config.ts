@@ -1,14 +1,12 @@
 import { defineConfig } from "blume";
 
-import {rewriteFabricateGitRef} from "../../packages/docs-content/git-ref.ts";
+import {rewritePublishedDocs} from "../../packages/docs-content/git-ref.ts";
 import {integrationSidebarItems} from "../../packages/docs-content/resources/integrations/catalog.ts";
 
 const fab = process.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const docsBase = process.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
 const gitRef = process.env.PUBLIC_FABRICATE_GIT_REF || process.env.FABRICATE_GIT_REF;
 const isDevelopment = process.env.PUBLIC_FABRICATE_SITE_MODE === "development";
-const replaceFabCommand = (value: string) =>
-  value.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`);
 
 export default defineConfig({
   title: "Fabricate",
@@ -30,7 +28,7 @@ export default defineConfig({
                   enforce: "pre",
                   transform(code, id) {
                     if (!id.includes("packages/docs-content/") || !/\.mdx?$/.test(id)) return;
-                    return { code: rewriteFabricateGitRef(replaceFabCommand(code), gitRef), map: null };
+                    return { code: rewritePublishedDocs(code, gitRef, fab), map: null };
                   },
                 },
               ],

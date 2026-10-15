@@ -1,4 +1,4 @@
-import {FABRICATE_REPOSITORY, fabricateGitRef} from "../../git-ref.ts";
+import {FABRICATE_REPOSITORY, fabricateContentURL} from "../../git-ref.ts";
 
 export const OFFICIAL_SCENARIO_REPO = FABRICATE_REPOSITORY;
 export const DEFAULT_ROW_LIMIT = 25;
@@ -80,7 +80,7 @@ export function scenarioFileName(resource: string, scenario: string): string | n
   return SCENARIO_FILE.test(name) ? name : null;
 }
 
-export function officialScenarioSource(resource: string, scenario: string): ResolvedScenarioSource | null {
+export function officialScenarioSource(resource: string, scenario: string, ref?: string | null): ResolvedScenarioSource | null {
   const file = scenarioFileName(resource, scenario);
   if (!file) {
     return null;
@@ -88,8 +88,8 @@ export function officialScenarioSource(resource: string, scenario: string): Reso
   const path = `resources/${resource}/scenarios/${file}`;
   return {
     path,
-    blobURL: `https://github.com/${OFFICIAL_SCENARIO_REPO}/blob/${fabricateGitRef()}/${path}`,
-    rawURL: `https://raw.githubusercontent.com/${OFFICIAL_SCENARIO_REPO}/${fabricateGitRef()}/${path}`,
+    blobURL: fabricateContentURL("blob", path, ref),
+    rawURL: fabricateContentURL("raw", path, ref),
   };
 }
 

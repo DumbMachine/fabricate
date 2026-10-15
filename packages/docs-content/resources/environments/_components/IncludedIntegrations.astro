@@ -1,6 +1,6 @@
 ---
 import {formatScenarioCounts, loadScenarioCatalog, scenarioFacts} from "../../_components/generated";
-import {composioLogo} from "../../integrations/catalog";
+import {integrationIcon} from "../../integrations/catalog";
 
 interface IncludedService {
   data: string;
@@ -15,7 +15,7 @@ interface IncludedService {
 const {services} = Astro.props as {services: IncludedService[]};
 const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
 const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBase}${href.startsWith("/") ? href : `/${href}`}`);
-const logo = (resource: string, theme?: "dark") => toDocsHref(composioLogo(resource, theme));
+const logo = (resource: string) => toDocsHref(integrationIcon(resource));
 const countsFor = (entry: IncludedService) =>
   formatScenarioCounts(scenarioFacts(loadScenarioCatalog(entry.resource), entry.scenario));
 ---
@@ -27,8 +27,7 @@ const countsFor = (entry: IncludedService) =>
       {services.map((entry) => (
         <li>
           <a href={toDocsHref(entry.href)} title={entry.label}>
-            <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt={entry.label} />
-            <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
+            <img class="logo" src={logo(entry.resource)} width="16" height="16" alt={entry.label} />
           </a>
         </li>
       ))}
@@ -51,8 +50,7 @@ const countsFor = (entry: IncludedService) =>
             <th scope="row">
               <a class="service" href={toDocsHref(entry.href)}>
                 <span class="icon">
-                  <img class="logo-light" src={logo(entry.resource)} width="16" height="16" alt="" />
-                  <img class="logo-dark" src={logo(entry.resource, "dark")} width="16" height="16" alt="" />
+                  <img class="logo" src={logo(entry.resource)} width="16" height="16" alt="" />
                 </span>
                 <span class="service-copy">
                   <span class="service-label">{entry.label}</span>
@@ -129,10 +127,7 @@ const countsFor = (entry: IncludedService) =>
     object-fit: contain;
     width: 16px;
   }
-  .logo-light { display: block; }
-  .logo-dark { display: none; }
-  :global(:root[data-theme="dark"]) .logo-light { display: none; }
-  :global(:root[data-theme="dark"]) .logo-dark { display: block; }
+  .logo { display: block; }
   table {
     border-collapse: collapse;
     color: var(--fabricate-text);

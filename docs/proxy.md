@@ -28,15 +28,18 @@ The CA and ephemeral service state are destroyed when the wrapper exits.
 ## Routing and safety
 
 Provider hosts come from `httpresource.Descriptor.ProviderHosts`. A resource
-may set `HostPrefixes` to claim only a path prefix on a shared host. Gmail
-claims `/gmail/` on `www.googleapis.com`, which leaves `/drive/` free for
-Google Drive and lets Zoho Books (`/books/`) and Zoho Inventory
-(`/inventory/`) share `www.zohoapis.com`. Google OAuth token refresh is handled by
-a local synthetic token route so the wrapped application does not need working
-Google credentials. The route accepts `POST /token` on `oauth2.googleapis.com`
-with `grant_type=refresh_token` and a non-empty refresh token, then returns
-the environment's synthetic access token. It does not implement
-authorization-code OAuth, store customer tokens, or refresh other providers.
+may set `HostPrefixes` to claim only a path prefix on a shared host. Each
+prefix is `/` or a slash-bounded path such as `/books/`, and its host is one
+of `ProviderHosts`. Gmail claims `/gmail/` on `www.googleapis.com`, which
+leaves `/drive/` free for Google Drive and lets Zoho Books (`/books/`) and
+Zoho Inventory (`/inventory/`) share `www.zohoapis.com`. Routes outside that
+allowlist, including Google OAuth token refresh, are `ProxyRoutes` on the
+descriptor. Gmail declares `POST /token` on `oauth2.googleapis.com` with
+`OAuthToken` so the wrapped application does not need working Google
+credentials. That route accepts `grant_type=refresh_token` and a non-empty
+refresh token, then returns the environment's synthetic access token. It does
+not implement authorization-code OAuth, store customer tokens, or refresh
+other providers.
 
 Unknown hosts are tunneled unchanged to their normal destination by default.
 This lets one provider be fabricated inside a full application without

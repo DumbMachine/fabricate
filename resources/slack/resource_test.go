@@ -267,7 +267,7 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 		t.Fatalf("descriptor routing = hosts %v prefixes %v", descriptor.ProviderHosts, descriptor.HostPrefixes)
 	}
 	contract := resource.Contract()
-	if got, want := descriptor.OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
+	if got, want := descriptor.OpenAPIDigest, scenario.Digest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
 	}
 	docs, err := resource.ScenarioDocuments()

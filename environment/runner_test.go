@@ -16,9 +16,9 @@ import (
 	"github.com/dumbmachine/fabricate/resources/all"
 )
 
-func TestHostPrefixNormalizesSharedHosts(t *testing.T) {
+func TestHostPrefixUsesCanonicalDescriptorValue(t *testing.T) {
 	descriptor := httpresource.Descriptor{HostPrefixes: map[string]string{
-		"www.zohoapis.com":   "books",
+		"www.zohoapis.com":   "/books/",
 		"www.googleapis.com": "/gmail/",
 	}}
 	if got := hostPrefix(descriptor, "www.zohoapis.com"); got != "/books/" {
