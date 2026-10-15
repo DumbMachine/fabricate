@@ -41,7 +41,7 @@ func init() {
 }
 
 func serveConsole(ctx context.Context, addr string) error {
-	listener, err := net.Listen("tcp", addr)
+	listener, err := net.Listen(listenNetwork(addr), addr)
 	if err != nil {
 		return fmt.Errorf("serve: listen: %w", err)
 	}
@@ -60,7 +60,7 @@ func serveConsole(ctx context.Context, addr string) error {
 		}
 		errCh <- err
 	}()
-	fmt.Fprintf(os.Stderr, "fab: managed console at http://%s\n", listener.Addr())
+	fmt.Fprintf(os.Stderr, "fab: managed console at %s\n", consoleURL(listener.Addr()))
 	select {
 	case <-ctx.Done():
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -77,4 +77,30 @@ func serveConsole(ctx context.Context, addr string) error {
 		}
 		return nil
 	}
+}
+
+func listenNetwork(addr string) string {
+	host, _, err := net.SplitHostPort(addr)
+	if err != nil {
+		return "tcp"
+	}
+	ip := net.ParseIP(host)
+	if ip == nil {
+		return "tcp"
+	}
+	if ip.To4() != nil {
+		return "tcp4"
+	}
+	return "tcp6"
+}
+
+func consoleURL(addr net.Addr) string {
+	host, port, err := net.SplitHostPort(addr.String())
+	if err != nil {
+		return "http://" + addr.String()
+	}
+	if host == "" || host == "0.0.0.0" || host == "::" {
+		host = "127.0.0.1"
+	}
+	return "http://" + net.JoinHostPort(host, port)
 }
