@@ -137,6 +137,7 @@ export default defineConfig({
             collapsed: false,
             items: [
               { label: `${fab} run`, href: "/cli/commands/run" },
+              { label: `${fab} serve`, href: "/cli/commands/serve" },
               { label: `${fab} environment`, href: "/cli/commands/environment" },
               { label: `${fab} service`, href: "/cli/commands/service" },
               { label: `${fab} resource`, href: "/cli/commands/resource" },

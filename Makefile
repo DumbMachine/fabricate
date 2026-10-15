@@ -4,7 +4,7 @@
 
 FAB_INSTALL_DIR ?= $(HOME)/bin
 
-MAKE_TARGETS := build install install-dev test vet fmt check generate generate-check e2e conformance docs-examples docs-operations verify clean start landing docs
+MAKE_TARGETS := build install install-dev test vet fmt check generate generate-check e2e conformance docs-examples docs-operations verify clean start landing docs console
 
 .PHONY: $(MAKE_TARGETS)
 
@@ -38,6 +38,10 @@ endif
 # on their own so `make start landing` does not launch a second process.
 landing docs:
 	@:
+
+# Rebuild the managed console and copy it into the files `fab serve` embeds.
+console:
+	pnpm --filter @fabricate/console build
 
 build:
 	go build -o bin/fab ./cmd/fab

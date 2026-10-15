@@ -11,6 +11,7 @@ scenario.
 fab run acme-gmail
 fab run ./environment.yaml -- npm test
 fab run gmail --scenario gmail.minimal.v1
+fab serve
 ```
 
 The first and third commands stay in the foreground until you press `Ctrl-C`.
@@ -66,6 +67,7 @@ control of stdin, stdout, and stderr.
 ## Command reference
 
 - [`fab run`](/cli/commands/run)
+- [`fab serve`](/cli/commands/serve)
 - [`fab environment`](/cli/commands/environment)
 - [`fab service`](/cli/commands/service)
 - [`fab resource`](/cli/commands/resource)

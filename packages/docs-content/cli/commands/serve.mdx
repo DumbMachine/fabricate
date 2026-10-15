@@ -1,0 +1,44 @@
+---
+title: fab serve
+description: Open a local console to start, connect, and close sandboxes.
+---
+
+`fab serve` starts Fabricate's managed console on your machine. The console
+lists official environments and scenarios. Starting one keeps it running until
+you close it, or until you stop `fab serve`.
+
+```bash
+fab serve
+```
+
+```text
+fab: managed console at http://127.0.0.1:4173
+```
+
+`--addr` changes the listen address. The default is `127.0.0.1:4173`.
+
+## Start
+
+Each environment card starts that manifest, the same set of services `fab run`
+would start. Each scenario card starts one resource with that scenario.
+
+**Start** gives every service a loopback URL and an ephemeral bearer token.
+**Start with proxy** also starts the transparent proxy so clients can keep
+production hostnames. The proxy replaces `Authorization` on routed hosts.
+
+## Connect
+
+The sandbox page shows two ways to use a running sandbox:
+
+- **Connect your app.** Copy the shell exports. In direct mode, point each
+  client at the service URL and send the bearer token. In proxy mode, export
+  the proxy and CA variables and keep the provider's normal hostname.
+- **Hand off to an agent.** Pick Cursor, Claude Code, Codex, or Devin and copy
+  the prompt. Paste it into the coding agent that should wire the app. The
+  prompt carries the sandbox connection for this machine. It is not a
+  production credential, and it should not be committed.
+
+Ports and tokens change every time a sandbox starts. The console and the
+services bind to loopback, so a worker on another machine cannot attach.
+
+Stopping `fab serve` closes every sandbox that console started.

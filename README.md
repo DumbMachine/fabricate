@@ -99,6 +99,17 @@ fab run acme-gmail --proxy -- npm test
 
 Runnable sample apps (Python, Node, Rust) live in [`examples/`](examples/).
 
+## Managed console
+
+`fab serve` opens a local console where you can browse environments and
+scenarios, start or close a sandbox, and copy the connection steps. After a
+sandbox is ready, the page shows the shell exports for your app and a prompt
+you can paste into Cursor, Claude Code, Codex, or Devin.
+
+```bash
+fab serve
+```
+
 Inspect the catalog before you wrap anything:
 
 ```bash

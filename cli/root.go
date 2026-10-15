@@ -24,7 +24,11 @@ Inspect the available definitions:
   fab environment list
   fab service list --environment acme-support-desk
   fab resource list
-  fab scenario list gmail`,
+  fab scenario list gmail
+
+Or open the managed console and start them from the browser:
+
+  fab serve`,
 	SilenceUsage:  true,
 	SilenceErrors: true,
 }
