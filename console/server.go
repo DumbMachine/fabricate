@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"net"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"path"
 	"strings"
 )
@@ -18,6 +21,7 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("POST /api/sessions", m.handleStart)
 	mux.HandleFunc("GET /api/sessions/{id}", m.handleGet)
 	mux.HandleFunc("DELETE /api/sessions/{id}", m.handleDelete)
+	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
 	return mux
 }
@@ -31,8 +35,12 @@ func (m *Manager) handleCatalog(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, catalog)
 }
 
-func (m *Manager) handleList(w http.ResponseWriter, _ *http.Request) {
-	writeJSON(w, http.StatusOK, m.List())
+func (m *Manager) handleList(w http.ResponseWriter, r *http.Request) {
+	sessions := m.List()
+	for i := range sessions {
+		sessions[i] = present(sessions[i], r)
+	}
+	writeJSON(w, http.StatusOK, sessions)
 }
 
 func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +66,7 @@ func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
 		writeError(w, status, err)
 		return
 	}
-	writeJSON(w, http.StatusCreated, session)
+	writeJSON(w, http.StatusCreated, present(session, r))
 }
 
 func isClientStartError(err error) bool {
@@ -74,7 +82,104 @@ func (m *Manager) handleGet(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, fmt.Errorf("sandbox not running"))
 		return
 	}
-	writeJSON(w, http.StatusOK, session)
+	writeJSON(w, http.StatusOK, present(session, r))
+}
+
+func (m *Manager) proxyService(w http.ResponseWriter, r *http.Request) {
+	id, name, rest, ok := splitServicePath(r.URL.Path)
+	if !ok {
+		http.NotFound(w, r)
+		return
+	}
+	target, ok := m.serviceURL(id, name)
+	if !ok {
+		http.NotFound(w, r)
+		return
+	}
+	upstream, err := url.Parse(target)
+	if err != nil || upstream.Host == "" {
+		http.Error(w, "sandbox service unavailable", http.StatusBadGateway)
+		return
+	}
+	proxy := &httputil.ReverseProxy{
+		Rewrite: func(request *httputil.ProxyRequest) {
+			request.SetURL(upstream)
+			request.Out.URL.Path = rest
+			request.Out.URL.RawPath = ""
+			request.Out.Host = upstream.Host
+		},
+		ErrorHandler: func(w http.ResponseWriter, _ *http.Request, _ error) {
+			http.Error(w, "sandbox service unavailable", http.StatusBadGateway)
+		},
+	}
+	proxy.ServeHTTP(w, r)
+}
+
+func splitServicePath(raw string) (id, name, rest string, ok bool) {
+	trimmed := strings.TrimPrefix(raw, "/s/")
+	if trimmed == raw || trimmed == "" {
+		return "", "", "", false
+	}
+	parts := strings.SplitN(trimmed, "/", 3)
+	if len(parts) < 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", "", false
+	}
+	rest = "/"
+	if len(parts) == 3 {
+		rest = "/" + parts[2]
+	}
+	return parts[0], parts[1], rest, true
+}
+
+func present(session Session, r *http.Request) Session {
+	base := requestBase(r)
+	for i, service := range session.Services {
+		if service.Name == "" {
+			continue
+		}
+		public := strings.TrimRight(base, "/") + "/s/" + session.ID + "/" + service.Name
+		for j, variable := range session.Variables {
+			if variable.Name == service.URLVariable {
+				session.Variables[j].Value = public
+			}
+		}
+		session.Services[i].URL = public
+	}
+	session.ConnectShell = connectShell(session)
+	session.AgentPrompt = agentPrompt(session)
+	return session
+}
+
+func requestBase(r *http.Request) string {
+	proto := firstHeaderValue(r.Header.Get("X-Forwarded-Proto"))
+	host := firstHeaderValue(r.Header.Get("X-Forwarded-Host"))
+	if host == "" {
+		host = r.Host
+	}
+	if proto == "" {
+		if r.TLS != nil || publicHostname(host) {
+			proto = "https"
+		} else {
+			proto = "http"
+		}
+	}
+	return proto + "://" + host
+}
+
+func firstHeaderValue(value string) string {
+	return strings.TrimSpace(strings.Split(value, ",")[0])
+}
+
+func publicHostname(hostport string) bool {
+	host := hostport
+	if parsed, _, err := net.SplitHostPort(hostport); err == nil {
+		host = parsed
+	}
+	host = strings.Trim(host, "[]")
+	if host == "" || strings.EqualFold(host, "localhost") {
+		return false
+	}
+	return net.ParseIP(host) == nil
 }
 
 func (m *Manager) handleDelete(w http.ResponseWriter, r *http.Request) {

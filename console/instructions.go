@@ -2,6 +2,8 @@ package console
 
 import (
 	"fmt"
+	"net"
+	"net/url"
 	"strings"
 )
 
@@ -62,10 +64,37 @@ func agentPrompt(session Session) string {
 		builder.WriteString("Proxy mode is off. Point each client at the service base URL and send Authorization: Bearer <token>.\n")
 		builder.WriteString("Production hostnames are not intercepted. Start the sandbox again with proxy if the client must keep those hostnames.\n")
 	}
-	builder.WriteString("\nThe sandbox binds to loopback, so only a process on this machine can reach it.\n")
+	builder.WriteString("\n")
+	if servicesOnConsoleHost(session) {
+		builder.WriteString("These service URLs are on this console host. A client that can open the console can call them with the bearer token.\n")
+	} else {
+		builder.WriteString("The sandbox binds to loopback, so only a process on this machine can reach it.\n")
+	}
 	fmt.Fprintf(&builder, "Request log: %s\n", session.RequestLog)
 	builder.WriteString("When the task is done, close this sandbox from the Fabricate console (the process started with `fab serve`).\n")
 	return builder.String()
+}
+
+func servicesOnConsoleHost(session Session) bool {
+	for _, service := range session.Services {
+		if service.URL != "" && !loopbackURL(service.URL) {
+			return true
+		}
+	}
+	return false
+}
+
+func loopbackURL(raw string) bool {
+	parsed, err := url.Parse(raw)
+	if err != nil {
+		return false
+	}
+	host := parsed.Hostname()
+	if strings.EqualFold(host, "localhost") {
+		return true
+	}
+	ip := net.ParseIP(host)
+	return ip != nil && ip.IsLoopback()
 }
 
 func shellQuote(value string) string {

@@ -27,8 +27,9 @@ Open the printed URL to browse official environments and scenarios, start a
 sandbox, and copy the connection steps for an app or a coding agent. Sandboxes
 keep running until you close them in the console or stop this command.
 
-The console and every sandbox bind to loopback. A worker on another machine
-cannot attach to them.`,
+The console binds to the address you pass. Sandbox processes stay on loopback.
+When you open the console through another host, each service URL uses that
+host, and the console forwards the call to the sandbox.`,
 	Args: cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		return serveConsole(cmd.Context(), serveAddr)

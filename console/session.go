@@ -212,6 +212,20 @@ func (m *Manager) List() []Session {
 	return sessions
 }
 
+func (m *Manager) serviceURL(id, name string) (string, bool) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	session, ok := m.sessions[id]
+	if !ok {
+		return "", false
+	}
+	service := session.runtime.Services[name]
+	if service == nil || service.URL == "" {
+		return "", false
+	}
+	return service.URL, true
+}
+
 func (m *Manager) Get(id string) (Session, bool) {
 	m.mu.Lock()
 	session, ok := m.sessions[id]

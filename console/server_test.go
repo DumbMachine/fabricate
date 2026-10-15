@@ -111,9 +111,70 @@ func TestServeStartsScenarioAndClosesIt(t *testing.T) {
 	if missing.StatusCode != http.StatusNotFound {
 		t.Fatalf("get after close %d", missing.StatusCode)
 	}
-	if _, err := http.Get(service.URL + "/gmail/v1/users/me/profile"); err == nil {
-		t.Fatal("service still accepted connections after close")
+	afterClose, err := http.Get(service.URL + "/gmail/v1/users/me/profile")
+	if err != nil {
+		t.Fatal(err)
 	}
+	if afterClose.StatusCode != http.StatusNotFound {
+		t.Fatalf("service status after close %d", afterClose.StatusCode)
+	}
+	afterClose.Body.Close()
+}
+
+func TestServePublishesServicesOnTheRequestHost(t *testing.T) {
+	manager := New(all.Registry())
+	server := httptest.NewServer(manager.Handler())
+	t.Cleanup(server.Close)
+	t.Cleanup(func() { _ = manager.Shutdown() })
+
+	created := postJSON(t, server.URL+"/api/sessions", `{"kind":"scenario","id":"gmail.minimal.v1"}`)
+	if created.StatusCode != http.StatusCreated {
+		t.Fatalf("start status %d: %s", created.StatusCode, readBody(t, created))
+	}
+	var started Session
+	decodeJSON(t, created, &started)
+
+	request, err := http.NewRequest(http.MethodGet, server.URL+"/api/sessions/"+started.ID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	request.Host = "p-4173-pod.example"
+	request.Header.Set("X-Forwarded-Proto", "https")
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if response.StatusCode != http.StatusOK {
+		t.Fatalf("get status %d: %s", response.StatusCode, readBody(t, response))
+	}
+	var session Session
+	decodeJSON(t, response, &session)
+	want := "https://p-4173-pod.example/s/" + session.ID + "/" + session.Services[0].Name
+	if session.Services[0].URL != want {
+		t.Fatalf("published url %q", session.Services[0].URL)
+	}
+	if !strings.Contains(session.ConnectShell, want) || !strings.Contains(session.AgentPrompt, "console host") {
+		t.Fatalf("instructions missing published url:\n%s\n%s", session.ConnectShell, session.AgentPrompt)
+	}
+
+	profile, err := http.NewRequest(http.MethodGet, server.URL+"/s/"+session.ID+"/"+session.Services[0].Name+"/gmail/v1/users/me/profile", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	profile.Header.Set("Authorization", "Bearer "+session.Services[0].Token)
+	profileResponse, err := http.DefaultClient.Do(profile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := readBody(t, profileResponse)
+	if profileResponse.StatusCode != http.StatusOK || !strings.Contains(body, "emailAddress") {
+		t.Fatalf("proxied profile %d: %s", profileResponse.StatusCode, body)
+	}
+	missing := get(t, server.URL+"/s/"+session.ID+"/missing/gmail/v1/users/me/profile")
+	if missing.StatusCode != http.StatusNotFound {
+		t.Fatalf("unknown service status %d", missing.StatusCode)
+	}
+	missing.Body.Close()
 }
 
 func TestServeProxyInstructions(t *testing.T) {
