@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
 import { ResourceIcon } from "@/components/resource-icon"
 import { StartActions } from "@/components/start-actions"
 import {
@@ -46,7 +47,7 @@ function ScenarioPage() {
   if (view === null && error === null) {
     return (
       <ConsoleFrame crumbs={[{ label: "Sandboxes", to: "/" }, { label: id }]}>
-        <p className="text-sm text-muted-foreground">Loading scenario…</p>
+        <LoadingLine>Loading scenario…</LoadingLine>
       </ConsoleFrame>
     )
   }
@@ -98,9 +99,7 @@ function ScenarioPage() {
           <p className="font-mono text-xs text-muted-foreground">{view.id}</p>
         </div>
       </div>
-      {errors[key] ? (
-        <p className="text-sm text-destructive">{errors[key]}</p>
-      ) : null}
+      {errors[key] ? <ErrorNote>{errors[key]}</ErrorNote> : null}
 
       {view.scalars.length > 0 ? (
         <section id="summary" className="flex scroll-mt-6 flex-col gap-3">

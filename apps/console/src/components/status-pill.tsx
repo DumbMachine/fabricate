@@ -1,6 +1,5 @@
-import { Check } from "lucide-react"
 import type { ReactNode } from "react"
-import { cn } from "cn"
+import { AnimatedBadge } from "@/components/motion/animated-badge"
 
 export function StatusPill({
   tone,
@@ -10,16 +9,28 @@ export function StatusPill({
   children: ReactNode
 }) {
   return (
-    <span
-      className={cn(
-        "inline-flex w-fit items-center gap-1 self-start rounded px-1.5 py-0.5 text-xs font-medium",
-        tone === "ready" && "bg-success/15 text-success",
-        tone === "held" && "bg-sidebar-primary/50 text-foreground",
-        tone === "neutral" && "bg-muted text-muted-foreground"
-      )}
+    <AnimatedBadge
+      status={badgeStatus(tone)}
+      size="sm"
+      pulse={tone === "ready"}
+      className="w-fit self-start"
     >
-      {tone === "ready" ? <Check className="size-3" /> : null}
       {children}
-    </span>
+    </AnimatedBadge>
   )
+}
+
+function badgeStatus(tone: "ready" | "held" | "neutral") {
+  switch (tone) {
+    case "ready":
+      return "success" as const
+    case "held":
+      return "neutral" as const
+    case "neutral":
+      return "neutral" as const
+    default: {
+      const neverTone: never = tone
+      return neverTone
+    }
+  }
 }

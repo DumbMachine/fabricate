@@ -1,6 +1,14 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/motion/card"
 import { ScenarioChips } from "@/components/scenario-chip"
-import { Button } from "@/components/ui/button"
+import { LinkButton, StatefulButton } from "@/components/ui/button"
 import { ServiceIdentity } from "@/components/service-identity"
 import { StartActions } from "@/components/start-actions"
 import { StatusPill } from "@/components/status-pill"
@@ -53,7 +61,7 @@ function EnvironmentPage() {
           { label: name },
         ]}
       >
-        <p className="text-sm text-muted-foreground">Loading environment…</p>
+        <LoadingLine>Loading environment…</LoadingLine>
       </ConsoleFrame>
     )
   }
@@ -68,9 +76,7 @@ function EnvironmentPage() {
         heading="Environment not found"
         description={catalogError ?? `${name} is not an official environment.`}
         actions={
-          <Button render={<Link to="/environments" />} variant="outline">
-            Back to environments
-          </Button>
+          <LinkButton to="/environments">Back to environments</LinkButton>
         }
       >
         {null}
@@ -114,22 +120,22 @@ function EnvironmentPage() {
         { id: "services", label: "Services" },
       ]}
     >
-      {errors[key] ? (
-        <p className="text-sm text-destructive">{errors[key]}</p>
-      ) : null}
+      {errors[key] ? <ErrorNote>{errors[key]}</ErrorNote> : null}
       <section id="running" className="flex scroll-mt-6 flex-col gap-3">
         <h2 className="text-lg font-medium">Running</h2>
         {sessions === null ? (
-          <p className="text-sm text-muted-foreground">Checking sandboxes…</p>
+          <LoadingLine>Checking sandboxes…</LoadingLine>
         ) : running.length === 0 ? (
-          <div className="border bg-card px-4 py-6">
-            <h3 className="font-medium">Stopped</h3>
-            <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-              Start environment brings up all {environment.services.length}{" "}
-              {environment.services.length === 1 ? "service" : "services"} in
-              one sandbox. Proxy does the same through the transparent proxy.
-            </p>
-          </div>
+          <Card variant="muted" size="compact">
+            <CardHeader>
+              <CardTitle as="h3">Stopped</CardTitle>
+              <CardDescription>
+                Start environment brings up all {environment.services.length}{" "}
+                {environment.services.length === 1 ? "service" : "services"} in
+                one sandbox. Proxy does the same through the transparent proxy.
+              </CardDescription>
+            </CardHeader>
+          </Card>
         ) : (
           <div className="flex flex-col gap-3">
             {running.map((session) => (
@@ -188,21 +194,24 @@ function RunningActions({
 }) {
   return (
     <div className="flex flex-wrap gap-2">
-      <Button
-        size="sm"
-        render={<Link to="/sandboxes/$id" params={{ id: session.id }} />}
+      <LinkButton
+        variant="primary"
+        to="/sandboxes/$id"
+        params={{ id: session.id }}
       >
         Open sandbox
-      </Button>
+      </LinkButton>
       {session.anchored ? null : (
-        <Button
+        <StatefulButton
           size="sm"
           variant="outline"
-          disabled={pending !== null}
+          state={pending === `close:${session.id}` ? "loading" : "idle"}
+          loadingText="Closing…"
+          disabled={pending !== null && pending !== `close:${session.id}`}
           onClick={onClose}
         >
-          {pending === `close:${session.id}` ? "Closing…" : "Close"}
-        </Button>
+          Close
+        </StatefulButton>
       )}
     </div>
   )
@@ -220,28 +229,32 @@ function RunningSession({
   onClose: () => void
 }) {
   return (
-    <div className="flex flex-col gap-3 border bg-card px-4 py-4 sm:flex-row sm:items-start sm:justify-between">
-      <div className="flex flex-col gap-2">
-        {session.anchored ? (
-          <StatusPill tone="held">Held by fab run</StatusPill>
-        ) : (
-          <StatusPill tone="ready">Ready</StatusPill>
-        )}
-        <p className="font-mono text-xs text-muted-foreground">{session.id}</p>
-        <p className="text-sm text-muted-foreground">
-          {session.proxy ? "Proxy" : "Direct"} · started{" "}
-          {formatTime(session.startedAt)}
-        </p>
-        <ScenarioChips services={session.services} />
-        {session.anchored ? (
-          <p className="max-w-xl text-sm text-muted-foreground">
-            Held by fab run. It stays up until that command exits.
+    <Card size="compact">
+      <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-2">
+          {session.anchored ? (
+            <StatusPill tone="held">Held by fab run</StatusPill>
+          ) : (
+            <StatusPill tone="ready">Ready</StatusPill>
+          )}
+          <p className="font-mono text-xs text-muted-foreground">
+            {session.id}
           </p>
-        ) : null}
-        {error ? <p className="text-xs text-destructive">{error}</p> : null}
-      </div>
-      <RunningActions session={session} pending={pending} onClose={onClose} />
-    </div>
+          <p className="text-sm text-muted-foreground">
+            {session.proxy ? "Proxy" : "Direct"} · started{" "}
+            {formatTime(session.startedAt)}
+          </p>
+          <ScenarioChips services={session.services} />
+          {session.anchored ? (
+            <p className="max-w-xl text-sm text-muted-foreground">
+              Held by fab run. It stays up until that command exits.
+            </p>
+          ) : null}
+          {error ? <ErrorNote compact>{error}</ErrorNote> : null}
+        </div>
+        <RunningActions session={session} pending={pending} onClose={onClose} />
+      </CardContent>
+    </Card>
   )
 }
 

@@ -1,15 +1,18 @@
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { StatefulButton } from "@/components/ui/button"
 
 export function CopyButton({ value, label }: { value: string; label: string }) {
   const [copied, setCopied] = useState(false)
   const [failed, setFailed] = useState(false)
 
   return (
-    <Button
+    <StatefulButton
       type="button"
       variant="outline"
       size="sm"
+      state={copied ? "success" : failed ? "error" : "idle"}
+      successText="Copied"
+      errorText="Copy failed"
       onClick={() => {
         void navigator.clipboard.writeText(value).then(
           () => {
@@ -24,7 +27,7 @@ export function CopyButton({ value, label }: { value: string; label: string }) {
         )
       }}
     >
-      {copied ? "Copied" : failed ? "Copy failed" : label}
-    </Button>
+      {label}
+    </StatefulButton>
   )
 }

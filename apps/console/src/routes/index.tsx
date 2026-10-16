@@ -1,10 +1,17 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/motion/card"
 import { ScenarioChips } from "@/components/scenario-chip"
 import { ResourceIcon } from "@/components/resource-icon"
 import { StartActions } from "@/components/start-actions"
 import { StatusPill } from "@/components/status-pill"
-import { Button } from "@/components/ui/button"
+import { StatefulButton } from "@/components/ui/button"
 import {
   ColumnHeading,
   ConsoleFrame,
@@ -105,21 +112,23 @@ function SandboxesPage() {
           />
         </div>
         {sessions === null ? (
-          <p className="text-sm text-muted-foreground">Loading sandboxes…</p>
+          <LoadingLine>Loading sandboxes…</LoadingLine>
         ) : visibleSessions.length === 0 ? (
-          <div className="border bg-card px-4 py-8">
-            <h3 className="text-lg font-medium">Nothing is running</h3>
-            <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-              Start a scenario below, or open{" "}
-              <Link
-                to="/environments"
-                className="underline decoration-muted-foreground/50 underline-offset-2"
-              >
-                Environments
-              </Link>{" "}
-              to bring up a whole set of services with one button.
-            </p>
-          </div>
+          <Card variant="muted" size="compact">
+            <CardHeader>
+              <CardTitle as="h3">Nothing is running</CardTitle>
+              <CardDescription>
+                Start a scenario below, or open{" "}
+                <Link
+                  to="/environments"
+                  className="underline decoration-muted-foreground/50 underline-offset-2"
+                >
+                  Environments
+                </Link>{" "}
+                to bring up a whole set of services with one button.
+              </CardDescription>
+            </CardHeader>
+          </Card>
         ) : (
           <DataTable className="min-w-[880px]">
             <thead>
@@ -155,11 +164,9 @@ function SandboxesPage() {
           Scenarios are grouped by resource. Open one to inspect its seeded
           records, or start it as its own sandbox.
         </p>
-        {catalogError ? (
-          <p className="text-sm text-destructive">{catalogError}</p>
-        ) : null}
+        {catalogError ? <ErrorNote>{catalogError}</ErrorNote> : null}
         {catalog === null && !catalogError ? (
-          <p className="text-sm text-muted-foreground">Loading scenarios…</p>
+          <LoadingLine>Loading scenarios…</LoadingLine>
         ) : null}
         {catalog !== null && groups.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -231,7 +238,9 @@ function RunningRow({
           {kindLabel(session.kind)}
         </p>
         {error ? (
-          <p className="mt-1 text-xs text-destructive">{error}</p>
+          <div className="mt-1">
+            <ErrorNote compact>{error}</ErrorNote>
+          </div>
         ) : null}
       </td>
       <td className="px-3 py-3">
@@ -254,14 +263,16 @@ function RunningRow({
       </td>
       <td className="px-3 py-3 text-right">
         {session.anchored ? null : (
-          <Button
+          <StatefulButton
             variant="outline"
             size="sm"
-            disabled={pending !== null}
+            state={pending === `close:${session.id}` ? "loading" : "idle"}
+            loadingText="Closing…"
+            disabled={pending !== null && pending !== `close:${session.id}`}
             onClick={onClose}
           >
-            {pending === `close:${session.id}` ? "Closing…" : "Close"}
-          </Button>
+            Close
+          </StatefulButton>
         )}
       </td>
     </tr>
@@ -287,7 +298,9 @@ function ScenarioRow({
           services={[{ resource: scenario.resource, scenario: scenario.id }]}
         />
         {error ? (
-          <p className="mt-1 text-xs text-destructive">{error}</p>
+          <div className="mt-1">
+            <ErrorNote compact>{error}</ErrorNote>
+          </div>
         ) : null}
       </td>
       <td className="px-3 py-3 font-mono text-xs text-muted-foreground">

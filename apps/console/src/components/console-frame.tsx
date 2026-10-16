@@ -1,7 +1,20 @@
 import { Link, useRouterState } from "@tanstack/react-router"
-import { BookOpen, Boxes, Layers, Search } from "lucide-react"
-import { useEffect, useRef, type ReactNode } from "react"
+import { BookOpen, Boxes, Layers, Menu, Search } from "lucide-react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { cn } from "cn"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/motion/breadcrumb"
+import { BounceSidebar } from "@/components/motion/bounce-sidebar"
+import { Drawer } from "@/components/motion/drawer"
+import { Input } from "@/components/motion/input"
+import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
+import { Button } from "@/components/ui/button"
 
 const docsUrl = "https://fabricate.dmach.in/docs"
 
@@ -42,6 +55,7 @@ export function ConsoleFrame({
     select: (state) => state.location.pathname,
   })
   const searchRef = useRef<HTMLInputElement>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     if (!search) return
@@ -55,132 +69,86 @@ export function ConsoleFrame({
     return () => window.removeEventListener("keydown", onKey)
   }, [search])
 
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
   return (
     <div className="flex min-h-svh bg-background text-foreground">
       <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
-        <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-3">
-          <img
-            src="/fabricate-mark.svg"
-            width={28}
-            height={28}
-            alt=""
-            className="size-7"
-          />
-          <span className="font-brand text-[1.45rem] leading-[0.8] font-semibold tracking-[0.025em] uppercase">
-            Fabricate
-          </span>
-        </div>
-        <nav className="flex flex-1 flex-col gap-1 p-2">
-          <SideLink to="/" active={navActive(pathname, "sandboxes")}>
-            <Boxes className="size-4" />
-            Sandboxes
-          </SideLink>
-          <SideLink
-            to="/environments"
-            active={navActive(pathname, "environments")}
-          >
-            <Layers className="size-4" />
-            Environments
-          </SideLink>
-          {sections ? (
-            <div className="mt-3 flex flex-col gap-1 border-t border-sidebar-border pt-3">
-              <p className="px-2 pb-1 text-[11px] font-medium tracking-wider text-faint uppercase">
-                On this page
-              </p>
-              {sections.map((section) => (
-                <a
-                  key={section.id}
-                  href={`#${section.id}`}
-                  className="rounded-lg px-2 py-1.5 text-sm text-sidebar-foreground hover:bg-muted hover:text-foreground"
-                >
-                  {section.label}
-                </a>
-              ))}
-            </div>
-          ) : null}
-        </nav>
-        <div className="border-t border-sidebar-border p-2">
-          <a
-            href={docsUrl}
-            className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
-          >
-            <BookOpen className="size-4" />
-            Docs
-          </a>
+        <Brand />
+        <div className="flex min-h-0 flex-1 flex-col p-3">
+          <ConsoleNav pathname={pathname} sections={sections} />
         </div>
       </aside>
+      <Drawer
+        open={menuOpen}
+        onOpenChange={setMenuOpen}
+        side="left"
+        ariaLabel="Console"
+        className="bg-sidebar text-sidebar-foreground"
+      >
+        <Brand />
+        <div className="flex min-h-0 flex-1 flex-col p-3">
+          <ConsoleNav
+            pathname={pathname}
+            sections={sections}
+            onNavigate={() => setMenuOpen(false)}
+          />
+        </div>
+      </Drawer>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center gap-3 border-b px-4">
-          <nav className="flex min-w-0 items-center gap-2 text-sm">
-            {crumbs.map((crumb, index) => (
-              <span
-                key={crumb.label}
-                className="flex min-w-0 items-center gap-2"
-              >
-                {index > 0 ? (
-                  <span className="text-muted-foreground">/</span>
-                ) : null}
-                {crumb.to ? (
-                  <Link
-                    to={crumb.to}
-                    className="truncate text-muted-foreground hover:text-foreground"
-                  >
-                    {crumb.label}
-                  </Link>
-                ) : (
-                  <span className="truncate">{crumb.label}</span>
-                )}
-              </span>
-            ))}
-          </nav>
+        <header className="flex min-h-14 flex-wrap items-center gap-3 border-b px-4 py-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-label="Open navigation"
+            onClick={() => setMenuOpen(true)}
+          >
+            <Menu className="size-4" />
+          </Button>
+          <Breadcrumb className="min-w-0 flex-1">
+            <BreadcrumbList>
+              {crumbs.map((crumb, index) => (
+                <BreadcrumbItem key={crumb.label}>
+                  {index > 0 ? <BreadcrumbSeparator /> : null}
+                  {crumb.to ? (
+                    <BreadcrumbLink
+                      render={(props) =>
+                        crumb.to === "/environments" ? (
+                          <Link to="/environments" {...props} />
+                        ) : (
+                          <Link to="/" {...props} />
+                        )
+                      }
+                    >
+                      {crumb.label}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage className="truncate">
+                      {crumb.label}
+                    </BreadcrumbPage>
+                  )}
+                </BreadcrumbItem>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb>
           {search ? (
-            <label className="ml-auto flex h-8 w-full max-w-xs items-center gap-2 rounded-md border bg-card px-2 text-sm text-muted-foreground">
-              <Search className="size-3.5" />
-              <input
-                ref={searchRef}
-                value={search.value}
-                onChange={(event) => search.onChange(event.target.value)}
-                placeholder={search.label ?? "Search"}
-                aria-label={search.label ?? "Search"}
-                className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
-              />
-              <kbd className="hidden font-sans text-[11px] sm:inline">⌘K</kbd>
-            </label>
+            <Input
+              ref={searchRef}
+              value={search.value}
+              onChange={search.onChange}
+              placeholder={search.label ?? "Search"}
+              aria-label={search.label ?? "Search"}
+              leftIcon={<Search />}
+              rightIcon={<kbd className="pr-3 font-sans text-[11px]">⌘K</kbd>}
+              className="w-full sm:ml-auto sm:w-72"
+              classNames={{ field: "bg-card" }}
+            />
           ) : null}
         </header>
-        <div className="flex gap-2 overflow-x-auto border-b px-4 py-2 md:hidden">
-          <Link
-            to="/"
-            className={cn(
-              "text-sm whitespace-nowrap",
-              navActive(pathname, "sandboxes")
-                ? "text-foreground"
-                : "text-muted-foreground"
-            )}
-          >
-            Sandboxes
-          </Link>
-          <Link
-            to="/environments"
-            className={cn(
-              "text-sm whitespace-nowrap",
-              navActive(pathname, "environments")
-                ? "text-foreground"
-                : "text-muted-foreground"
-            )}
-          >
-            Environments
-          </Link>
-          {sections?.map((section) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
-              className="text-sm whitespace-nowrap"
-            >
-              {section.label}
-            </a>
-          ))}
-        </div>
         <main className="flex flex-1 flex-col gap-8 px-4 py-6 sm:px-6">
           {heading ? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -219,24 +187,15 @@ export function FilterTabs({
   onChange: (id: string) => void
 }) {
   return (
-    <div className="inline-flex border">
-      {options.map((option, index) => (
-        <button
-          key={option.id}
-          type="button"
-          onClick={() => onChange(option.id)}
-          className={cn(
-            "px-3 py-1 text-sm",
-            index > 0 && "border-l",
-            value === option.id
-              ? "bg-sidebar-primary text-sidebar-primary-foreground"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
-          )}
-        >
-          {option.label}
-        </button>
-      ))}
-    </div>
+    <Tabs value={value} onValueChange={onChange} variant="segment">
+      <TabsList>
+        {options.map((option) => (
+          <TabsTrigger key={option.id} value={option.id}>
+            {option.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
   )
 }
 
@@ -261,56 +220,95 @@ export function DataTable({
   )
 }
 
-function SideLink({
-  to,
-  active,
-  children,
-}: {
-  to: "/" | "/environments"
-  active: boolean
-  children: ReactNode
-}) {
-  return (
-    <Link
-      to={to}
-      className={cn(
-        "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm",
-        active
-          ? "bg-sidebar-primary text-sidebar-primary-foreground"
-          : "text-sidebar-foreground hover:bg-muted hover:text-foreground"
-      )}
-    >
-      {children}
-    </Link>
-  )
-}
-
-function navActive(
-  pathname: string,
-  item: "sandboxes" | "environments"
-): boolean {
-  switch (item) {
-    case "sandboxes":
-      return (
-        pathname === "/" ||
-        pathname.startsWith("/sandboxes") ||
-        pathname.startsWith("/scenarios")
-      )
-    case "environments":
-      return (
-        pathname === "/environments" || pathname.startsWith("/environments/")
-      )
-    default: {
-      const neverItem: never = item
-      return neverItem
-    }
-  }
-}
-
 export function ColumnHeading({ children }: { children: ReactNode }) {
   return (
     <th className="px-3 py-2 text-left text-[11px] font-medium tracking-wider text-faint uppercase">
       {children}
     </th>
   )
+}
+
+function Brand() {
+  return (
+    <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-3">
+      <img
+        src="/fabricate-mark.svg"
+        width={28}
+        height={28}
+        alt=""
+        className="size-7"
+      />
+      <span className="font-brand text-[1.45rem] leading-[0.8] font-semibold tracking-[0.025em] uppercase">
+        Fabricate
+      </span>
+    </div>
+  )
+}
+
+function ConsoleNav({
+  pathname,
+  sections,
+  onNavigate,
+}: {
+  pathname: string
+  sections?: FrameSection[]
+  onNavigate?: () => void
+}) {
+  return (
+    <div className="flex min-h-0 flex-1 flex-col gap-4">
+      <BounceSidebar
+        ariaLabel="Console"
+        className="w-full"
+        listClassName="w-full"
+        value={sidebarValue(pathname)}
+        onValueChange={() => onNavigate?.()}
+        items={[
+          {
+            id: "sandboxes",
+            label: "Sandboxes",
+            href: "/",
+            icon: <Boxes className="size-4" />,
+          },
+          {
+            id: "environments",
+            label: "Environments",
+            href: "/environments",
+            icon: <Layers className="size-4" />,
+          },
+        ]}
+      />
+      {sections && sections.length > 0 ? (
+        <div className="border-t border-sidebar-border pt-3">
+          <p className="px-2 pb-2 pl-8 text-[11px] font-medium tracking-wider text-faint uppercase">
+            On this page
+          </p>
+          <BounceSidebar
+            key={sections.map((section) => section.id).join("|")}
+            ariaLabel="On this page"
+            listClassName="w-full"
+            items={sections.map((section) => ({
+              id: section.id,
+              label: section.label,
+              href: `#${section.id}`,
+            }))}
+            onValueChange={() => onNavigate?.()}
+          />
+        </div>
+      ) : null}
+      <a
+        href={docsUrl}
+        className="mt-auto flex min-h-9 items-center gap-2 rounded-lg pr-2 pl-8 text-sm font-medium text-muted-foreground hover:text-foreground"
+      >
+        <BookOpen className="size-4" />
+        Docs
+      </a>
+    </div>
+  )
+}
+
+function sidebarValue(pathname: string): "sandboxes" | "environments" {
+  if (pathname === "/environments" || pathname.startsWith("/environments/")) {
+    return "environments"
+  }
+  return "sandboxes"
 }

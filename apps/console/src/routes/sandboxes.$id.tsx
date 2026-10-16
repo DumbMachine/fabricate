@@ -1,6 +1,7 @@
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useState, type ReactNode } from "react"
-import { Button } from "@/components/ui/button"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
+import { LinkButton, StatefulButton } from "@/components/ui/button"
 import {
   ColumnHeading,
   ConsoleFrame,
@@ -74,7 +75,7 @@ function SandboxPage() {
   if (session === null && !missing) {
     return (
       <ConsoleFrame crumbs={[{ label: "Sandboxes", to: "/" }, { label: id }]}>
-        <p className="text-sm text-muted-foreground">Loading sandbox…</p>
+        <LoadingLine>Loading sandbox…</LoadingLine>
       </ConsoleFrame>
     )
   }
@@ -85,11 +86,7 @@ function SandboxPage() {
         eyebrow="Sandbox"
         heading="Sandbox closed"
         description={error ?? "This sandbox is not running."}
-        actions={
-          <Button render={<Link to="/" />} variant="outline">
-            Back to sandboxes
-          </Button>
-        }
+        actions={<LinkButton to="/">Back to sandboxes</LinkButton>}
       >
         {null}
       </ConsoleFrame>
@@ -148,25 +145,17 @@ function contextAction(session: Session): ReactNode {
   switch (session.kind) {
     case "environment":
       return (
-        <Button
-          variant="outline"
-          render={
-            <Link to="/environments/$name" params={{ name: session.name }} />
-          }
-        >
+        <LinkButton to="/environments/$name" params={{ name: session.name }}>
           Environment
-        </Button>
+        </LinkButton>
       )
     case "scenario": {
       const scenario = session.services[0]?.scenario
       if (!scenario) return null
       return (
-        <Button
-          variant="outline"
-          render={<Link to="/scenarios/$id" params={{ id: scenario }} />}
-        >
+        <LinkButton to="/scenarios/$id" params={{ id: scenario }}>
           Explore scenario
-        </Button>
+        </LinkButton>
       )
     }
     default: {
@@ -223,14 +212,16 @@ function SandboxDetail({
               Held by fab run. It stays up until that command exits.
             </p>
           ) : (
-            <Button
+            <StatefulButton
               type="button"
               variant="outline"
-              disabled={closing}
+              size="sm"
+              state={closing ? "loading" : "idle"}
+              loadingText="Closing…"
               onClick={onClose}
             >
-              {closing ? "Closing…" : "Close sandbox"}
-            </Button>
+              Close sandbox
+            </StatefulButton>
           )}
         </div>
       }
@@ -254,7 +245,7 @@ function SandboxDetail({
           {session.proxy ? "Proxy" : "Direct"}
         </span>
       </div>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {error ? <ErrorNote>{error}</ErrorNote> : null}
 
       <section id="services" className="flex scroll-mt-6 flex-col gap-3">
         <h2 className="text-lg font-medium">Services</h2>

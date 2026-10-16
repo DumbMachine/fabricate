@@ -1,9 +1,10 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
 import { ScenarioChips } from "@/components/scenario-chip"
 import { StartActions } from "@/components/start-actions"
 import { StatusPill } from "@/components/status-pill"
-import { Button } from "@/components/ui/button"
+import { LinkButton, StatefulButton } from "@/components/ui/button"
 import {
   ColumnHeading,
   ConsoleFrame,
@@ -66,9 +67,9 @@ function EnvironmentsPage() {
         label: "Search environments",
       }}
     >
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {error ? <ErrorNote>{error}</ErrorNote> : null}
       {catalog === null && !error ? (
-        <p className="text-sm text-muted-foreground">Loading environments…</p>
+        <LoadingLine>Loading environments…</LoadingLine>
       ) : null}
       {catalog !== null && environments.length === 0 ? (
         <p className="text-sm text-muted-foreground">
@@ -145,10 +146,14 @@ function EnvironmentRow({
           {environment.services.length === 1 ? "service" : "services"}
         </p>
         {error ? (
-          <p className="mt-1 text-xs text-destructive">{error}</p>
+          <div className="mt-1">
+            <ErrorNote compact>{error}</ErrorNote>
+          </div>
         ) : null}
         {only && closeError(only.id) ? (
-          <p className="mt-1 text-xs text-destructive">{closeError(only.id)}</p>
+          <div className="mt-1">
+            <ErrorNote compact>{closeError(only.id) ?? ""}</ErrorNote>
+          </div>
         ) : null}
       </td>
       <td className="px-3 py-3">
@@ -170,27 +175,23 @@ function EnvironmentRow({
           />
         ) : (
           <div className="flex flex-wrap justify-end gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              render={
-                <Link
-                  to="/environments/$name"
-                  params={{ name: environment.name }}
-                />
-              }
+            <LinkButton
+              to="/environments/$name"
+              params={{ name: environment.name }}
             >
               Manage
-            </Button>
+            </LinkButton>
             {only && !only.anchored ? (
-              <Button
+              <StatefulButton
                 size="sm"
                 variant="outline"
-                disabled={pending !== null}
+                state={pending === `close:${only.id}` ? "loading" : "idle"}
+                loadingText="Closing…"
+                disabled={pending !== null && pending !== `close:${only.id}`}
                 onClick={() => onClose(only.id)}
               >
-                {pending === `close:${only.id}` ? "Closing…" : "Close"}
-              </Button>
+                Close
+              </StatefulButton>
             ) : null}
           </div>
         )}

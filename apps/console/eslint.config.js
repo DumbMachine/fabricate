@@ -16,6 +16,20 @@ export default [
     },
   },
   {
+    files: [
+      "src/components/motion/**/*.{ts,tsx}",
+      "src/lib/ease.ts",
+      "src/lib/hooks/**/*.{ts,tsx}",
+      "src/lib/presence-gate.tsx",
+    ],
+    rules: {
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/no-unnecessary-type-assertion": "off",
+      "no-shadow": "off",
+    },
+  },
+  {
     ignores: ["eslint.config.js", ".prettierrc", "src/routeTree.gen.ts"],
   },
 ]

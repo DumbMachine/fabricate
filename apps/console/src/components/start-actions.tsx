@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { StatefulButton } from "@/components/ui/button"
 
 export function StartActions({
   pending,
@@ -18,23 +18,27 @@ export function StartActions({
   const locked = pending !== null
   return (
     <div className="flex flex-wrap justify-end gap-2">
-      <Button
+      <StatefulButton
         type="button"
         size="sm"
-        disabled={locked}
+        state={pending === directKey ? "loading" : "idle"}
+        loadingText="Starting…"
+        disabled={locked && pending !== directKey}
         onClick={() => onStart(false)}
       >
-        {pending === directKey ? "Starting…" : startLabel}
-      </Button>
-      <Button
+        {startLabel}
+      </StatefulButton>
+      <StatefulButton
         type="button"
         variant="outline"
         size="sm"
-        disabled={locked}
+        state={pending === proxyKey ? "loading" : "idle"}
+        loadingText="Starting…"
+        disabled={locked && pending !== proxyKey}
         onClick={() => onStart(true)}
       >
-        {pending === proxyKey ? "Starting…" : proxyLabel}
-      </Button>
+        {proxyLabel}
+      </StatefulButton>
     </div>
   )
 }
