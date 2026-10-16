@@ -108,7 +108,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:cff7682f53f6b2f52921c10e1d81c79bf9b94f3fc9df464dfb02463b222e10a5",
+    "digest": "sha256:757424a5354a714fcb20a7bdf3250b4e92da343c69269c98596c3510e4ca427b",
     "roots": [
       {
         "path": "cli/run.go",
@@ -116,11 +116,11 @@
       },
       {
         "path": "engine/http",
-        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+        "digest": "sha256:a950daa8b242a211d4a3fd33c76c3e878dc210f0c026108d2f201c4418ebf36c"
       },
       {
         "path": "environment",
-        "digest": "sha256:19f5fa8429b3e9bb474fd6017504dc66cc7f1d1039ffb418d701935ae2e08ff9"
+        "digest": "sha256:f9b9df38a2fbb6a812e343882e9d945a8dff5f427ce4be4cc382d5a4f06f7fe3"
       },
       {
         "path": "environments/acme-shopify.yaml",
@@ -128,7 +128,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:37a2ba36c22aceb4f79ac60060b9820004e3e63e90bd26c674f8be54d8333919"
+        "digest": "sha256:b2052d4506a71bf32f9ecfd04b616c76f467f7fb251533e95a4be9cd655d2d30"
       },
       {
         "path": "packages/docs-content/resources/_examples/shopify-read.json",
@@ -140,7 +140,7 @@
       },
       {
         "path": "resources/shopify",
-        "digest": "sha256:507cd385dd83184029fdb4629afe3a7ee5c60a63e3ae692020e95da2f91d1546"
+        "digest": "sha256:9d11dd93d3b308399965fac96aea3adaf56a553abec9daf69ec6188821072001"
       },
       {
         "path": "scenario",

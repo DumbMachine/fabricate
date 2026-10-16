@@ -113,7 +113,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:dff3cbeb71552043d935c187ddb5ab5fa1bba8f2d82419d821b4f5c56d7852e6",
+    "digest": "sha256:7788c6060f223c80cf40764dbb53409af62f1b9588c53c308a325f5f4f311ae0",
     "roots": [
       {
         "path": "cli/run.go",
@@ -121,11 +121,11 @@
       },
       {
         "path": "engine/http",
-        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+        "digest": "sha256:a950daa8b242a211d4a3fd33c76c3e878dc210f0c026108d2f201c4418ebf36c"
       },
       {
         "path": "environment",
-        "digest": "sha256:19f5fa8429b3e9bb474fd6017504dc66cc7f1d1039ffb418d701935ae2e08ff9"
+        "digest": "sha256:f9b9df38a2fbb6a812e343882e9d945a8dff5f427ce4be4cc382d5a4f06f7fe3"
       },
       {
         "path": "environments/acme-ga4.yaml",
@@ -133,7 +133,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:37a2ba36c22aceb4f79ac60060b9820004e3e63e90bd26c674f8be54d8333919"
+        "digest": "sha256:b2052d4506a71bf32f9ecfd04b616c76f467f7fb251533e95a4be9cd655d2d30"
       },
       {
         "path": "packages/docs-content/resources/_examples/ga4-read.json",
@@ -145,7 +145,7 @@
       },
       {
         "path": "resources/ga4",
-        "digest": "sha256:1343933260454aa3754557fcb6bbc3f9cadcb53012e0fbe858082260c1c0bc8e"
+        "digest": "sha256:e61606d126922b4ba1c76db75e671161c610fb3e7e584ff7be56896220336caa"
       },
       {
         "path": "scenario",

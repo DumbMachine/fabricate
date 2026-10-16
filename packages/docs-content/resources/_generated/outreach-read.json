@@ -68,7 +68,7 @@
   },
   "provenance": {
     "algorithm": "docs-examples-root-v1",
-    "digest": "sha256:bbd4c183708498129f1cf550a88430b2b6ec6970f09c4ee3d01f513ed986ae13",
+    "digest": "sha256:c3fb1b9f8e8b838de3b8454796317543b6bf7c9ffd43e102d3295352cbb751b6",
     "roots": [
       {
         "path": "cli/run.go",
@@ -76,11 +76,11 @@
       },
       {
         "path": "engine/http",
-        "digest": "sha256:634fdb247cc440ab8378d0a9333b8aa7d89bb3f00c8b3b8cc9f6041eb3869b5c"
+        "digest": "sha256:a950daa8b242a211d4a3fd33c76c3e878dc210f0c026108d2f201c4418ebf36c"
       },
       {
         "path": "environment",
-        "digest": "sha256:19f5fa8429b3e9bb474fd6017504dc66cc7f1d1039ffb418d701935ae2e08ff9"
+        "digest": "sha256:f9b9df38a2fbb6a812e343882e9d945a8dff5f427ce4be4cc382d5a4f06f7fe3"
       },
       {
         "path": "environments/acme-outreach.yaml",
@@ -88,7 +88,7 @@
       },
       {
         "path": "httpresource",
-        "digest": "sha256:37a2ba36c22aceb4f79ac60060b9820004e3e63e90bd26c674f8be54d8333919"
+        "digest": "sha256:b2052d4506a71bf32f9ecfd04b616c76f467f7fb251533e95a4be9cd655d2d30"
       },
       {
         "path": "packages/docs-content/resources/_examples/outreach-read.json",
