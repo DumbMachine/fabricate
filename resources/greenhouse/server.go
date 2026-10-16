@@ -62,7 +62,7 @@ func newServer(ctx context.Context, dependencies httpresource.ServerDependencies
 			writeError(w, status, err.Error())
 		},
 	})
-	inner := validator(generatedHandler)
+	inner := validator(withRequestURL(generatedHandler))
 	impl.handler = http.HandlerFunc(func(w http.ResponseWriter, request *http.Request) {
 		if len(request.URL.Path) > 1 && strings.HasSuffix(request.URL.Path, "/") {
 			cloned := request.Clone(request.Context())
@@ -84,7 +84,7 @@ func (s *server) ListJobs(ctx context.Context, request generated.ListJobsRequest
 	if err != nil {
 		return nil, err
 	}
-	jobs := pageOf(w.Jobs, request.Params.Page, request.Params.PerPage)
+	jobs, link := pageOf(ctx, w.Jobs, request.Params.Page, request.Params.PerPage)
 	out := make([]generated.Job, 0, len(jobs))
 	for _, job := range jobs {
 		mapped, err := w.jobAPI(job)
@@ -93,7 +93,7 @@ func (s *server) ListJobs(ctx context.Context, request generated.ListJobsRequest
 		}
 		out = append(out, mapped)
 	}
-	return generated.ListJobs200JSONResponse(out), nil
+	return generated.ListJobs200JSONResponse{Body: out, Headers: generated.ListJobs200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) GetJob(ctx context.Context, request generated.GetJobRequestObject) (generated.GetJobResponseObject, error) {
@@ -120,12 +120,12 @@ func (s *server) ListJobStages(ctx context.Context, request generated.ListJobSta
 	if _, ok := w.jobs[request.Id]; !ok {
 		return generated.ListJobStagesdefaultJSONResponse{Body: errorBody("job not found"), StatusCode: http.StatusNotFound}, nil
 	}
-	stages := pageOf(w.stagesFor(request.Id), request.Params.Page, request.Params.PerPage)
+	stages, link := pageOf(ctx, w.stagesFor(request.Id), request.Params.Page, request.Params.PerPage)
 	out := make([]generated.JobStage, 0, len(stages))
 	for _, stage := range stages {
 		out = append(out, stageAPI(stage))
 	}
-	return generated.ListJobStages200JSONResponse(out), nil
+	return generated.ListJobStages200JSONResponse{Body: out, Headers: generated.ListJobStages200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) ListCandidates(ctx context.Context, request generated.ListCandidatesRequestObject) (generated.ListCandidatesResponseObject, error) {
@@ -133,7 +133,7 @@ func (s *server) ListCandidates(ctx context.Context, request generated.ListCandi
 	if err != nil {
 		return nil, err
 	}
-	matched := pageOf(w.filterCandidates(strPtr(request.Params.Email), strPtr(request.Params.JobId)), request.Params.Page, request.Params.PerPage)
+	matched, link := pageOf(ctx, w.filterCandidates(strPtr(request.Params.Email), strPtr(request.Params.JobId)), request.Params.Page, request.Params.PerPage)
 	out := make([]generated.Candidate, 0, len(matched))
 	for _, candidate := range matched {
 		mapped, err := w.candidateAPI(candidate)
@@ -142,7 +142,7 @@ func (s *server) ListCandidates(ctx context.Context, request generated.ListCandi
 		}
 		out = append(out, mapped)
 	}
-	return generated.ListCandidates200JSONResponse(out), nil
+	return generated.ListCandidates200JSONResponse{Body: out, Headers: generated.ListCandidates200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) GetCandidate(ctx context.Context, request generated.GetCandidateRequestObject) (generated.GetCandidateResponseObject, error) {
@@ -215,12 +215,12 @@ func (s *server) ListApplications(ctx context.Context, request generated.ListApp
 	if err != nil {
 		return nil, err
 	}
-	matched := pageOf(w.filterApplications(strPtr(request.Params.JobId), strPtr(request.Params.Status)), request.Params.Page, request.Params.PerPage)
+	matched, link := pageOf(ctx, w.filterApplications(strPtr(request.Params.JobId), strPtr(request.Params.Status)), request.Params.Page, request.Params.PerPage)
 	out, err := w.applicationsAPI(matched)
 	if err != nil {
 		return nil, err
 	}
-	return generated.ListApplications200JSONResponse(out), nil
+	return generated.ListApplications200JSONResponse{Body: out, Headers: generated.ListApplications200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) GetApplication(ctx context.Context, request generated.GetApplicationRequestObject) (generated.GetApplicationResponseObject, error) {
@@ -247,12 +247,12 @@ func (s *server) ListApplicationOffers(ctx context.Context, request generated.Li
 	if _, ok := w.applications[request.Id]; !ok {
 		return generated.ListApplicationOffersdefaultJSONResponse{Body: errorBody("application not found"), StatusCode: http.StatusNotFound}, nil
 	}
-	offers := pageOf(w.offersFor(request.Id), request.Params.Page, request.Params.PerPage)
+	offers, link := pageOf(ctx, w.offersFor(request.Id), request.Params.Page, request.Params.PerPage)
 	out := make([]generated.Offer, 0, len(offers))
 	for _, offer := range offers {
 		out = append(out, offerAPI(offer))
 	}
-	return generated.ListApplicationOffers200JSONResponse(out), nil
+	return generated.ListApplicationOffers200JSONResponse{Body: out, Headers: generated.ListApplicationOffers200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) ListApplicationScorecards(ctx context.Context, request generated.ListApplicationScorecardsRequestObject) (generated.ListApplicationScorecardsResponseObject, error) {
@@ -263,12 +263,12 @@ func (s *server) ListApplicationScorecards(ctx context.Context, request generate
 	if _, ok := w.applications[request.Id]; !ok {
 		return generated.ListApplicationScorecardsdefaultJSONResponse{Body: errorBody("application not found"), StatusCode: http.StatusNotFound}, nil
 	}
-	cards := pageOf(w.scorecardsFor(request.Id), request.Params.Page, request.Params.PerPage)
+	cards, link := pageOf(ctx, w.scorecardsFor(request.Id), request.Params.Page, request.Params.PerPage)
 	out, err := w.scorecardsAPI(cards)
 	if err != nil {
 		return nil, err
 	}
-	return generated.ListApplicationScorecards200JSONResponse(out), nil
+	return generated.ListApplicationScorecards200JSONResponse{Body: out, Headers: generated.ListApplicationScorecards200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) ListOffers(ctx context.Context, request generated.ListOffersRequestObject) (generated.ListOffersResponseObject, error) {
@@ -284,12 +284,12 @@ func (s *server) ListOffers(ctx context.Context, request generated.ListOffersReq
 		}
 		matched = append(matched, offer)
 	}
-	offers := pageOf(matched, request.Params.Page, request.Params.PerPage)
+	offers, link := pageOf(ctx, matched, request.Params.Page, request.Params.PerPage)
 	out := make([]generated.Offer, 0, len(offers))
 	for _, offer := range offers {
 		out = append(out, offerAPI(offer))
 	}
-	return generated.ListOffers200JSONResponse(out), nil
+	return generated.ListOffers200JSONResponse{Body: out, Headers: generated.ListOffers200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) GetOffer(ctx context.Context, request generated.GetOfferRequestObject) (generated.GetOfferResponseObject, error) {
@@ -310,12 +310,12 @@ func (s *server) ListScorecards(ctx context.Context, request generated.ListScore
 	if err != nil {
 		return nil, err
 	}
-	cards := pageOf(w.Scorecards, request.Params.Page, request.Params.PerPage)
+	cards, link := pageOf(ctx, w.Scorecards, request.Params.Page, request.Params.PerPage)
 	out, err := w.scorecardsAPI(cards)
 	if err != nil {
 		return nil, err
 	}
-	return generated.ListScorecards200JSONResponse(out), nil
+	return generated.ListScorecards200JSONResponse{Body: out, Headers: generated.ListScorecards200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) ListUsers(ctx context.Context, request generated.ListUsersRequestObject) (generated.ListUsersResponseObject, error) {
@@ -323,12 +323,12 @@ func (s *server) ListUsers(ctx context.Context, request generated.ListUsersReque
 	if err != nil {
 		return nil, err
 	}
-	users := pageOf(w.filterUsers(strPtr(request.Params.Email)), request.Params.Page, request.Params.PerPage)
+	users, link := pageOf(ctx, w.filterUsers(strPtr(request.Params.Email)), request.Params.Page, request.Params.PerPage)
 	out := make([]generated.User, 0, len(users))
 	for _, user := range users {
 		out = append(out, userAPI(user))
 	}
-	return generated.ListUsers200JSONResponse(out), nil
+	return generated.ListUsers200JSONResponse{Body: out, Headers: generated.ListUsers200ResponseHeaders{Link: link}}, nil
 }
 
 func (s *server) GetUser(ctx context.Context, request generated.GetUserRequestObject) (generated.GetUserResponseObject, error) {
@@ -829,7 +829,8 @@ func attachmentsAPI(items []fixtureAttachment) []generated.Attachment {
 	return out
 }
 
-func pageOf[T any](items []T, page, perPage *int) []T {
+// pageOf returns one Harvest page and its Link header value.
+func pageOf[T any](ctx context.Context, items []T, page, perPage *int) ([]T, *string) {
 	p := 1
 	if page != nil {
 		p = *page
@@ -838,18 +839,19 @@ func pageOf[T any](items []T, page, perPage *int) []T {
 	if perPage != nil {
 		size = *perPage
 	}
+	link := pageLinks(ctx, p, size, len(items))
 	if len(items) == 0 || p < 1 || size < 1 {
-		return []T{}
+		return []T{}, link
 	}
 	start := (p - 1) * size
 	if start >= len(items) {
-		return []T{}
+		return []T{}, link
 	}
 	end := start + size
 	if end > len(items) {
 		end = len(items)
 	}
-	return items[start:end]
+	return items[start:end], link
 }
 
 func strPtr(value *string) string {

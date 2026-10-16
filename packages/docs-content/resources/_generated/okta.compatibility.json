@@ -11,7 +11,9 @@
       "messagesAfter": 9,
       "messagesBefore": 8,
       "operations": {
+        "paginate": "passed",
         "read": "passed",
+        "directory": "passed",
         "write": "passed",
         "persistence": "passed"
       },
@@ -21,7 +23,9 @@
       "messagesAfter": 9,
       "messagesBefore": 8,
       "operations": {
+        "paginate": "passed",
         "read": "passed",
+        "directory": "passed",
         "write": "passed",
         "persistence": "passed"
       },
@@ -29,16 +33,18 @@
     }
   },
   "operationLabels": {
-    "read": "List users",
+    "paginate": "Page through users",
+    "read": "Retrieve user",
+    "directory": "List groups and apps",
     "write": "Create user",
     "persistence": "Confirm created user"
   },
+  "testedAt": "2026-10-16T06:31:56.991Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
   "verification": {
-    "kind": "curl",
-    "label": "HTTP client",
-    "client": "curl@8",
-    "title": "HTTP API verification"
-  },
-  "testedAt": "2026-10-03T05:54:42.295Z",
-  "testedCommit": "d4b162f2af8a885f9d7b195c95023b248003f565"
+    "client": "@okta/okta-sdk-nodejs@8.2.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
 }

@@ -247,6 +247,10 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	if hosts := resource.Descriptor().ProviderHosts; len(hosts) != 1 || hosts[0] != "acme.okta.com" || resource.Descriptor().HostPrefixes != nil {
 		t.Fatalf("descriptor hosts = %#v prefixes = %#v", hosts, resource.Descriptor().HostPrefixes)
 	}
+	wantSDK := httpresource.SDKDescriptor{Package: "@okta/okta-sdk-nodejs", Language: "javascript", DirectTest: true, ProxyTest: true}
+	if got := resource.Descriptor().SDK; got != wantSDK {
+		t.Fatalf("descriptor SDK = %#v, want %#v", got, wantSDK)
+	}
 }
 
 func TestAcmeScenarioReadWriteRead(t *testing.T) {
@@ -256,10 +260,6 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	unauthorized := request(t, handler, http.MethodGet, "/api/v1/users", "", "")
 	if unauthorized.Code != http.StatusUnauthorized || !strings.Contains(unauthorized.Body.String(), "E0000011") {
 		t.Fatalf("unauthorized = %d %s", unauthorized.Code, unauthorized.Body.String())
-	}
-	ssws := requestHeader(t, handler, http.MethodGet, "/api/v1/users", "", "SSWS "+testToken)
-	if ssws.Code != http.StatusUnauthorized {
-		t.Fatalf("SSWS token = %d %s", ssws.Code, ssws.Body.String())
 	}
 
 	users := request(t, handler, http.MethodGet, "/api/v1/users", "", testToken)
@@ -328,6 +328,48 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	}
 }
 
+// The official Okta SDKs default to authorizationMode SSWS and send
+// `Authorization: SSWS <api token>`. A direct (non-proxy) client configured
+// like a real app must authenticate; the proxy's Bearer rewrite still works.
+func TestSSWSAPITokenAndBearerStandInAuthenticate(t *testing.T) {
+	db := openTestDB(t, loadScenario(t, "acme-org.v1.json"))
+	handler := newTestHandler(t, db, &testIDs{})
+
+	for _, authorization := range []string{"SSWS " + testToken, "Bearer " + testToken} {
+		got := requestHeader(t, handler, http.MethodGet, "/api/v1/users/00u-val", "", authorization)
+		if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `"val@acme.example"`) {
+			t.Fatalf("%q = %d %s", strings.Fields(authorization)[0], got.Code, got.Body.String())
+		}
+	}
+	created := requestHeaderBody(t, handler, http.MethodPost, "/api/v1/users", `{"profile":{"firstName":"Casey","lastName":"Ng","email":"casey.ng@acme.example","login":"casey.ng@acme.example"}}`, "SSWS "+testToken)
+	if created.Code != http.StatusOK || !strings.Contains(created.Body.String(), `"casey.ng@acme.example"`) {
+		t.Fatalf("SSWS create = %d %s", created.Code, created.Body.String())
+	}
+	for _, authorization := range []string{
+		"SSWS wrong-token",
+		"Bearer wrong-token",
+		"ssws " + testToken,
+		"SSWS  " + testToken,
+		"Token " + testToken,
+		testToken,
+	} {
+		got := requestHeader(t, handler, http.MethodGet, "/api/v1/users", "", authorization)
+		if got.Code != http.StatusUnauthorized || !strings.Contains(got.Body.String(), "E0000011") {
+			t.Fatalf("%q = %d %s", authorization, got.Code, got.Body.String())
+		}
+	}
+}
+
+func requestHeaderBody(t *testing.T, handler http.Handler, method, path, body, authorization string) *httptest.ResponseRecorder {
+	t.Helper()
+	req := httptest.NewRequest(method, path, strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", authorization)
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, req)
+	return recorder
+}
+
 func TestValidationAndProviderErrorShapes(t *testing.T) {
 	db := openTestDB(t, loadScenario(t, "acme-org.v1.json"))
 	handler := newTestHandler(t, db, &testIDs{})
@@ -370,5 +412,172 @@ func TestTwoOktaInstancesAreIsolated(t *testing.T) {
 	untouched := request(t, second, http.MethodGet, "/api/v1/users/user-0001", "", testToken)
 	if untouched.Code != http.StatusNotFound {
 		t.Fatalf("second instance leaked state = %d %s", untouched.Code, untouched.Body.String())
+	}
+}
+
+// parseLinks reads RFC 8288 Link header fields into rel -> URL. It accepts
+// both separate fields and comma-separated values.
+func parseLinks(t *testing.T, header http.Header) map[string]string {
+	t.Helper()
+	links := map[string]string{}
+	for _, field := range header.Values("Link") {
+		for _, part := range strings.Split(field, ",") {
+			part = strings.TrimSpace(part)
+			target, params, ok := strings.Cut(part, ";")
+			if !ok || !strings.HasPrefix(target, "<") || !strings.HasSuffix(target, ">") {
+				t.Fatalf("malformed Link value %q", field)
+			}
+			rel := strings.TrimSpace(params)
+			if !strings.HasPrefix(rel, `rel="`) || !strings.HasSuffix(rel, `"`) {
+				t.Fatalf("malformed Link params %q", field)
+			}
+			links[strings.TrimSuffix(strings.TrimPrefix(rel, `rel="`), `"`)] = strings.Trim(target, "<>")
+		}
+	}
+	return links
+}
+
+func getURL(t *testing.T, handler http.Handler, target string) *httptest.ResponseRecorder {
+	t.Helper()
+	req := httptest.NewRequest(http.MethodGet, target, nil)
+	req.Header.Set("Authorization", "Bearer "+testToken)
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, req)
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("GET %s = %d %s", target, recorder.Code, recorder.Body.String())
+	}
+	return recorder
+}
+
+// followUserPages pages a user list purely by following rel="next" links,
+// starting from first, and returns every id in order plus the page count.
+// firstSelf is the rel="self" the first page must report; later pages must
+// report the link that was followed.
+func followUserPages(t *testing.T, handler http.Handler, first, firstSelf string, check func(page int, response *httptest.ResponseRecorder, links map[string]string)) ([]string, int) {
+	t.Helper()
+	ids := []string{}
+	seen := map[string]bool{}
+	target, wantSelf := first, firstSelf
+	pages := 0
+	for target != "" {
+		pages++
+		if pages > 20 {
+			t.Fatal("pagination did not terminate")
+		}
+		response := getURL(t, handler, target)
+		var users []generated.User
+		if err := json.Unmarshal(response.Body.Bytes(), &users); err != nil {
+			t.Fatal(err)
+		}
+		links := parseLinks(t, response.Header())
+		if links["self"] != wantSelf {
+			t.Fatalf("page %d self = %q, want %q", pages, links["self"], wantSelf)
+		}
+		if check != nil {
+			check(pages, response, links)
+		}
+		for _, user := range users {
+			if seen[user.Id] {
+				t.Fatalf("user %s returned twice", user.Id)
+			}
+			seen[user.Id] = true
+			ids = append(ids, user.Id)
+		}
+		target, wantSelf = links["next"], links["next"]
+	}
+	return ids, pages
+}
+
+func userIDs(t *testing.T, response *httptest.ResponseRecorder) []string {
+	t.Helper()
+	var users []generated.User
+	if err := json.Unmarshal(response.Body.Bytes(), &users); err != nil {
+		t.Fatal(err)
+	}
+	ids := make([]string, 0, len(users))
+	for _, user := range users {
+		ids = append(ids, user.Id)
+	}
+	return ids
+}
+
+func TestListUsersPaginatesWithLinkHeaders(t *testing.T) {
+	handler := newTestHandler(t, openTestDB(t, loadScenario(t, "acme-org.v1.json")), &testIDs{})
+
+	for _, tc := range []struct{ name, base, public string }{
+		{"direct", "http://127.0.0.1:18080", "http://127.0.0.1:18080"},
+		// Through the transparent proxy the request arrives over plain HTTP
+		// with the production Host; links must still be https://acme.okta.com.
+		{"proxy host", "http://acme.okta.com", "https://acme.okta.com"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			all := getURL(t, handler, tc.base+"/api/v1/users")
+			want := userIDs(t, all)
+			if len(want) != 8 {
+				t.Fatalf("unpaged users = %d, want 8", len(want))
+			}
+			if got := all.Header().Values("Link"); len(got) != 1 || got[0] != "<"+tc.public+`/api/v1/users>; rel="self"` {
+				t.Fatalf("single-page Link = %q", got)
+			}
+
+			ids, pages := followUserPages(t, handler, tc.base+"/api/v1/users?limit=3", tc.public+"/api/v1/users?limit=3",
+				func(page int, response *httptest.ResponseRecorder, links map[string]string) {
+					fields := response.Header().Values("Link")
+					next, ok := links["next"]
+					if !ok {
+						if page != 3 || len(fields) != 1 {
+							t.Fatalf("page %d has no rel=next (fields %q)", page, fields)
+						}
+						return
+					}
+					if len(fields) != 2 || !strings.HasSuffix(fields[0], `>; rel="self"`) || !strings.HasSuffix(fields[1], `>; rel="next"`) {
+						t.Fatalf("page %d Link fields = %q, want separate self and next fields", page, fields)
+					}
+					if !strings.HasPrefix(next, tc.public+"/api/v1/users?after=") || !strings.HasSuffix(next, "&limit=3") {
+						t.Fatalf("page %d next = %q", page, next)
+					}
+				})
+			if pages != 3 {
+				t.Fatalf("pages = %d, want 3", pages)
+			}
+			if strings.Join(ids, ",") != strings.Join(want, ",") {
+				t.Fatalf("paged ids = %v, want %v", ids, want)
+			}
+		})
+	}
+}
+
+func TestListLinksPreserveFilters(t *testing.T) {
+	handler := newTestHandler(t, openTestDB(t, loadScenario(t, "acme-org.v1.json")), &testIDs{})
+	search := url.QueryEscape(`status eq "ACTIVE"`)
+	active := userIDs(t, getURL(t, handler, "http://127.0.0.1:18080/api/v1/users?search="+search))
+	if len(active) != 7 {
+		t.Fatalf("active users = %d, want 7", len(active))
+	}
+	first := "http://127.0.0.1:18080/api/v1/users?limit=2&search=" + search
+	ids, pages := followUserPages(t, handler, first, first, func(page int, _ *httptest.ResponseRecorder, links map[string]string) {
+		if next, ok := links["next"]; ok {
+			parsed, err := url.Parse(next)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if parsed.Query().Get("search") != `status eq "ACTIVE"` || parsed.Query().Get("limit") != "2" || parsed.Query().Get("after") == "" {
+				t.Fatalf("page %d next lost query parameters: %q", page, next)
+			}
+		}
+	})
+	if pages != 4 || strings.Join(ids, ",") != strings.Join(active, ",") {
+		t.Fatalf("pages = %d ids = %v, want %v", pages, ids, active)
+	}
+
+	for _, path := range []string{"/api/v1/groups", "/api/v1/groups/00g-finance/users", "/api/v1/apps", "/api/v1/apps/0oa-shopify-admin/users"} {
+		response := getURL(t, handler, "http://acme.okta.com"+path+"?limit=1")
+		links := parseLinks(t, response.Header())
+		if links["self"] != "https://acme.okta.com"+path+"?limit=1" {
+			t.Fatalf("%s self = %q", path, links["self"])
+		}
+		if !strings.HasPrefix(links["next"], "https://acme.okta.com"+path+"?after=") {
+			t.Fatalf("%s next = %q", path, links["next"])
+		}
 	}
 }

@@ -30,6 +30,8 @@ paths:
       responses:
         '200':
           description: Jobs ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -62,6 +64,8 @@ paths:
       responses:
         '200':
           description: Stages ordered by priority, then id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -87,6 +91,8 @@ paths:
       responses:
         '200':
           description: Candidates ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -164,6 +170,8 @@ paths:
       responses:
         '200':
           description: Applications ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -196,6 +204,8 @@ paths:
       responses:
         '200':
           description: Offers ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -214,6 +224,8 @@ paths:
       responses:
         '200':
           description: Scorecards ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -235,6 +247,8 @@ paths:
       responses:
         '200':
           description: Offers ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -266,6 +280,8 @@ paths:
       responses:
         '200':
           description: Scorecards ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -287,6 +303,8 @@ paths:
       responses:
         '200':
           description: Users ordered by id.
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -331,6 +349,16 @@ components:
       in: query
       description: Page size from 1 to 500. Defaults to 100.
       schema: {type: integer, minimum: 1, maximum: 500}
+  headers:
+    Link:
+      description: >-
+        RFC 8288 pagination links in one comma-separated `Link` header, for
+        example `<https://harvest.greenhouse.io/v1/candidates?page=2&per_page=100>; rel="next",
+        <https://harvest.greenhouse.io/v1/candidates?page=4&per_page=100>; rel="last"`.
+        rel="prev" is present after page 1, rel="next" while more pages
+        remain, and rel="last" always. Links keep the request's other query
+        parameters. Clients page by following rel="next" until it is absent.
+      schema: {type: string}
   responses:
     Error:
       description: Harvest-style error.

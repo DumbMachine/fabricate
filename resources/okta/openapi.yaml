@@ -6,12 +6,13 @@ info:
     Curated Okta Management API for acme.okta.com. Operations and field names
     are transcribed from Okta's official management spec. Only the operations
     in this document are implemented. Okta API tokens use
-    `Authorization: SSWS {token}`; this contract accepts
-    `Authorization: Bearer {token}` because Fabricate's proxy injects that
-    bearer stand-in.
+    `Authorization: SSWS {token}`, which the official SDKs send by default.
+    This contract also accepts `Authorization: Bearer {token}` because
+    Fabricate's proxy injects that bearer stand-in.
 servers:
   - url: https://acme.okta.com
 security:
+  - apiToken: []
   - bearerAuth: []
 tags:
   - name: User
@@ -58,6 +59,8 @@ paths:
       responses:
         '200':
           description: Success
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -134,6 +137,8 @@ paths:
       responses:
         '200':
           description: Success
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -153,6 +158,8 @@ paths:
       responses:
         '200':
           description: Success
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -182,6 +189,8 @@ paths:
       responses:
         '200':
           description: Success
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -216,6 +225,8 @@ paths:
       responses:
         '200':
           description: Success
+          headers:
+            Link: {$ref: '#/components/headers/Link'}
           content:
             application/json:
               schema:
@@ -224,13 +235,20 @@ paths:
         default: {$ref: '#/components/responses/Error'}
 components:
   securitySchemes:
+    apiToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        Okta API token, sent as `Authorization: SSWS {API Token}`. The token
+        is the environment's synthetic secret.
     bearerAuth:
       type: http
       scheme: bearer
       description: >-
-        Synthetic bearer token. Okta's API token header is
-        `Authorization: SSWS {API Token}`. Fabricate accepts
-        `Authorization: Bearer {token}` as that stand-in.
+        Synthetic bearer token. Fabricate's proxy rewrites Authorization to
+        `Bearer {token}`, so this contract accepts it as a stand-in for the
+        SSWS API token.
   parameters:
     pathId:
       name: id
@@ -260,6 +278,16 @@ components:
       in: query
       description: Specifies the number of results in a page.
       schema: {type: integer, minimum: 1, maximum: 200}
+  headers:
+    Link:
+      description: >-
+        RFC 8288 pagination links. Okta sends each link as its own `Link`
+        header field: `<https://acme.okta.com/api/v1/users?limit=5>; rel="self"`
+        on every page, plus `<https://acme.okta.com/api/v1/users?after={id}&limit=5>; rel="next"`
+        when more results exist. The next link keeps the request's other
+        query parameters. Clients page by following rel="next" until it is
+        absent.
+      schema: {type: string}
   responses:
     Error:
       description: Okta error.

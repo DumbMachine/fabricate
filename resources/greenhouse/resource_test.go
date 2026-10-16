@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -428,5 +429,165 @@ func TestTwoGreenhouseInstancesAreIsolated(t *testing.T) {
 	untouched := request(t, second, http.MethodGet, "/v1/candidates/cand-jordan/activity_feed", "", testToken)
 	if untouched.Code != http.StatusOK || strings.Contains(untouched.Body.String(), "Only on the first instance") {
 		t.Fatalf("second instance leaked state = %d %s", untouched.Code, untouched.Body.String())
+	}
+}
+
+// parseLinks reads an RFC 8288 Link header into rel -> URL.
+func parseLinks(t *testing.T, header http.Header) map[string]string {
+	t.Helper()
+	links := map[string]string{}
+	for _, field := range header.Values("Link") {
+		for _, part := range strings.Split(field, ",") {
+			target, params, ok := strings.Cut(strings.TrimSpace(part), ";")
+			rel := strings.TrimSpace(params)
+			if !ok || !strings.HasPrefix(target, "<") || !strings.HasSuffix(target, ">") || !strings.HasPrefix(rel, `rel="`) || !strings.HasSuffix(rel, `"`) {
+				t.Fatalf("malformed Link value %q", field)
+			}
+			links[strings.TrimSuffix(strings.TrimPrefix(rel, `rel="`), `"`)] = strings.Trim(target, "<>")
+		}
+	}
+	return links
+}
+
+func getURL(t *testing.T, handler http.Handler, target string) *httptest.ResponseRecorder {
+	t.Helper()
+	req := httptest.NewRequest(http.MethodGet, target, nil)
+	req.Header.Set("Authorization", "Bearer "+testToken)
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, req)
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("GET %s = %d %s", target, recorder.Code, recorder.Body.String())
+	}
+	return recorder
+}
+
+func listIDs(t *testing.T, response *httptest.ResponseRecorder) []string {
+	t.Helper()
+	var items []struct {
+		ID string `json:"id"`
+	}
+	if err := json.Unmarshal(response.Body.Bytes(), &items); err != nil {
+		t.Fatal(err)
+	}
+	ids := make([]string, 0, len(items))
+	for _, item := range items {
+		ids = append(ids, item.ID)
+	}
+	return ids
+}
+
+// followPages pages a list purely by following rel="next" links and returns
+// every id in order plus the number of pages fetched.
+func followPages(t *testing.T, handler http.Handler, first string, check func(page int, links map[string]string)) ([]string, int) {
+	t.Helper()
+	ids := []string{}
+	seen := map[string]bool{}
+	pages := 0
+	for target := first; target != ""; {
+		pages++
+		if pages > 20 {
+			t.Fatal("pagination did not terminate")
+		}
+		response := getURL(t, handler, target)
+		links := parseLinks(t, response.Header())
+		if fields := response.Header().Values("Link"); len(fields) != 1 {
+			t.Fatalf("page %d Link fields = %q, want one comma-separated header", pages, fields)
+		}
+		check(pages, links)
+		for _, id := range listIDs(t, response) {
+			if seen[id] {
+				t.Fatalf("%s returned twice", id)
+			}
+			seen[id] = true
+			ids = append(ids, id)
+		}
+		target = links["next"]
+	}
+	return ids, pages
+}
+
+func TestListsPaginateWithLinkHeaders(t *testing.T) {
+	handler := newTestHandler(t, openTestDB(t, loadScenario(t, "acme-pipeline.v1.json")), &testIDs{})
+
+	for _, tc := range []struct{ name, base, public, path, filter string }{
+		{"candidates direct", "http://127.0.0.1:18080", "http://127.0.0.1:18080", "/v1/candidates", ""},
+		// Through the transparent proxy the request arrives over plain HTTP
+		// with the production Host; links must be https://harvest.greenhouse.io.
+		{"candidates proxy host", "http://harvest.greenhouse.io", "https://harvest.greenhouse.io", "/v1/candidates", ""},
+		{"applications filtered", "http://harvest.greenhouse.io", "https://harvest.greenhouse.io", "/v1/applications", "status=active"},
+		{"job stages", "http://127.0.0.1:18080", "http://127.0.0.1:18080", "/v1/jobs/job-support/stages", ""},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			query := "per_page=500"
+			if tc.filter != "" {
+				query = tc.filter + "&" + query
+			}
+			want := listIDs(t, getURL(t, handler, tc.base+tc.path+"?"+query))
+			if len(want) < 2 {
+				t.Fatalf("%s has %d items, need at least 2 to paginate", tc.path, len(want))
+			}
+			first := tc.base + tc.path + "?per_page=1"
+			if tc.filter != "" {
+				first += "&" + tc.filter
+			}
+			lastURL := ""
+			ids, pages := followPages(t, handler, first, func(page int, links map[string]string) {
+				if page == 1 {
+					if _, ok := links["prev"]; ok {
+						t.Fatalf("page 1 has rel=prev: %v", links)
+					}
+				} else if links["prev"] == "" {
+					t.Fatalf("page %d has no rel=prev: %v", page, links)
+				}
+				if page == len(want) {
+					if _, ok := links["next"]; ok {
+						t.Fatalf("last page still has rel=next: %v", links)
+					}
+				}
+				if lastURL == "" {
+					lastURL = links["last"]
+				} else if links["last"] != lastURL {
+					t.Fatalf("page %d rel=last = %q, want %q", page, links["last"], lastURL)
+				}
+				for rel, link := range links {
+					parsed, err := url.Parse(link)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if parsed.Scheme+"://"+parsed.Host != tc.public || parsed.Path != tc.path || parsed.Query().Get("per_page") != "1" || parsed.Query().Get("page") == "" {
+						t.Fatalf("page %d rel=%s = %q", page, rel, link)
+					}
+					if tc.filter != "" && parsed.Query().Get("status") != "active" {
+						t.Fatalf("page %d rel=%s dropped the filter: %q", page, rel, link)
+					}
+				}
+			})
+			if pages != len(want) {
+				t.Fatalf("pages = %d, want %d", pages, len(want))
+			}
+			if strings.Join(ids, ",") != strings.Join(want, ",") {
+				t.Fatalf("paged ids = %v, want %v", ids, want)
+			}
+			if parsed, err := url.Parse(lastURL); err != nil || parsed.Query().Get("page") != fmt.Sprint(len(want)) {
+				t.Fatalf("rel=last = %q, want page=%d", lastURL, len(want))
+			}
+		})
+	}
+
+	single := getURL(t, handler, "http://harvest.greenhouse.io/v1/jobs")
+	if got := single.Header().Get("Link"); got != `<https://harvest.greenhouse.io/v1/jobs?page=1&per_page=100>; rel="last"` {
+		t.Fatalf("single-page Link = %q", got)
+	}
+	middle := getURL(t, handler, "http://127.0.0.1:18080/v1/jobs/job-support/stages?page=2&per_page=1")
+	want := `<http://127.0.0.1:18080/v1/jobs/job-support/stages?page=1&per_page=1>; rel="prev", ` +
+		`<http://127.0.0.1:18080/v1/jobs/job-support/stages?page=3&per_page=1>; rel="next", ` +
+		`<http://127.0.0.1:18080/v1/jobs/job-support/stages?page=4&per_page=1>; rel="last"`
+	if got := middle.Header().Get("Link"); got != want {
+		t.Fatalf("middle-page Link = %q\nwant %q", got, want)
+	}
+	for _, path := range []string{"/v1/jobs", "/v1/offers", "/v1/scorecards", "/v1/users", "/v1/applications/app-jordan/offers", "/v1/applications/app-jordan/scorecards"} {
+		if links := parseLinks(t, getURL(t, handler, "http://harvest.greenhouse.io"+path).Header()); links["last"] == "" {
+			t.Fatalf("%s has no rel=last: %v", path, links)
+		}
 	}
 }

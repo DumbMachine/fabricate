@@ -53,9 +53,17 @@ func newServer(ctx context.Context, dependencies httpresource.ServerDependencies
 	validator := nethttpmiddleware.OapiRequestValidatorWithOptions(spec, &nethttpmiddleware.Options{
 		DoNotValidateServers: true,
 		Options: openapi3filter.Options{AuthenticationFunc: func(_ context.Context, input *openapi3filter.AuthenticationInput) error {
+			// Okta API tokens arrive as `SSWS <token>`, which is what the
+			// official SDKs send by default; the transparent proxy rewrites
+			// Authorization to `Bearer <token>`. Each scheme accepts only its
+			// own prefix.
 			header := input.RequestValidationInput.Request.Header.Get("Authorization")
-			if header != "Bearer "+token {
-				return input.NewError(errors.New("invalid synthetic bearer token"))
+			scheme := "Bearer "
+			if input.SecuritySchemeName == "apiToken" {
+				scheme = "SSWS "
+			}
+			if header != scheme+token {
+				return input.NewError(errors.New("invalid synthetic token"))
 			}
 			return nil
 		}},
@@ -73,7 +81,7 @@ func newServer(ctx context.Context, dependencies httpresource.ServerDependencies
 			writeOktaError(w, status, code, summary)
 		},
 	})
-	impl.handler = validator(generatedHandler)
+	impl.handler = validator(withRequestURL(generatedHandler))
 	return impl, nil
 }
 
@@ -89,7 +97,7 @@ func (s *server) ListUsers(ctx context.Context, request generated.ListUsersReque
 	if err != nil {
 		return generated.ListUsersdefaultJSONResponse{Body: apiError("E0000001", err.Error()), StatusCode: http.StatusBadRequest}, nil
 	}
-	page, err := paginate(filtered, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(user storedUser) string { return user.ID })
+	page, next, err := paginate(filtered, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(user storedUser) string { return user.ID })
 	if err != nil {
 		return generated.ListUsersdefaultJSONResponse{Body: apiError("E0000001", err.Error()), StatusCode: http.StatusBadRequest}, nil
 	}
@@ -97,7 +105,7 @@ func (s *server) ListUsers(ctx context.Context, request generated.ListUsersReque
 	for _, user := range page {
 		out = append(out, user.response())
 	}
-	return generated.ListUsers200JSONResponse(out), nil
+	return listUsersPage{generated.ListUsers200JSONResponse{Body: out}, pageLinks(ctx, next)}, nil
 }
 
 func (s *server) GetUser(ctx context.Context, request generated.GetUserRequestObject) (generated.GetUserResponseObject, error) {
@@ -226,7 +234,7 @@ func (s *server) ListGroups(ctx context.Context, request generated.ListGroupsReq
 		}
 		filtered = append(filtered, group)
 	}
-	page, err := paginate(filtered, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(group storedGroup) string { return group.ID })
+	page, next, err := paginate(filtered, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(group storedGroup) string { return group.ID })
 	if err != nil {
 		return generated.ListGroupsdefaultJSONResponse{Body: apiError("E0000001", err.Error()), StatusCode: http.StatusBadRequest}, nil
 	}
@@ -234,7 +242,7 @@ func (s *server) ListGroups(ctx context.Context, request generated.ListGroupsReq
 	for _, group := range page {
 		out = append(out, group.response())
 	}
-	return generated.ListGroups200JSONResponse(out), nil
+	return listGroupsPage{generated.ListGroups200JSONResponse{Body: out}, pageLinks(ctx, next)}, nil
 }
 
 func (s *server) ListGroupUsers(ctx context.Context, request generated.ListGroupUsersRequestObject) (generated.ListGroupUsersResponseObject, error) {
@@ -250,7 +258,7 @@ func (s *server) ListGroupUsers(ctx context.Context, request generated.ListGroup
 	if err != nil {
 		return nil, err
 	}
-	page, err := paginate(users, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(user storedUser) string { return user.ID })
+	page, next, err := paginate(users, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(user storedUser) string { return user.ID })
 	if err != nil {
 		return generated.ListGroupUsersdefaultJSONResponse{Body: apiError("E0000001", err.Error()), StatusCode: http.StatusBadRequest}, nil
 	}
@@ -258,7 +266,7 @@ func (s *server) ListGroupUsers(ctx context.Context, request generated.ListGroup
 	for _, user := range page {
 		out = append(out, user.response())
 	}
-	return generated.ListGroupUsers200JSONResponse(out), nil
+	return listGroupUsersPage{generated.ListGroupUsers200JSONResponse{Body: out}, pageLinks(ctx, next)}, nil
 }
 
 func (s *server) ListApplications(ctx context.Context, request generated.ListApplicationsRequestObject) (generated.ListApplicationsResponseObject, error) {
@@ -283,7 +291,7 @@ func (s *server) ListApplications(ctx context.Context, request generated.ListApp
 		}
 		filtered = append(filtered, app)
 	}
-	page, err := paginate(filtered, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(app storedApp) string { return app.ID })
+	page, next, err := paginate(filtered, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(app storedApp) string { return app.ID })
 	if err != nil {
 		return generated.ListApplicationsdefaultJSONResponse{Body: apiError("E0000001", err.Error()), StatusCode: http.StatusBadRequest}, nil
 	}
@@ -291,7 +299,7 @@ func (s *server) ListApplications(ctx context.Context, request generated.ListApp
 	for _, app := range page {
 		out = append(out, app.response())
 	}
-	return generated.ListApplications200JSONResponse(out), nil
+	return listApplicationsPage{generated.ListApplications200JSONResponse{Body: out}, pageLinks(ctx, next)}, nil
 }
 
 func (s *server) GetApplication(ctx context.Context, request generated.GetApplicationRequestObject) (generated.GetApplicationResponseObject, error) {
@@ -341,11 +349,11 @@ func (s *server) ListApplicationUsers(ctx context.Context, request generated.Lis
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	page, err := paginate(assignments, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(user generated.AppUser) string { return user.Id })
+	page, next, err := paginate(assignments, deref(request.Params.After), limitValue(request.Params.Limit, 200), func(user generated.AppUser) string { return user.Id })
 	if err != nil {
 		return generated.ListApplicationUsersdefaultJSONResponse{Body: apiError("E0000001", err.Error()), StatusCode: http.StatusBadRequest}, nil
 	}
-	return generated.ListApplicationUsers200JSONResponse(page), nil
+	return listApplicationUsersPage{generated.ListApplicationUsers200JSONResponse{Body: page}, pageLinks(ctx, next)}, nil
 }
 
 type storedUser struct {
@@ -631,7 +639,9 @@ func splitAnd(expr string) []string {
 	}
 }
 
-func paginate[T any](items []T, after string, limit int, id func(T) string) ([]T, error) {
+// paginate returns one page and, when more results follow it, the cursor
+// for the next page (the id of the last item on this page).
+func paginate[T any](items []T, after string, limit int, id func(T) string) ([]T, string, error) {
 	start := 0
 	if after != "" {
 		found := false
@@ -643,14 +653,14 @@ func paginate[T any](items []T, after string, limit int, id func(T) string) ([]T
 			}
 		}
 		if !found {
-			return nil, fmt.Errorf("invalid after cursor")
+			return nil, "", fmt.Errorf("invalid after cursor")
 		}
 	}
 	if limit <= 0 {
 		limit = 200
 	}
 	if start > len(items) {
-		return []T{}, nil
+		return []T{}, "", nil
 	}
 	end := start + limit
 	if end > len(items) {
@@ -660,7 +670,11 @@ func paginate[T any](items []T, after string, limit int, id func(T) string) ([]T
 	if page == nil {
 		page = []T{}
 	}
-	return page, nil
+	next := ""
+	if end < len(items) && len(page) > 0 {
+		next = id(page[len(page)-1])
+	}
+	return page, next, nil
 }
 
 func uniqueIDs(values *[]string) []string {

@@ -16,8 +16,35 @@ resource version is `2024-07`, the Acme world contract, on host `acme.okta.com`.
 
 ## Authentication
 
-Okta's `apiToken` scheme sends `Authorization: SSWS {API Token}`. Okta also
-accepts an OAuth access token as `Authorization: Bearer {access_token}`.
-Fabricate's proxy overwrites `Authorization` with `Bearer <token>` from the
-secret key `token`. This resource accepts that bearer stand-in and does not
-require the `SSWS` prefix.
+Okta's `apiToken` scheme sends `Authorization: SSWS {API Token}`, and the
+official SDKs (`@okta/okta-sdk-nodejs`, okta-sdk-golang) default to it. Okta
+also accepts an OAuth access token as `Authorization: Bearer {access_token}`.
+The contract declares both schemes. A direct client configured like a real
+app sends `SSWS <token>` with the environment's secret key `token`; through
+the transparent proxy, Fabricate overwrites `Authorization` with
+`Bearer <token>`, and this resource accepts that bearer stand-in. Each scheme
+must use its exact prefix and the synthetic token.
+
+The official-client check is `conformance/okta-sdk.mjs`
+(`@okta/okta-sdk-nodejs`, pinned in `conformance/sdk.json`). It pages users
+with `limit=3` through the SDK's collection iterator, which follows only the
+`rel="next"` links described below.
+
+## Pagination
+
+List endpoints take `limit` (1 to 200, default 200) and the opaque `after`
+cursor, which is the id of the last object on the previous page. Like Okta,
+every list response carries a `rel="self"` link, and a `rel="next"` link when
+more results exist, as separate `Link` header fields:
+
+```text
+Link: <https://acme.okta.com/api/v1/users?limit=5>; rel="self"
+Link: <https://acme.okta.com/api/v1/users?after=00u-leo&limit=5>; rel="next"
+```
+
+The next link keeps the request's other query parameters (`q`, `search`,
+`filter`, `limit`) with keys sorted; the last page has no `rel="next"`. Links
+are absolute: through the transparent proxy the host is `acme.okta.com` over
+`https`; direct requests use the local listener's scheme and `host:port`. The
+generated strict response writer can only set one `Link` value, so the
+handlers add the separate fields themselves.

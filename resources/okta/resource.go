@@ -28,7 +28,7 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 		ID: "okta", DisplayName: "Okta", Version: "2024-07", OpenAPIVersion: "3.0.3",
 		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"acme.okta.com"},
-		SDK:           httpresource.SDKDescriptor{Package: "curl", Language: "http", DirectTest: true, ProxyTest: true},
+		SDK:           httpresource.SDKDescriptor{Package: "@okta/okta-sdk-nodejs", Language: "javascript", DirectTest: true, ProxyTest: true},
 	}
 }
 

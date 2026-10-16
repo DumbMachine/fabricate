@@ -1,0 +1,4 @@
+{
+  "package": "@okta/okta-sdk-nodejs@8.2.0",
+  "entry": "okta-sdk.mjs"
+}

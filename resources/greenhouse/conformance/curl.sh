@@ -41,6 +41,26 @@ candidates=$(read_json "$base/v1/candidates")
 echo "$candidates" | jq -e 'any(.[]; any(.email_addresses[]; .value == "jordan.hale@acme.example"))' >/dev/null
 echo "$candidates" | jq -e 'any(.[]; any(.email_addresses[]; .value == "sasha.iqbal@example.com"))' >/dev/null
 
+# Page through candidates only by following Link rel="next".
+link_headers=$(mktemp)
+trap 'rm -f "$link_headers"' EXIT
+next_link() {
+  tr -d '\r' <"$1" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//' || true
+}
+paged='[]'
+pages=0
+next="$base/v1/candidates?per_page=1"
+while [ -n "$next" ]; do
+  pages=$((pages + 1))
+  test "$pages" -le 10
+  page=$(read_json -D "$link_headers" "$next")
+  tr -d '\r' <"$link_headers" | grep -i '^link: .*rel="last"' >/dev/null
+  paged=$(jq -c --argjson page "$page" '. + [$page[].id]' <<<"$paged")
+  next=$(next_link "$link_headers")
+done
+test "$pages" -ge 2
+jq -e --argjson all "$candidates" '. == [$all[].id]' <<<"$paged" >/dev/null
+
 jordan=$(read_json "$base/v1/candidates/cand-jordan")
 echo "$jordan" | jq -e 'any(.applications[]; .id == "app-jordan" and .current_stage.name == "Offer")' >/dev/null
 

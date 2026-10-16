@@ -15,14 +15,15 @@ directory state across requests.
 | | Details |
 | --- | --- |
 | API | Okta Management API 2024-07 |
-| Auth | Bearer stand-in for Okta `SSWS` API tokens |
+| Auth | Okta `SSWS` API token, or a Bearer stand-in |
 | Hosts | `acme.okta.com` |
 | Direct URL | Yes |
 | Transparent proxy | Yes |
 
-Okta API tokens authenticate with `Authorization: SSWS <api_token>`. Fabricate's
-direct URL and transparent proxy both present `Authorization: Bearer <token>`,
-and this resource accepts that bearer value.
+Okta API tokens authenticate with `Authorization: SSWS <api_token>`. This
+resource accepts that header with the environment token, as the official Okta
+SDK sends it. It also accepts `Authorization: Bearer <token>`, which is what
+Fabricate's transparent proxy presents.
 
 ### Start it with a direct URL
 
@@ -118,7 +119,7 @@ and stops at 25 rows.
 Fabricate works through any client that can reach an API: `curl`, application
 code, or an official SDK. We continuously test integrations to ensure they
 behave as expected. The latest Okta check ran against the Acme Okta
-environment with curl:
+environment with curl and the official `@okta/okta-sdk-nodejs` client:
 
 <IntegrationCompatibility resource="okta" />
 

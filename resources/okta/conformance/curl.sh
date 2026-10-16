@@ -40,6 +40,26 @@ echo "$users" | jq -e 'map(select(.profile.email == "jordan.hale@acme.example" a
 echo "$users" | jq -e 'map(select(.status == "DEPROVISIONED")) | length == 0' >/dev/null
 echo "$users" | jq -e 'length == 8' >/dev/null
 
+# Page through users only by following Link rel="next", as the Okta SDKs do.
+link_headers=$(mktemp)
+trap 'rm -f "$link_headers"' EXIT
+next_link() {
+  tr -d '\r' <"$1" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//' || true
+}
+paged='[]'
+pages=0
+next="$base/api/v1/users?limit=3"
+while [ -n "$next" ]; do
+  pages=$((pages + 1))
+  test "$pages" -le 10
+  page=$(read_json -D "$link_headers" "$next")
+  tr -d '\r' <"$link_headers" | grep -i '^link: <[^>]*>; rel="self"$' >/dev/null
+  paged=$(jq -c --argjson page "$page" '. + [$page[].id]' <<<"$paged")
+  next=$(next_link "$link_headers")
+done
+test "$pages" -eq 3
+jq -e --argjson all "$users" '. == [$all[].id]' <<<"$paged" >/dev/null
+
 deprovisioned=$(read_json "$base/api/v1/users?search=status%20eq%20%22DEPROVISIONED%22")
 echo "$deprovisioned" | jq -e '.[0].profile.login == "old.contractor@acme.example"' >/dev/null
 
