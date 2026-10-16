@@ -1,7 +1,11 @@
-import type { Catalog, SandboxKind, Session } from "@/lib/types"
+import type { Catalog, SandboxKind, ScenarioView, Session } from "@/lib/types"
 
 export async function getCatalog(): Promise<Catalog> {
   return request<Catalog>("/api/catalog")
+}
+
+export async function getScenario(id: string): Promise<ScenarioView> {
+  return request<ScenarioView>(`/api/scenarios/${encodeURIComponent(id)}`)
 }
 
 export async function listSessions(): Promise<Session[]> {

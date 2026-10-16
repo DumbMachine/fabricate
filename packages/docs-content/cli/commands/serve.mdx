@@ -3,9 +3,12 @@ title: fab serve
 description: Open a local console to start, connect, and close sandboxes.
 ---
 
-`fab serve` starts Fabricate's managed console on your machine. The console
-lists official environments and scenarios. Starting one keeps it running until
-you close it, or until you stop `fab serve`.
+`fab serve` starts Fabricate's managed console on your machine. Sandboxes
+shows what is running and which scenario each service loaded. Environments
+lists each official environment, the resources and scenarios inside it, and
+starts that whole set together. A scenario page shows the seeded records
+before you start it. A sandbox keeps running until you close it, or until you
+stop `fab serve`.
 
 ```bash
 fab serve
@@ -25,12 +28,14 @@ console can start more sandboxes next to it.
 
 ## Start
 
-Each environment card starts that manifest, the same set of services `fab run`
-would start. Each scenario card starts one resource with that scenario.
+**Start all** on an environment starts that manifest, the same set of services
+`fab run` would start. **Start** on a scenario starts one resource with that
+scenario. The running sandbox lists those scenario ids, and each id opens the
+seeded records.
 
 **Start** gives every service a loopback URL and an ephemeral bearer token.
-**Start with proxy** also starts the transparent proxy so clients can keep
-production hostnames. The proxy replaces `Authorization` on routed hosts.
+**Proxy** also starts the transparent proxy so clients can keep production
+hostnames. The proxy replaces `Authorization` on routed hosts.
 
 ## Connect
 

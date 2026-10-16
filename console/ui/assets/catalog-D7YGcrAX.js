@@ -1,0 +1,1 @@
+function e(e){let t=[];for(let n of e){let e=t[t.length-1];t.length>0&&e.resource===n.resource?e.scenarios.push(n):t.push({resource:n.resource,displayName:n.displayName,scenarios:[n]})}return t}function t(e,t){return e.filter(e=>e.kind===`environment`&&e.name===t)}export{t as n,e as t};

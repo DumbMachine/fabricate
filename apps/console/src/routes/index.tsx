@@ -1,5 +1,9 @@
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
-import { useEffect, useMemo, useState } from "react"
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { useMemo, useState } from "react"
+import { ScenarioChips } from "@/components/scenario-chip"
+import { ResourceIcon } from "@/components/resource-icon"
+import { StartActions } from "@/components/start-actions"
+import { StatusPill } from "@/components/status-pill"
 import { Button } from "@/components/ui/button"
 import {
   ColumnHeading,
@@ -7,174 +11,122 @@ import {
   DataTable,
   FilterTabs,
 } from "@/components/console-frame"
-import { StatusPill } from "@/components/status-pill"
-import { closeSandbox, getCatalog, listSessions, startSandbox } from "@/lib/api"
-import { formatTime, kindLabel } from "@/lib/format"
-import type {
-  Catalog,
-  CatalogEnvironment,
-  CatalogScenario,
-  SandboxKind,
-  Session,
-} from "@/lib/types"
+import { groupScenarios } from "@/lib/catalog"
+import { formatTime, kindLabel, matchesQuery } from "@/lib/format"
+import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
+import type { CatalogScenario, Session } from "@/lib/types"
 
-export const Route = createFileRoute("/")({ component: CatalogPage })
+export const Route = createFileRoute("/")({ component: SandboxesPage })
 
-function CatalogPage() {
-  const navigate = useNavigate()
-  const [catalog, setCatalog] = useState<Catalog | null>(null)
-  const [sessions, setSessions] = useState<Session[]>([])
-  const [catalogError, setCatalogError] = useState<string | null>(null)
+type RunningFilter = "all" | "direct" | "proxy"
+
+function SandboxesPage() {
+  const { catalog, error: catalogError } = useCatalog()
+  const [sessions, setSessions] = useSessions()
+  const { pending, errors, start, close } = useSandboxActions()
   const [query, setQuery] = useState("")
-  const [tab, setTab] = useState<"environments" | "scenarios">("environments")
-  const [runningFilter, setRunningFilter] = useState<
-    "all" | "direct" | "proxy"
-  >("all")
-  const [pending, setPending] = useState<string | null>(null)
-  const [errors, setErrors] = useState<Record<string, string>>({})
-
-  useEffect(() => {
-    let cancelled = false
-    getCatalog()
-      .then((next) => {
-        if (!cancelled) setCatalog(next)
-      })
-      .catch((error: unknown) => {
-        if (!cancelled) setCatalogError(message(error))
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-    const tick = () => {
-      listSessions()
-        .then((next) => {
-          if (!cancelled) setSessions(next)
-        })
-        .catch(() => {
-          if (!cancelled) setSessions([])
-        })
-    }
-    tick()
-    const timer = window.setInterval(tick, 2000)
-    return () => {
-      cancelled = true
-      window.clearInterval(timer)
-    }
-  }, [])
-
-  const visibleSessions = useMemo(
+  const [runningFilter, setRunningFilter] = useState<RunningFilter>("all")
+  const visibleSessions = useMemo(() => {
+    const loaded = sessions ?? []
+    return loaded.filter((session) => {
+      if (runningFilter === "proxy" && !session.proxy) return false
+      if (runningFilter === "direct" && session.proxy) return false
+      return matchesQuery(query, [
+        session.name,
+        session.label,
+        session.kind,
+        session.id,
+        ...session.services.flatMap((service) => [
+          service.name,
+          service.resource,
+          service.displayName,
+          service.scenario,
+        ]),
+      ])
+    })
+  }, [sessions, runningFilter, query])
+  const groups = useMemo(
     () =>
-      sessions.filter((session) => {
-        if (runningFilter === "proxy" && !session.proxy) return false
-        if (runningFilter === "direct" && session.proxy) return false
-        return matches(query, [
-          session.name,
-          session.label,
-          session.kind,
-          session.id,
-        ])
-      }),
-    [sessions, runningFilter, query]
-  )
-  const environments = useMemo(
-    () =>
-      (catalog?.environments ?? []).filter((environment) =>
-        matches(query, [
-          environment.name,
-          environment.label,
-          ...environment.services.flatMap((service) => [
-            service.name,
-            service.resource,
-            service.displayName,
-            service.scenario,
-          ]),
-        ])
-      ),
-    [catalog, query]
-  )
-  const scenarios = useMemo(
-    () =>
-      (catalog?.scenarios ?? []).filter((scenario) =>
-        matches(query, [
-          scenario.id,
-          scenario.resource,
-          scenario.displayName,
-          ...scenario.providerHosts,
-        ])
+      groupScenarios(
+        (catalog?.scenarios ?? []).filter((scenario) =>
+          matchesQuery(query, [
+            scenario.id,
+            scenario.resource,
+            scenario.displayName,
+            scenario.resourceVersion,
+            ...scenario.providerHosts,
+          ])
+        )
       ),
     [catalog, query]
   )
 
-  async function start(kind: SandboxKind, id: string, proxy: boolean) {
-    const key = `${kind}:${id}`
-    setPending(`${key}:${proxy ? "proxy" : "direct"}`)
-    setErrors((current) => ({ ...current, [key]: "" }))
-    try {
-      const session = await startSandbox(kind, id, proxy)
-      await navigate({ to: "/sandboxes/$id", params: { id: session.id } })
-    } catch (error: unknown) {
-      setErrors((current) => ({ ...current, [key]: message(error) }))
-    } finally {
-      setPending(null)
+  async function onStart(id: string, proxy: boolean) {
+    await start("scenario", id, proxy, "sandbox")
+  }
+
+  async function onClose(id: string) {
+    const ok = await close(id)
+    if (ok) {
+      setSessions((current) =>
+        (current ?? []).filter((session) => session.id !== id)
+      )
     }
   }
 
-  async function close(id: string) {
-    setPending(`close:${id}`)
-    try {
-      await closeSandbox(id)
-      setSessions((current) => current.filter((session) => session.id !== id))
-    } catch (error: unknown) {
-      setErrors((current) => ({ ...current, [`close:${id}`]: message(error) }))
-    } finally {
-      setPending(null)
-    }
-  }
-
-  const directCount = sessions.filter((session) => !session.proxy).length
-  const proxyCount = sessions.filter((session) => session.proxy).length
+  const loaded = sessions ?? []
+  const directCount = loaded.filter((session) => !session.proxy).length
+  const proxyCount = loaded.filter((session) => session.proxy).length
 
   return (
     <ConsoleFrame
       crumbs={[{ label: "Sandboxes" }]}
-      heading="Overview"
-      description="Start an environment or a scenario, then connect your app or hand the sandbox to a coding agent."
-      search={{ value: query, onChange: setQuery }}
+      heading="Sandboxes"
+      description="A running sandbox shows the scenario that is active. Start one scenario here, or start every service in an environment together."
+      search={{
+        value: query,
+        onChange: setQuery,
+        label: "Search sandboxes and scenarios",
+      }}
     >
       <section className="flex flex-col gap-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-lg font-medium">Running</h2>
           <FilterTabs
             value={runningFilter}
-            onChange={(id) =>
-              setRunningFilter(id as "all" | "direct" | "proxy")
-            }
+            onChange={(id) => {
+              if (isRunningFilter(id)) setRunningFilter(id)
+            }}
             options={[
-              { id: "all", label: `All (${sessions.length})` },
+              { id: "all", label: `All (${loaded.length})` },
               { id: "direct", label: `Direct (${directCount})` },
               { id: "proxy", label: `Proxy (${proxyCount})` },
             ]}
           />
         </div>
-        {visibleSessions.length === 0 ? (
+        {sessions === null ? (
+          <p className="text-sm text-muted-foreground">Loading sandboxes…</p>
+        ) : visibleSessions.length === 0 ? (
           <div className="border bg-card px-4 py-8">
             <h3 className="text-lg font-medium">Nothing is running</h3>
             <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-              Start an environment or a scenario from the catalog. A sandbox
-              stays on this machine until you close it.
+              Start a scenario below, or open{" "}
+              <Link
+                to="/environments"
+                className="underline decoration-muted-foreground/50 underline-offset-2"
+              >
+                Environments
+              </Link>{" "}
+              to bring up a whole set of services with one button.
             </p>
           </div>
         ) : (
-          <DataTable>
+          <DataTable className="min-w-[880px]">
             <thead>
               <tr>
-                <ColumnHeading>Name</ColumnHeading>
+                <ColumnHeading>Sandbox</ColumnHeading>
+                <ColumnHeading>Active scenarios</ColumnHeading>
                 <ColumnHeading>Status</ColumnHeading>
-                <ColumnHeading>Kind</ColumnHeading>
                 <ColumnHeading>Mode</ColumnHeading>
                 <ColumnHeading>Started</ColumnHeading>
                 <ColumnHeading> </ColumnHeading>
@@ -182,55 +134,13 @@ function CatalogPage() {
             </thead>
             <tbody>
               {visibleSessions.map((session) => (
-                <tr key={session.id} className="border-t">
-                  <td className="px-3 py-3">
-                    <Link
-                      to="/sandboxes/$id"
-                      params={{ id: session.id }}
-                      className="underline decoration-muted-foreground/50 underline-offset-2"
-                    >
-                      {session.label}
-                    </Link>
-                    <p className="font-mono text-xs text-muted-foreground">
-                      {session.name}
-                    </p>
-                    {errors[`close:${session.id}`] ? (
-                      <p className="mt-1 text-xs text-destructive">
-                        {errors[`close:${session.id}`]}
-                      </p>
-                    ) : null}
-                  </td>
-                  <td className="px-3 py-3">
-                    {session.anchored ? (
-                      <StatusPill tone="held">Held by fab run</StatusPill>
-                    ) : (
-                      <StatusPill tone="ready">Ready</StatusPill>
-                    )}
-                  </td>
-                  <td className="px-3 py-3 text-muted-foreground">
-                    {kindLabel(session.kind)}
-                  </td>
-                  <td className="px-3 py-3">
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-xs">
-                      {session.proxy ? "Proxy" : "Direct"}
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-muted-foreground">
-                    {formatTime(session.startedAt)}
-                  </td>
-                  <td className="px-3 py-3 text-right">
-                    {session.anchored ? null : (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={pending === `close:${session.id}`}
-                        onClick={() => void close(session.id)}
-                      >
-                        Close
-                      </Button>
-                    )}
-                  </td>
-                </tr>
+                <RunningRow
+                  key={session.id}
+                  session={session}
+                  pending={pending}
+                  error={errors[`close:${session.id}`]}
+                  onClose={() => void onClose(session.id)}
+                />
               ))}
             </tbody>
           </DataTable>
@@ -238,216 +148,173 @@ function CatalogPage() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-medium">Catalog</h2>
-          <FilterTabs
-            value={tab}
-            onChange={(id) => setTab(id as "environments" | "scenarios")}
-            options={[
-              {
-                id: "environments",
-                label: `Environments (${catalog?.environments.length ?? 0})`,
-              },
-              {
-                id: "scenarios",
-                label: `Scenarios (${catalog?.scenarios.length ?? 0})`,
-              },
-            ]}
-          />
-        </div>
+        <h2 className="text-lg font-medium">
+          Scenarios ({catalog?.scenarios.length ?? 0})
+        </h2>
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          Scenarios are grouped by resource. Open one to inspect its seeded
+          records, or start it as its own sandbox.
+        </p>
         {catalogError ? (
           <p className="text-sm text-destructive">{catalogError}</p>
         ) : null}
         {catalog === null && !catalogError ? (
-          <p className="text-sm text-muted-foreground">Loading catalog…</p>
+          <p className="text-sm text-muted-foreground">Loading scenarios…</p>
         ) : null}
-        {tab === "environments" ? (
-          <EnvironmentTable
-            environments={environments}
-            pending={pending}
-            errors={errors}
-            onStart={(name, proxy) => void start("environment", name, proxy)}
-          />
-        ) : (
-          <ScenarioTable
-            scenarios={scenarios}
-            pending={pending}
-            errors={errors}
-            onStart={(id, proxy) => void start("scenario", id, proxy)}
-          />
-        )}
+        {catalog !== null && groups.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No scenarios match that search.
+          </p>
+        ) : null}
+        {groups.map((group) => (
+          <section key={group.resource} className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <ResourceIcon id={group.resource} />
+              <h3 className="font-medium">{group.displayName}</h3>
+              <span className="font-mono text-xs text-muted-foreground">
+                {group.resource}
+              </span>
+            </div>
+            <DataTable>
+              <thead>
+                <tr>
+                  <ColumnHeading>Scenario</ColumnHeading>
+                  <ColumnHeading>Version</ColumnHeading>
+                  <ColumnHeading>Production hostnames</ColumnHeading>
+                  <ColumnHeading> </ColumnHeading>
+                </tr>
+              </thead>
+              <tbody>
+                {group.scenarios.map((scenario) => (
+                  <ScenarioRow
+                    key={scenario.id}
+                    scenario={scenario}
+                    pending={pending}
+                    error={errors[`scenario:${scenario.id}`]}
+                    onStart={(proxy) => void onStart(scenario.id, proxy)}
+                  />
+                ))}
+              </tbody>
+            </DataTable>
+          </section>
+        ))}
       </section>
     </ConsoleFrame>
   )
 }
 
-function EnvironmentTable({
-  environments,
+function RunningRow({
+  session,
   pending,
-  errors,
-  onStart,
+  error,
+  onClose,
 }: {
-  environments: CatalogEnvironment[]
+  session: Session
   pending: string | null
-  errors: Record<string, string>
-  onStart: (name: string, proxy: boolean) => void
+  error?: string
+  onClose: () => void
 }) {
-  if (environments.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">
-        No environments match that search.
-      </p>
-    )
-  }
   return (
-    <DataTable>
-      <thead>
-        <tr>
-          <ColumnHeading>Environment</ColumnHeading>
-          <ColumnHeading>Services</ColumnHeading>
-          <ColumnHeading> </ColumnHeading>
-        </tr>
-      </thead>
-      <tbody>
-        {environments.map((environment) => {
-          const key = `environment:${environment.name}`
-          return (
-            <tr key={environment.name} className="border-t">
-              <td className="px-3 py-3">
-                <p className="font-medium">{environment.label}</p>
-                <p className="font-mono text-xs text-muted-foreground">
-                  {environment.name}
-                </p>
-                {errors[key] ? (
-                  <p className="mt-1 text-xs text-destructive">{errors[key]}</p>
-                ) : null}
-              </td>
-              <td className="px-3 py-3 text-muted-foreground">
-                {environment.services
-                  .map((service) => service.displayName)
-                  .join(", ")}
-              </td>
-              <td className="px-3 py-3">
-                <StartActions
-                  pending={pending}
-                  directKey={`${key}:direct`}
-                  proxyKey={`${key}:proxy`}
-                  onStart={(proxy) => onStart(environment.name, proxy)}
-                />
-              </td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </DataTable>
+    <tr className="border-t align-top">
+      <td className="px-3 py-3">
+        <Link
+          to="/sandboxes/$id"
+          params={{ id: session.id }}
+          className="underline decoration-muted-foreground/50 underline-offset-2"
+        >
+          {session.label}
+        </Link>
+        <p className="font-mono text-xs text-muted-foreground">
+          {session.name}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          {kindLabel(session.kind)}
+        </p>
+        {error ? (
+          <p className="mt-1 text-xs text-destructive">{error}</p>
+        ) : null}
+      </td>
+      <td className="px-3 py-3">
+        <ScenarioChips services={session.services} />
+      </td>
+      <td className="px-3 py-3">
+        {session.anchored ? (
+          <StatusPill tone="held">Held by fab run</StatusPill>
+        ) : (
+          <StatusPill tone="ready">Ready</StatusPill>
+        )}
+      </td>
+      <td className="px-3 py-3">
+        <span className="rounded bg-muted px-1.5 py-0.5 text-xs">
+          {session.proxy ? "Proxy" : "Direct"}
+        </span>
+      </td>
+      <td className="px-3 py-3 text-muted-foreground">
+        {formatTime(session.startedAt)}
+      </td>
+      <td className="px-3 py-3 text-right">
+        {session.anchored ? null : (
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={pending !== null}
+            onClick={onClose}
+          >
+            {pending === `close:${session.id}` ? "Closing…" : "Close"}
+          </Button>
+        )}
+      </td>
+    </tr>
   )
 }
 
-function ScenarioTable({
-  scenarios,
+function ScenarioRow({
+  scenario,
   pending,
-  errors,
+  error,
   onStart,
 }: {
-  scenarios: CatalogScenario[]
+  scenario: CatalogScenario
   pending: string | null
-  errors: Record<string, string>
-  onStart: (id: string, proxy: boolean) => void
-}) {
-  if (scenarios.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">
-        No scenarios match that search.
-      </p>
-    )
-  }
-  return (
-    <DataTable>
-      <thead>
-        <tr>
-          <ColumnHeading>Scenario</ColumnHeading>
-          <ColumnHeading>Resource</ColumnHeading>
-          <ColumnHeading>Production hostnames</ColumnHeading>
-          <ColumnHeading> </ColumnHeading>
-        </tr>
-      </thead>
-      <tbody>
-        {scenarios.map((scenario) => {
-          const key = `scenario:${scenario.id}`
-          return (
-            <tr key={scenario.id} className="border-t">
-              <td className="px-3 py-3">
-                <p className="font-medium">{scenario.displayName}</p>
-                <p className="font-mono text-xs text-muted-foreground">
-                  {scenario.id}
-                </p>
-                {errors[key] ? (
-                  <p className="mt-1 text-xs text-destructive">{errors[key]}</p>
-                ) : null}
-              </td>
-              <td className="px-3 py-3 text-muted-foreground">
-                {scenario.resource}
-              </td>
-              <td className="px-3 py-3 text-muted-foreground">
-                {scenario.providerHosts.join(", ") || "None"}
-              </td>
-              <td className="px-3 py-3">
-                <StartActions
-                  pending={pending}
-                  directKey={`${key}:direct`}
-                  proxyKey={`${key}:proxy`}
-                  onStart={(proxy) => onStart(scenario.id, proxy)}
-                />
-              </td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </DataTable>
-  )
-}
-
-function StartActions({
-  pending,
-  directKey,
-  proxyKey,
-  onStart,
-}: {
-  pending: string | null
-  directKey: string
-  proxyKey: string
+  error?: string
   onStart: (proxy: boolean) => void
 }) {
-  const busy = pending === directKey || pending === proxyKey
+  const key = `scenario:${scenario.id}`
   return (
-    <div className="flex justify-end gap-2">
-      <Button
-        type="button"
-        size="sm"
-        disabled={busy}
-        onClick={() => onStart(false)}
-      >
-        {pending === directKey ? "Starting…" : "Start"}
-      </Button>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={busy}
-        onClick={() => onStart(true)}
-      >
-        {pending === proxyKey ? "Starting…" : "Proxy"}
-      </Button>
-    </div>
+    <tr className="border-t align-top">
+      <td className="px-3 py-3">
+        <ScenarioChips
+          services={[{ resource: scenario.resource, scenario: scenario.id }]}
+        />
+        {error ? (
+          <p className="mt-1 text-xs text-destructive">{error}</p>
+        ) : null}
+      </td>
+      <td className="px-3 py-3 font-mono text-xs text-muted-foreground">
+        {scenario.resourceVersion}
+      </td>
+      <td className="px-3 py-3 text-muted-foreground">
+        {scenario.providerHosts.join(", ") || "None"}
+      </td>
+      <td className="px-3 py-3">
+        <StartActions
+          pending={pending}
+          directKey={`${key}:direct`}
+          proxyKey={`${key}:proxy`}
+          onStart={onStart}
+        />
+      </td>
+    </tr>
   )
 }
 
-function matches(query: string, parts: string[]): boolean {
-  const needle = query.trim().toLowerCase()
-  if (!needle) return true
-  return parts.join("\n").toLowerCase().includes(needle)
-}
-
-function message(error: unknown): string {
-  return error instanceof Error ? error.message : "Request failed"
+function isRunningFilter(value: string): value is RunningFilter {
+  switch (value) {
+    case "all":
+    case "direct":
+    case "proxy":
+      return true
+    default:
+      return false
+  }
 }

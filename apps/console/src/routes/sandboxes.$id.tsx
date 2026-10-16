@@ -1,5 +1,5 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { Button } from "@/components/ui/button"
 import {
   ColumnHeading,
@@ -8,6 +8,8 @@ import {
   FilterTabs,
 } from "@/components/console-frame"
 import { CopyButton } from "@/components/copy-button"
+import { ScenarioChips } from "@/components/scenario-chip"
+import { ServiceIdentity } from "@/components/service-identity"
 import { StatusPill } from "@/components/status-pill"
 import { closeSandbox, getSession } from "@/lib/api"
 import { agents, formatTime, kindLabel, withAgent } from "@/lib/format"
@@ -142,6 +144,38 @@ function forBrowser(session: Session): Session {
   return { ...session, services, variables, connectShell, agentPrompt }
 }
 
+function contextAction(session: Session): ReactNode {
+  switch (session.kind) {
+    case "environment":
+      return (
+        <Button
+          variant="outline"
+          render={
+            <Link to="/environments/$name" params={{ name: session.name }} />
+          }
+        >
+          Environment
+        </Button>
+      )
+    case "scenario": {
+      const scenario = session.services[0]?.scenario
+      if (!scenario) return null
+      return (
+        <Button
+          variant="outline"
+          render={<Link to="/scenarios/$id" params={{ id: scenario }} />}
+        >
+          Explore scenario
+        </Button>
+      )
+    }
+    default: {
+      const neverKind: never = session.kind
+      return neverKind
+    }
+  }
+}
+
 function reachability(session: Session) {
   const url = session.services.find((service) => service.url)?.url ?? ""
   if (isLoopbackURL(url)) {
@@ -182,28 +216,36 @@ function SandboxDetail({
       heading={session.label}
       description={`${session.name} · ${kindLabel(session.kind)} · session ${session.id}. Started ${formatTime(session.startedAt)}. ${reachability(session)}`}
       actions={
-        session.anchored ? (
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Held by fab run. It stays up until that command exits.
-          </p>
-        ) : (
-          <Button
-            type="button"
-            variant="outline"
-            disabled={closing}
-            onClick={onClose}
-          >
-            {closing ? "Closing…" : "Close sandbox"}
-          </Button>
-        )
+        <div className="flex flex-wrap items-center gap-2">
+          {contextAction(session)}
+          {session.anchored ? (
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Held by fab run. It stays up until that command exits.
+            </p>
+          ) : (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={closing}
+              onClick={onClose}
+            >
+              {closing ? "Closing…" : "Close sandbox"}
+            </Button>
+          )}
+        </div>
       }
       sections={[
+        { id: "scenarios", label: "Scenarios" },
         { id: "services", label: "Services" },
         { id: "connect", label: "Connect" },
         { id: "agent", label: "Agent" },
         { id: "log", label: "Log" },
       ]}
     >
+      <section id="scenarios" className="flex scroll-mt-6 flex-col gap-3">
+        <h2 className="text-lg font-medium">Active scenarios</h2>
+        <ScenarioChips services={session.services} />
+      </section>
       <div className="flex flex-wrap items-center gap-2">
         <StatusPill tone={session.anchored ? "held" : "ready"}>
           {session.anchored ? "Held by fab run" : "Ready"}
@@ -229,13 +271,12 @@ function SandboxDetail({
             {session.services.map((service) => (
               <tr key={service.name} className="border-t align-top">
                 <td className="px-3 py-3">
-                  <p className="font-medium">{service.displayName}</p>
-                  <p className="font-mono text-xs text-muted-foreground">
-                    {service.name}
-                  </p>
-                  <p className="font-mono text-xs text-muted-foreground">
-                    {service.scenario}
-                  </p>
+                  <ServiceIdentity
+                    resource={service.resource}
+                    displayName={service.displayName}
+                    scenario={service.scenario}
+                    detail={service.name}
+                  />
                 </td>
                 <td className="px-3 py-3">
                   <p className="text-[11px] tracking-wide text-muted-foreground uppercase">

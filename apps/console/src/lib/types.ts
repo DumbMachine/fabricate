@@ -27,6 +27,29 @@ export type Catalog = {
   scenarios: CatalogScenario[]
 }
 
+export type ScenarioScalar = {
+  key: string
+  value: string
+}
+
+export type ScenarioCollection = {
+  key: string
+  total: number
+  shown: number
+  columns: string[]
+  rows: Record<string, string>[]
+}
+
+export type ScenarioView = {
+  id: string
+  resource: string
+  displayName: string
+  resourceVersion: string
+  providerHosts: string[]
+  scalars: ScenarioScalar[]
+  collections: ScenarioCollection[]
+}
+
 export type Variable = {
   name: string
   value: string

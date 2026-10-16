@@ -101,10 +101,11 @@ Runnable sample apps (Python, Node, Rust) live in [`examples/`](examples/).
 
 ## Managed console
 
-`fab serve` opens a local console where you can browse environments and
-scenarios, start or close a sandbox, and copy the connection steps. After a
-sandbox is ready, the page shows the shell exports for your app and a prompt
-you can paste into Cursor, Claude Code, Codex, or Devin.
+`fab serve` opens a local console where you can see which scenario a sandbox
+is running, inspect that scenario's seeded data, and start or close an
+environment as one set of services. After a sandbox is ready, the page shows
+the shell exports for your app and a prompt you can paste into Cursor, Claude
+Code, Codex, or Devin.
 
 ```bash
 fab serve

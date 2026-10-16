@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router"
-import { ArrowLeft, BookOpen, Boxes, Search } from "lucide-react"
+import { BookOpen, Boxes, Layers, Search } from "lucide-react"
 import { useEffect, useRef, type ReactNode } from "react"
 import { cn } from "cn"
 
@@ -7,7 +7,7 @@ const docsUrl = "https://fabricate.dmach.in/docs"
 
 export type Crumb = {
   label: string
-  to?: "/"
+  to?: "/" | "/environments"
 }
 
 export type FrameSection = {
@@ -30,7 +30,11 @@ export function ConsoleFrame({
   eyebrow?: string
   description?: string
   actions?: ReactNode
-  search?: { value: string; onChange: (value: string) => void }
+  search?: {
+    value: string
+    onChange: (value: string) => void
+    label?: string
+  }
   sections?: FrameSection[]
   children: ReactNode
 }) {
@@ -61,17 +65,21 @@ export function ConsoleFrame({
           <span className="text-sm font-medium">Fabricate</span>
         </div>
         <nav className="flex flex-1 flex-col gap-1 p-2">
+          <SideLink to="/" active={navActive(pathname, "sandboxes")}>
+            <Boxes className="size-4" />
+            Sandboxes
+          </SideLink>
+          <SideLink
+            to="/environments"
+            active={navActive(pathname, "environments")}
+          >
+            <Layers className="size-4" />
+            Environments
+          </SideLink>
           {sections ? (
-            <>
-              <Link
-                to="/"
-                className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
-              >
-                <ArrowLeft className="size-4" />
-                Sandboxes
-              </Link>
-              <p className="truncate px-2 pt-3 pb-1 text-sm font-medium text-foreground">
-                {crumbs[crumbs.length - 1]?.label}
+            <div className="mt-3 flex flex-col gap-1 border-t border-sidebar-border pt-3">
+              <p className="px-2 pb-1 text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+                On this page
               </p>
               {sections.map((section) => (
                 <a
@@ -82,21 +90,8 @@ export function ConsoleFrame({
                   {section.label}
                 </a>
               ))}
-            </>
-          ) : (
-            <Link
-              to="/"
-              className={cn(
-                "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm",
-                pathname === "/"
-                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                  : "text-sidebar-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
-              <Boxes className="size-4" />
-              Sandboxes
-            </Link>
-          )}
+            </div>
+          ) : null}
         </nav>
         <div className="border-t border-sidebar-border p-2">
           <a
@@ -139,8 +134,8 @@ export function ConsoleFrame({
                 ref={searchRef}
                 value={search.value}
                 onChange={(event) => search.onChange(event.target.value)}
-                placeholder="Search"
-                aria-label="Search sandboxes, environments, and scenarios"
+                placeholder={search.label ?? "Search"}
+                aria-label={search.label ?? "Search"}
                 className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
               />
               <kbd className="hidden font-sans text-[11px] sm:inline">⌘K</kbd>
@@ -150,9 +145,25 @@ export function ConsoleFrame({
         <div className="flex gap-2 overflow-x-auto border-b px-4 py-2 md:hidden">
           <Link
             to="/"
-            className="text-sm whitespace-nowrap text-muted-foreground"
+            className={cn(
+              "text-sm whitespace-nowrap",
+              navActive(pathname, "sandboxes")
+                ? "text-foreground"
+                : "text-muted-foreground"
+            )}
           >
             Sandboxes
+          </Link>
+          <Link
+            to="/environments"
+            className={cn(
+              "text-sm whitespace-nowrap",
+              navActive(pathname, "environments")
+                ? "text-foreground"
+                : "text-muted-foreground"
+            )}
+          >
+            Environments
           </Link>
           {sections?.map((section) => (
             <a
@@ -223,14 +234,71 @@ export function FilterTabs({
   )
 }
 
-export function DataTable({ children }: { children: ReactNode }) {
+export function DataTable({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) {
   return (
     <div className="overflow-x-auto border-y">
-      <table className="w-full min-w-[720px] border-collapse text-sm">
+      <table
+        className={cn(
+          "w-full min-w-[720px] border-collapse text-sm",
+          className
+        )}
+      >
         {children}
       </table>
     </div>
   )
+}
+
+function SideLink({
+  to,
+  active,
+  children,
+}: {
+  to: "/" | "/environments"
+  active: boolean
+  children: ReactNode
+}) {
+  return (
+    <Link
+      to={to}
+      className={cn(
+        "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm",
+        active
+          ? "bg-sidebar-primary text-sidebar-primary-foreground"
+          : "text-sidebar-foreground hover:bg-muted hover:text-foreground"
+      )}
+    >
+      {children}
+    </Link>
+  )
+}
+
+function navActive(
+  pathname: string,
+  item: "sandboxes" | "environments"
+): boolean {
+  switch (item) {
+    case "sandboxes":
+      return (
+        pathname === "/" ||
+        pathname.startsWith("/sandboxes") ||
+        pathname.startsWith("/scenarios")
+      )
+    case "environments":
+      return (
+        pathname === "/environments" || pathname.startsWith("/environments/")
+      )
+    default: {
+      const neverItem: never = item
+      return neverItem
+    }
+  }
 }
 
 export function ColumnHeading({ children }: { children: ReactNode }) {

@@ -10,43 +10,98 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EnvironmentsRouteImport } from './routes/environments'
+import { Route as EnvironmentsIndexRouteImport } from './routes/environments.index'
+import { Route as EnvironmentsNameRouteImport } from './routes/environments.$name'
 import { Route as SandboxesIdRouteImport } from './routes/sandboxes.$id'
+import { Route as ScenariosIdRouteImport } from './routes/scenarios.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnvironmentsRoute = EnvironmentsRouteImport.update({
+  id: '/environments',
+  path: '/environments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnvironmentsIndexRoute = EnvironmentsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EnvironmentsRoute,
+} as any)
+const EnvironmentsNameRoute = EnvironmentsNameRouteImport.update({
+  id: '/$name',
+  path: '/$name',
+  getParentRoute: () => EnvironmentsRoute,
+} as any)
 const SandboxesIdRoute = SandboxesIdRouteImport.update({
   id: '/sandboxes/$id',
   path: '/sandboxes/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScenariosIdRoute = ScenariosIdRouteImport.update({
+  id: '/scenarios/$id',
+  path: '/scenarios/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/environments': typeof EnvironmentsRouteWithChildren
+  '/environments/$name': typeof EnvironmentsNameRoute
   '/sandboxes/$id': typeof SandboxesIdRoute
+  '/scenarios/$id': typeof ScenariosIdRoute
+  '/environments/': typeof EnvironmentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/environments/$name': typeof EnvironmentsNameRoute
   '/sandboxes/$id': typeof SandboxesIdRoute
+  '/scenarios/$id': typeof ScenariosIdRoute
+  '/environments': typeof EnvironmentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/environments': typeof EnvironmentsRouteWithChildren
+  '/environments/$name': typeof EnvironmentsNameRoute
   '/sandboxes/$id': typeof SandboxesIdRoute
+  '/scenarios/$id': typeof ScenariosIdRoute
+  '/environments/': typeof EnvironmentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sandboxes/$id'
+  fullPaths:
+    | '/'
+    | '/environments'
+    | '/environments/$name'
+    | '/sandboxes/$id'
+    | '/scenarios/$id'
+    | '/environments/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sandboxes/$id'
-  id: '__root__' | '/' | '/sandboxes/$id'
+  to:
+    | '/'
+    | '/environments/$name'
+    | '/sandboxes/$id'
+    | '/scenarios/$id'
+    | '/environments'
+  id:
+    | '__root__'
+    | '/'
+    | '/environments'
+    | '/environments/$name'
+    | '/sandboxes/$id'
+    | '/scenarios/$id'
+    | '/environments/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EnvironmentsRoute: typeof EnvironmentsRouteWithChildren
   SandboxesIdRoute: typeof SandboxesIdRoute
+  ScenariosIdRoute: typeof ScenariosIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +113,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/environments': {
+      id: '/environments'
+      path: '/environments'
+      fullPath: '/environments'
+      preLoaderRoute: typeof EnvironmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/environments/': {
+      id: '/environments/'
+      path: '/'
+      fullPath: '/environments/'
+      preLoaderRoute: typeof EnvironmentsIndexRouteImport
+      parentRoute: typeof EnvironmentsRoute
+    }
+    '/environments/$name': {
+      id: '/environments/$name'
+      path: '/$name'
+      fullPath: '/environments/$name'
+      preLoaderRoute: typeof EnvironmentsNameRouteImport
+      parentRoute: typeof EnvironmentsRoute
+    }
     '/sandboxes/$id': {
       id: '/sandboxes/$id'
       path: '/sandboxes/$id'
@@ -65,12 +141,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SandboxesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scenarios/$id': {
+      id: '/scenarios/$id'
+      path: '/scenarios/$id'
+      fullPath: '/scenarios/$id'
+      preLoaderRoute: typeof ScenariosIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface EnvironmentsRouteChildren {
+  EnvironmentsNameRoute: typeof EnvironmentsNameRoute
+  EnvironmentsIndexRoute: typeof EnvironmentsIndexRoute
+}
+
+const EnvironmentsRouteChildren: EnvironmentsRouteChildren = {
+  EnvironmentsNameRoute: EnvironmentsNameRoute,
+  EnvironmentsIndexRoute: EnvironmentsIndexRoute,
+}
+
+const EnvironmentsRouteWithChildren = EnvironmentsRoute._addFileChildren(
+  EnvironmentsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EnvironmentsRoute: EnvironmentsRouteWithChildren,
   SandboxesIdRoute: SandboxesIdRoute,
+  ScenariosIdRoute: ScenariosIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

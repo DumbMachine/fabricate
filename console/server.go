@@ -17,6 +17,7 @@ import (
 func (m *Manager) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/catalog", m.handleCatalog)
+	mux.HandleFunc("GET /api/scenarios/{id}", m.handleScenario)
 	mux.HandleFunc("GET /api/sessions", m.handleList)
 	mux.HandleFunc("POST /api/sessions", m.handleStart)
 	mux.HandleFunc("GET /api/sessions/{id}", m.handleGet)
@@ -33,6 +34,20 @@ func (m *Manager) handleCatalog(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, catalog)
+}
+
+func (m *Manager) handleScenario(w http.ResponseWriter, r *http.Request) {
+	view, err := m.Scenario(r.PathValue("id"))
+	if err != nil {
+		status := http.StatusInternalServerError
+		var unknown unknownScenarioError
+		if errors.As(err, &unknown) {
+			status = http.StatusNotFound
+		}
+		writeError(w, status, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, view)
 }
 
 func (m *Manager) handleList(w http.ResponseWriter, r *http.Request) {
