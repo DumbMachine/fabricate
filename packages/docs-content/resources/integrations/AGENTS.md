@@ -10,7 +10,8 @@ checking out Fabricate or creating an environment file by hand.
   file and pipe it to `fab run /dev/stdin`; `fab run` accepts a
   file path, not an environment URL. Write those URLs against `main`. The
   site rewrites Fabricate raw, blob, and tree links to `FABRICATE_GIT_REF`
-  (default `main`; a development server uses the checked-out branch).
+  (default `main`; a development server uses the checked-out branch when
+  it tracks a branch on DumbMachine/fabricate, and `main` otherwise).
 - Use `curl -fsSL` for manifest downloads and `curl -sS` for request examples
   so successful output stays readable while failures remain visible.
 - Do not leave placeholder commands such as `your-app` as the only runnable

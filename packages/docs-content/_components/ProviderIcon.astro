@@ -1,0 +1,18 @@
+---
+import {composioLogo} from "../resources/integrations/catalog";
+
+interface Props {
+  alt?: string;
+  class?: string;
+  id: string;
+  size?: number;
+}
+
+// Pages use this instead of a raw <img src="/docs/integrations/..."> so the
+// integration mark follows the configured docs base
+// (PUBLIC_FABRICATE_DOCS_BASE), as the resource components do.
+const {alt = "", class: className, id, size = 20} = Astro.props as Props;
+const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
+---
+
+<img class={className} src={`${docsBase}${composioLogo(id)}`} width={size} height={size} alt={alt} />

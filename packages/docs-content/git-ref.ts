@@ -38,6 +38,8 @@ function configuredGitRef(): string | undefined {
   return undefined;
 }
 
+// This is the only git ref validator. apps/site/scripts/mode.mjs passes the
+// ref through unchecked; every reader comes through here.
 export function fabricateGitRef(explicit?: string | null): string {
   const candidate = (explicit ?? configuredGitRef() ?? DEFAULT_FABRICATE_GIT_REF).trim();
   if (!candidate || candidate === "HEAD" || candidate.includes("..") || !REF_PATTERN.test(candidate)) {
@@ -46,7 +48,8 @@ export function fabricateGitRef(explicit?: string | null): string {
   return candidate;
 }
 
-export function rewriteFabricateGitRef(value: string, ref = fabricateGitRef()): string {
+export function rewriteFabricateGitRef(value: string, explicitRef?: string | null): string {
+  const ref = fabricateGitRef(explicitRef);
   if (!value || ref === DEFAULT_FABRICATE_GIT_REF) {
     return value;
   }

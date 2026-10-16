@@ -58,6 +58,9 @@ const logoExtension: Record<string, string> = {
   shiprocket: "png",
 };
 
+// There are no dark variants: both themes get the same file, and the
+// components that render a "dark" logo set it on a light chip so dark marks
+// such as GitHub's stay visible on dark pages.
 export function composioLogo(id: string, _theme?: "dark"): string {
   return `/integrations/${id}.${logoExtension[id] ?? "svg"}`;
 }

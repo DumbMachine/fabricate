@@ -1,7 +1,9 @@
-import { execFileSync, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { copyFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { developmentGitRef } from "./git-ref.mjs";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(scriptDir, "..", "..", "..");
@@ -32,28 +34,11 @@ const siteUrl = app === "docs" ? docsOrigin : landingOrigin;
 const docsUrl = `${docsOrigin.replace(/\/$/, "")}${docsBase}`;
 const appRoot = resolve(repositoryRoot, "apps", app);
 // Published docs stay on main unless FABRICATE_GIT_REF is set. A development
-// server follows the checked-out branch so example URLs fetch that branch.
-const safeGitRef = (value) => {
-  const candidate = (value || "").trim();
-  if (!candidate || candidate === "HEAD" || candidate.includes("..") || !/^[A-Za-z0-9._/-]+$/.test(candidate)) {
-    return "main";
-  }
-  return candidate;
-};
-const gitRef = (() => {
-  const configured = process.env.FABRICATE_GIT_REF?.trim();
-  if (configured) return safeGitRef(configured);
-  if (mode !== "development") return "main";
-  try {
-    const branch = execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
-      cwd: repositoryRoot,
-      encoding: "utf8",
-    }).trim();
-    return safeGitRef(branch);
-  } catch {
-    return "main";
-  }
-})();
+// server follows the checked-out branch only when that branch tracks a branch
+// on DumbMachine/fabricate; a local-only or fork branch would 404, so it stays
+// on main. packages/docs-content/git-ref.ts validates whichever ref is chosen.
+const gitRef = process.env.FABRICATE_GIT_REF?.trim()
+  || (mode === "development" ? developmentGitRef({ cwd: repositoryRoot }) : "main");
 const env = {
   ...process.env,
   FABRICATE_SITE_MODE: mode,

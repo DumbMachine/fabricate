@@ -1,6 +1,7 @@
 import {defineComponents} from "blume";
 
 import LinkBadge from "../../packages/docs-content/_components/LinkBadge.astro";
+import ProviderIcon from "../../packages/docs-content/_components/ProviderIcon.astro";
 import SupportCopy from "../../packages/docs-content/_components/SupportCopy.astro";
 import CommandOutput from "../../packages/docs-content/resources/_components/CommandOutput.astro";
 import IncludedIntegrations from "../../packages/docs-content/resources/environments/_components/IncludedIntegrations.astro";
@@ -17,6 +18,7 @@ export default defineComponents({
     IntegrationCompatibility,
     IntegrationsCatalog,
     LinkBadge,
+    ProviderIcon,
     ResourceCoverage,
     ResourceScenarios,
     SupportCopy,

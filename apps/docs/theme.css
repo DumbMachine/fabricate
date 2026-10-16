@@ -337,6 +337,15 @@ a.link-badge svg[data-icon="cal"] {
   object-fit: contain;
 }
 
+/* Integration marks have no dark variants; a light chip keeps dark marks
+   such as Intercom's visible on the dark model. */
+:root[data-theme="dark"] .environment-model__provider-icon {
+  background: #f5f5f5;
+  border-radius: 4px;
+  box-sizing: content-box;
+  padding: 2px;
+}
+
 .environment-model__part .environment-model__kind,
 .environment-model__part strong {
   grid-column: 2;

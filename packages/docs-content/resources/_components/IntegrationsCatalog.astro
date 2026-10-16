@@ -90,7 +90,15 @@ const cards = integrations
   .logo-light { display: block; }
   .logo-dark { display: none; }
   :global(:root[data-theme="dark"]) .logo-light { display: none; }
-  :global(:root[data-theme="dark"]) .logo-dark { display: block; }
+  /* The marks have no dark variants, so dark-on-transparent marks such as
+     GitHub's would vanish on the dark page. Dark mode sets each mark on a
+     light chip instead. */
+  :global(:root[data-theme="dark"]) .logo-dark {
+    background: #f5f5f5;
+    box-sizing: border-box;
+    display: block;
+    padding: 7px;
+  }
   .copy {
     display: flex;
     flex-direction: column;

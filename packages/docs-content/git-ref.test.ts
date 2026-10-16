@@ -60,3 +60,25 @@ test("rewriteFabricateGitRef reads PUBLIC_FABRICATE_GIT_REF", () => {
     }
   }
 });
+
+test("rewriteFabricateGitRef validates an explicit ref", () => {
+  const source = `${raw}\n${blob}\n${tree}`;
+  withoutConfiguredRef(() => {
+    for (const unsafe of ["HEAD", "../main", "feature/a..b", "feat ure", "feat?x=1", "  "]) {
+      assert.equal(rewriteFabricateGitRef(source, unsafe), source, unsafe);
+    }
+    assert.equal(rewriteFabricateGitRef(source, undefined), source);
+    assert.equal(rewriteFabricateGitRef(source, null), source);
+  });
+  assert.match(rewriteFabricateGitRef(raw, " feature/docs "), /fabricate\/feature\/docs\/environments/);
+});
+
+test("rewriteFabricateGitRef falls back to main for an unsafe configured ref", () => {
+  withoutConfiguredRef(() => {
+    process.env.FABRICATE_GIT_REF = "HEAD";
+    assert.equal(fabricateGitRef(), "main");
+    assert.equal(rewriteFabricateGitRef(raw), raw);
+    process.env.FABRICATE_GIT_REF = "feature/docs";
+    assert.match(rewriteFabricateGitRef(raw), /fabricate\/feature\/docs\/environments/);
+  });
+});
