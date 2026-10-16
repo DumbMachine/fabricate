@@ -12,7 +12,7 @@ export function StatusPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs font-medium",
+        "inline-flex w-fit items-center gap-1 self-start rounded px-1.5 py-0.5 text-xs font-medium",
         tone === "ready" && "bg-success/15 text-success",
         tone === "held" && "bg-sidebar-primary/50 text-foreground",
         tone === "neutral" && "bg-muted text-muted-foreground"
