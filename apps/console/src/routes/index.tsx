@@ -20,7 +20,7 @@ import {
   DataTable,
 } from "@/components/console-frame"
 import { matchingResources } from "@/lib/catalog"
-import { formatTime, kindLabel, matchesQuery } from "@/lib/format"
+import { formatTime, matchesQuery } from "@/lib/format"
 import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
 import type { Session } from "@/lib/types"
 
@@ -105,9 +105,9 @@ function SandboxesPage() {
           <DataTable className="min-w-[980px]">
             <thead>
               <tr>
-                <ColumnHeading>Sandbox</ColumnHeading>
+                <ColumnHeading>Scenario</ColumnHeading>
+                <ColumnHeading>UID</ColumnHeading>
                 <ColumnHeading>URL</ColumnHeading>
-                <ColumnHeading>Active scenarios</ColumnHeading>
                 <ColumnHeading>Status</ColumnHeading>
                 <ColumnHeading>Started</ColumnHeading>
                 <ColumnHeading> </ColumnHeading>
@@ -203,19 +203,7 @@ function RunningRow({
   return (
     <tr className="border-t align-top">
       <td className="px-3 py-3">
-        <Link
-          to="/sandboxes/$id"
-          params={{ id: session.id }}
-          className="underline decoration-muted-foreground/50 underline-offset-2"
-        >
-          {session.label}
-        </Link>
-        <p className="font-mono text-xs text-muted-foreground">
-          {session.name} · {session.id}
-        </p>
-        <p className="text-xs text-muted-foreground">
-          {kindLabel(session.kind)}
-        </p>
+        <ScenarioChips services={session.services} />
         {error ? (
           <div className="mt-1">
             <ErrorNote compact>{error}</ErrorNote>
@@ -223,10 +211,16 @@ function RunningRow({
         ) : null}
       </td>
       <td className="px-3 py-3">
-        <ServiceURLs services={session.services} />
+        <Link
+          to="/sandboxes/$id"
+          params={{ id: session.id }}
+          className="font-mono text-xs underline decoration-muted-foreground/50 underline-offset-2"
+        >
+          {session.id}
+        </Link>
       </td>
       <td className="px-3 py-3">
-        <ScenarioChips services={session.services} />
+        <ServiceURLs services={session.services} />
       </td>
       <td className="px-3 py-3">
         {session.anchored ? (
