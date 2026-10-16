@@ -59,10 +59,16 @@ export function ConsoleFrame({
     <div className="flex min-h-svh bg-background text-foreground">
       <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
         <div className="flex h-14 items-center gap-2 border-b border-sidebar-border px-3">
-          <span className="flex size-7 items-center justify-center rounded-full bg-success text-xs font-semibold text-success-foreground">
-            F
+          <img
+            src="/fabricate-mark.svg"
+            width={28}
+            height={28}
+            alt=""
+            className="size-7"
+          />
+          <span className="font-brand text-[1.45rem] leading-[0.8] font-semibold tracking-[0.025em] uppercase">
+            Fabricate
           </span>
-          <span className="text-sm font-medium">Fabricate</span>
         </div>
         <nav className="flex flex-1 flex-col gap-1 p-2">
           <SideLink to="/" active={navActive(pathname, "sandboxes")}>
@@ -78,14 +84,14 @@ export function ConsoleFrame({
           </SideLink>
           {sections ? (
             <div className="mt-3 flex flex-col gap-1 border-t border-sidebar-border pt-3">
-              <p className="px-2 pb-1 text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+              <p className="px-2 pb-1 text-[11px] font-medium tracking-wider text-faint uppercase">
                 On this page
               </p>
               {sections.map((section) => (
                 <a
                   key={section.id}
                   href={`#${section.id}`}
-                  className="rounded-md px-2 py-1.5 text-sm text-sidebar-foreground hover:bg-muted hover:text-foreground"
+                  className="rounded-lg px-2 py-1.5 text-sm text-sidebar-foreground hover:bg-muted hover:text-foreground"
                 >
                   {section.label}
                 </a>
@@ -96,7 +102,7 @@ export function ConsoleFrame({
         <div className="border-t border-sidebar-border p-2">
           <a
             href={docsUrl}
-            className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <BookOpen className="size-4" />
             Docs
@@ -180,11 +186,11 @@ export function ConsoleFrame({
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="flex flex-col gap-2">
                 {eyebrow ? (
-                  <p className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">
+                  <p className="text-[11px] font-medium tracking-[0.14em] text-faint uppercase">
                     {eyebrow}
                   </p>
                 ) : null}
-                <h1 className="text-3xl font-medium tracking-tight">
+                <h1 className="text-3xl font-bold tracking-[-0.035em]">
                   {heading}
                 </h1>
                 {description ? (
@@ -268,7 +274,7 @@ function SideLink({
     <Link
       to={to}
       className={cn(
-        "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm",
+        "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm",
         active
           ? "bg-sidebar-primary text-sidebar-primary-foreground"
           : "text-sidebar-foreground hover:bg-muted hover:text-foreground"
@@ -303,7 +309,7 @@ function navActive(
 
 export function ColumnHeading({ children }: { children: ReactNode }) {
   return (
-    <th className="px-3 py-2 text-left text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+    <th className="px-3 py-2 text-left text-[11px] font-medium tracking-wider text-faint uppercase">
       {children}
     </th>
   )

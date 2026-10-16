@@ -108,7 +108,7 @@ function ScenarioPage() {
           <dl className="grid gap-3 sm:grid-cols-2">
             {view.scalars.map((scalar) => (
               <div key={scalar.key} className="border bg-card px-3 py-2">
-                <dt className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+                <dt className="text-[11px] font-medium tracking-wider text-faint uppercase">
                   {scalar.key}
                 </dt>
                 <dd className="mt-1 font-mono text-sm break-all">

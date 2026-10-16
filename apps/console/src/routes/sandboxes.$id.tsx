@@ -279,7 +279,7 @@ function SandboxDetail({
                   />
                 </td>
                 <td className="px-3 py-3">
-                  <p className="text-[11px] tracking-wide text-muted-foreground uppercase">
+                  <p className="text-[11px] tracking-wide text-faint uppercase">
                     {service.urlVariable}
                   </p>
                   <p className="max-w-sm font-mono text-xs break-all">
@@ -290,7 +290,7 @@ function SandboxDetail({
                   </div>
                 </td>
                 <td className="px-3 py-3">
-                  <p className="text-[11px] tracking-wide text-muted-foreground uppercase">
+                  <p className="text-[11px] tracking-wide text-faint uppercase">
                     {service.tokenVariable}
                   </p>
                   <p className="max-w-xs font-mono text-xs break-all">
@@ -319,7 +319,7 @@ function SandboxDetail({
             ? "Proxy mode keeps production hostnames. Export these variables into the process under test. It must honor HTTP_PROXY and the CA file. Do not send the service token on routed hosts; the proxy replaces Authorization."
             : "Direct mode points each client at the service URL and sends the bearer token. Append the provider path your client already calls. Production hostnames still reach the real providers."}
         </p>
-        <pre className="overflow-auto border bg-card p-4 text-xs leading-5 whitespace-pre-wrap">
+        <pre className="overflow-auto border bg-code p-4 font-mono text-xs leading-5 whitespace-pre-wrap">
           {session.connectShell}
         </pre>
       </section>
@@ -342,7 +342,7 @@ function SandboxDetail({
             label: candidate,
           }))}
         />
-        <pre className="overflow-auto border bg-card p-4 text-xs leading-5 whitespace-pre-wrap">
+        <pre className="overflow-auto border bg-code p-4 font-mono text-xs leading-5 whitespace-pre-wrap">
           {prompt}
         </pre>
       </section>
