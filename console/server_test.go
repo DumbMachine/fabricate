@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
+	"github.com/dumbmachine/fabricate/environment"
 	"github.com/dumbmachine/fabricate/resources/all"
 )
 
@@ -196,6 +198,73 @@ func TestServeProxyInstructions(t *testing.T) {
 			t.Fatalf("proxy prompt missing %q:\n%s", phrase, session.AgentPrompt)
 		}
 	}
+}
+
+func TestAdoptedSandboxStaysUpWhileAnotherCanStart(t *testing.T) {
+	manager := New(all.Registry())
+	server := httptest.NewServer(manager.Handler())
+	t.Cleanup(server.Close)
+	t.Cleanup(func() { _ = manager.Shutdown() })
+
+	spec := environment.Spec{
+		APIVersion: environment.APIVersion,
+		Kind:       "Environment",
+		Metadata:   environment.Metadata{Name: "gmail"},
+		Services: map[string]environment.ServiceSpec{
+			"gmail": {Resource: "gmail", Scenario: "gmail.minimal.v1"},
+		},
+	}
+	runtime, err := environment.Start(context.Background(), spec, all.Registry(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	adopted, err := manager.Adopt(spec, runtime, true, "scenario")
+	if err != nil {
+		_ = runtime.Close(context.Background())
+		t.Fatal(err)
+	}
+	if !adopted.Anchored || !adopted.Proxy || adopted.ProxyConnection == nil {
+		t.Fatalf("adopted session: %#v", adopted)
+	}
+	if !strings.Contains(adopted.AgentPrompt, "stays up until that command exits") {
+		t.Fatalf("prompt: %s", adopted.AgentPrompt)
+	}
+
+	response := get(t, server.URL+"/api/sessions/"+adopted.ID)
+	if response.StatusCode != http.StatusOK {
+		t.Fatalf("get status %d: %s", response.StatusCode, readBody(t, response))
+	}
+	var listed Session
+	decodeJSON(t, response, &listed)
+	if !listed.Anchored || listed.Services[0].Name != "gmail" {
+		t.Fatalf("listed session: %#v", listed)
+	}
+	closed := do(t, http.MethodDelete, server.URL+"/api/sessions/"+adopted.ID, "")
+	if closed.StatusCode != http.StatusConflict {
+		t.Fatalf("close anchored status %d: %s", closed.StatusCode, readBody(t, closed))
+	}
+	if err := manager.Close(adopted.ID); !errors.Is(err, errAnchored) {
+		t.Fatalf("close error: %v", err)
+	}
+
+	created := postJSON(t, server.URL+"/api/sessions", `{"kind":"scenario","id":"gmail.minimal.v1"}`)
+	if created.StatusCode != http.StatusCreated {
+		t.Fatalf("start another status %d: %s", created.StatusCode, readBody(t, created))
+	}
+	var extra Session
+	decodeJSON(t, created, &extra)
+	if extra.Anchored || extra.ID == adopted.ID {
+		t.Fatalf("extra session: %#v", extra)
+	}
+	removed := do(t, http.MethodDelete, server.URL+"/api/sessions/"+extra.ID, "")
+	if removed.StatusCode != http.StatusNoContent {
+		t.Fatalf("close extra status %d", removed.StatusCode)
+	}
+	still := get(t, server.URL+"/api/sessions/"+adopted.ID)
+	if still.StatusCode != http.StatusOK {
+		t.Fatalf("anchored session status after extra close %d", still.StatusCode)
+	}
+	still.Body.Close()
 }
 
 func TestServeRejectsUnknownTargets(t *testing.T) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -36,6 +37,7 @@ type Session struct {
 	ProxyConnection *ProxyConnection `json:"proxyConnection,omitempty"`
 	ConnectShell    string           `json:"connectShell"`
 	AgentPrompt     string           `json:"agentPrompt"`
+	Anchored        bool             `json:"anchored"`
 }
 
 type SessionService struct {
@@ -62,12 +64,13 @@ type ProxyConnection struct {
 }
 
 type runningSession struct {
-	id      string
-	kind    string
-	spec    environment.Spec
-	runtime *environment.Runtime
-	started time.Time
-	proxy   bool
+	id       string
+	kind     string
+	spec     environment.Spec
+	runtime  *environment.Runtime
+	started  time.Time
+	proxy    bool
+	anchored bool
 }
 
 type Manager struct {
@@ -145,6 +148,39 @@ func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, err
 			return Session{}, fmt.Errorf("too many running sandboxes; close one first")
 		}
 	}
+	return running.view(m.registry), nil
+}
+
+// Adopt registers a runtime this process already started. The console can
+// start more sandboxes beside it, and Close refuses to stop it. Shutdown
+// still closes it when the owning command exits.
+func (m *Manager) Adopt(spec environment.Spec, runtime *environment.Runtime, proxy bool, kind string) (Session, error) {
+	if runtime == nil {
+		return Session{}, fmt.Errorf("runtime is required")
+	}
+	if kind != "scenario" {
+		kind = "environment"
+	}
+	id, err := newID()
+	if err != nil {
+		return Session{}, err
+	}
+	running := &runningSession{
+		id: id, kind: kind, spec: spec, runtime: runtime,
+		started: time.Now().UTC(), proxy: proxy, anchored: true,
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.closing {
+		return Session{}, fmt.Errorf("console is shutting down")
+	}
+	if len(m.sessions)+m.inflight >= maxSessions {
+		return Session{}, fmt.Errorf("too many running sandboxes; close one first")
+	}
+	if m.sessions[id] != nil {
+		return Session{}, fmt.Errorf("sandbox id collision")
+	}
+	m.sessions[id] = running
 	return running.view(m.registry), nil
 }
 
@@ -236,16 +272,21 @@ func (m *Manager) Get(id string) (Session, bool) {
 	return session.view(m.registry), true
 }
 
+var errAnchored = errors.New("this sandbox is held by fab run and stays up until that command exits")
+
 func (m *Manager) Close(id string) error {
 	m.mu.Lock()
 	session, ok := m.sessions[id]
-	if ok {
-		delete(m.sessions, id)
-	}
-	m.mu.Unlock()
 	if !ok {
+		m.mu.Unlock()
 		return nil
 	}
+	if session.anchored {
+		m.mu.Unlock()
+		return errAnchored
+	}
+	delete(m.sessions, id)
+	m.mu.Unlock()
 	ctx, cancel := environment.CloseTimeout()
 	defer cancel()
 	return session.runtime.Close(ctx)
@@ -307,6 +348,7 @@ func (s *runningSession) view(registry *httpresource.Registry) Session {
 		Kind:       s.kind,
 		Status:     "ready",
 		Proxy:      s.proxy,
+		Anchored:   s.anchored,
 		StartedAt:  s.started,
 		RequestLog: s.runtime.Requests.Path(),
 		Services:   services,

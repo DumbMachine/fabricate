@@ -160,14 +160,20 @@ function CatalogPage() {
                     ) : null}
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={pending === `close:${session.id}`}
-                      onClick={() => void close(session.id)}
-                    >
-                      Close
-                    </Button>
+                    {session.anchored ? (
+                      <p className="self-center text-sm text-muted-foreground">
+                        Held by fab run
+                      </p>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={pending === `close:${session.id}`}
+                        onClick={() => void close(session.id)}
+                      >
+                        Close
+                      </Button>
+                    )}
                     <Button
                       render={
                         <Link to="/sandboxes/$id" params={{ id: session.id }} />

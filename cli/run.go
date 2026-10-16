@@ -11,6 +11,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/dumbmachine/fabricate/console"
 	"github.com/dumbmachine/fabricate/environment"
 	"github.com/dumbmachine/fabricate/environments"
 	"github.com/dumbmachine/fabricate/httpresource"
@@ -23,10 +24,12 @@ var (
 	runEnvironment string
 	runScenario    string
 	runProxy       bool
+	runUI          bool
+	runUIAddr      string
 )
 
 var runCmd = &cobra.Command{
-	Use:   "run <environment-or-service> [--scenario <scenario>] [--proxy] [-- <command...>]",
+	Use:   "run <environment-or-service> [--scenario <scenario>] [--proxy] [--ui] [-- <command...>]",
 	Short: "Run a disposable Fabricate environment or service",
 	Long: `Run starts an official environment, a manifest, or one service with an
 explicit scenario. With a command, Fabricate injects connection variables into
@@ -36,7 +39,12 @@ URLs, credentials, proxy settings, and request log needed by another process.
 
 Provider SDKs can keep their production hostnames with --proxy. Unknown proxy
 destinations tunnel unchanged unless the environment opts into strict
-rejection; the generated CA is never installed globally.`,
+rejection; the generated CA is never installed globally.
+
+--ui serves the managed console for the duration of this run and opens it in
+a local browser. The environment this command started stays up until the
+command exits. From the console you can start more environments and scenarios
+beside it. fab serve is the same console when nothing is wrapped.`,
 	Args: cobra.ArbitraryArgs,
 	RunE: runEnvironmentCommand,
 }
@@ -45,6 +53,8 @@ func init() {
 	runCmd.Flags().StringVar(&runEnvironment, "environment", "", "Environment manifest to run (deprecated; pass it as the first argument)")
 	runCmd.Flags().StringVar(&runScenario, "scenario", "", "Scenario to use when running one service")
 	runCmd.Flags().BoolVar(&runProxy, "proxy", false, "Enable transparent HTTPS proxying")
+	runCmd.Flags().BoolVar(&runUI, "ui", false, "Serve the managed console and open it while this run is active")
+	runCmd.Flags().StringVar(&runUIAddr, "ui-addr", "127.0.0.1:4173", "Address for the console when --ui is set")
 	_ = runCmd.Flags().MarkDeprecated("environment", "pass the environment name or manifest as the first argument")
 }
 
@@ -64,17 +74,54 @@ func runEnvironmentCommand(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	manager := console.New(registry)
+	var ui *consoleListener
+	anchored := false
 	closed := false
 	closeRuntime := func() error {
 		if closed {
 			return nil
 		}
 		closed = true
+		if anchored {
+			var first error
+			if ui != nil {
+				first = ui.close()
+			}
+			if err := manager.Shutdown(); first == nil {
+				first = err
+			}
+			return first
+		}
 		closeCtx, cancel := environment.CloseTimeout()
 		defer cancel()
 		return runtime.Close(closeCtx)
 	}
-	defer closeRuntime()
+	if runUI {
+		kind := "environment"
+		if runScenario != "" {
+			kind = "scenario"
+		}
+		session, adoptErr := manager.Adopt(spec, runtime, runProxy, kind)
+		if adoptErr != nil {
+			closeCtx, cancel := environment.CloseTimeout()
+			_ = runtime.Close(closeCtx)
+			cancel()
+			return adoptErr
+		}
+		anchored = true
+		ui, err = listenConsole(runUIAddr, manager.Handler())
+		if err != nil {
+			_ = manager.Shutdown()
+			return err
+		}
+		fmt.Fprintf(os.Stderr, "fab: console %s\n", ui.url)
+		fmt.Fprintf(os.Stderr, "fab: sandbox %s is held by this run\n", session.ID)
+		if err := openConsoleFn(ui.url); err != nil {
+			fmt.Fprintf(os.Stderr, "fab: could not open a browser: %v\n", err)
+		}
+	}
+	defer func() { _ = closeRuntime() }()
 
 	serviceNames := make([]string, 0, len(runtime.Services))
 	for name := range runtime.Services {

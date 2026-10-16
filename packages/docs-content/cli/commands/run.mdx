@@ -92,3 +92,22 @@ That is not a general OAuth implementation.
 
 The old `--environment <manifest>` form remains temporarily available but is
 deprecated. Pass the environment name or path as the first argument instead.
+
+## Console beside a run
+
+`--ui` serves the same console as `fab serve` for as long as this command
+runs, and opens it in a local browser. The environment you just started is
+held by the command: the console shows its URL, token, and proxy settings,
+and it stays up until the command exits.
+
+```bash
+fab run acme-gmail --proxy --ui -- npm test
+```
+
+From that console you can start more environments and scenarios beside the
+one this command is holding. Those extra sandboxes have their own URLs and
+tokens. The wrapped process keeps the variables it was given at startup.
+`--ui-addr` changes the console address. The default is `127.0.0.1:4173`.
+
+`fab serve` is the deployed form of the same console, with no command wrapped
+around it. `fab serve --ui` opens that console in a browser too.

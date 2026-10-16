@@ -71,7 +71,12 @@ func agentPrompt(session Session) string {
 		builder.WriteString("The sandbox binds to loopback, so only a process on this machine can reach it.\n")
 	}
 	fmt.Fprintf(&builder, "Request log: %s\n", session.RequestLog)
-	builder.WriteString("When the task is done, close this sandbox from the Fabricate console (the process started with `fab serve`).\n")
+	if session.Anchored {
+		builder.WriteString("This sandbox was started by `fab run` and stays up until that command exits.\n")
+		builder.WriteString("Start any other environment or scenario from the Fabricate console while it runs.\n")
+	} else {
+		builder.WriteString("When the task is done, close this sandbox from the Fabricate console (the process started with `fab serve`).\n")
+	}
 	return builder.String()
 }
 

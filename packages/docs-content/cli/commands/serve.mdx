@@ -16,6 +16,12 @@ fab: managed console at http://127.0.0.1:4173
 ```
 
 `--addr` changes the listen address. The default is `127.0.0.1:4173`.
+`--ui` also opens the console in a local browser. Leave it off when this
+process is a deployed service.
+
+`fab run --ui` serves this same console beside a wrapped command. The
+environment that command started stays up until the command exits, and the
+console can start more sandboxes next to it.
 
 ## Start
 

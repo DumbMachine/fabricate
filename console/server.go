@@ -184,7 +184,11 @@ func publicHostname(hostport string) bool {
 
 func (m *Manager) handleDelete(w http.ResponseWriter, r *http.Request) {
 	if err := m.Close(r.PathValue("id")); err != nil {
-		writeError(w, http.StatusInternalServerError, err)
+		status := http.StatusInternalServerError
+		if errors.Is(err, errAnchored) {
+			status = http.StatusConflict
+		}
+		writeError(w, status, err)
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)

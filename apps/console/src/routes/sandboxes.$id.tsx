@@ -189,14 +189,21 @@ function SandboxDetail({
             Started {formatTime(session.startedAt)}. {reachability(session)}
           </p>
         </div>
-        <Button
-          type="button"
-          variant="destructive"
-          disabled={closing}
-          onClick={onClose}
-        >
-          {closing ? "Closing…" : "Close sandbox"}
-        </Button>
+        {session.anchored ? (
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Held by fab run. It stays up until that command exits. Start more
+            environments and scenarios from the catalog while it runs.
+          </p>
+        ) : (
+          <Button
+            type="button"
+            variant="destructive"
+            disabled={closing}
+            onClick={onClose}
+          >
+            {closing ? "Closing…" : "Close sandbox"}
+          </Button>
+        )}
       </section>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
 

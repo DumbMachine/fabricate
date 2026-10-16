@@ -83,6 +83,17 @@ On macOS, Go applications may need to append `SSL_CERT_FILE` to system roots in
 their process-scoped transport because platform root loading can ignore the
 environment variable.
 
+## Console
+
+`fab run --proxy --ui -- <command>` serves the managed console for the life of
+the wrapped command and opens it locally. The wrapped environment is held
+until the command exits. The console can start more sandboxes beside it. The
+child keeps the proxy variables it was given at startup; extra sandboxes
+publish their own connection instructions.
+
+`fab serve` runs that console by itself. Add `--ui` there when a local
+browser should open too.
+
 ## Introspection
 
 Every intercepted request and response is appended to the environment's

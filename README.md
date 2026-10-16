@@ -108,7 +108,13 @@ you can paste into Cursor, Claude Code, Codex, or Devin.
 
 ```bash
 fab serve
+fab run acme-gmail --proxy --ui -- npm test
 ```
+
+`fab serve` is the console on its own, including as a deployed service.
+`fab serve --ui` also opens it in a browser. `fab run --ui` serves that same
+console while a command is wrapped: the wrapped environment stays up until
+the command exits, and the console can start more sandboxes beside it.
 
 Inspect the catalog before you wrap anything:
 

@@ -64,4 +64,5 @@ export type Session = {
   proxyConnection?: ProxyConnection
   connectShell: string
   agentPrompt: string
+  anchored: boolean
 }
