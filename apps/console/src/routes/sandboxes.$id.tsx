@@ -6,15 +6,14 @@ import {
   ColumnHeading,
   ConsoleFrame,
   DataTable,
-  FilterTabs,
 } from "@/components/console-frame"
 import { CopyButton } from "@/components/copy-button"
+import { OpenInChat } from "@/components/open-in-chat"
 import { ScenarioChips } from "@/components/scenario-chip"
 import { ServiceIdentity } from "@/components/service-identity"
 import { StatusPill } from "@/components/status-pill"
 import { closeSandbox, getSession } from "@/lib/api"
-import { agents, formatTime, kindLabel, withAgent } from "@/lib/format"
-import type { Agent } from "@/lib/format"
+import { formatTime, kindLabel } from "@/lib/format"
 import type { Session } from "@/lib/types"
 
 export const Route = createFileRoute("/sandboxes/$id")({
@@ -28,7 +27,6 @@ function SandboxPage() {
   const [missing, setMissing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [closing, setClosing] = useState(false)
-  const [agent, setAgent] = useState<Agent>("Cursor")
 
   useEffect(() => {
     let cancelled = false
@@ -96,8 +94,6 @@ function SandboxPage() {
   return (
     <SandboxDetail
       session={session}
-      agent={agent}
-      onAgent={setAgent}
       closing={closing}
       error={error}
       onClose={() => void close()}
@@ -184,20 +180,15 @@ function isLoopbackURL(value: string) {
 
 function SandboxDetail({
   session,
-  agent,
-  onAgent,
   closing,
   error,
   onClose,
 }: {
   session: Session
-  agent: Agent
-  onAgent: (agent: Agent) => void
   closing: boolean
   error: string | null
   onClose: () => void
 }) {
-  const prompt = withAgent(agent, session.agentPrompt)
   return (
     <ConsoleFrame
       crumbs={[{ label: "Sandboxes", to: "/" }, { label: session.label }]}
@@ -206,6 +197,10 @@ function SandboxDetail({
       description={`${session.name} · ${kindLabel(session.kind)} · session ${session.id}. Started ${formatTime(session.startedAt)}. ${reachability(session)}`}
       actions={
         <div className="flex flex-wrap items-center gap-2">
+          <OpenInChat
+            query={session.agentPrompt}
+            subject={`Fabricate sandbox ${session.label}`}
+          />
           {contextAction(session)}
           {session.anchored ? (
             <p className="max-w-sm text-sm text-muted-foreground">
@@ -229,7 +224,6 @@ function SandboxDetail({
         { id: "scenarios", label: "Scenarios" },
         { id: "services", label: "Services" },
         { id: "connect", label: "Connect" },
-        { id: "agent", label: "Agent" },
         { id: "log", label: "Log" },
       ]}
     >
@@ -309,29 +303,6 @@ function SandboxDetail({
         </p>
         <pre className="overflow-auto border bg-code p-4 font-mono text-xs leading-5 whitespace-pre-wrap">
           {session.connectShell}
-        </pre>
-      </section>
-
-      <section id="agent" className="flex scroll-mt-6 flex-col gap-3">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-medium">Agent</h2>
-          <CopyButton value={prompt} label={`Copy for ${agent}`} />
-        </div>
-        <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-          Paste this prompt into the coding agent that should wire your app. The
-          agent gets the sandbox connection. It does not get a separate
-          control-plane key.
-        </p>
-        <FilterTabs
-          value={agent}
-          onChange={(id) => onAgent(id as Agent)}
-          options={agents.map((candidate) => ({
-            id: candidate,
-            label: candidate,
-          }))}
-        />
-        <pre className="overflow-auto border bg-code p-4 font-mono text-xs leading-5 whitespace-pre-wrap">
-          {prompt}
         </pre>
       </section>
 

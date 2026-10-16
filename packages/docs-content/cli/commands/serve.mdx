@@ -43,9 +43,9 @@ console can start more sandboxes next to it. `--ui-addr` and
 ## Start
 
 **Start all** on an environment starts that manifest, the same set of services
-`fab run` would start. **Start** on a scenario starts one resource with that
-scenario. The running sandbox lists those scenario ids, and each id opens the
-seeded records.
+`fab run` would start. Sandboxes lists resources. Open a resource to choose
+its scenario by name, then **Start** loads that scenario. The running sandbox
+lists those scenario ids, and each id opens the seeded records.
 
 There is one Start action. It follows how this process was launched.
 
@@ -61,11 +61,12 @@ console shows **Running in proxy mode** while that is on.
 onboarding this console into another app. It lists every resource and
 scenario, every official environment, and the sandboxes that are running.
 
-Each service has `storeAs`, `urlName`, and `secretName`. `storeAs` is the
-name to keep in app config. `urlName` is the key for the base URL, and
-`secretName` is the key for the bearer token. A running sandbox fills in
-`url` and `secret` with the values to store. `running` on a scenario lists
-the sandbox ids currently using it.
+Each scenario has `name` and `description` for choosing one. Each service has
+`storeAs`, `urlName`, and `secretName`. `storeAs` is the name to keep in app
+config. `urlName` is the key for the base URL, and `secretName` is the key for
+the bearer token. A running sandbox fills in `url` and `secret` with the
+values to store. `running` on a scenario lists the sandbox ids currently
+using it.
 
 ```bash
 curl -sS https://console.example.com/.well-known/fabricate
@@ -80,10 +81,10 @@ The sandbox page shows two ways to use a running sandbox:
 - **Connect your app.** Copy the shell exports. Without proxy mode, point each
   client at the service URL and send the bearer token. In proxy mode, export
   the proxy and CA variables and keep the provider's normal hostname.
-- **Hand off to an agent.** Pick Cursor, Claude Code, Codex, or Devin and copy
-  the prompt. Paste it into the coding agent that should wire the app. The
-  prompt carries the sandbox connection for this machine. It is not a
-  production credential, and it should not be committed.
+- **Open in chat.** The sandbox page opens the same prompt in Cursor, Claude,
+  ChatGPT, or an email draft. The prompt carries the sandbox connection for
+  this machine. It is not a production credential, and it should not be
+  committed.
 
 Ports and tokens change every time a sandbox starts. Sandbox processes stay
 on loopback. The console publishes them on its own host, so a client that

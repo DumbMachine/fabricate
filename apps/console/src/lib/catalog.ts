@@ -1,3 +1,4 @@
+import { matchesQuery } from "@/lib/format"
 import type { CatalogScenario, Session } from "@/lib/types"
 
 export type ScenarioGroup = {
@@ -21,6 +22,33 @@ export function groupScenarios(scenarios: CatalogScenario[]): ScenarioGroup[] {
     }
   }
   return groups
+}
+
+export function matchingResources(
+  scenarios: CatalogScenario[],
+  query: string
+): ScenarioGroup[] {
+  const matched = groupScenarios(scenarios).flatMap((group) => {
+    if (matchesQuery(query, [group.resource, group.displayName])) {
+      return [group]
+    }
+    const scenariosForResource = group.scenarios.filter((scenario) =>
+      matchesQuery(query, [
+        scenario.id,
+        scenario.name,
+        scenario.description,
+        scenario.resourceVersion,
+        ...scenario.providerHosts,
+      ])
+    )
+    if (scenariosForResource.length === 0) return []
+    return [{ ...group, scenarios: scenariosForResource }]
+  })
+  return matched.sort(
+    (left, right) =>
+      left.displayName.localeCompare(right.displayName) ||
+      left.resource.localeCompare(right.resource)
+  )
 }
 
 export function sessionsForEnvironment(

@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
+import { cn } from "cn"
 import { ErrorNote, LoadingLine } from "@/components/feedback"
 import {
   Card,
@@ -7,9 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/motion/card"
-import { ScenarioChips } from "@/components/scenario-chip"
 import { ResourceIcon } from "@/components/resource-icon"
-import { StartActions } from "@/components/start-actions"
+import { ResourceSheet } from "@/components/resource-sheet"
+import { ScenarioChips } from "@/components/scenario-chip"
 import { StatusPill } from "@/components/status-pill"
 import { StatefulButton } from "@/components/ui/button"
 import {
@@ -17,10 +18,10 @@ import {
   ConsoleFrame,
   DataTable,
 } from "@/components/console-frame"
-import { groupScenarios } from "@/lib/catalog"
+import { matchingResources } from "@/lib/catalog"
 import { formatTime, kindLabel, matchesQuery } from "@/lib/format"
 import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
-import type { CatalogScenario, Session } from "@/lib/types"
+import type { Session } from "@/lib/types"
 
 export const Route = createFileRoute("/")({ component: SandboxesPage })
 
@@ -29,6 +30,7 @@ function SandboxesPage() {
   const [sessions, setSessions] = useSessions()
   const { pending, errors, start, close } = useSandboxActions()
   const [query, setQuery] = useState("")
+  const [resourceId, setResourceId] = useState<string | null>(null)
   const visibleSessions = useMemo(() => {
     const loaded = sessions ?? []
     return loaded.filter((session) =>
@@ -46,21 +48,12 @@ function SandboxesPage() {
       ])
     )
   }, [sessions, query])
-  const groups = useMemo(
-    () =>
-      groupScenarios(
-        (catalog?.scenarios ?? []).filter((scenario) =>
-          matchesQuery(query, [
-            scenario.id,
-            scenario.resource,
-            scenario.displayName,
-            scenario.resourceVersion,
-            ...scenario.providerHosts,
-          ])
-        )
-      ),
+  const resources = useMemo(
+    () => matchingResources(catalog?.scenarios ?? [], query),
     [catalog, query]
   )
+  const selected =
+    resources.find((resource) => resource.resource === resourceId) ?? null
 
   async function onStart(id: string) {
     await start("scenario", id, "sandbox")
@@ -79,11 +72,11 @@ function SandboxesPage() {
     <ConsoleFrame
       crumbs={[{ label: "Sandboxes" }]}
       heading="Sandboxes"
-      description="A running sandbox shows the scenario that is active. Start one scenario here, or start every service in an environment together."
+      description="A running sandbox shows the scenario that is active. Open a resource to choose a scenario, or start every service in an environment together."
       search={{
         value: query,
         onChange: setQuery,
-        label: "Search sandboxes and scenarios",
+        label: "Search sandboxes and resources",
       }}
     >
       <section className="flex flex-col gap-3">
@@ -95,7 +88,7 @@ function SandboxesPage() {
             <CardHeader>
               <CardTitle as="h3">Nothing is running</CardTitle>
               <CardDescription>
-                Start a scenario below, or open{" "}
+                Open a resource below, or open{" "}
                 <Link
                   to="/environments"
                   className="underline decoration-muted-foreground/50 underline-offset-2"
@@ -134,56 +127,63 @@ function SandboxesPage() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-medium">
-          Scenarios ({catalog?.scenarios.length ?? 0})
+          Resources{catalog ? ` (${resources.length})` : ""}
         </h2>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Scenarios are grouped by resource. Open one to inspect its seeded
-          records, or start it as its own sandbox.
-        </p>
         {catalogError ? <ErrorNote>{catalogError}</ErrorNote> : null}
         {catalog === null && !catalogError ? (
-          <LoadingLine>Loading scenarios…</LoadingLine>
+          <LoadingLine>Loading resources…</LoadingLine>
         ) : null}
-        {catalog !== null && groups.length === 0 ? (
+        {catalog !== null && resources.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No scenarios match that search.
+            No resources match that search.
           </p>
         ) : null}
-        {groups.map((group) => (
-          <section key={group.resource} className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <ResourceIcon id={group.resource} />
-              <h3 className="font-medium">{group.displayName}</h3>
-              <span className="font-mono text-xs text-muted-foreground">
-                {group.resource}
-              </span>
-            </div>
-            <DataTable>
-              <thead>
-                <tr>
-                  <ColumnHeading>Scenario</ColumnHeading>
-                  <ColumnHeading>Version</ColumnHeading>
-                  <ColumnHeading>Production hostnames</ColumnHeading>
-                  <ColumnHeading> </ColumnHeading>
-                </tr>
-              </thead>
-              <tbody>
-                {group.scenarios.map((scenario) => (
-                  <ScenarioRow
-                    key={scenario.id}
-                    scenario={scenario}
-                    pending={pending}
-                    error={errors[`scenario:${scenario.id}`]}
-                    onStart={() => void onStart(scenario.id)}
-                  />
-                ))}
-              </tbody>
-            </DataTable>
-          </section>
-        ))}
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {resources.map((resource) => {
+            const selectedResource = resource.resource === resourceId
+            const count = scenarioCount(resource.scenarios.length)
+            return (
+              <button
+                key={resource.resource}
+                type="button"
+                aria-haspopup="dialog"
+                aria-expanded={selectedResource}
+                onClick={() => setResourceId(resource.resource)}
+                className={cn(
+                  "flex items-center gap-3 rounded-2xl border bg-background px-4 py-4 text-left hover:bg-muted/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground",
+                  selectedResource ? "border-foreground" : "border-border"
+                )}
+              >
+                <ResourceIcon id={resource.resource} size="md" />
+                <span className="min-w-0">
+                  <span className="block text-[15px] font-semibold">
+                    {resource.displayName}
+                  </span>
+                  <span className="mt-0.5 block text-sm text-muted-foreground">
+                    {count}
+                  </span>
+                </span>
+              </button>
+            )
+          })}
+        </div>
       </section>
+      <ResourceSheet
+        resource={selected}
+        open={selected !== null}
+        pending={pending}
+        errors={errors}
+        onOpenChange={(next) => {
+          if (!next) setResourceId(null)
+        }}
+        onStart={(id) => void onStart(id)}
+      />
     </ConsoleFrame>
   )
+}
+
+function scenarioCount(count: number): string {
+  return count === 1 ? "1 scenario" : `${count} scenarios`
 }
 
 function RunningRow({
@@ -245,43 +245,6 @@ function RunningRow({
             Close
           </StatefulButton>
         )}
-      </td>
-    </tr>
-  )
-}
-
-function ScenarioRow({
-  scenario,
-  pending,
-  error,
-  onStart,
-}: {
-  scenario: CatalogScenario
-  pending: string | null
-  error?: string
-  onStart: () => void
-}) {
-  const key = `scenario:${scenario.id}`
-  return (
-    <tr className="border-t align-top">
-      <td className="px-3 py-3">
-        <ScenarioChips
-          services={[{ resource: scenario.resource, scenario: scenario.id }]}
-        />
-        {error ? (
-          <div className="mt-1">
-            <ErrorNote compact>{error}</ErrorNote>
-          </div>
-        ) : null}
-      </td>
-      <td className="px-3 py-3 font-mono text-xs text-muted-foreground">
-        {scenario.resourceVersion}
-      </td>
-      <td className="px-3 py-3 text-muted-foreground">
-        {scenario.providerHosts.join(", ") || "None"}
-      </td>
-      <td className="px-3 py-3">
-        <StartActions pending={pending} actionKey={key} onStart={onStart} />
       </td>
     </tr>
   )

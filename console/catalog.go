@@ -1,6 +1,7 @@
 package console
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 	"unicode"
@@ -34,6 +35,8 @@ type CatalogScenario struct {
 	ID              string   `json:"id"`
 	Resource        string   `json:"resource"`
 	DisplayName     string   `json:"displayName"`
+	Name            string   `json:"name"`
+	Description     string   `json:"description"`
 	ResourceVersion string   `json:"resourceVersion"`
 	ProviderHosts   []string `json:"providerHosts"`
 }
@@ -83,10 +86,16 @@ func buildCatalog(registry *httpresource.Registry) (Catalog, error) {
 		hosts := append([]string(nil), descriptor.ProviderHosts...)
 		sort.Strings(hosts)
 		for _, doc := range docs {
+			description, err := scenarioDescription(doc.State)
+			if err != nil {
+				return Catalog{}, fmt.Errorf("catalog: describe scenario %s: %w", doc.ID, err)
+			}
 			catalog.Scenarios = append(catalog.Scenarios, CatalogScenario{
 				ID:              doc.ID,
 				Resource:        doc.Resource,
 				DisplayName:     descriptor.DisplayName,
+				Name:            scenarioName(doc.ID, doc.Resource),
+				Description:     description,
 				ResourceVersion: doc.ResourceVersion,
 				ProviderHosts:   hosts,
 			})

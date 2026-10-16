@@ -13,7 +13,6 @@ import {
 import { BounceSidebar } from "@/components/motion/bounce-sidebar"
 import { Drawer } from "@/components/motion/drawer"
 import { Input } from "@/components/motion/input"
-import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
 import { ProxyModeIndicator } from "@/components/proxy-indicator"
 import { Button } from "@/components/ui/button"
 
@@ -176,28 +175,6 @@ export function ConsoleFrame({
         </main>
       </div>
     </div>
-  )
-}
-
-export function FilterTabs({
-  options,
-  value,
-  onChange,
-}: {
-  options: { id: string; label: string }[]
-  value: string
-  onChange: (id: string) => void
-}) {
-  return (
-    <Tabs value={value} onValueChange={onChange} variant="segment">
-      <TabsList>
-        {options.map((option) => (
-          <TabsTrigger key={option.id} value={option.id}>
-            {option.label}
-          </TabsTrigger>
-        ))}
-      </TabsList>
-    </Tabs>
   )
 }
 

@@ -380,6 +380,9 @@ func TestAgentIndexPublishesNamesAndSecrets(t *testing.T) {
 	if scenario.StoreAs != "gmail" || scenario.URLName != "FAB_GMAIL_URL" || scenario.SecretName != "FAB_GMAIL_TOKEN" || len(scenario.Running) != 0 {
 		t.Fatalf("scenario names: %#v", scenario)
 	}
+	if scenario.Name != "Minimal" || !strings.Contains(scenario.Description, "me@acme.example") {
+		t.Fatalf("scenario label: %#v", scenario)
+	}
 	environment := findAgentEnvironment(t, idle, "acme-gmail")
 	if len(environment.Services) != 1 || environment.Services[0].StoreAs != "support-mail" || environment.Services[0].URLName != "FAB_SUPPORT_MAIL_URL" || environment.Services[0].SecretName != "FAB_SUPPORT_MAIL_TOKEN" {
 		t.Fatalf("environment names: %#v", environment.Services)

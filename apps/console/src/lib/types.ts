@@ -23,6 +23,8 @@ export type CatalogScenario = {
   id: string
   resource: string
   displayName: string
+  name: string
+  description: string
   resourceVersion: string
   providerHosts: string[]
 }
@@ -49,6 +51,8 @@ export type ScenarioView = {
   id: string
   resource: string
   displayName: string
+  name: string
+  description: string
   resourceVersion: string
   providerHosts: string[]
   scalars: ScenarioScalar[]

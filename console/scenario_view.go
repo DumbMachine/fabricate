@@ -26,6 +26,8 @@ type ScenarioView struct {
 	ID              string               `json:"id"`
 	Resource        string               `json:"resource"`
 	DisplayName     string               `json:"displayName"`
+	Name            string               `json:"name"`
+	Description     string               `json:"description"`
 	ResourceVersion string               `json:"resourceVersion"`
 	ProviderHosts   []string             `json:"providerHosts"`
 	Scalars         []ScenarioScalar     `json:"scalars"`
@@ -67,10 +69,16 @@ func (m *Manager) Scenario(id string) (ScenarioView, error) {
 	if err != nil {
 		return ScenarioView{}, err
 	}
+	description, err := scenarioDescription(doc.State)
+	if err != nil {
+		return ScenarioView{}, err
+	}
 	return ScenarioView{
 		ID:              doc.ID,
 		Resource:        doc.Resource,
 		DisplayName:     resourceDisplayName(m.registry, doc.Resource),
+		Name:            scenarioName(doc.ID, doc.Resource),
+		Description:     description,
 		ResourceVersion: doc.ResourceVersion,
 		ProviderHosts:   providerHosts(m.registry, doc.Resource),
 		Scalars:         scalars,

@@ -32,12 +32,14 @@ type AgentResource struct {
 
 // AgentScenario is a scenario id and the config names a single-service sandbox would use.
 type AgentScenario struct {
-	ID         string   `json:"id"`
-	Version    string   `json:"version"`
-	StoreAs    string   `json:"storeAs"`
-	URLName    string   `json:"urlName"`
-	SecretName string   `json:"secretName"`
-	Running    []string `json:"running"`
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	Version     string   `json:"version"`
+	StoreAs     string   `json:"storeAs"`
+	URLName     string   `json:"urlName"`
+	SecretName  string   `json:"secretName"`
+	Running     []string `json:"running"`
 }
 
 // AgentEnvironment is an official environment and the names its services store under.
@@ -115,12 +117,14 @@ func buildAgentIndex(deployment Deployment, catalog Catalog, sessions []Session,
 		}
 		prefix := variablePrefix(scenario.Resource)
 		resources[position].Scenarios = append(resources[position].Scenarios, AgentScenario{
-			ID:         scenario.ID,
-			Version:    scenario.ResourceVersion,
-			StoreAs:    scenario.Resource,
-			URLName:    prefix + "_URL",
-			SecretName: prefix + "_TOKEN",
-			Running:    sandboxIDsForScenario(sessions, scenario.Resource, scenario.ID),
+			ID:          scenario.ID,
+			Name:        scenario.Name,
+			Description: scenario.Description,
+			Version:     scenario.ResourceVersion,
+			StoreAs:     scenario.Resource,
+			URLName:     prefix + "_URL",
+			SecretName:  prefix + "_TOKEN",
+			Running:     sandboxIDsForScenario(sessions, scenario.Resource, scenario.ID),
 		})
 	}
 

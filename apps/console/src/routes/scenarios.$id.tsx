@@ -75,10 +75,10 @@ function ScenarioPage() {
 
   return (
     <ConsoleFrame
-      crumbs={[{ label: "Sandboxes", to: "/" }, { label: view.displayName }]}
-      eyebrow="Scenario"
-      heading={view.displayName}
-      description={`${view.id} · ${view.resourceVersion}. ${
+      crumbs={[{ label: "Sandboxes", to: "/" }, { label: view.name }]}
+      eyebrow={view.displayName}
+      heading={view.name}
+      description={`${view.description} ${view.id} · ${view.resourceVersion}. ${
         view.providerHosts.join(", ") || "No production hostnames"
       }. This is the seeded state a sandbox loads for this scenario.`}
       actions={
