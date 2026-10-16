@@ -29,7 +29,7 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"slack.com"},
 		HostPrefixes:  map[string]string{"slack.com": "/api/"},
-		SDK:           httpresource.SDKDescriptor{Package: "curl", Language: "http", DirectTest: true, ProxyTest: true},
+		SDK:           httpresource.SDKDescriptor{Package: "@slack/web-api", Language: "javascript", DirectTest: true, ProxyTest: true},
 	}
 }
 

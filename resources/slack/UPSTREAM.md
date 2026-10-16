@@ -28,6 +28,17 @@ Deviations from the imported document:
   replaces `Authorization` with the synthetic bearer token. The same secret is
   also accepted as the Slack `token` query parameter, the `token` form or JSON
   field, or the `token` header used by `auth.test` in the imported spec.
+- Read methods are declared as GET with query parameters. Like slack.com,
+  the resource also accepts them as POST with an
+  `application/x-www-form-urlencoded` body, which is how the official clients
+  (`@slack/web-api`, python-slack-sdk, Bolt) send every call. The form fields
+  are folded into the query (a query parameter wins over a form field of the
+  same name) before validation. Other request bodies on read methods return
+  `invalid_form_data`.
+- Auth and argument errors (`not_authed`, `invalid_auth`,
+  `invalid_arguments`) are HTTP 200 with `ok: false`, as on slack.com. The
+  official clients treat any non-200, non-429 status as a transport failure
+  and would otherwise hide the Slack error code.
 - `chat.delete` types `ts` as a number, and `conversations.history` /
   `conversations.replies` type `latest` and `oldest` as numbers. Slack
   timestamps are `seconds.microseconds` (`defs_ts` in the imported spec), so
@@ -35,3 +46,8 @@ Deviations from the imported document:
 - `conversations.history` and `conversations.replies` include
   `response_metadata.next_cursor` so a cursor has a next page token. The
   imported success schemas for those two methods do not list that property.
+
+The official-client check is `conformance/slack-web-api.mjs` (`@slack/web-api`,
+pinned in `conformance/sdk.json`). In proxy mode it keeps WebClient's default
+`https://slack.com/api/` and opts Node's built-in `fetch` into `HTTPS_PROXY`
+with `http.setGlobalProxyFromEnv()`, as a Node app behind a proxy must.

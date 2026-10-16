@@ -11,6 +11,8 @@
       "messagesAfter": 3,
       "messagesBefore": 2,
       "operations": {
+        "auth": "passed",
+        "paginate": "passed",
         "read": "passed",
         "write": "passed",
         "persistence": "passed"
@@ -21,6 +23,8 @@
       "messagesAfter": 3,
       "messagesBefore": 2,
       "operations": {
+        "auth": "passed",
+        "paginate": "passed",
         "read": "passed",
         "write": "passed",
         "persistence": "passed"
@@ -29,16 +33,18 @@
     }
   },
   "operationLabels": {
-    "read": "Read fulfillment history",
-    "write": "Post a channel message",
-    "persistence": "Confirm history contains it"
+    "auth": "Test auth",
+    "paginate": "Page through channels",
+    "read": "Read channel history",
+    "write": "Post message",
+    "persistence": "Confirm posted message"
   },
+  "testedAt": "2026-10-16T06:32:02.673Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
   "verification": {
-    "kind": "curl",
-    "label": "HTTP client",
-    "client": "curl@8",
-    "title": "HTTP API verification"
-  },
-  "testedAt": "2026-10-03T05:39:02.003Z",
-  "testedCommit": "b19647c886dca0ed9e7d4e729fd9d690e3c14df0"
+    "client": "@slack/web-api@8.2.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
 }

@@ -266,6 +266,9 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	if descriptor.HostPrefixes["slack.com"] != "/api/" || len(descriptor.ProviderHosts) != 1 || descriptor.ProviderHosts[0] != "slack.com" {
 		t.Fatalf("descriptor routing = hosts %v prefixes %v", descriptor.ProviderHosts, descriptor.HostPrefixes)
 	}
+	if want := (httpresource.SDKDescriptor{Package: "@slack/web-api", Language: "javascript", DirectTest: true, ProxyTest: true}); descriptor.SDK != want {
+		t.Fatalf("descriptor SDK = %#v, want %#v", descriptor.SDK, want)
+	}
 	contract := resource.Contract()
 	if got, want := descriptor.OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
@@ -284,11 +287,11 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	handler := newTestHandler(t, db)
 
 	unauthorized := request(t, handler, http.MethodGet, "/api/auth.test", "", "", "")
-	if unauthorized.Code != http.StatusUnauthorized || !strings.Contains(unauthorized.Body.String(), `"not_authed"`) {
+	if unauthorized.Code != http.StatusOK || !strings.Contains(unauthorized.Body.String(), `"not_authed"`) {
 		t.Fatalf("unauthorized = %d %s", unauthorized.Code, unauthorized.Body.String())
 	}
 	rejected := request(t, handler, http.MethodGet, "/api/auth.test", "", "wrong-token", "")
-	if rejected.Code != http.StatusUnauthorized || !strings.Contains(rejected.Body.String(), `"invalid_auth"`) {
+	if rejected.Code != http.StatusOK || !strings.Contains(rejected.Body.String(), `"invalid_auth"`) {
 		t.Fatalf("rejected = %d %s", rejected.Code, rejected.Body.String())
 	}
 
@@ -390,12 +393,87 @@ func TestTokenFieldAccepted(t *testing.T) {
 	}
 }
 
+// The official Slack clients send every Web API method as a form POST, while
+// the contract declares read methods as GET. slack.com accepts both.
+func TestReadMethodsAcceptFormPOST(t *testing.T) {
+	handler := newTestHandler(t, openTestDB(t, loadScenario(t, "acme-workspace.v1.json")))
+	form := "application/x-www-form-urlencoded"
+
+	authTest := request(t, handler, http.MethodPost, "/api/auth.test", "", testToken, "")
+	if authTest.Code != http.StatusOK || !strings.Contains(authTest.Body.String(), `"user_id":"U-val"`) {
+		t.Fatalf("empty POST auth.test = %d %s", authTest.Code, authTest.Body.String())
+	}
+	formAuth := request(t, handler, http.MethodPost, "/api/auth.test", "token="+url.QueryEscape(testToken), "", form)
+	if formAuth.Code != http.StatusOK || !strings.Contains(formAuth.Body.String(), `"user_id":"U-val"`) {
+		t.Fatalf("form token auth.test = %d %s", formAuth.Code, formAuth.Body.String())
+	}
+
+	var ids []string
+	cursor := ""
+	for pages := 1; ; pages++ {
+		if pages > 5 {
+			t.Fatalf("conversations.list did not finish paging: %v", ids)
+		}
+		body := url.Values{"limit": {"2"}}
+		if cursor != "" {
+			body.Set("cursor", cursor)
+		}
+		page := request(t, handler, http.MethodPost, "/api/conversations.list", body.Encode(), testToken, form)
+		var decoded struct {
+			OK       bool `json:"ok"`
+			Channels []struct {
+				ID string `json:"id"`
+			} `json:"channels"`
+			ResponseMetadata *struct {
+				NextCursor string `json:"next_cursor"`
+			} `json:"response_metadata"`
+		}
+		if page.Code != http.StatusOK || json.Unmarshal(page.Body.Bytes(), &decoded) != nil || !decoded.OK || len(decoded.Channels) == 0 {
+			t.Fatalf("conversations.list page %d = %d %s", pages, page.Code, page.Body.String())
+		}
+		for _, channel := range decoded.Channels {
+			ids = append(ids, channel.ID)
+		}
+		if decoded.ResponseMetadata == nil || decoded.ResponseMetadata.NextCursor == "" {
+			if pages != 3 {
+				t.Fatalf("limit=2 pages = %d, want 3", pages)
+			}
+			break
+		}
+		cursor = decoded.ResponseMetadata.NextCursor
+	}
+	if strings.Join(ids, ",") != "C-finance,C-fulfillment,C-hiring,C-incidents,C-support" {
+		t.Fatalf("paged channels = %v", ids)
+	}
+
+	history := request(t, handler, http.MethodPost, "/api/conversations.history", "channel=C-fulfillment", testToken, form)
+	if history.Code != http.StatusOK || !strings.Contains(history.Body.String(), "SR10482AWB") || !strings.Contains(history.Body.String(), "#10483") {
+		t.Fatalf("form conversations.history = %d %s", history.Code, history.Body.String())
+	}
+	queryWins := request(t, handler, http.MethodPost, "/api/conversations.history?channel=C-finance", "channel=C-fulfillment", testToken, form)
+	if !strings.Contains(queryWins.Body.String(), "rfnd_Acme10484") || strings.Contains(queryWins.Body.String(), "SR10482AWB") {
+		t.Fatalf("query parameter should win over form field: %s", queryWins.Body.String())
+	}
+	missing := request(t, handler, http.MethodPost, "/api/conversations.history", "", testToken, form)
+	if missing.Code != http.StatusOK || !strings.Contains(missing.Body.String(), `"invalid_arguments"`) {
+		t.Fatalf("form history without channel = %d %s", missing.Code, missing.Body.String())
+	}
+	jsonBody := request(t, handler, http.MethodPost, "/api/conversations.history", `{"channel":"C-fulfillment"}`, testToken, "application/json")
+	if jsonBody.Code != http.StatusOK || !strings.Contains(jsonBody.Body.String(), `"invalid_form_data"`) {
+		t.Fatalf("JSON body on read method = %d %s", jsonBody.Code, jsonBody.Body.String())
+	}
+	wrong := request(t, handler, http.MethodPost, "/api/auth.test", "", "wrong-token", form)
+	if wrong.Code != http.StatusOK || !strings.Contains(wrong.Body.String(), `"ok":false`) || !strings.Contains(wrong.Body.String(), `"invalid_auth"`) {
+		t.Fatalf("form POST wrong token = %d %s", wrong.Code, wrong.Body.String())
+	}
+}
+
 func TestValidationAndProviderErrorShapes(t *testing.T) {
 	db := openTestDB(t, loadScenario(t, "acme-workspace.v1.json"))
 	handler := newTestHandler(t, db)
 
 	invalid := request(t, handler, http.MethodGet, "/api/users.list?limit=0", "", testToken, "")
-	if invalid.Code != http.StatusBadRequest || !strings.Contains(invalid.Body.String(), `"invalid_arguments"`) {
+	if invalid.Code != http.StatusOK || !strings.Contains(invalid.Body.String(), `"invalid_arguments"`) {
 		t.Fatalf("invalid limit = %d %s", invalid.Code, invalid.Body.String())
 	}
 	missing := request(t, handler, http.MethodGet, "/api/conversations.info?channel=C-missing", "", testToken, "")

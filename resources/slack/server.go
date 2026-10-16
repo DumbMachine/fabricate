@@ -84,10 +84,17 @@ func newServer(ctx context.Context, dependencies httpresource.ServerDependencies
 					code = "not_authed"
 				}
 			}
+			// Slack reports auth and argument errors as HTTP 200 with
+			// ok:false, like every other Web API error. The official clients
+			// treat any other status as a transport failure, so a 401 or 400
+			// here would hide the Slack error code from the caller.
+			if status == http.StatusUnauthorized || status == http.StatusBadRequest {
+				status = http.StatusOK
+			}
 			writeSlackError(w, status, code)
 		},
 	})
-	impl.handler = validator(generatedHandler)
+	impl.handler = postedReadMethods(spec, validator(generatedHandler))
 	return impl, nil
 }
 
