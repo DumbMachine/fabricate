@@ -203,7 +203,7 @@ function RunningRow({
   return (
     <tr className="border-t align-top">
       <td className="px-3 py-3">
-        <ScenarioChips services={session.services} />
+        <ScenarioChips services={session.services} plain />
         {error ? (
           <div className="mt-1">
             <ErrorNote compact>{error}</ErrorNote>

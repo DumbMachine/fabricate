@@ -157,7 +157,7 @@ function EnvironmentRow({
         ) : null}
       </td>
       <td className="px-3 py-3">
-        <ScenarioChips services={environment.services} />
+        <ScenarioChips services={environment.services} plain />
       </td>
       <td className="px-3 py-3">
         <EnvironmentStatus known={sessionsKnown} running={running} />
