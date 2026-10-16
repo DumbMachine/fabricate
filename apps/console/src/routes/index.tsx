@@ -11,6 +11,7 @@ import {
 import { ResourceIcon } from "@/components/resource-icon"
 import { ResourceSheet } from "@/components/resource-sheet"
 import { ScenarioChips } from "@/components/scenario-chip"
+import { ServiceURLs } from "@/components/service-urls"
 import { StatusPill } from "@/components/status-pill"
 import { StatefulButton } from "@/components/ui/button"
 import {
@@ -44,6 +45,7 @@ function SandboxesPage() {
           service.resource,
           service.displayName,
           service.scenario,
+          service.url,
         ]),
       ])
     )
@@ -100,10 +102,11 @@ function SandboxesPage() {
             </CardHeader>
           </Card>
         ) : (
-          <DataTable className="min-w-[760px]">
+          <DataTable className="min-w-[980px]">
             <thead>
               <tr>
                 <ColumnHeading>Sandbox</ColumnHeading>
+                <ColumnHeading>URL</ColumnHeading>
                 <ColumnHeading>Active scenarios</ColumnHeading>
                 <ColumnHeading>Status</ColumnHeading>
                 <ColumnHeading>Started</ColumnHeading>
@@ -208,7 +211,7 @@ function RunningRow({
           {session.label}
         </Link>
         <p className="font-mono text-xs text-muted-foreground">
-          {session.name}
+          {session.name} · {session.id}
         </p>
         <p className="text-xs text-muted-foreground">
           {kindLabel(session.kind)}
@@ -218,6 +221,9 @@ function RunningRow({
             <ErrorNote compact>{error}</ErrorNote>
           </div>
         ) : null}
+      </td>
+      <td className="px-3 py-3">
+        <ServiceURLs services={session.services} />
       </td>
       <td className="px-3 py-3">
         <ScenarioChips services={session.services} />

@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/motion/card"
 import { ScenarioChips } from "@/components/scenario-chip"
+import { ServiceURLs } from "@/components/service-urls"
 import { LinkButton, StatefulButton } from "@/components/ui/button"
 import { ServiceIdentity } from "@/components/service-identity"
 import { StartActions } from "@/components/start-actions"
@@ -18,6 +19,7 @@ import {
   DataTable,
 } from "@/components/console-frame"
 import { sessionsForEnvironment } from "@/lib/catalog"
+import { publishSession } from "@/lib/publish-session"
 import { formatTime } from "@/lib/format"
 import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
 import type { Session } from "@/lib/types"
@@ -39,9 +41,10 @@ function EnvironmentPage() {
   async function onStart() {
     const session = await start("environment", name, "stay")
     if (session) {
+      const published = publishSession(session)
       setSessions((current) => [
-        session,
-        ...(current ?? []).filter((item) => item.id !== session.id),
+        published,
+        ...(current ?? []).filter((item) => item.id !== published.id),
       ])
     }
   }
@@ -239,6 +242,7 @@ function RunningSession({
           <p className="font-mono text-xs text-muted-foreground">
             {session.id}
           </p>
+          <ServiceURLs services={session.services} />
           <p className="text-sm text-muted-foreground">
             Started {formatTime(session.startedAt)}
           </p>
