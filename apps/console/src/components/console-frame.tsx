@@ -140,12 +140,12 @@ export function ConsoleFrame({
               ref={searchRef}
               value={search.value}
               onChange={search.onChange}
-              placeholder={search.label ?? "Search"}
+              placeholder="Search"
               aria-label={search.label ?? "Search"}
               leftIcon={<Search />}
-              rightIcon={<kbd className="pr-3 font-sans text-[11px]">⌘K</kbd>}
-              className="w-full sm:ml-auto sm:w-72"
-              classNames={{ field: "bg-card" }}
+              rightIcon={<kbd className="mr-4 font-sans text-[11px]">⌘K</kbd>}
+              className="w-full sm:ml-auto sm:w-80"
+              classNames={{ field: "bg-card", input: "pr-16" }}
             />
           ) : null}
         </header>
