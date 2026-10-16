@@ -25,3 +25,6 @@ node_modules/
 
 # Example app build output
 examples/**/target/
+
+# Python bytecode from helper scripts
+__pycache__/

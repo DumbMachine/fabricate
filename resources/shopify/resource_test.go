@@ -389,3 +389,31 @@ func TestTwoInstancesAreIsolated(t *testing.T) {
 		t.Fatalf("second instance leaked state = %d %s", untouched.Code, untouched.Body.String())
 	}
 }
+
+func TestOrderListCustomerMatchesSingleGet(t *testing.T) {
+	handler := newTestHandler(t, openTestDB(t, loadScenario(t, "acme-goods.v1.json")), &testIDs{})
+	list := request(t, handler, http.MethodGet, "/admin/api/2024-10/orders.json?status=any", "", "", bearer())
+	var listed struct {
+		Orders []struct {
+			ID       int64           `json:"id"`
+			Customer json.RawMessage `json:"customer"`
+		} `json:"orders"`
+	}
+	if list.Code != http.StatusOK || json.Unmarshal(list.Body.Bytes(), &listed) != nil || len(listed.Orders) == 0 {
+		t.Fatalf("list = %d %s", list.Code, list.Body.String())
+	}
+	for _, order := range listed.Orders {
+		single := request(t, handler, http.MethodGet, fmt.Sprintf("/admin/api/2024-10/orders/%d.json", order.ID), "", "", bearer())
+		var got struct {
+			Order struct {
+				Customer json.RawMessage `json:"customer"`
+			} `json:"order"`
+		}
+		if single.Code != http.StatusOK || json.Unmarshal(single.Body.Bytes(), &got) != nil {
+			t.Fatalf("order %d = %d %s", order.ID, single.Code, single.Body.String())
+		}
+		if string(got.Order.Customer) != string(order.Customer) {
+			t.Fatalf("order %d customer: list %s, get %s", order.ID, order.Customer, got.Order.Customer)
+		}
+	}
+}

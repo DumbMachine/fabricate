@@ -591,7 +591,7 @@ func (s *server) ShopifyOrdersCreate(ctx context.Context, request generated.Shop
 	if err := tx.Commit(); err != nil {
 		return nil, err
 	}
-	wire, err := s.projectOrder(ctx, shop, order)
+	wire, err := s.projectOrderAlone(ctx, shop, order)
 	if err != nil {
 		return nil, err
 	}
@@ -959,7 +959,7 @@ func (s *server) orderWires(ctx context.Context, shop fixtureShop, status string
 	filtered = take(filtered, limit)
 	out := make([]generated.Order, 0, len(filtered))
 	for _, order := range filtered {
-		wire, err := s.projectOrder(ctx, shop, order)
+		wire, err := s.projectOrder(ctx, shop, order, orders)
 		if err != nil {
 			return nil, err
 		}
@@ -973,19 +973,27 @@ func (s *server) orderWire(ctx context.Context, shop fixtureShop, id int64) (gen
 	if err != nil || !ok {
 		return generated.Order{}, ok, err
 	}
-	wire, err := s.projectOrder(ctx, shop, order)
+	wire, err := s.projectOrderAlone(ctx, shop, order)
 	if err != nil {
 		return generated.Order{}, false, err
 	}
 	return wire, true, nil
 }
 
-func (s *server) projectOrder(ctx context.Context, shop fixtureShop, order fixtureOrder) (generated.Order, error) {
-	customer, ok, err := loadBody[fixtureCustomer](ctx, s.db, `SELECT body FROM customers WHERE id = ? AND shop = ?`, order.CustomerID, shop.Domain)
+// projectOrderAlone projects a single order, loading the shop's orders for
+// the embedded customer summary.
+func (s *server) projectOrderAlone(ctx context.Context, shop fixtureShop, order fixtureOrder) (generated.Order, error) {
+	orders, err := loadAll[fixtureOrder](ctx, s.db, `SELECT body FROM orders WHERE shop = ? ORDER BY id`, shop.Domain)
 	if err != nil {
 		return generated.Order{}, err
 	}
-	orders, err := loadAll[fixtureOrder](ctx, s.db, `SELECT body FROM orders WHERE shop = ? ORDER BY id`, shop.Domain)
+	return s.projectOrder(ctx, shop, order, orders)
+}
+
+// projectOrder takes all of the shop's orders so list callers load them once
+// per request rather than once per order.
+func (s *server) projectOrder(ctx context.Context, shop fixtureShop, order fixtureOrder, orders []fixtureOrder) (generated.Order, error) {
+	customer, ok, err := loadBody[fixtureCustomer](ctx, s.db, `SELECT body FROM customers WHERE id = ? AND shop = ?`, order.CustomerID, shop.Domain)
 	if err != nil {
 		return generated.Order{}, err
 	}
