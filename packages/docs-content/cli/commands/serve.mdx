@@ -55,6 +55,24 @@ transparent proxy. Clients keep production hostnames, honor `HTTP_PROXY` and
 the generated CA, and the proxy replaces `Authorization` on routed hosts. The
 console shows **Running in proxy mode** while that is on.
 
+## Agent index
+
+`GET /.well-known/fabricate` is a JSON document for an agent that is
+onboarding this console into another app. It lists every resource and
+scenario, every official environment, and the sandboxes that are running.
+
+Each service has `storeAs`, `urlName`, and `secretName`. `storeAs` is the
+name to keep in app config. `urlName` is the key for the base URL, and
+`secretName` is the key for the bearer token. A running sandbox fills in
+`url` and `secret` with the values to store. `running` on a scenario lists
+the sandbox ids currently using it.
+
+```bash
+curl -sS https://console.example.com/.well-known/fabricate
+```
+
+The sidebar link **Agent index** opens the same document.
+
 ## Connect
 
 The sandbox page shows two ways to use a running sandbox:

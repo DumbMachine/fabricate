@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router"
-import { BookOpen, Boxes, Layers, Menu, Search } from "lucide-react"
+import { BookOpen, Boxes, FileJson, Layers, Menu, Search } from "lucide-react"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { cn } from "cn"
 import {
@@ -297,13 +297,22 @@ function ConsoleNav({
           />
         </div>
       ) : null}
-      <a
-        href={docsUrl}
-        className="mt-auto flex min-h-9 items-center gap-2 rounded-lg pr-2 pl-8 text-sm font-medium text-muted-foreground hover:text-foreground"
-      >
-        <BookOpen className="size-4" />
-        Docs
-      </a>
+      <div className="mt-auto flex flex-col">
+        <a
+          href="/.well-known/fabricate"
+          className="flex min-h-9 items-center gap-2 rounded-lg pr-2 pl-8 text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
+          <FileJson className="size-4" />
+          Agent index
+        </a>
+        <a
+          href={docsUrl}
+          className="flex min-h-9 items-center gap-2 rounded-lg pr-2 pl-8 text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
+          <BookOpen className="size-4" />
+          Docs
+        </a>
+      </div>
     </div>
   )
 }

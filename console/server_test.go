@@ -358,6 +358,150 @@ func TestNormalizePublicURL(t *testing.T) {
 	}
 }
 
+func TestAgentIndexPublishesNamesAndSecrets(t *testing.T) {
+	manager := New(all.Registry())
+	if err := manager.Configure(Config{PublicURL: "https://console.example.com/fab"}); err != nil {
+		t.Fatal(err)
+	}
+	server := httptest.NewServer(manager.Handler())
+	t.Cleanup(server.Close)
+	t.Cleanup(func() { _ = manager.Shutdown() })
+
+	response := get(t, server.URL+"/.well-known/fabricate")
+	if response.StatusCode != http.StatusOK || !strings.Contains(response.Header.Get("Content-Type"), "application/json") {
+		t.Fatalf("index status %d type %s: %s", response.StatusCode, response.Header.Get("Content-Type"), readBody(t, response))
+	}
+	var idle AgentIndex
+	decodeJSON(t, response, &idle)
+	if idle.Kind != "fabricate.agent-index" || idle.URL != "https://console.example.com/fab/.well-known/fabricate" || idle.Proxy || len(idle.Sandboxes) != 0 {
+		t.Fatalf("idle index: kind %s url %s proxy %v sandboxes %d", idle.Kind, idle.URL, idle.Proxy, len(idle.Sandboxes))
+	}
+	scenario := findAgentScenario(t, idle, "gmail", "gmail.minimal.v1")
+	if scenario.StoreAs != "gmail" || scenario.URLName != "FAB_GMAIL_URL" || scenario.SecretName != "FAB_GMAIL_TOKEN" || len(scenario.Running) != 0 {
+		t.Fatalf("scenario names: %#v", scenario)
+	}
+	environment := findAgentEnvironment(t, idle, "acme-gmail")
+	if len(environment.Services) != 1 || environment.Services[0].StoreAs != "support-mail" || environment.Services[0].URLName != "FAB_SUPPORT_MAIL_URL" || environment.Services[0].SecretName != "FAB_SUPPORT_MAIL_TOKEN" {
+		t.Fatalf("environment names: %#v", environment.Services)
+	}
+
+	created := postJSON(t, server.URL+"/api/sessions", `{"kind":"scenario","id":"gmail.minimal.v1"}`)
+	if created.StatusCode != http.StatusCreated {
+		t.Fatalf("start status %d: %s", created.StatusCode, readBody(t, created))
+	}
+	var session Session
+	decodeJSON(t, created, &session)
+
+	request, err := http.NewRequest(http.MethodGet, server.URL+"/.well-known/fabricate", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	request.Host = "internal.example"
+	request.Header.Set("X-Forwarded-Proto", "http")
+	liveResponse, err := http.DefaultClient.Do(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var live AgentIndex
+	decodeJSON(t, liveResponse, &live)
+	if len(live.Sandboxes) != 1 {
+		t.Fatalf("sandboxes: %#v", live.Sandboxes)
+	}
+	sandbox := live.Sandboxes[0]
+	if sandbox.ID != session.ID || sandbox.Kind != "scenario" || len(sandbox.Services) != 1 {
+		t.Fatalf("sandbox: %#v", sandbox)
+	}
+	service := sandbox.Services[0]
+	wantURL := "https://console.example.com/fab/s/" + session.ID + "/gmail"
+	if service.StoreAs != "gmail" || service.URLName != "FAB_GMAIL_URL" || service.URL != wantURL || service.SecretName != "FAB_GMAIL_TOKEN" || service.Secret == "" || service.Secret != session.Services[0].Token {
+		t.Fatalf("live service: %#v", service)
+	}
+	if !hasSecret(sandbox.Secrets, "FAB_GMAIL_URL", wantURL, "url") || !hasSecret(sandbox.Secrets, "FAB_GMAIL_TOKEN", service.Secret, "bearer") || !hasSecret(sandbox.Secrets, "FAB_ENVIRONMENT", "gmail", "name") {
+		t.Fatalf("secrets: %#v", sandbox.Secrets)
+	}
+	running := findAgentScenario(t, live, "gmail", "gmail.minimal.v1")
+	if len(running.Running) != 1 || running.Running[0] != session.ID {
+		t.Fatalf("scenario running: %#v", running.Running)
+	}
+	if len(findAgentEnvironment(t, live, "acme-gmail").Services[0].Running) != 0 {
+		t.Fatal("scenario sandbox marked the environment service running")
+	}
+}
+
+func TestAgentIndexIncludesProxySecrets(t *testing.T) {
+	manager := New(all.Registry())
+	if err := manager.Configure(Config{Proxy: true}); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = manager.Shutdown() })
+	session, err := manager.Start(context.Background(), StartRequest{Kind: "scenario", ID: "gmail.minimal.v1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	index := buildAgentIndex(manager.Deployment(), mustCatalog(t, manager), []Session{session}, "http://127.0.0.1/.well-known/fabricate")
+	if !index.Proxy || len(index.Sandboxes) != 1 || !index.Sandboxes[0].Proxy {
+		t.Fatalf("proxy index: %#v", index.Sandboxes)
+	}
+	secrets := index.Sandboxes[0].Secrets
+	if !hasSecretPurpose(secrets, "HTTPS_PROXY", "proxy") || !hasSecretPurpose(secrets, "SSL_CERT_FILE", "ca") {
+		t.Fatalf("proxy secrets: %#v", secrets)
+	}
+}
+
+func mustCatalog(t *testing.T, manager *Manager) Catalog {
+	t.Helper()
+	catalog, err := manager.Catalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return catalog
+}
+
+func findAgentScenario(t *testing.T, index AgentIndex, resource, id string) AgentScenario {
+	t.Helper()
+	for _, item := range index.Resources {
+		if item.ID != resource {
+			continue
+		}
+		for _, scenario := range item.Scenarios {
+			if scenario.ID == id {
+				return scenario
+			}
+		}
+	}
+	t.Fatalf("missing scenario %s %s", resource, id)
+	return AgentScenario{}
+}
+
+func findAgentEnvironment(t *testing.T, index AgentIndex, name string) AgentEnvironment {
+	t.Helper()
+	for _, environment := range index.Environments {
+		if environment.Name == name {
+			return environment
+		}
+	}
+	t.Fatalf("missing environment %s", name)
+	return AgentEnvironment{}
+}
+
+func hasSecret(secrets []AgentSecret, name, value, purpose string) bool {
+	for _, secret := range secrets {
+		if secret.Name == name && secret.Value == value && secret.Purpose == purpose {
+			return true
+		}
+	}
+	return false
+}
+
+func hasSecretPurpose(secrets []AgentSecret, name, purpose string) bool {
+	for _, secret := range secrets {
+		if secret.Name == name && secret.Purpose == purpose && secret.Value != "" {
+			return true
+		}
+	}
+	return false
+}
+
 func containsHost(hosts []string, host string) bool {
 	for _, candidate := range hosts {
 		if candidate == host {

@@ -16,6 +16,7 @@ import (
 
 func (m *Manager) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /.well-known/fabricate", m.handleAgentIndex)
 	mux.HandleFunc("GET /api/config", m.handleConfig)
 	mux.HandleFunc("GET /api/catalog", m.handleCatalog)
 	mux.HandleFunc("GET /api/scenarios/{id}", m.handleScenario)
@@ -26,6 +27,19 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
 	return mux
+}
+
+func (m *Manager) handleAgentIndex(w http.ResponseWriter, r *http.Request) {
+	catalog, err := m.Catalog()
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, err)
+		return
+	}
+	sessions := m.List()
+	for i := range sessions {
+		sessions[i] = m.present(sessions[i], r)
+	}
+	writeJSON(w, http.StatusOK, buildAgentIndex(m.Deployment(), catalog, sessions, joinIndexURL(m.publicBase(r))))
 }
 
 func (m *Manager) handleConfig(w http.ResponseWriter, _ *http.Request) {

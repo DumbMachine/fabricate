@@ -123,6 +123,14 @@ hosted. `fab run --ui` serves that same console while a command is wrapped.
 The wrapped environment stays up until the command exits, and further
 sandboxes from the console use the run's proxy mode.
 
+An agent onboarding another app can fetch the console index. It lists
+resources, scenarios, active sandboxes, the config name for each service,
+and the URL and bearer token to store:
+
+```bash
+curl -sS http://127.0.0.1:4173/.well-known/fabricate
+```
+
 Inspect the catalog before you wrap anything:
 
 ```bash
