@@ -303,8 +303,28 @@ func (s *server) PropertiesAudienceExportsCreate(ctx context.Context, request ge
 		return nil, err
 	}
 	return generated.PropertiesAudienceExportsCreate200JSONResponse{
-		Name: "operations/" + id, Done: true, Response: audienceModel(export),
+		Name: "operations/" + id, Done: true,
+		Metadata: generated.AudienceExportMetadataAny{Type: generated.TypeGoogleapisComgoogleAnalyticsDataV1betaAudienceExportMetadata},
+		Response: audienceAny(audienceModel(export)),
 	}, nil
+}
+
+// audienceAny is the google.protobuf.Any JSON form of an AudienceExport: its
+// fields plus the @type URL that GAPIC clients require to decode an
+// Operation's response.
+func audienceAny(export generated.AudienceExport) generated.AudienceExportAny {
+	var state *generated.AudienceExportAnyState
+	if export.State != nil {
+		value := generated.AudienceExportAnyState(*export.State)
+		state = &value
+	}
+	return generated.AudienceExportAny{
+		Type: generated.TypeGoogleapisComgoogleAnalyticsDataV1betaAudienceExport,
+		Name: export.Name, Audience: export.Audience, AudienceDisplayName: export.AudienceDisplayName,
+		Dimensions: export.Dimensions, State: state, BeginCreatingTime: export.BeginCreatingTime,
+		CreationQuotaTokensCharged: export.CreationQuotaTokensCharged, RowCount: export.RowCount,
+		PercentageCompleted: export.PercentageCompleted, ErrorMessage: export.ErrorMessage,
+	}
 }
 
 func (s *server) PropertiesAudienceExportsGet(ctx context.Context, request generated.PropertiesAudienceExportsGetRequestObject) (generated.PropertiesAudienceExportsGetResponseObject, error) {

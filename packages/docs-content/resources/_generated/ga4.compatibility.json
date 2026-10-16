@@ -29,16 +29,16 @@
     }
   },
   "operationLabels": {
+    "persistence": "Confirm audience export",
     "read": "Run Acme Goods report",
-    "write": "Create audience export",
-    "persistence": "Confirm audience export"
+    "write": "Create audience export"
   },
+  "testedAt": "2026-10-16T06:29:06.636Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
   "verification": {
-    "kind": "curl",
-    "label": "HTTP client",
-    "client": "curl@8",
-    "title": "HTTP API verification"
-  },
-  "testedAt": "2026-10-03T05:46:35.407Z",
-  "testedCommit": "cf828c20e9312117c84b7f119c0b4dd71b041e06"
+    "client": "googleapis@144.0.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
 }

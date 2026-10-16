@@ -554,12 +554,36 @@ components:
     Operation:
       type: object
       additionalProperties: false
-      required: [name, done, response]
+      required: [name, done, metadata, response]
+      description: >-
+        google.longrunning.Operation. metadata and response are
+        google.protobuf.Any values, so their JSON form carries an @type URL.
+        Official GAPIC clients reject an Any without it.
       properties:
         name: {type: string}
         done: {type: boolean}
-        response: {$ref: '#/components/schemas/AudienceExport'}
+        metadata: {$ref: '#/components/schemas/AudienceExportMetadataAny'}
+        response: {$ref: '#/components/schemas/AudienceExportAny'}
         error: {$ref: '#/components/schemas/Status'}
+    AudienceExportMetadataAny:
+      type: object
+      additionalProperties: false
+      required: ['@type']
+      description: google.protobuf.Any holding an (empty) AudienceExportMetadata.
+      properties:
+        '@type':
+          type: string
+          enum: [type.googleapis.com/google.analytics.data.v1beta.AudienceExportMetadata]
+    AudienceExportAny:
+      description: google.protobuf.Any holding an AudienceExport.
+      allOf:
+        - type: object
+          required: ['@type']
+          properties:
+            '@type':
+              type: string
+              enum: [type.googleapis.com/google.analytics.data.v1beta.AudienceExport]
+        - $ref: '#/components/schemas/AudienceExport'
     Status:
       type: object
       additionalProperties: false

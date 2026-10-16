@@ -12,13 +12,15 @@ import (
 	"strings"
 	"testing"
 
+	httpengine "github.com/dumbmachine/fabricate/engine/http"
+	proxyengine "github.com/dumbmachine/fabricate/engine/http/proxy"
 	"github.com/dumbmachine/fabricate/httpresource"
 	"github.com/dumbmachine/fabricate/resources/all"
 )
 
-func TestHostPrefixNormalizesSharedHosts(t *testing.T) {
+func TestHostPrefixLooksUpDeclaredPrefix(t *testing.T) {
 	descriptor := httpresource.Descriptor{HostPrefixes: map[string]string{
-		"www.zohoapis.com":   "books",
+		"www.zohoapis.com":   "/books/",
 		"www.googleapis.com": "/gmail/",
 	}}
 	if got := hostPrefix(descriptor, "www.zohoapis.com"); got != "/books/" {
@@ -30,6 +32,105 @@ func TestHostPrefixNormalizesSharedHosts(t *testing.T) {
 	if got := hostPrefix(descriptor, "api.razorpay.com"); got != "/" {
 		t.Fatalf("default prefix = %q", got)
 	}
+}
+
+// routeRuntime builds a Runtime whose services are never started, which is
+// enough for proxyRoutes: it reads only descriptors, URLs, and tokens.
+func routeRuntime(t *testing.T, hosts map[string]string, services map[string]string) *Runtime {
+	t.Helper()
+	registry := all.Registry()
+	runtime := &Runtime{Spec: Spec{Proxy: ProxySpec{Hosts: hosts}}, Services: map[string]*httpengine.Service{}}
+	for name, id := range services {
+		resource, ok := registry.Get(id)
+		if !ok {
+			t.Fatalf("unknown resource %q", id)
+		}
+		runtime.Services[name] = &httpengine.Service{Name: name, Resource: resource, URL: "http://127.0.0.1:1", Token: "token-" + name}
+	}
+	return runtime
+}
+
+func oauthRoutes(routes []proxyengine.Route) []proxyengine.Route {
+	var out []proxyengine.Route
+	for _, route := range routes {
+		if route.OAuthToken {
+			out = append(out, route)
+		}
+	}
+	return out
+}
+
+func TestProxyRoutesInstallDeclaredTokenRoutes(t *testing.T) {
+	tests := []struct {
+		name     string
+		hosts    map[string]string
+		services map[string]string
+		want     string // serving service; empty means no token route
+	}{
+		{name: "drive only", services: map[string]string{"drive": "googledrive"}, want: "drive"},
+		{name: "ga4 only", services: map[string]string{"analytics": "ga4"}, want: "analytics"},
+		{name: "gmail and drive share one route", services: map[string]string{"support-mail": "gmail", "drive": "googledrive", "analytics": "ga4"}, want: "analytics"},
+		{name: "explicit override selects service", hosts: map[string]string{"oauth2.googleapis.com/token": "support-mail"}, services: map[string]string{"support-mail": "gmail", "drive": "googledrive"}, want: "support-mail"},
+		{name: "resource without token routes", services: map[string]string{"zohobooks": "zohobooks"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			runtime := routeRuntime(t, tt.hosts, tt.services)
+			routes, err := runtime.proxyRoutes()
+			if err != nil {
+				t.Fatal(err)
+			}
+			tokens := oauthRoutes(routes)
+			if tt.want == "" {
+				if len(tokens) != 0 {
+					t.Fatalf("token routes = %+v, want none", tokens)
+				}
+				return
+			}
+			if len(tokens) != 1 {
+				t.Fatalf("token routes = %+v, want exactly one", tokens)
+			}
+			got := tokens[0]
+			if got.Host != "oauth2.googleapis.com" || got.PathPrefix != "/token" || got.Service != tt.want || got.Token != "token-"+tt.want {
+				t.Fatalf("token route = %+v, want served by %q", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestProxyRoutesRejectTokenOverrideForNonDeclaringService(t *testing.T) {
+	runtime := routeRuntime(t, map[string]string{"oauth2.googleapis.com/token": "books"},
+		map[string]string{"drive": "googledrive", "books": "zohobooks"})
+	_, err := runtime.proxyRoutes()
+	if err == nil || !strings.Contains(err.Error(), "does not match a provider route") {
+		t.Fatalf("proxyRoutes() error = %v", err)
+	}
+}
+
+func TestRuntimeRefreshesGoogleTokenWithoutGmail(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	spec, err := Load(filepath.Join("..", "environments", "acme-googledrive.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runtime, err := Start(context.Background(), spec, all.Registry(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = runtime.Close(context.Background()) })
+	client := runtimeProxyClient(t, runtime)
+	response, err := client.Post("https://oauth2.googleapis.com/token", "application/x-www-form-urlencoded",
+		strings.NewReader("grant_type=refresh_token&refresh_token=existing&client_id=c&client_secret=s"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, _ := io.ReadAll(response.Body)
+	response.Body.Close()
+	if response.StatusCode != http.StatusOK || !strings.Contains(string(body), `"access_token"`) {
+		t.Fatalf("token refresh = %d %s", response.StatusCode, body)
+	}
+	file := authorizedGET(t, client, "https://www.googleapis.com/drive/v3/files/file-inv-4812-northwind", "refreshed-token-is-replaced")
+	assertContains(t, file, "drive after refresh", "INV-4812-northwind.pdf")
 }
 
 func TestRuntimeServesAcmeGmailThroughTransparentProxy(t *testing.T) {

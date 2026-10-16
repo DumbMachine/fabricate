@@ -279,6 +279,12 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	if descriptor.HostPrefixes["www.googleapis.com"] != "/drive/" {
 		t.Fatalf("host prefixes = %v", descriptor.HostPrefixes)
 	}
+	if len(descriptor.TokenRoutes) != 1 || descriptor.TokenRoutes[0] != httpresource.GoogleOAuthTokenRoute {
+		t.Fatalf("token routes = %+v", descriptor.TokenRoutes)
+	}
+	if want := (httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true}); descriptor.SDK != want {
+		t.Fatalf("sdk = %+v, want %+v", descriptor.SDK, want)
+	}
 	contract := resource.Contract()
 	if got, want := descriptor.OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)

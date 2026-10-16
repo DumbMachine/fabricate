@@ -156,6 +156,9 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	if got, want := resource.Descriptor().OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
 	}
+	if routes := resource.Descriptor().TokenRoutes; len(routes) != 1 || routes[0] != httpresource.GoogleOAuthTokenRoute {
+		t.Fatalf("token routes = %+v", routes)
+	}
 }
 
 func TestAcmeScenarioReadWriteRead(t *testing.T) {

@@ -13,6 +13,7 @@
       "operations": {
         "read": "passed",
         "write": "passed",
+        "update": "passed",
         "persistence": "passed"
       },
       "status": "passed"
@@ -23,22 +24,24 @@
       "operations": {
         "read": "passed",
         "write": "passed",
+        "update": "passed",
         "persistence": "passed"
       },
       "status": "passed"
     }
   },
   "operationLabels": {
-    "read": "Read Drive file",
-    "write": "Create file",
-    "persistence": "Confirm persistence"
+    "persistence": "Confirm persistence",
+    "read": "Read Drive files",
+    "update": "Move and update file",
+    "write": "Create file"
   },
+  "testedAt": "2026-10-16T06:29:01.856Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
   "verification": {
-    "kind": "curl",
-    "label": "HTTP client",
-    "client": "curl@8",
-    "title": "HTTP API verification"
-  },
-  "testedAt": "2026-10-03T05:44:34.562Z",
-  "testedCommit": "77e334621a33a9c39cce059ae03dcd8ac3b51483"
+    "client": "googleapis@144.0.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
 }

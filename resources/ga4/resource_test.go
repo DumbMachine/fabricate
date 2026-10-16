@@ -242,6 +242,12 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	if len(descriptor.ProviderHosts) != 1 || descriptor.ProviderHosts[0] != "analyticsdata.googleapis.com" || len(descriptor.HostPrefixes) != 0 {
 		t.Fatalf("hosts = %+v prefixes = %+v", descriptor.ProviderHosts, descriptor.HostPrefixes)
 	}
+	if len(descriptor.TokenRoutes) != 1 || descriptor.TokenRoutes[0] != httpresource.GoogleOAuthTokenRoute {
+		t.Fatalf("token routes = %+v", descriptor.TokenRoutes)
+	}
+	if want := (httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true}); descriptor.SDK != want {
+		t.Fatalf("sdk = %+v, want %+v", descriptor.SDK, want)
+	}
 	contract := resource.Contract()
 	if got, want := descriptor.OpenAPIDigest, scenarioDigest(contract.OpenAPIJSON); got != want {
 		t.Fatalf("descriptor digest = %s, want %s", got, want)
@@ -295,15 +301,30 @@ func TestAcmeScenarioReadWriteRead(t *testing.T) {
 	}
 	var operation struct {
 		Name     string `json:"name"`
+		Metadata struct {
+			Type string `json:"@type"`
+		} `json:"metadata"`
 		Response struct {
-			Name string `json:"name"`
+			Type  string `json:"@type"`
+			Name  string `json:"name"`
+			State string `json:"state"`
 		} `json:"response"`
 	}
 	if err := json.Unmarshal(created.Body.Bytes(), &operation); err != nil {
 		t.Fatal(err)
 	}
-	if operation.Response.Name != "properties/309712345/audienceExports/ga4.audienceExport-0001" {
-		t.Fatalf("export name = %s", operation.Response.Name)
+	if operation.Response.Name != "properties/309712345/audienceExports/ga4.audienceExport-0001" || operation.Response.State != "ACTIVE" {
+		t.Fatalf("export = %+v", operation.Response)
+	}
+	// Operation.metadata and .response are google.protobuf.Any. The official
+	// @google-analytics/data REST client fails to decode the operation
+	// ("JSON serialization of google.protobuf.Any must contain @type field")
+	// without these type URLs.
+	if got, want := operation.Response.Type, "type.googleapis.com/google.analytics.data.v1beta.AudienceExport"; got != want {
+		t.Fatalf("response @type = %q, want %q", got, want)
+	}
+	if got, want := operation.Metadata.Type, "type.googleapis.com/google.analytics.data.v1beta.AudienceExportMetadata"; got != want {
+		t.Fatalf("metadata @type = %q, want %q", got, want)
 	}
 	again := request(t, handler, http.MethodGet, "/v1beta/"+operation.Response.Name, "", testToken)
 	if again.Code != http.StatusOK || !strings.Contains(again.Body.String(), `"state":"ACTIVE"`) || !strings.Contains(again.Body.String(), `"audience":"properties/309712345/audiences/purchasers"`) {

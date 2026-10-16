@@ -29,6 +29,7 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"gmail.googleapis.com", "www.googleapis.com"},
 		HostPrefixes:  map[string]string{"www.googleapis.com": "/gmail/"},
+		TokenRoutes:   []httpresource.TokenRoute{httpresource.GoogleOAuthTokenRoute},
 		SDK:           httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true},
 	}
 }

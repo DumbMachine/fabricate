@@ -47,6 +47,7 @@ echo "$report" | jq -e '
 
 created=$(read_json -X POST "$base/v1beta/properties/309712345/audienceExports" -d '{"audience":"properties/309712345/audiences/purchasers","dimensions":[{"dimensionName":"transactionId"}]}')
 echo "$created" | jq -e '.done == true and (.response.name | startswith("properties/309712345/audienceExports/")) and .response.state == "ACTIVE"' >/dev/null
+echo "$created" | jq -e '.response["@type"] == "type.googleapis.com/google.analytics.data.v1beta.AudienceExport" and .metadata["@type"] == "type.googleapis.com/google.analytics.data.v1beta.AudienceExportMetadata"' >/dev/null
 name=$(echo "$created" | jq -r '.response.name')
 
 got=$(read_json "$base/v1beta/$name")

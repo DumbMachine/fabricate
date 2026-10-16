@@ -61,7 +61,10 @@ different host and is not part of this resource.
   Operation. This resource completes it immediately (`done: true`, `state:
   ACTIVE`) and stores the `AudienceExport`. A following get, list, or query
   observes it. No user-level audience members are seeded, so `query` returns
-  `audienceRows: []`.
+  `audienceRows: []`. The Operation's `metadata` and `response` are
+  `google.protobuf.Any` values and carry their `@type` URLs
+  (`...v1beta.AudienceExportMetadata` and `...v1beta.AudienceExport`), which
+  the official GAPIC REST client requires to decode the operation.
 - Cohort specs, comparisons, pivots, dimension expressions, metric expressions,
   and property quota from the discovery document are outside this surface.
   Unknown request fields are rejected.

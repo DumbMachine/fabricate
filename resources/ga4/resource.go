@@ -27,7 +27,8 @@ func (*Resource) Descriptor() httpresource.Descriptor {
 		ID: "ga4", DisplayName: "Google Analytics 4", Version: "v1beta", OpenAPIVersion: "3.0.3",
 		OpenAPIDigest: httpresourceDigest(raw), ScenarioVersion: 1,
 		ProviderHosts: []string{"analyticsdata.googleapis.com"},
-		SDK:           httpresource.SDKDescriptor{Package: "curl", Language: "http", DirectTest: true, ProxyTest: true},
+		TokenRoutes:   []httpresource.TokenRoute{httpresource.GoogleOAuthTokenRoute},
+		SDK:           httpresource.SDKDescriptor{Package: "googleapis", Language: "javascript", DirectTest: true, ProxyTest: true},
 	}
 }
 

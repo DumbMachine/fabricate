@@ -31,12 +31,26 @@ Provider hosts come from `httpresource.Descriptor.ProviderHosts`. A resource
 may set `HostPrefixes` to claim only a path prefix on a shared host. Gmail
 claims `/gmail/` on `www.googleapis.com`, which leaves `/drive/` free for
 Google Drive and lets Zoho Books (`/books/`) and Zoho Inventory
-(`/inventory/`) share `www.zohoapis.com`. Google OAuth token refresh is handled by
-a local synthetic token route so the wrapped application does not need working
-Google credentials. The route accepts `POST /token` on `oauth2.googleapis.com`
-with `grant_type=refresh_token` and a non-empty refresh token, then returns
-the environment's synthetic access token. It does not implement
-authorization-code OAuth, store customer tokens, or refresh other providers.
+(`/inventory/`) share `www.zohoapis.com`.
+
+A resource whose official client refreshes an OAuth access token before calling
+the API declares that endpoint in `Descriptor.TokenRoutes`. Gmail, Google Drive,
+and Google Analytics 4 each declare `POST /token` on `oauth2.googleapis.com`.
+In proxy mode the endpoint is answered locally, so the wrapped application does
+not need working credentials and its refresh token never leaves the machine.
+The route accepts only `grant_type=refresh_token` with a non-empty refresh
+token and returns a synthetic access token. It does not implement
+authorization-code, client-credentials, or JWT-bearer grants, and it does not
+store customer tokens.
+
+Resources that share an identity provider share one token route. An
+environment with Gmail and Drive installs it once, served by the first
+declaring service by name. Which service serves it does not matter: the proxy
+overwrites `Authorization` on every API route with that route's own service
+token, so the refreshed access token never reaches a resource. To pin the
+serving service, list the route under `proxy.hosts`
+(`oauth2.googleapis.com/token: support-mail`); naming a service that does not
+declare the route is an error.
 
 Unknown hosts are tunneled unchanged to their normal destination by default.
 This lets one provider be fabricated inside a full application without
