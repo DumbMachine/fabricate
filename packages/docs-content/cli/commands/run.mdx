@@ -106,8 +106,14 @@ fab run acme-gmail --proxy --ui -- npm test
 
 From that console you can start more environments and scenarios beside the
 one this command is holding. Those extra sandboxes have their own URLs and
-tokens. The wrapped process keeps the variables it was given at startup.
-`--ui-addr` changes the console address. The default is `127.0.0.1:4173`.
+tokens. They use the transparent proxy when this command was started with
+`--proxy`, and the service URL on the console host otherwise. The wrapped
+process keeps the variables it was given at startup.
+`--ui-addr` changes the console listen address. The default is
+`127.0.0.1:4173`. `--ui-public-url` is the base clients use when that console
+is hosted. `FAB_CONSOLE_ADDR` and `FAB_CONSOLE_PUBLIC_URL` set the same
+values when the flags are omitted.
 
 `fab serve` is the deployed form of the same console, with no command wrapped
-around it. `fab serve --ui` opens that console in a browser too.
+around it. `fab serve --proxy` turns on proxy mode for every sandbox that
+console starts. `fab serve --ui` opens that console in a browser too.

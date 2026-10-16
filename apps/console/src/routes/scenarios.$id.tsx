@@ -40,8 +40,8 @@ function ScenarioPage() {
     }
   }, [id])
 
-  async function onStart(proxy: boolean) {
-    await start("scenario", id, proxy, "sandbox")
+  async function onStart() {
+    await start("scenario", id, "sandbox")
   }
 
   if (view === null && error === null) {
@@ -84,10 +84,9 @@ function ScenarioPage() {
       actions={
         <StartActions
           pending={pending}
-          directKey={`${key}:direct`}
-          proxyKey={`${key}:proxy`}
-          onStart={(proxy) => void onStart(proxy)}
-          startLabel="Start scenario"
+          actionKey={key}
+          onStart={() => void onStart()}
+          label="Start scenario"
         />
       }
       sections={sections}

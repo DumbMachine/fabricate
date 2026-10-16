@@ -87,12 +87,21 @@ environment variable.
 
 `fab run --proxy --ui -- <command>` serves the managed console for the life of
 the wrapped command and opens it locally. The wrapped environment is held
-until the command exits. The console can start more sandboxes beside it. The
-child keeps the proxy variables it was given at startup; extra sandboxes
-publish their own connection instructions.
+until the command exits. The console is in proxy mode, so Start launches
+every other sandbox through its own transparent proxy. Those sandboxes are
+separate sessions. The child keeps the proxy variables it was given at
+startup.
 
-`fab serve` runs that console by itself. Add `--ui` there when a local
-browser should open too.
+`fab serve --proxy` is the same console with nothing wrapped. The header
+shows that proxy mode is on. `fab serve` without `--proxy` publishes each
+service URL on the console host instead. Add `--ui` when a local browser
+should open too.
+
+Host that process with a listen address and a public base URL:
+
+```bash
+fab serve --addr 0.0.0.0:4173 --public-url https://console.example.com --proxy
+```
 
 ## Introspection
 

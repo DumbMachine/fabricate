@@ -18,13 +18,27 @@ fab serve
 fab: managed console at http://127.0.0.1:4173
 ```
 
-`--addr` changes the listen address. The default is `127.0.0.1:4173`.
+`--addr` changes the listen address. The default is `127.0.0.1:4173`, which
+is only reachable on this machine. `--public-url` is the base clients use
+when this process is hosted. Service URLs are published on that base. With
+no public URL, they follow the host that opened the console.
+
+```bash
+fab serve --addr 0.0.0.0:4173 --public-url https://console.example.com
+```
+
+If `--public-url` is set and `--addr` is left at the default, `fab serve`
+listens on `0.0.0.0` and the default port. `FAB_CONSOLE_ADDR`,
+`FAB_CONSOLE_PUBLIC_URL`, and `FAB_CONSOLE_PROXY` set the same values when
+the flags are omitted.
+
 `--ui` also opens the console in a local browser. Leave it off when this
 process is a deployed service.
 
 `fab run --ui` serves this same console beside a wrapped command. The
 environment that command started stays up until the command exits, and the
-console can start more sandboxes next to it.
+console can start more sandboxes next to it. `--ui-addr` and
+`--ui-public-url` configure that console the same way.
 
 ## Start
 
@@ -33,15 +47,19 @@ console can start more sandboxes next to it.
 scenario. The running sandbox lists those scenario ids, and each id opens the
 seeded records.
 
-**Start** gives every service a loopback URL and an ephemeral bearer token.
-**Proxy** also starts the transparent proxy so clients can keep production
-hostnames. The proxy replaces `Authorization` on routed hosts.
+There is one Start action. It follows how this process was launched.
+
+Without `--proxy`, Start publishes each service URL on the console host and
+an ephemeral bearer token. With `--proxy`, every sandbox starts through the
+transparent proxy. Clients keep production hostnames, honor `HTTP_PROXY` and
+the generated CA, and the proxy replaces `Authorization` on routed hosts. The
+console shows **Running in proxy mode** while that is on.
 
 ## Connect
 
 The sandbox page shows two ways to use a running sandbox:
 
-- **Connect your app.** Copy the shell exports. In direct mode, point each
+- **Connect your app.** Copy the shell exports. Without proxy mode, point each
   client at the service URL and send the bearer token. In proxy mode, export
   the proxy and CA variables and keep the provider's normal hostname.
 - **Hand off to an agent.** Pick Cursor, Claude Code, Codex, or Devin and copy
@@ -49,7 +67,9 @@ The sandbox page shows two ways to use a running sandbox:
   prompt carries the sandbox connection for this machine. It is not a
   production credential, and it should not be committed.
 
-Ports and tokens change every time a sandbox starts. The console and the
-services bind to loopback, so a worker on another machine cannot attach.
+Ports and tokens change every time a sandbox starts. Sandbox processes stay
+on loopback. The console publishes them on its own host, so a client that
+can open the console can call them. A listen address of `127.0.0.1` still
+keeps the console itself on this machine.
 
 Stopping `fab serve` closes every sandbox that console started.

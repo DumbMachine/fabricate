@@ -2,18 +2,14 @@ import { StatefulButton } from "@/components/ui/button"
 
 export function StartActions({
   pending,
-  directKey,
-  proxyKey,
+  actionKey,
   onStart,
-  startLabel = "Start",
-  proxyLabel = "Proxy",
+  label = "Start",
 }: {
   pending: string | null
-  directKey: string
-  proxyKey: string
-  onStart: (proxy: boolean) => void
-  startLabel?: string
-  proxyLabel?: string
+  actionKey: string
+  onStart: () => void
+  label?: string
 }) {
   const locked = pending !== null
   return (
@@ -21,23 +17,12 @@ export function StartActions({
       <StatefulButton
         type="button"
         size="sm"
-        state={pending === directKey ? "loading" : "idle"}
+        state={pending === actionKey ? "loading" : "idle"}
         loadingText="Starting…"
-        disabled={locked && pending !== directKey}
-        onClick={() => onStart(false)}
+        disabled={locked && pending !== actionKey}
+        onClick={onStart}
       >
-        {startLabel}
-      </StatefulButton>
-      <StatefulButton
-        type="button"
-        variant="outline"
-        size="sm"
-        state={pending === proxyKey ? "loading" : "idle"}
-        loadingText="Starting…"
-        disabled={locked && pending !== proxyKey}
-        onClick={() => onStart(true)}
-      >
-        {proxyLabel}
+        {label}
       </StatefulButton>
     </div>
   )

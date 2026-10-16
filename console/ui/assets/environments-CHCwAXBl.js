@@ -1,0 +1,1 @@
+import{s as e}from"./useSelector-xKiVtCJH.js";import{i as t}from"./index-DZ6fljT3.js";var n=e();function r(){return(0,n.jsx)(t,{})}export{r as component};

@@ -109,13 +109,19 @@ Code, Codex, or Devin.
 
 ```bash
 fab serve
+fab serve --addr 0.0.0.0:4173 --public-url https://console.example.com
+fab serve --proxy
 fab run acme-gmail --proxy --ui -- npm test
 ```
 
 `fab serve` is the console on its own, including as a deployed service.
-`fab serve --ui` also opens it in a browser. `fab run --ui` serves that same
-console while a command is wrapped: the wrapped environment stays up until
-the command exits, and the console can start more sandboxes beside it.
+`fab serve --ui` also opens it in a browser. Start follows that process:
+`--proxy` starts every sandbox through the transparent proxy, and without it
+Start publishes the service URL on the console host. `--addr` is the listen
+address and `--public-url` is the base clients use when the console is
+hosted. `fab run --ui` serves that same console while a command is wrapped.
+The wrapped environment stays up until the command exits, and further
+sandboxes from the console use the run's proxy mode.
 
 Inspect the catalog before you wrap anything:
 

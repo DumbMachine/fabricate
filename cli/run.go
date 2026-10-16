@@ -26,6 +26,7 @@ var (
 	runProxy       bool
 	runUI          bool
 	runUIAddr      string
+	runUIPublicURL string
 )
 
 var runCmd = &cobra.Command{
@@ -44,7 +45,14 @@ rejection; the generated CA is never installed globally.
 --ui serves the managed console for the duration of this run and opens it in
 a local browser. The environment this command started stays up until the
 command exits. From the console you can start more environments and scenarios
-beside it. fab serve is the same console when nothing is wrapped.`,
+beside it. Those sandboxes use proxy mode when this command was started with
+--proxy, and the direct service URL otherwise. fab serve is the same console
+when nothing is wrapped.
+
+--ui-addr is the console listen address. --ui-public-url is the base clients
+use when this console is hosted. FAB_CONSOLE_ADDR and FAB_CONSOLE_PUBLIC_URL
+set those when the flags are omitted. A public URL with the default listen
+address binds 0.0.0.0 on that port.`,
 	Args: cobra.ArbitraryArgs,
 	RunE: runEnvironmentCommand,
 }
@@ -55,6 +63,7 @@ func init() {
 	runCmd.Flags().BoolVar(&runProxy, "proxy", false, "Enable transparent HTTPS proxying")
 	runCmd.Flags().BoolVar(&runUI, "ui", false, "Serve the managed console and open it while this run is active")
 	runCmd.Flags().StringVar(&runUIAddr, "ui-addr", "127.0.0.1:4173", "Address for the console when --ui is set")
+	runCmd.Flags().StringVar(&runUIPublicURL, "ui-public-url", "", "Public base URL for the console when --ui is set")
 	_ = runCmd.Flags().MarkDeprecated("environment", "pass the environment name or manifest as the first argument")
 }
 
@@ -67,6 +76,18 @@ func runEnvironmentCommand(cmd *cobra.Command, args []string) error {
 	spec, err := resolveRunSpec(target, runScenario, registry)
 	if err != nil {
 		return err
+	}
+	var uiSettings consoleSettings
+	if runUI {
+		uiSettings, err = resolveConsoleSettings(
+			runUIAddr, cmd.Flags().Changed("ui-addr"),
+			runUIPublicURL, cmd.Flags().Changed("ui-public-url"),
+			runProxy, true,
+			true,
+		)
+		if err != nil {
+			return fmt.Errorf("run: %w", err)
+		}
 	}
 	ctx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
@@ -102,6 +123,12 @@ func runEnvironmentCommand(cmd *cobra.Command, args []string) error {
 		if runScenario != "" {
 			kind = "scenario"
 		}
+		if err := manager.Configure(console.Config{Proxy: uiSettings.Proxy, PublicURL: uiSettings.PublicURL}); err != nil {
+			closeCtx, cancel := environment.CloseTimeout()
+			_ = runtime.Close(closeCtx)
+			cancel()
+			return fmt.Errorf("run: %w", err)
+		}
 		session, adoptErr := manager.Adopt(spec, runtime, runProxy, kind)
 		if adoptErr != nil {
 			closeCtx, cancel := environment.CloseTimeout()
@@ -110,16 +137,25 @@ func runEnvironmentCommand(cmd *cobra.Command, args []string) error {
 			return adoptErr
 		}
 		anchored = true
-		ui, err = listenConsole(runUIAddr, manager.Handler())
+		ui, err = listenConsole(uiSettings.ListenAddr, manager.Handler())
 		if err != nil {
 			_ = manager.Shutdown()
 			return err
 		}
-		fmt.Fprintf(os.Stderr, "fab: console %s\n", ui.url)
-		fmt.Fprintf(os.Stderr, "fab: sandbox %s is held by this run\n", session.ID)
 		if err := openConsoleFn(ui.url); err != nil {
 			fmt.Fprintf(os.Stderr, "fab: could not open a browser: %v\n", err)
 		}
+		fmt.Fprintf(os.Stderr, "fab: console %s\n", ui.url)
+		if uiSettings.PublicURL != "" {
+			fmt.Fprintf(os.Stderr, "fab: public URL %s\n", uiSettings.PublicURL)
+		}
+		if uiSettings.Widened {
+			fmt.Fprintf(os.Stderr, "fab: listening on %s\n", uiSettings.ListenAddr)
+		}
+		if uiSettings.Proxy {
+			fmt.Fprintf(os.Stderr, "fab: proxy mode is on\n")
+		}
+		fmt.Fprintf(os.Stderr, "fab: sandbox %s is held by this run\n", session.ID)
 	}
 	defer func() { _ = closeRuntime() }()
 

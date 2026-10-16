@@ -1,4 +1,14 @@
-import type { Catalog, SandboxKind, ScenarioView, Session } from "@/lib/types"
+import type {
+  Catalog,
+  ConsoleConfig,
+  SandboxKind,
+  ScenarioView,
+  Session,
+} from "@/lib/types"
+
+export async function getConfig(): Promise<ConsoleConfig> {
+  return request<ConsoleConfig>("/api/config")
+}
 
 export async function getCatalog(): Promise<Catalog> {
   return request<Catalog>("/api/catalog")
@@ -18,12 +28,11 @@ export async function getSession(id: string): Promise<Session> {
 
 export async function startSandbox(
   kind: SandboxKind,
-  id: string,
-  proxy: boolean
+  id: string
 ): Promise<Session> {
   return request<Session>("/api/sessions", {
     method: "POST",
-    body: JSON.stringify({ kind, id, proxy }),
+    body: JSON.stringify({ kind, id }),
   })
 }
 

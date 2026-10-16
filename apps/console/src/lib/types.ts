@@ -1,5 +1,10 @@
 export type SandboxKind = "environment" | "scenario"
 
+export type ConsoleConfig = {
+  proxy: boolean
+  publicUrl?: string
+}
+
 export type CatalogService = {
   name: string
   resource: string

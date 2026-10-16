@@ -181,8 +181,11 @@ func TestServePublishesServicesOnTheRequestHost(t *testing.T) {
 
 func TestServeProxyInstructions(t *testing.T) {
 	manager := New(all.Registry())
+	if err := manager.Configure(Config{Proxy: true}); err != nil {
+		t.Fatal(err)
+	}
 	t.Cleanup(func() { _ = manager.Shutdown() })
-	session, err := manager.Start(context.Background(), StartRequest{Kind: "scenario", ID: "gmail.minimal.v1", Proxy: true})
+	session, err := manager.Start(context.Background(), StartRequest{Kind: "scenario", ID: "gmail.minimal.v1"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -275,12 +278,83 @@ func TestServeRejectsUnknownTargets(t *testing.T) {
 		`{"kind":"scenario","id":"gmail.missing.v1"}`,
 		`{"kind":"sandbox","id":"acme-gmail"}`,
 		`{"kind":"environment"}`,
+		`{"kind":"scenario","id":"gmail.minimal.v1","proxy":true}`,
 	} {
 		response := postJSON(t, server.URL+"/api/sessions", body)
 		if response.StatusCode != http.StatusBadRequest {
 			t.Fatalf("body %s status %d: %s", body, response.StatusCode, readBody(t, response))
 		}
 		response.Body.Close()
+	}
+}
+
+func TestConfiguredProxyIgnoresTheRequest(t *testing.T) {
+	manager := New(all.Registry())
+	if err := manager.Configure(Config{Proxy: true, PublicURL: "https://console.example.com/app/"}); err != nil {
+		t.Fatal(err)
+	}
+	server := httptest.NewServer(manager.Handler())
+	t.Cleanup(server.Close)
+	t.Cleanup(func() { _ = manager.Shutdown() })
+
+	config := get(t, server.URL+"/api/config")
+	if config.StatusCode != http.StatusOK {
+		t.Fatalf("config status %d: %s", config.StatusCode, readBody(t, config))
+	}
+	var deployment Deployment
+	decodeJSON(t, config, &deployment)
+	if !deployment.Proxy || deployment.PublicURL != "https://console.example.com/app" {
+		t.Fatalf("deployment: %#v", deployment)
+	}
+
+	created := postJSON(t, server.URL+"/api/sessions", `{"kind":"scenario","id":"gmail.minimal.v1"}`)
+	if created.StatusCode != http.StatusCreated {
+		t.Fatalf("start status %d: %s", created.StatusCode, readBody(t, created))
+	}
+	var session Session
+	decodeJSON(t, created, &session)
+	if !session.Proxy || session.ProxyConnection == nil {
+		t.Fatalf("session: %#v", session)
+	}
+	want := "https://console.example.com/app/s/" + session.ID + "/" + session.Services[0].Name
+	if session.Services[0].URL != want {
+		t.Fatalf("published url %q", session.Services[0].URL)
+	}
+
+	request, err := http.NewRequest(http.MethodGet, server.URL+"/api/sessions/"+session.ID, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	request.Host = "internal.example"
+	request.Header.Set("X-Forwarded-Proto", "http")
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var listed Session
+	decodeJSON(t, response, &listed)
+	if listed.Services[0].URL != want {
+		t.Fatalf("configured host lost: %q", listed.Services[0].URL)
+	}
+}
+
+func TestNormalizePublicURL(t *testing.T) {
+	normalized, err := NormalizePublicURL(" HTTPS://Console.Example.com/app/ ")
+	if err != nil || normalized != "https://Console.Example.com/app" {
+		t.Fatalf("normalized %q err %v", normalized, err)
+	}
+	if _, err := NormalizePublicURL("console.example.com"); err == nil {
+		t.Fatal("relative URL accepted")
+	}
+	if _, err := NormalizePublicURL("https://user:pass@console.example.com"); err == nil {
+		t.Fatal("user info accepted")
+	}
+	if _, err := NormalizePublicURL("https://console.example.com/app?x=1"); err == nil {
+		t.Fatal("query accepted")
+	}
+	empty, err := NormalizePublicURL("  ")
+	if err != nil || empty != "" {
+		t.Fatalf("empty %q err %v", empty, err)
 	}
 }
 

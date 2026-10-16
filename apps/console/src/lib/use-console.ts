@@ -1,8 +1,14 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
-import { closeSandbox, getCatalog, listSessions, startSandbox } from "@/lib/api"
+import {
+  closeSandbox,
+  getCatalog,
+  getConfig,
+  listSessions,
+  startSandbox,
+} from "@/lib/api"
 import { errorText } from "@/lib/format"
-import type { Catalog, SandboxKind, Session } from "@/lib/types"
+import type { Catalog, ConsoleConfig, SandboxKind, Session } from "@/lib/types"
 
 export type StartDestination = "sandbox" | "environment" | "stay"
 
@@ -23,6 +29,24 @@ export function useCatalog() {
     }
   }, [])
   return { catalog, error }
+}
+
+export function useConsoleConfig() {
+  const [config, setConfig] = useState<ConsoleConfig | null>(null)
+  useEffect(() => {
+    let cancelled = false
+    getConfig()
+      .then((next) => {
+        if (!cancelled) setConfig(next)
+      })
+      .catch(() => {
+        if (!cancelled) setConfig({ proxy: false })
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+  return config
 }
 
 export function useSessions() {
@@ -56,14 +80,13 @@ export function useSandboxActions() {
   async function start(
     kind: SandboxKind,
     id: string,
-    proxy: boolean,
     destination: StartDestination
   ): Promise<Session | null> {
     const key = `${kind}:${id}`
-    setPending(`${key}:${proxy ? "proxy" : "direct"}`)
+    setPending(key)
     setErrors((current) => ({ ...current, [key]: "" }))
     try {
-      const session = await startSandbox(kind, id, proxy)
+      const session = await startSandbox(kind, id)
       switch (destination) {
         case "sandbox":
           await navigate({ to: "/sandboxes/$id", params: { id: session.id } })

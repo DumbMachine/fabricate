@@ -14,6 +14,7 @@ import { BounceSidebar } from "@/components/motion/bounce-sidebar"
 import { Drawer } from "@/components/motion/drawer"
 import { Input } from "@/components/motion/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/motion/tabs"
+import { ProxyModeIndicator } from "@/components/proxy-indicator"
 import { Button } from "@/components/ui/button"
 
 const docsUrl = "https://fabricate.dmach.in/docs"
@@ -149,6 +150,7 @@ export function ConsoleFrame({
             />
           ) : null}
         </header>
+        <ProxyModeIndicator />
         <main className="flex flex-1 flex-col gap-8 px-4 py-6 sm:px-6">
           {heading ? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

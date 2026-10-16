@@ -6,8 +6,11 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -17,36 +20,132 @@ import (
 )
 
 var (
-	serveAddr string
-	serveUI   bool
+	serveAddr      string
+	servePublicURL string
+	serveProxy     bool
+	serveUI        bool
 )
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Serve the managed sandbox console",
-	Long: `Serve starts a local web console for Fabricate's managed mode.
+	Long: `Serve starts a web console for Fabricate's managed mode.
 
 Open the printed URL to browse official environments and scenarios, start a
 sandbox, and copy the connection steps for an app or a coding agent. Sandboxes
 keep running until you close them in the console or stop this command. This is
 the form to run as a deployed service.
 
-Pass --ui to also open that console in a local browser. fab run --ui serves
-the same console beside a wrapped command.
+Start follows how this process was launched. Without --proxy, a sandbox
+publishes its service URL on the console host. With --proxy, every sandbox
+starts through the transparent proxy: clients keep production hostnames, honor
+HTTP_PROXY and the generated CA, and the proxy replaces Authorization on
+routed hosts.
 
-The console binds to the address you pass. Sandbox processes stay on loopback.
-When you open the console through another host, each service URL uses that
-host, and the console forwards the call to the sandbox.`,
+The console listens on --addr. The default, 127.0.0.1:4173, is only reachable
+on this machine. To host it, set the listen address and the URL clients use:
+
+  fab serve --addr 0.0.0.0:4173 --public-url https://console.example.com
+  fab serve --addr 0.0.0.0:4173 --public-url https://console.example.com --proxy
+
+When --public-url is set and --addr is left at the default, serve listens on
+0.0.0.0 using the default port. FAB_CONSOLE_ADDR, FAB_CONSOLE_PUBLIC_URL, and
+FAB_CONSOLE_PROXY set the same values when the flags are omitted.
+
+Sandbox processes stay on loopback. The console forwards /s/{session}/{service}
+to the sandbox. With no --public-url, each service URL uses the host that
+opened the console.
+
+Pass --ui to also open the console in a local browser. fab run --ui serves the
+same console beside a wrapped command, in proxy mode when that run used
+--proxy.`,
 	Args: cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, _ []string) error {
-		return serveConsole(cmd.Context(), serveAddr, serveUI)
+		settings, err := resolveConsoleSettings(
+			serveAddr, cmd.Flags().Changed("addr"),
+			servePublicURL, cmd.Flags().Changed("public-url"),
+			serveProxy, cmd.Flags().Changed("proxy"),
+			serveUI,
+		)
+		if err != nil {
+			return fmt.Errorf("serve: %w", err)
+		}
+		return serveConsole(cmd.Context(), settings)
 	},
 }
 
 func init() {
 	serveCmd.Flags().StringVar(&serveAddr, "addr", "127.0.0.1:4173", "Address for the managed console")
+	serveCmd.Flags().StringVar(&servePublicURL, "public-url", "", "Public base URL clients use to reach this console")
+	serveCmd.Flags().BoolVar(&serveProxy, "proxy", false, "Start every sandbox with the transparent proxy")
 	serveCmd.Flags().BoolVar(&serveUI, "ui", false, "Open the console in a local browser")
 	rootCmd.AddCommand(serveCmd)
+}
+
+type consoleSettings struct {
+	ListenAddr string
+	PublicURL  string
+	Proxy      bool
+	Open       bool
+	Widened    bool
+}
+
+func resolveConsoleSettings(addr string, addrSet bool, publicURL string, publicSet bool, proxy bool, proxySet bool, open bool) (consoleSettings, error) {
+	if !addrSet {
+		if value := strings.TrimSpace(os.Getenv("FAB_CONSOLE_ADDR")); value != "" {
+			addr = value
+			addrSet = true
+		}
+	}
+	if !publicSet {
+		if value := strings.TrimSpace(os.Getenv("FAB_CONSOLE_PUBLIC_URL")); value != "" {
+			publicURL = value
+		}
+	}
+	if !proxySet {
+		if value := strings.TrimSpace(os.Getenv("FAB_CONSOLE_PROXY")); value != "" {
+			parsed, err := strconv.ParseBool(value)
+			if err != nil {
+				return consoleSettings{}, fmt.Errorf("FAB_CONSOLE_PROXY must be true or false")
+			}
+			proxy = parsed
+		}
+	}
+	normalized, err := console.NormalizePublicURL(publicURL)
+	if err != nil {
+		return consoleSettings{}, err
+	}
+	listen, widened := hostedListenAddr(addr, normalized, addrSet)
+	return consoleSettings{
+		ListenAddr: listen,
+		PublicURL:  normalized,
+		Proxy:      proxy,
+		Open:       open,
+		Widened:    widened,
+	}, nil
+}
+
+func hostedListenAddr(addr, publicURL string, addrExplicit bool) (string, bool) {
+	if addrExplicit || publicURL == "" || !publicHostWantsNetwork(publicURL) {
+		return addr, false
+	}
+	_, port, err := net.SplitHostPort(addr)
+	if err != nil || port == "" {
+		port = "4173"
+	}
+	return net.JoinHostPort("0.0.0.0", port), true
+}
+
+func publicHostWantsNetwork(publicURL string) bool {
+	parsed, err := url.Parse(publicURL)
+	if err != nil {
+		return false
+	}
+	host := parsed.Hostname()
+	if host == "" || loopbackHost(host) {
+		return false
+	}
+	return true
 }
 
 type consoleListener struct {
@@ -89,16 +188,19 @@ func (c *consoleListener) close() error {
 	return serveErr
 }
 
-func serveConsole(ctx context.Context, addr string, open bool) error {
+func serveConsole(ctx context.Context, settings consoleSettings) error {
 	manager := console.New(all.Registry())
-	listener, err := listenConsole(addr, manager.Handler())
+	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL}); err != nil {
+		return fmt.Errorf("serve: %w", err)
+	}
+	listener, err := listenConsole(settings.ListenAddr, manager.Handler())
 	if err != nil {
 		return fmt.Errorf("serve: %w", err)
 	}
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	fmt.Fprintf(os.Stderr, "fab: managed console at %s\n", listener.url)
-	if open {
+	reportConsole(listener.url, settings)
+	if settings.Open {
 		if err := openConsoleFn(listener.url); err != nil {
 			fmt.Fprintf(os.Stderr, "fab: could not open a browser: %v\n", err)
 		}
@@ -122,6 +224,20 @@ func serveConsole(ctx context.Context, addr string, open bool) error {
 	}
 }
 
+func reportConsole(localURL string, settings consoleSettings) {
+	advertised := localURL
+	if settings.PublicURL != "" {
+		advertised = settings.PublicURL
+	}
+	fmt.Fprintf(os.Stderr, "fab: managed console at %s\n", advertised)
+	if settings.Widened || (settings.PublicURL != "" && advertised != localURL) {
+		fmt.Fprintf(os.Stderr, "fab: listening on %s\n", settings.ListenAddr)
+	}
+	if settings.Proxy {
+		fmt.Fprintf(os.Stderr, "fab: proxy mode is on\n")
+	}
+}
+
 func listenNetwork(addr string) string {
 	host, _, err := net.SplitHostPort(addr)
 	if err != nil {
@@ -135,6 +251,14 @@ func listenNetwork(addr string) string {
 		return "tcp4"
 	}
 	return "tcp6"
+}
+
+func loopbackHost(host string) bool {
+	if strings.EqualFold(host, "localhost") {
+		return true
+	}
+	ip := net.ParseIP(host)
+	return ip != nil && ip.IsLoopback()
 }
 
 func consoleURL(addr net.Addr) string {

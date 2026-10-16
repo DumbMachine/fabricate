@@ -16,6 +16,7 @@ import (
 
 func (m *Manager) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /api/config", m.handleConfig)
 	mux.HandleFunc("GET /api/catalog", m.handleCatalog)
 	mux.HandleFunc("GET /api/scenarios/{id}", m.handleScenario)
 	mux.HandleFunc("GET /api/sessions", m.handleList)
@@ -25,6 +26,10 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
 	return mux
+}
+
+func (m *Manager) handleConfig(w http.ResponseWriter, _ *http.Request) {
+	writeJSON(w, http.StatusOK, m.Deployment())
 }
 
 func (m *Manager) handleCatalog(w http.ResponseWriter, _ *http.Request) {
@@ -53,7 +58,7 @@ func (m *Manager) handleScenario(w http.ResponseWriter, r *http.Request) {
 func (m *Manager) handleList(w http.ResponseWriter, r *http.Request) {
 	sessions := m.List()
 	for i := range sessions {
-		sessions[i] = present(sessions[i], r)
+		sessions[i] = m.present(sessions[i], r)
 	}
 	writeJSON(w, http.StatusOK, sessions)
 }
@@ -81,7 +86,7 @@ func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
 		writeError(w, status, err)
 		return
 	}
-	writeJSON(w, http.StatusCreated, present(session, r))
+	writeJSON(w, http.StatusCreated, m.present(session, r))
 }
 
 func isClientStartError(err error) bool {
@@ -97,7 +102,7 @@ func (m *Manager) handleGet(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, fmt.Errorf("sandbox not running"))
 		return
 	}
-	writeJSON(w, http.StatusOK, present(session, r))
+	writeJSON(w, http.StatusOK, m.present(session, r))
 }
 
 func (m *Manager) proxyService(w http.ResponseWriter, r *http.Request) {
@@ -146,8 +151,8 @@ func splitServicePath(raw string) (id, name, rest string, ok bool) {
 	return parts[0], parts[1], rest, true
 }
 
-func present(session Session, r *http.Request) Session {
-	base := requestBase(r)
+func (m *Manager) present(session Session, r *http.Request) Session {
+	base := m.publicBase(r)
 	for i, service := range session.Services {
 		if service.Name == "" {
 			continue
@@ -163,6 +168,13 @@ func present(session Session, r *http.Request) Session {
 	session.ConnectShell = connectShell(session)
 	session.AgentPrompt = agentPrompt(session)
 	return session
+}
+
+func (m *Manager) publicBase(r *http.Request) string {
+	if configured := m.configuredBase(); configured != "" {
+		return configured
+	}
+	return requestBase(r)
 }
 
 func requestBase(r *http.Request) string {

@@ -170,7 +170,7 @@ function reachability(session: Session) {
   if (isLoopbackURL(url)) {
     return "This sandbox is on loopback. A process on another machine cannot reach it."
   }
-  return "Service URLs use this console host, so you can call them from here."
+  return "Service URLs use the console host, so a client that can open the console can call them."
 }
 
 function isLoopbackURL(value: string) {
@@ -241,9 +241,6 @@ function SandboxDetail({
         <StatusPill tone={session.anchored ? "held" : "ready"}>
           {session.anchored ? "Held by fab run" : "Ready"}
         </StatusPill>
-        <span className="rounded bg-muted px-1.5 py-0.5 text-xs">
-          {session.proxy ? "Proxy" : "Direct"}
-        </span>
       </div>
       {error ? <ErrorNote>{error}</ErrorNote> : null}
 
@@ -307,8 +304,8 @@ function SandboxDetail({
         </div>
         <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
           {session.proxy
-            ? "Proxy mode keeps production hostnames. Export these variables into the process under test. It must honor HTTP_PROXY and the CA file. Do not send the service token on routed hosts; the proxy replaces Authorization."
-            : "Direct mode points each client at the service URL and sends the bearer token. Append the provider path your client already calls. Production hostnames still reach the real providers."}
+            ? "This console is in proxy mode, so the sandbox keeps production hostnames. Export these variables into the process under test. It must honor HTTP_PROXY and the CA file. Do not send the service token on routed hosts; the proxy replaces Authorization."
+            : "This console publishes each service URL. Point the client at that URL and send the bearer token. Append the provider path your client already calls."}
         </p>
         <pre className="overflow-auto border bg-code p-4 font-mono text-xs leading-5 whitespace-pre-wrap">
           {session.connectShell}

@@ -36,8 +36,8 @@ function EnvironmentPage() {
   const running = sessionsForEnvironment(sessions ?? [], name)
   const key = `environment:${name}`
 
-  async function onStart(proxy: boolean) {
-    const session = await start("environment", name, proxy, "stay")
+  async function onStart() {
+    const session = await start("environment", name, "stay")
     if (session) {
       setSessions((current) => [
         session,
@@ -108,10 +108,9 @@ function EnvironmentPage() {
         ) : running.length > 1 ? null : (
           <StartActions
             pending={pending}
-            directKey={`${key}:direct`}
-            proxyKey={`${key}:proxy`}
-            onStart={(proxy) => void onStart(proxy)}
-            startLabel="Start environment"
+            actionKey={key}
+            onStart={() => void onStart()}
+            label="Start environment"
           />
         )
       }
@@ -132,7 +131,7 @@ function EnvironmentPage() {
               <CardDescription>
                 Start environment brings up all {environment.services.length}{" "}
                 {environment.services.length === 1 ? "service" : "services"} in
-                one sandbox. Proxy does the same through the transparent proxy.
+                one sandbox.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -241,8 +240,7 @@ function RunningSession({
             {session.id}
           </p>
           <p className="text-sm text-muted-foreground">
-            {session.proxy ? "Proxy" : "Direct"} · started{" "}
-            {formatTime(session.startedAt)}
+            Started {formatTime(session.startedAt)}
           </p>
           <ScenarioChips services={session.services} />
           {session.anchored ? (

@@ -18,9 +18,8 @@ import (
 const maxSessions = 16
 
 type StartRequest struct {
-	Kind  string `json:"kind"`
-	ID    string `json:"id"`
-	Proxy bool   `json:"proxy"`
+	Kind string `json:"kind"`
+	ID   string `json:"id"`
 }
 
 type Session struct {
@@ -84,6 +83,9 @@ type Manager struct {
 	catalogOnce sync.Once
 	catalog     Catalog
 	catalogErr  error
+
+	proxy     bool
+	publicURL string
 }
 
 func New(registry *httpresource.Registry) *Manager {
@@ -105,10 +107,11 @@ func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, err
 	if err != nil {
 		return Session{}, err
 	}
+	proxy := m.proxyEnabled()
 	if err := m.reserve(); err != nil {
 		return Session{}, err
 	}
-	runtime, err := environment.Start(ctx, spec, m.registry, request.Proxy)
+	runtime, err := environment.Start(ctx, spec, m.registry, proxy)
 	if err != nil {
 		m.releaseReservation()
 		return Session{}, err
@@ -121,7 +124,7 @@ func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, err
 	}
 	running := &runningSession{
 		id: id, kind: kind, spec: spec, runtime: runtime,
-		started: time.Now().UTC(), proxy: request.Proxy,
+		started: time.Now().UTC(), proxy: proxy,
 	}
 	m.mu.Lock()
 	m.inflight--

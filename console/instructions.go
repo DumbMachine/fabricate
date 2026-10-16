@@ -62,7 +62,7 @@ func agentPrompt(session Session) string {
 		fmt.Fprintf(&builder, "Routed hosts: %s\n", strings.Join(session.ProxyConnection.Hosts, ", "))
 	} else {
 		builder.WriteString("Proxy mode is off. Point each client at the service base URL and send Authorization: Bearer <token>.\n")
-		builder.WriteString("Production hostnames are not intercepted. Start the sandbox again with proxy if the client must keep those hostnames.\n")
+		builder.WriteString("Production hostnames are not intercepted. This console was started without proxy mode.\n")
 	}
 	builder.WriteString("\n")
 	if servicesOnConsoleHost(session) {

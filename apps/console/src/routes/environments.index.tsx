@@ -43,8 +43,8 @@ function EnvironmentsPage() {
     [catalog, query]
   )
 
-  async function onStart(name: string, proxy: boolean) {
-    await start("environment", name, proxy, "environment")
+  async function onStart(name: string) {
+    await start("environment", name, "environment")
   }
 
   async function onClose(id: string) {
@@ -96,7 +96,7 @@ function EnvironmentsPage() {
                 pending={pending}
                 error={errors[`environment:${environment.name}`]}
                 closeError={(id) => errors[`close:${id}`]}
-                onStart={(proxy) => void onStart(environment.name, proxy)}
+                onStart={() => void onStart(environment.name)}
                 onClose={(id) => void onClose(id)}
               />
             ))}
@@ -123,7 +123,7 @@ function EnvironmentRow({
   pending: string | null
   error?: string
   closeError: (id: string) => string | undefined
-  onStart: (proxy: boolean) => void
+  onStart: () => void
   onClose: (id: string) => void
 }) {
   const key = `environment:${environment.name}`
@@ -168,10 +168,9 @@ function EnvironmentRow({
         ) : running.length === 0 ? (
           <StartActions
             pending={pending}
-            directKey={`${key}:direct`}
-            proxyKey={`${key}:proxy`}
+            actionKey={key}
             onStart={onStart}
-            startLabel="Start all"
+            label="Start all"
           />
         ) : (
           <div className="flex flex-wrap justify-end gap-2">

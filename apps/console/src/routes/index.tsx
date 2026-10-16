@@ -16,7 +16,6 @@ import {
   ColumnHeading,
   ConsoleFrame,
   DataTable,
-  FilterTabs,
 } from "@/components/console-frame"
 import { groupScenarios } from "@/lib/catalog"
 import { formatTime, kindLabel, matchesQuery } from "@/lib/format"
@@ -25,20 +24,15 @@ import type { CatalogScenario, Session } from "@/lib/types"
 
 export const Route = createFileRoute("/")({ component: SandboxesPage })
 
-type RunningFilter = "all" | "direct" | "proxy"
-
 function SandboxesPage() {
   const { catalog, error: catalogError } = useCatalog()
   const [sessions, setSessions] = useSessions()
   const { pending, errors, start, close } = useSandboxActions()
   const [query, setQuery] = useState("")
-  const [runningFilter, setRunningFilter] = useState<RunningFilter>("all")
   const visibleSessions = useMemo(() => {
     const loaded = sessions ?? []
-    return loaded.filter((session) => {
-      if (runningFilter === "proxy" && !session.proxy) return false
-      if (runningFilter === "direct" && session.proxy) return false
-      return matchesQuery(query, [
+    return loaded.filter((session) =>
+      matchesQuery(query, [
         session.name,
         session.label,
         session.kind,
@@ -50,8 +44,8 @@ function SandboxesPage() {
           service.scenario,
         ]),
       ])
-    })
-  }, [sessions, runningFilter, query])
+    )
+  }, [sessions, query])
   const groups = useMemo(
     () =>
       groupScenarios(
@@ -68,8 +62,8 @@ function SandboxesPage() {
     [catalog, query]
   )
 
-  async function onStart(id: string, proxy: boolean) {
-    await start("scenario", id, proxy, "sandbox")
+  async function onStart(id: string) {
+    await start("scenario", id, "sandbox")
   }
 
   async function onClose(id: string) {
@@ -80,10 +74,6 @@ function SandboxesPage() {
       )
     }
   }
-
-  const loaded = sessions ?? []
-  const directCount = loaded.filter((session) => !session.proxy).length
-  const proxyCount = loaded.filter((session) => session.proxy).length
 
   return (
     <ConsoleFrame
@@ -97,20 +87,7 @@ function SandboxesPage() {
       }}
     >
       <section className="flex flex-col gap-3">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-lg font-medium">Running</h2>
-          <FilterTabs
-            value={runningFilter}
-            onChange={(id) => {
-              if (isRunningFilter(id)) setRunningFilter(id)
-            }}
-            options={[
-              { id: "all", label: `All (${loaded.length})` },
-              { id: "direct", label: `Direct (${directCount})` },
-              { id: "proxy", label: `Proxy (${proxyCount})` },
-            ]}
-          />
-        </div>
+        <h2 className="text-lg font-medium">Running</h2>
         {sessions === null ? (
           <LoadingLine>Loading sandboxes…</LoadingLine>
         ) : visibleSessions.length === 0 ? (
@@ -130,13 +107,12 @@ function SandboxesPage() {
             </CardHeader>
           </Card>
         ) : (
-          <DataTable className="min-w-[880px]">
+          <DataTable className="min-w-[760px]">
             <thead>
               <tr>
                 <ColumnHeading>Sandbox</ColumnHeading>
                 <ColumnHeading>Active scenarios</ColumnHeading>
                 <ColumnHeading>Status</ColumnHeading>
-                <ColumnHeading>Mode</ColumnHeading>
                 <ColumnHeading>Started</ColumnHeading>
                 <ColumnHeading> </ColumnHeading>
               </tr>
@@ -198,7 +174,7 @@ function SandboxesPage() {
                     scenario={scenario}
                     pending={pending}
                     error={errors[`scenario:${scenario.id}`]}
-                    onStart={(proxy) => void onStart(scenario.id, proxy)}
+                    onStart={() => void onStart(scenario.id)}
                   />
                 ))}
               </tbody>
@@ -253,11 +229,6 @@ function RunningRow({
           <StatusPill tone="ready">Ready</StatusPill>
         )}
       </td>
-      <td className="px-3 py-3">
-        <span className="rounded bg-muted px-1.5 py-0.5 text-xs">
-          {session.proxy ? "Proxy" : "Direct"}
-        </span>
-      </td>
       <td className="px-3 py-3 text-muted-foreground">
         {formatTime(session.startedAt)}
       </td>
@@ -288,7 +259,7 @@ function ScenarioRow({
   scenario: CatalogScenario
   pending: string | null
   error?: string
-  onStart: (proxy: boolean) => void
+  onStart: () => void
 }) {
   const key = `scenario:${scenario.id}`
   return (
@@ -310,24 +281,8 @@ function ScenarioRow({
         {scenario.providerHosts.join(", ") || "None"}
       </td>
       <td className="px-3 py-3">
-        <StartActions
-          pending={pending}
-          directKey={`${key}:direct`}
-          proxyKey={`${key}:proxy`}
-          onStart={onStart}
-        />
+        <StartActions pending={pending} actionKey={key} onStart={onStart} />
       </td>
     </tr>
   )
-}
-
-function isRunningFilter(value: string): value is RunningFilter {
-  switch (value) {
-    case "all":
-    case "direct":
-    case "proxy":
-      return true
-    default:
-      return false
-  }
 }
