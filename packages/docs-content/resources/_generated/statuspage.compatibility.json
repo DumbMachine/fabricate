@@ -1,0 +1,44 @@
+{
+  "api": "Statuspage API v1",
+  "environment": {
+    "label": "Acme Statuspage",
+    "manifest": "environments/acme-statuspage.yaml",
+    "messages": 2
+  },
+  "integration": "statuspage",
+  "modes": {
+    "direct": {
+      "messagesAfter": 3,
+      "messagesBefore": 2,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 3,
+      "messagesBefore": 2,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List components and incidents",
+    "write": "Create incident",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:36:27.757Z",
+  "testedCommit": "192ecd6f8db2cf2870647bfe730165ffafda338e"
+}

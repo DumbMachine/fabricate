@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/shiprocket/scenario-v1.json",
+  "title": "Fabricate Shiprocket scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["companyId", "user", "couriers", "pickups", "orders", "returns"],
+  "properties": {
+    "companyId": {"type": "integer", "minimum": 1},
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "firstName", "lastName", "email", "createdAt"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "firstName": {"type": "string", "minLength": 1},
+        "lastName": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "minLength": 1},
+        "createdAt": {"type": "string", "minLength": 1}
+      }
+    },
+    "couriers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "integer", "minimum": 1},
+          "name": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "pickups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "location", "name", "email", "phone", "address", "address2", "city", "state", "country", "pincode"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "location": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "email": {"type": "string", "minLength": 1},
+          "phone": {"type": "string", "minLength": 1},
+          "address": {"type": "string", "minLength": 1},
+          "address2": {"type": "string"},
+          "city": {"type": "string", "minLength": 1},
+          "state": {"type": "string", "minLength": 1},
+          "country": {"type": "string", "minLength": 1},
+          "pincode": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "channelOrderId",
+          "channelName",
+          "status",
+          "awb",
+          "courierId",
+          "courierName",
+          "shipmentId",
+          "customerName",
+          "customerEmail",
+          "customerPhone",
+          "address",
+          "address2",
+          "city",
+          "state",
+          "pincode",
+          "country",
+          "pickupLocation",
+          "paymentMethod",
+          "paymentStatus",
+          "subTotal",
+          "orderDate",
+          "ndrReason",
+          "ndrAttempts",
+          "items"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "channelOrderId": {"type": "string", "minLength": 1},
+          "channelName": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "awb": {"type": "string"},
+          "courierId": {"type": "integer", "minimum": 0},
+          "courierName": {"type": "string"},
+          "shipmentId": {"type": "string", "minLength": 1},
+          "customerName": {"type": "string", "minLength": 1},
+          "customerEmail": {"type": "string", "minLength": 1},
+          "customerPhone": {"type": "string", "minLength": 1},
+          "address": {"type": "string"},
+          "address2": {"type": "string"},
+          "city": {"type": "string"},
+          "state": {"type": "string"},
+          "pincode": {"type": "string"},
+          "country": {"type": "string"},
+          "pickupLocation": {"type": "string", "minLength": 1},
+          "paymentMethod": {"type": "string", "enum": ["Prepaid", "COD"]},
+          "paymentStatus": {"type": "string", "minLength": 1},
+          "subTotal": {"type": "integer", "minimum": 0},
+          "weightGrams": {"type": "integer", "minimum": 0},
+          "lengthCm": {"type": "integer", "minimum": 0},
+          "breadthCm": {"type": "integer", "minimum": 0},
+          "heightCm": {"type": "integer", "minimum": 0},
+          "orderDate": {"type": "string", "minLength": 1},
+          "ndrReason": {"type": "string"},
+          "ndrAttempts": {"type": "integer", "minimum": 0},
+          "ndrAction": {"type": "string"},
+          "ndrComments": {"type": "string"},
+          "assignedAt": {"type": "string"},
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "sku", "units", "sellingPrice"],
+              "properties": {
+                "name": {"type": "string", "minLength": 1},
+                "sku": {"type": "string", "minLength": 1},
+                "units": {"type": "integer", "minimum": 1},
+                "sellingPrice": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        }
+      }
+    },
+    "returns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "orderId",
+          "shipmentId",
+          "channelName",
+          "status",
+          "forwardShipmentStatus",
+          "customerName",
+          "customerEmail",
+          "customerPhone",
+          "address",
+          "address2",
+          "city",
+          "state",
+          "pincode",
+          "country",
+          "pickupLocation",
+          "subTotal",
+          "orderDate",
+          "awb",
+          "courierName",
+          "items"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "orderId": {"type": "string", "minLength": 1},
+          "shipmentId": {"type": "string", "minLength": 1},
+          "channelName": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "forwardShipmentStatus": {"type": "string"},
+          "customerName": {"type": "string", "minLength": 1},
+          "customerEmail": {"type": "string", "minLength": 1},
+          "customerPhone": {"type": "string", "minLength": 1},
+          "address": {"type": "string"},
+          "address2": {"type": "string"},
+          "city": {"type": "string"},
+          "state": {"type": "string"},
+          "pincode": {"type": "string"},
+          "country": {"type": "string"},
+          "pickupLocation": {"type": "string", "minLength": 1},
+          "subTotal": {"type": "integer", "minimum": 0},
+          "orderDate": {"type": "string", "minLength": 1},
+          "awb": {"type": "string"},
+          "courierName": {"type": "string"},
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "sku", "units", "sellingPrice"],
+              "properties": {
+                "name": {"type": "string", "minLength": 1},
+                "sku": {"type": "string", "minLength": 1},
+                "units": {"type": "integer", "minimum": 1},
+                "sellingPrice": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

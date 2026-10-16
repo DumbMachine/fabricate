@@ -1,0 +1,66 @@
+{
+  "integration": "canny",
+  "api": "Canny v1",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/api/v1/boards/list",
+      "operationId": "CannyBoardsList",
+      "summary": "Lists boards."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/boards/retrieve",
+      "operationId": "CannyBoardsRetrieve",
+      "summary": "Retrieves a board by id."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/posts/change_status",
+      "operationId": "CannyPostsChangeStatus",
+      "summary": "Changes a post status."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/posts/create",
+      "operationId": "CannyPostsCreate",
+      "summary": "Creates a post."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/posts/list",
+      "operationId": "CannyPostsList",
+      "summary": "Lists posts."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/posts/retrieve",
+      "operationId": "CannyPostsRetrieve",
+      "summary": "Retrieves a post by id or urlName."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/users/create_or_update",
+      "operationId": "CannyUsersCreateOrUpdate",
+      "summary": "Creates a user or updates the matching user."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/users/retrieve",
+      "operationId": "CannyUsersRetrieve",
+      "summary": "Retrieves a user by id, email, or userID."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/votes/create",
+      "operationId": "CannyVotesCreate",
+      "summary": "Creates a vote, or reports success when it already exists."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/votes/retrieve",
+      "operationId": "CannyVotesRetrieve",
+      "summary": "Retrieves a vote by id."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "api": "Greenhouse Harvest API v1",
+  "environment": {
+    "label": "Acme Greenhouse",
+    "manifest": "environments/acme-greenhouse.yaml",
+    "messages": 0
+  },
+  "integration": "greenhouse",
+  "modes": {
+    "direct": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List jobs, candidates, and offers",
+    "write": "Add a note for app-jordan",
+    "persistence": "Confirm the note and application activity"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:38:56.033Z",
+  "testedCommit": "b19647c886dca0ed9e7d4e729fd9d690e3c14df0"
+}

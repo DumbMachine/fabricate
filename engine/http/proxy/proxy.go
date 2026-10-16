@@ -317,7 +317,7 @@ func (p *Proxy) roundTrip(request *http.Request, route *compiledRoute) (*http.Re
 			return nil, err
 		}
 		request.Body = io.NopCloser(bytes.NewReader(body))
-		response, err := oauthResponse(request, route.Token, body)
+		response, err := oauthResponse(request, route.PathPrefix, route.Token, body)
 		if err != nil {
 			return nil, err
 		}
@@ -353,8 +353,10 @@ func (p *Proxy) roundTrip(request *http.Request, route *compiledRoute) (*http.Re
 
 const bodyLimitForLog = 1 << 20
 
-func oauthResponse(request *http.Request, token string, body []byte) (*http.Response, error) {
-	if request.Method != http.MethodPost || request.URL.Path != "/token" {
+// oauthResponse answers a synthetic refresh-token grant. An OAuth route's
+// PathPrefix is the exact token endpoint path; anything else on the host is 404.
+func oauthResponse(request *http.Request, path, token string, body []byte) (*http.Response, error) {
+	if request.Method != http.MethodPost || request.URL.Path != path {
 		return proxyErrorResponse(request, http.StatusNotFound, "OAuth endpoint not found"), nil
 	}
 	values, err := url.ParseQuery(string(body))

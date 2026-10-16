@@ -1,0 +1,488 @@
+openapi: 3.0.3
+info:
+  title: DocuSign eSignature REST API
+  version: v2.1
+  description: >-
+    Curated DocuSign eSignature REST API v2.1 surface supported by Fabricate.
+    Paths are the public demo paths a client requests. Undeclared DocuSign
+    operations are not advertised.
+servers:
+  - url: https://demo.docusign.net
+    description: DocuSign demo environment.
+security:
+  - bearerAuth: []
+tags:
+  - name: Accounts
+  - name: Users
+  - name: Envelopes
+  - name: Recipients
+  - name: Documents
+  - name: Views
+paths:
+  /restapi/v2.1/accounts/{accountId}:
+    get:
+      operationId: Accounts_GetAccount
+      summary: Retrieves the account information for the specified account.
+      tags: [Accounts]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Account information.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/AccountInformation'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/users:
+    get:
+      operationId: Users_GetUsers
+      summary: Retrieves the list of users for the specified account.
+      tags: [Users]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/Email'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/StartPosition'
+      responses:
+        '200':
+          description: Account users.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/UserInformationList'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/users/{userId}:
+    get:
+      operationId: User_GetUser
+      summary: Gets the user information for a specified user.
+      tags: [Users]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User information.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/UserInformation'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/envelopes:
+    get:
+      operationId: Envelopes_GetEnvelopes
+      summary: Lists envelopes for the account. from_date is optional on this curated surface.
+      tags: [Envelopes]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/StartPosition'
+        - name: from_date
+          in: query
+          description: >-
+            Only envelopes whose status changed at or after this time.
+            Optional here; the live API requires it unless envelope_ids is set.
+          schema: {type: string}
+        - name: to_date
+          in: query
+          description: Only envelopes whose status changed at or before this time.
+          schema: {type: string}
+        - name: status
+          in: query
+          description: Comma-separated envelope statuses.
+          schema: {type: string}
+        - name: search_text
+          in: query
+          description: Free-text match on subject, blurb, recipient, document name, or envelope id.
+          schema: {type: string}
+        - name: envelope_ids
+          in: query
+          description: Comma-separated envelope ids.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Envelope list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EnvelopesInformation'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: Envelopes_PostEnvelopes
+      summary: Creates a draft envelope or creates and sends an envelope.
+      tags: [Envelopes]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/EnvelopeDefinition'}
+      responses:
+        '201':
+          description: Envelope created.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EnvelopeSummary'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}:
+    get:
+      operationId: Envelopes_GetEnvelope
+      summary: Gets the status of a single envelope.
+      tags: [Envelopes]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+        - name: include
+          in: query
+          description: Accepted for client compatibility. Recipients and documents are always returned.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Envelope.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Envelope'}
+        default: {$ref: '#/components/responses/Error'}
+    put:
+      operationId: Envelopes_PutEnvelope
+      summary: Sends a draft envelope or voids an in-process envelope.
+      tags: [Envelopes]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/EnvelopeUpdate'}
+      responses:
+        '200':
+          description: Envelope update summary.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EnvelopeUpdateSummary'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/recipients:
+    get:
+      operationId: Recipients_GetRecipients
+      summary: Gets the recipients for an envelope.
+      tags: [Recipients]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+      responses:
+        '200':
+          description: Envelope recipients.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Recipients'}
+        default: {$ref: '#/components/responses/Error'}
+    put:
+      operationId: Recipients_PutRecipients
+      summary: Updates signer name, email, or routing order on an in-process envelope.
+      tags: [Recipients]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Recipients'}
+      responses:
+        '200':
+          description: Recipient update summary.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecipientsUpdateSummary'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/documents:
+    get:
+      operationId: Documents_GetDocuments
+      summary: Lists the documents in an envelope.
+      tags: [Documents]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+      responses:
+        '200':
+          description: Envelope documents.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EnvelopeDocumentsResult'}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}:
+    get:
+      operationId: Documents_GetDocument
+      summary: Retrieves one document, or all documents when documentId is combined.
+      tags: [Documents]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Document bytes.
+          content:
+            application/pdf:
+              schema: {type: string, format: binary}
+        default: {$ref: '#/components/responses/Error'}
+  /restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/recipient:
+    post:
+      operationId: Views_PostEnvelopeRecipientView
+      summary: Returns a URL to the recipient signing view.
+      tags: [Views]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - $ref: '#/components/parameters/EnvelopeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RecipientViewRequest'}
+      responses:
+        '201':
+          description: Recipient view URL.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EnvelopeViews'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Synthetic bearer token. The live API uses an OAuth access token in the same header.
+  parameters:
+    AccountId:
+      name: accountId
+      in: path
+      required: true
+      description: External account number or account ID. Acme uses acct-acme.
+      schema: {type: string, minLength: 1}
+    EnvelopeId:
+      name: envelopeId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      description: Document id within the envelope, or combined for every document.
+      schema: {type: string, minLength: 1}
+    Email:
+      name: email
+      in: query
+      schema: {type: string}
+    Count:
+      name: count
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 1000}
+    StartPosition:
+      name: start_position
+      in: query
+      schema: {type: integer, minimum: 0}
+  responses:
+    Error:
+      description: DocuSign error details.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorDetails'}
+  schemas:
+    ErrorDetails:
+      type: object
+      required: [errorCode, message]
+      properties:
+        errorCode: {type: string}
+        message: {type: string}
+    AccountInformation:
+      type: object
+      required: [accountIdGuid, accountName, externalAccountId, currencyCode, planName, createdDate]
+      properties:
+        accountIdGuid: {type: string}
+        accountName: {type: string}
+        externalAccountId: {type: string}
+        currencyCode: {type: string}
+        planName: {type: string}
+        createdDate: {type: string}
+    UserInformation:
+      type: object
+      required: [userId, userName, email, userStatus, isAdmin, userType, uri]
+      properties:
+        userId: {type: string}
+        userName: {type: string}
+        email: {type: string}
+        userStatus: {type: string}
+        isAdmin: {type: string}
+        userType: {type: string}
+        uri: {type: string}
+    UserInformationList:
+      type: object
+      required: [resultSetSize, startPosition, endPosition, totalSetSize, users]
+      properties:
+        resultSetSize: {type: string}
+        startPosition: {type: string}
+        endPosition: {type: string}
+        totalSetSize: {type: string}
+        nextUri: {type: string}
+        previousUri: {type: string}
+        users:
+          type: array
+          items: {$ref: '#/components/schemas/UserInformation'}
+    UserInfo:
+      type: object
+      required: [userId, userName, email]
+      properties:
+        userId: {type: string}
+        userName: {type: string}
+        email: {type: string}
+        accountId: {type: string}
+    Signer:
+      type: object
+      required: [email, name]
+      properties:
+        recipientId: {type: string}
+        name: {type: string}
+        email: {type: string}
+        routingOrder: {type: string}
+        status: {type: string}
+        sentDateTime: {type: string}
+        deliveredDateTime: {type: string}
+        signedDateTime: {type: string}
+    Recipients:
+      type: object
+      properties:
+        signers:
+          type: array
+          items: {$ref: '#/components/schemas/Signer'}
+        recipientCount: {type: string}
+        currentRoutingOrder: {type: string}
+    Document:
+      type: object
+      required: [name]
+      properties:
+        documentId: {type: string}
+        name: {type: string}
+        fileExtension: {type: string}
+        order: {type: string}
+        documentBase64: {type: string}
+    EnvelopeDocument:
+      type: object
+      required: [documentId, name, fileExtension, order, type, uri]
+      properties:
+        documentId: {type: string}
+        name: {type: string}
+        fileExtension: {type: string}
+        order: {type: string}
+        type: {type: string}
+        uri: {type: string}
+    EnvelopeDocumentsResult:
+      type: object
+      required: [envelopeId, envelopeDocuments]
+      properties:
+        envelopeId: {type: string}
+        envelopeDocuments:
+          type: array
+          items: {$ref: '#/components/schemas/EnvelopeDocument'}
+    Envelope:
+      type: object
+      required: [envelopeId, status, emailSubject, emailBlurb, createdDateTime, statusChangedDateTime, recipientsUri, documentsUri, envelopeUri, recipients, envelopeDocuments]
+      properties:
+        envelopeId: {type: string}
+        status: {type: string}
+        emailSubject: {type: string}
+        emailBlurb: {type: string}
+        createdDateTime: {type: string}
+        sentDateTime: {type: string}
+        deliveredDateTime: {type: string}
+        completedDateTime: {type: string}
+        statusChangedDateTime: {type: string}
+        voidedDateTime: {type: string}
+        voidedReason: {type: string}
+        sender: {$ref: '#/components/schemas/UserInfo'}
+        recipientsUri: {type: string}
+        documentsUri: {type: string}
+        envelopeUri: {type: string}
+        recipients: {$ref: '#/components/schemas/Recipients'}
+        envelopeDocuments:
+          type: array
+          items: {$ref: '#/components/schemas/EnvelopeDocument'}
+    EnvelopesInformation:
+      type: object
+      required: [resultSetSize, startPosition, endPosition, totalSetSize, envelopes]
+      properties:
+        resultSetSize: {type: string}
+        startPosition: {type: string}
+        endPosition: {type: string}
+        totalSetSize: {type: string}
+        nextUri: {type: string}
+        previousUri: {type: string}
+        envelopes:
+          type: array
+          items: {$ref: '#/components/schemas/Envelope'}
+    EnvelopeDefinition:
+      type: object
+      properties:
+        emailSubject: {type: string}
+        emailBlurb: {type: string}
+        status:
+          type: string
+          enum: [created, sent]
+        documents:
+          type: array
+          items: {$ref: '#/components/schemas/Document'}
+        recipients: {$ref: '#/components/schemas/Recipients'}
+    EnvelopeSummary:
+      type: object
+      required: [envelopeId, status, statusDateTime, uri]
+      properties:
+        envelopeId: {type: string}
+        status: {type: string}
+        statusDateTime: {type: string}
+        uri: {type: string}
+    EnvelopeUpdate:
+      type: object
+      properties:
+        emailSubject: {type: string}
+        emailBlurb: {type: string}
+        status:
+          type: string
+          enum: [sent, voided]
+        voidedReason: {type: string}
+    EnvelopeUpdateSummary:
+      type: object
+      required: [envelopeId]
+      properties:
+        envelopeId: {type: string}
+        purgeState: {type: string}
+    RecipientUpdateResult:
+      type: object
+      required: [recipientId]
+      properties:
+        recipientId: {type: string}
+        errorDetails: {$ref: '#/components/schemas/ErrorDetails'}
+    RecipientsUpdateSummary:
+      type: object
+      required: [recipientUpdateResults]
+      properties:
+        recipientUpdateResults:
+          type: array
+          items: {$ref: '#/components/schemas/RecipientUpdateResult'}
+    RecipientViewRequest:
+      type: object
+      required: [returnUrl, authenticationMethod]
+      properties:
+        returnUrl: {type: string}
+        authenticationMethod: {type: string}
+        email: {type: string}
+        userName: {type: string}
+        recipientId: {type: string}
+        clientUserId: {type: string}
+    EnvelopeViews:
+      type: object
+      required: [url]
+      properties:
+        url: {type: string}

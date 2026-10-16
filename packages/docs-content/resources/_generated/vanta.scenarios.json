@@ -1,0 +1,27 @@
+{
+  "integration": "vanta",
+  "scenarios": [
+    {
+      "id": "vanta.acme-compliance.v1",
+      "counts": {
+        "documents": 1,
+        "entities": 1,
+        "securityReviews": 2,
+        "tests": 1,
+        "uploads": 1,
+        "vendors": 2
+      }
+    },
+    {
+      "id": "vanta.minimal.v1",
+      "counts": {
+        "documents": 0,
+        "entities": 0,
+        "securityReviews": 0,
+        "tests": 0,
+        "uploads": 0,
+        "vendors": 0
+      }
+    }
+  ]
+}

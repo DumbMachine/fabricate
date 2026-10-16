@@ -1,0 +1,14 @@
+{
+  "id": "razorpay-read",
+  "title": "Fetch a seeded payment",
+  "environment": "environments/acme-razorpay.yaml",
+  "environmentLabel": "Acme's Razorpay",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/razorpay-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-razorpay.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.razorpay.com/v1/payments/pay_Acme10482",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.razorpay.com/v1/payments/pay_Acme10482"
+  ]
+}

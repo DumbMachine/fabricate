@@ -1,0 +1,84 @@
+{
+  "integration": "zohobooks",
+  "api": "Zoho Books v3",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/books/v3/contacts",
+      "operationId": "ListContacts",
+      "summary": "Lists contacts in the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/books/v3/contacts",
+      "operationId": "CreateContact",
+      "summary": "Creates a contact."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/contacts/{contact_id}",
+      "operationId": "GetContact",
+      "summary": "Gets a contact."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/creditnotes",
+      "operationId": "ListCreditNotes",
+      "summary": "Lists credit notes in the organization."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/creditnotes/{creditnote_id}",
+      "operationId": "GetCreditNote",
+      "summary": "Gets a credit note."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/customerpayments",
+      "operationId": "ListCustomerPayments",
+      "summary": "Lists customer payments in the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/books/v3/customerpayments",
+      "operationId": "CreateCustomerPayment",
+      "summary": "Records a customer payment. The payment is stored and returned by later reads."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/customerpayments/{payment_id}",
+      "operationId": "GetCustomerPayment",
+      "summary": "Gets a customer payment, including the invoices it applies to."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/invoices",
+      "operationId": "ListInvoices",
+      "summary": "Lists invoices in the organization."
+    },
+    {
+      "method": "POST",
+      "path": "/books/v3/invoices",
+      "operationId": "CreateInvoice",
+      "summary": "Creates an invoice. The invoice is stored and returned by later reads."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/invoices/{invoice_id}",
+      "operationId": "GetInvoice",
+      "summary": "Gets an invoice, including line items and notes."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/organizations",
+      "operationId": "ListOrganizations",
+      "summary": "Lists Zoho Books organizations visible to the token."
+    },
+    {
+      "method": "GET",
+      "path": "/books/v3/organizations/{organization_id}",
+      "operationId": "GetOrganization",
+      "summary": "Gets one Zoho Books organization."
+    }
+  ]
+}

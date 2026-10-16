@@ -1,0 +1,514 @@
+openapi: 3.0.3
+info:
+  title: Jira Service Management Cloud REST API
+  version: "3"
+  description: >-
+    Curated Jira Service Management Cloud contract. Every operation here is
+    stateful. Paths are the public /rest/servicedeskapi routes for service
+    desks, customer requests, and comments. The Jira platform REST API is not
+    part of this surface.
+servers:
+  - url: https://acme.atlassian.net
+security:
+  - bearerAuth: []
+tags:
+  - name: ServiceDesk
+  - name: Request
+  - name: Comment
+paths:
+  /rest/servicedeskapi/servicedesk:
+    get:
+      operationId: getServiceDesks
+      summary: Get service desks.
+      tags: [ServiceDesk]
+      parameters:
+        - $ref: "#/components/parameters/Start"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Service desks on this page.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PagedDTOServiceDeskDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}:
+    get:
+      operationId: getServiceDeskById
+      summary: Get service desk by id.
+      description: >-
+        serviceDeskId accepts the service desk id, project key, projectKey,
+        projectId, or serviceDeskId prefix used by the Jira Service Management
+        REST API.
+      tags: [ServiceDesk]
+      parameters:
+        - $ref: "#/components/parameters/ServiceDeskId"
+      responses:
+        "200":
+          description: Service desk.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ServiceDeskDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype:
+    get:
+      operationId: getRequestTypes
+      summary: Get request types.
+      tags: [ServiceDesk]
+      parameters:
+        - $ref: "#/components/parameters/ServiceDeskId"
+        - name: searchQuery
+          in: query
+          schema: {type: string}
+        - name: groupId
+          in: query
+          schema: {type: integer}
+        - name: restrictionStatus
+          in: query
+          schema: {type: string, enum: [open, restricted]}
+        - $ref: "#/components/parameters/Start"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Request types on this page.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PagedDTORequestTypeDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/servicedesk/{serviceDeskId}/requesttype/{requestTypeId}:
+    get:
+      operationId: getRequestTypeById
+      summary: Get request type by id.
+      tags: [ServiceDesk]
+      parameters:
+        - $ref: "#/components/parameters/ServiceDeskId"
+        - $ref: "#/components/parameters/RequestTypeId"
+      responses:
+        "200":
+          description: Request type.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/RequestTypeDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/request:
+    get:
+      operationId: getCustomerRequests
+      summary: Get customer requests.
+      description: >-
+        Returns customer requests visible to the authenticated support agent.
+        When requestOwnership is omitted, the official default applies:
+        OWNED_REQUESTS, PARTICIPATED_REQUESTS, and ALL_ORGANIZATIONS.
+        Results are ordered by latest activity.
+      tags: [Request]
+      parameters:
+        - name: searchTerm
+          in: query
+          description: Case-insensitive summary match. Asterisks are wildcards.
+          schema: {type: string}
+        - name: requestOwnership
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [OWNED_REQUESTS, PARTICIPATED_REQUESTS, ORGANIZATION, ALL_ORGANIZATIONS, APPROVER, ALL_REQUESTS]
+        - name: requestStatus
+          in: query
+          schema: {type: string, enum: [OPEN_REQUESTS, CLOSED_REQUESTS, ALL_REQUESTS]}
+        - name: serviceDeskId
+          in: query
+          schema: {type: integer}
+        - name: requestTypeId
+          in: query
+          description: Requires serviceDeskId.
+          schema: {type: integer}
+        - name: expand
+          in: query
+          style: form
+          explode: true
+          schema: {type: array, items: {type: string}}
+        - $ref: "#/components/parameters/Start"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Customer requests on this page.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PagedDTOCustomerRequestDTO"}
+        default: {$ref: "#/components/responses/Error"}
+    post:
+      operationId: createCustomerRequest
+      summary: Create customer request.
+      tags: [Request]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/RequestCreateDTO"}
+      responses:
+        "201":
+          description: Created customer request.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CustomerRequestDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/request/{issueIdOrKey}:
+    get:
+      operationId: getCustomerRequestByIdOrKey
+      summary: Get customer request by id or key.
+      tags: [Request]
+      parameters:
+        - $ref: "#/components/parameters/IssueIdOrKey"
+        - name: expand
+          in: query
+          style: form
+          explode: true
+          schema: {type: array, items: {type: string}}
+      responses:
+        "200":
+          description: Customer request.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CustomerRequestDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/request/{issueIdOrKey}/comment:
+    get:
+      operationId: getRequestComments
+      summary: Get request comments.
+      tags: [Comment]
+      parameters:
+        - $ref: "#/components/parameters/IssueIdOrKey"
+        - name: public
+          in: query
+          description: Return public comments. Default true.
+          schema: {type: boolean}
+        - name: internal
+          in: query
+          description: Return internal comments. Default true.
+          schema: {type: boolean}
+        - name: expand
+          in: query
+          style: form
+          explode: true
+          schema: {type: array, items: {type: string}}
+        - $ref: "#/components/parameters/Start"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Comments on this page.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PagedDTOCommentDTO"}
+        default: {$ref: "#/components/responses/Error"}
+    post:
+      operationId: createRequestComment
+      summary: Create request comment.
+      description: >-
+        Creates a public or internal comment. The authenticated user is the
+        author. public defaults to true when omitted.
+      tags: [Comment]
+      parameters:
+        - $ref: "#/components/parameters/IssueIdOrKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/CommentCreateDTO"}
+      responses:
+        "201":
+          description: Created comment.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CommentDTO"}
+        default: {$ref: "#/components/responses/Error"}
+  /rest/servicedeskapi/request/{issueIdOrKey}/comment/{commentId}:
+    get:
+      operationId: getRequestCommentById
+      summary: Get request comment by id.
+      tags: [Comment]
+      parameters:
+        - $ref: "#/components/parameters/IssueIdOrKey"
+        - name: commentId
+          in: path
+          required: true
+          description: >-
+            Comment id. The official path parameter is an integer; this
+            curated surface accepts the string id returned on the comment.
+          schema: {type: string, minLength: 1}
+        - name: expand
+          in: query
+          style: form
+          explode: true
+          schema: {type: array, items: {type: string}}
+      responses:
+        "200":
+          description: Comment.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/CommentDTO"}
+        default: {$ref: "#/components/responses/Error"}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Jira Service Management ad-hoc calls use HTTP
+        Basic. OAuth 2.0 uses a bearer access token. The proxy injects Bearer,
+        so this resource accepts that stand-in.
+  parameters:
+    Start:
+      name: start
+      in: query
+      schema: {type: integer, minimum: 0, default: 0}
+    Limit:
+      name: limit
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 100, default: 50}
+    ServiceDeskId:
+      name: serviceDeskId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    RequestTypeId:
+      name: requestTypeId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    IssueIdOrKey:
+      name: issueIdOrKey
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+  responses:
+    Error:
+      description: Jira Service Management error.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+  schemas:
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [errorMessage, i18nErrorMessage]
+      properties:
+        errorMessage: {type: string}
+        i18nErrorMessage: {$ref: "#/components/schemas/I18nErrorMessage"}
+    I18nErrorMessage:
+      type: object
+      additionalProperties: false
+      required: [i18nKey, parameters]
+      properties:
+        i18nKey: {type: string}
+        parameters: {type: array, items: {type: string}}
+    PagedLinkDTO:
+      type: object
+      additionalProperties: false
+      required: [base, context, self]
+      properties:
+        base: {type: string}
+        context: {type: string}
+        next: {type: string}
+        prev: {type: string}
+        self: {type: string}
+    SelfLinkDTO:
+      type: object
+      additionalProperties: false
+      required: [self]
+      properties:
+        self: {type: string}
+    UserLinkDTO:
+      type: object
+      additionalProperties: false
+      required: [jiraRest, self]
+      properties:
+        jiraRest: {type: string}
+        self: {type: string}
+    UserDTO:
+      type: object
+      additionalProperties: false
+      required: [accountId, displayName, active, emailAddress, timeZone, _links]
+      properties:
+        accountId: {type: string}
+        displayName: {type: string}
+        active: {type: boolean}
+        emailAddress: {type: string}
+        timeZone: {type: string}
+        name: {type: string}
+        key: {type: string}
+        _links: {$ref: "#/components/schemas/UserLinkDTO"}
+    DateDTO:
+      type: object
+      additionalProperties: false
+      required: [iso8601, jira, friendly, epochMillis]
+      properties:
+        iso8601: {type: string}
+        jira: {type: string}
+        friendly: {type: string}
+        epochMillis: {type: integer, format: int64}
+    ServiceDeskDTO:
+      type: object
+      additionalProperties: false
+      required: [id, projectId, projectKey, projectName, projectTypeKey, _links]
+      properties:
+        id: {type: string}
+        projectId: {type: string}
+        projectKey: {type: string}
+        projectName: {type: string}
+        projectTypeKey: {type: string}
+        _links: {$ref: "#/components/schemas/SelfLinkDTO"}
+    RequestTypeDTO:
+      type: object
+      additionalProperties: false
+      required: [id, name, description, helpText, issueTypeId, serviceDeskId, portalId, groupIds, restrictionStatus, _expands, _links]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        description: {type: string}
+        helpText: {type: string}
+        issueTypeId: {type: string}
+        serviceDeskId: {type: string}
+        portalId: {type: string}
+        groupIds: {type: array, items: {type: string}}
+        restrictionStatus: {type: string, enum: [OPEN, RESTRICTED]}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/SelfLinkDTO"}
+    CustomerRequestFieldValueDTO:
+      type: object
+      additionalProperties: false
+      required: [fieldId, label, value]
+      properties:
+        fieldId: {type: string}
+        label: {type: string}
+        value: {type: string}
+        renderedValue:
+          type: object
+          additionalProperties: false
+          required: [html]
+          properties:
+            html: {type: string}
+    CustomerRequestStatusDTO:
+      type: object
+      additionalProperties: false
+      required: [status, statusCategory, statusDate]
+      properties:
+        status: {type: string}
+        statusCategory: {type: string, enum: [UNDEFINED, NEW, INDETERMINATE, DONE]}
+        statusDate: {$ref: "#/components/schemas/DateDTO"}
+    CustomerRequestLinkDTO:
+      type: object
+      additionalProperties: false
+      required: [self, jiraRest, web, agent]
+      properties:
+        self: {type: string}
+        jiraRest: {type: string}
+        web: {type: string}
+        agent: {type: string}
+    CustomerRequestDTO:
+      type: object
+      additionalProperties: false
+      required: [issueId, issueKey, requestTypeId, serviceDeskId, summary, createdDate, reporter, requestFieldValues, currentStatus, _expands, _links]
+      properties:
+        issueId: {type: string}
+        issueKey: {type: string}
+        summary: {type: string}
+        requestTypeId: {type: string}
+        serviceDeskId: {type: string}
+        createdDate: {$ref: "#/components/schemas/DateDTO"}
+        reporter: {$ref: "#/components/schemas/UserDTO"}
+        requestFieldValues:
+          type: array
+          items: {$ref: "#/components/schemas/CustomerRequestFieldValueDTO"}
+        currentStatus: {$ref: "#/components/schemas/CustomerRequestStatusDTO"}
+        serviceDesk: {$ref: "#/components/schemas/ServiceDeskDTO"}
+        requestType: {$ref: "#/components/schemas/RequestTypeDTO"}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/CustomerRequestLinkDTO"}
+    CommentDTO:
+      type: object
+      additionalProperties: false
+      required: [id, body, public, author, created, _expands, _links]
+      properties:
+        id: {type: string}
+        body: {type: string}
+        public: {type: boolean}
+        author: {$ref: "#/components/schemas/UserDTO"}
+        created: {$ref: "#/components/schemas/DateDTO"}
+        renderedBody:
+          type: object
+          additionalProperties: false
+          required: [html]
+          properties:
+            html: {type: string}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/SelfLinkDTO"}
+    RequestCreateDTO:
+      type: object
+      additionalProperties: false
+      required: [serviceDeskId, requestTypeId, requestFieldValues]
+      properties:
+        serviceDeskId: {type: string, minLength: 1}
+        requestTypeId: {type: string, minLength: 1}
+        raiseOnBehalfOf: {type: string}
+        requestParticipants: {type: array, items: {type: string, minLength: 1}}
+        isAdfRequest: {type: boolean}
+        requestFieldValues:
+          type: object
+          minProperties: 1
+          additionalProperties: {type: string}
+    CommentCreateDTO:
+      type: object
+      additionalProperties: false
+      required: [body]
+      properties:
+        body: {type: string, minLength: 1}
+        public: {type: boolean}
+    PagedDTOServiceDeskDTO:
+      type: object
+      additionalProperties: false
+      required: [size, start, limit, isLastPage, values, _expands, _links]
+      properties:
+        size: {type: integer}
+        start: {type: integer}
+        limit: {type: integer}
+        isLastPage: {type: boolean}
+        values: {type: array, items: {$ref: "#/components/schemas/ServiceDeskDTO"}}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/PagedLinkDTO"}
+    PagedDTORequestTypeDTO:
+      type: object
+      additionalProperties: false
+      required: [size, start, limit, isLastPage, values, _expands, _links]
+      properties:
+        size: {type: integer}
+        start: {type: integer}
+        limit: {type: integer}
+        isLastPage: {type: boolean}
+        values: {type: array, items: {$ref: "#/components/schemas/RequestTypeDTO"}}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/PagedLinkDTO"}
+    PagedDTOCustomerRequestDTO:
+      type: object
+      additionalProperties: false
+      required: [size, start, limit, isLastPage, values, _expands, _links]
+      properties:
+        size: {type: integer}
+        start: {type: integer}
+        limit: {type: integer}
+        isLastPage: {type: boolean}
+        values: {type: array, items: {$ref: "#/components/schemas/CustomerRequestDTO"}}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/PagedLinkDTO"}
+    PagedDTOCommentDTO:
+      type: object
+      additionalProperties: false
+      required: [size, start, limit, isLastPage, values, _expands, _links]
+      properties:
+        size: {type: integer}
+        start: {type: integer}
+        limit: {type: integer}
+        isLastPage: {type: boolean}
+        values: {type: array, items: {$ref: "#/components/schemas/CommentDTO"}}
+        _expands: {type: array, items: {type: string}}
+        _links: {$ref: "#/components/schemas/PagedLinkDTO"}

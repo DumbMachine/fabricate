@@ -1,0 +1,66 @@
+{
+  "integration": "bamboohr",
+  "api": "BambooHR v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/v1/employees",
+      "operationId": "ListEmployees",
+      "summary": "List employees."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/employees/directory",
+      "operationId": "GetEmployeesDirectory",
+      "summary": "Get the employee directory."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/employees/{employeeId}/time_off/request",
+      "operationId": "CreateTimeOffRequest",
+      "summary": "Create a time off request."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/employees/{id}",
+      "operationId": "GetEmployee",
+      "summary": "Get an employee."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/meta/company",
+      "operationId": "GetMetaCompany",
+      "summary": "Get company properties."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/meta/lists",
+      "operationId": "ListListFields",
+      "summary": "List list fields."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/meta/time_off/types",
+      "operationId": "ListTimeOffTypes",
+      "summary": "List time off types."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/time_off/requests",
+      "operationId": "ListTimeOffRequests",
+      "summary": "List time off requests."
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/time_off/requests/{requestId}/status",
+      "operationId": "UpdateTimeOffRequestStatus",
+      "summary": "Update a time off request status."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/time_off/whos_out",
+      "operationId": "ListWhosOut",
+      "summary": "List who is out."
+    }
+  ]
+}

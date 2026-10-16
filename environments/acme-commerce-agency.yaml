@@ -1,0 +1,27 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-commerce-agency
+
+services:
+  shopify:
+    resource: shopify
+    scenario: shopify.acme-agency.v1
+  razorpay:
+    resource: razorpay
+    scenario: razorpay.acme-payments.v1
+  shiprocket:
+    resource: shiprocket
+    scenario: shiprocket.acme-shipments.v1
+  zohobooks:
+    resource: zohobooks
+    scenario: zohobooks.acme-ledger.v1
+  gupshup:
+    resource: gupshup
+    scenario: gupshup.acme-whatsapp.v1
+  slack:
+    resource: slack
+    scenario: slack.acme-workspace.v1
+  impact:
+    resource: impact
+    scenario: impact.acme-partners.v1

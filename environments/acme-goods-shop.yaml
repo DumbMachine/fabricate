@@ -1,0 +1,39 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-goods-shop
+
+services:
+  shopify:
+    resource: shopify
+    scenario: shopify.acme-goods.v1
+  razorpay:
+    resource: razorpay
+    scenario: razorpay.acme-payments.v1
+  shiprocket:
+    resource: shiprocket
+    scenario: shiprocket.acme-shipments.v1
+  zohoinventory:
+    resource: zohoinventory
+    scenario: zohoinventory.acme-stock.v1
+  zohobooks:
+    resource: zohobooks
+    scenario: zohobooks.acme-ledger.v1
+  gupshup:
+    resource: gupshup
+    scenario: gupshup.acme-whatsapp.v1
+  slack:
+    resource: slack
+    scenario: slack.acme-workspace.v1
+  googledrive:
+    resource: googledrive
+    scenario: googledrive.acme-drive.v1
+  ga4:
+    resource: ga4
+    scenario: ga4.acme-properties.v1
+  redshift:
+    resource: redshift
+    scenario: redshift.acme-warehouse.v1
+  airbyte:
+    resource: airbyte
+    scenario: airbyte.acme-syncs.v1

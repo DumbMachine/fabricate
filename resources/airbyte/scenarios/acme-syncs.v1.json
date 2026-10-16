@@ -1,0 +1,109 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "airbyte.acme-syncs.v1",
+  "$resource": "airbyte",
+  "$resourceVersion": "v1",
+  "state": {
+    "workspaceId": "ws_acme",
+    "sources": [
+      {
+        "sourceId": "source_shopify",
+        "name": "Acme Goods Shopify",
+        "sourceType": "shopify",
+        "workspaceId": "ws_acme",
+        "configuration": {
+          "sourceType": "shopify",
+          "shop": "acme-goods.myshopify.com"
+        }
+      },
+      {
+        "sourceId": "source_razorpay",
+        "name": "Acme Razorpay",
+        "sourceType": "razorpay",
+        "workspaceId": "ws_acme",
+        "configuration": {
+          "sourceType": "razorpay"
+        }
+      },
+      {
+        "sourceId": "source_shiprocket",
+        "name": "Acme Shiprocket",
+        "sourceType": "shiprocket",
+        "workspaceId": "ws_acme",
+        "configuration": {
+          "sourceType": "shiprocket"
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "destinationId": "dest_redshift",
+        "name": "Acme Redshift",
+        "destinationType": "redshift",
+        "workspaceId": "ws_acme",
+        "configuration": {
+          "destinationType": "redshift",
+          "host": "acme-warehouse",
+          "database": "analytics",
+          "schema": "commerce"
+        }
+      }
+    ],
+    "connections": [
+      {
+        "connectionId": "conn_shopify_goods",
+        "name": "Acme Goods Shopify to Redshift",
+        "sourceId": "source_shopify",
+        "destinationId": "dest_redshift",
+        "workspaceId": "ws_acme",
+        "status": "active",
+        "schedule": {"scheduleType": "manual"},
+        "dataResidency": "auto",
+        "configurations": {
+          "streams": [
+            {"name": "orders", "syncMode": "incremental_append"}
+          ]
+        },
+        "createdAt": 1785542400
+      },
+      {
+        "connectionId": "conn_razorpay",
+        "name": "Acme Razorpay to Redshift",
+        "sourceId": "source_razorpay",
+        "destinationId": "dest_redshift",
+        "workspaceId": "ws_acme",
+        "status": "active",
+        "schedule": {"scheduleType": "manual"},
+        "dataResidency": "auto",
+        "configurations": {
+          "streams": [
+            {"name": "payments", "syncMode": "incremental_append"}
+          ]
+        },
+        "createdAt": 1785542400
+      }
+    ],
+    "jobs": [
+      {
+        "jobId": "job_10482",
+        "status": "succeeded",
+        "jobType": "sync",
+        "startTime": "2026-08-25T10:00:00Z",
+        "connectionId": "conn_shopify_goods",
+        "lastUpdatedAt": "2026-08-25T10:06:00Z",
+        "duration": "PT6M"
+      },
+      {
+        "jobId": "job_fail_ndr",
+        "status": "failed",
+        "jobType": "sync",
+        "startTime": "2026-08-24T17:00:00Z",
+        "sourceId": "source_shiprocket",
+        "lastUpdatedAt": "2026-08-24T17:02:00Z",
+        "duration": "PT2M",
+        "failureReason": "Sync of source_shiprocket failed: shipment 10483 NDR, Customer not available"
+      }
+    ]
+  }
+}

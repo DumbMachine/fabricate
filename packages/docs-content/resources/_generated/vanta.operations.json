@@ -1,0 +1,66 @@
+{
+  "integration": "vanta",
+  "api": "Vanta v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/documents",
+      "operationId": "ListDocuments",
+      "summary": "List documents"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/documents",
+      "operationId": "CreateDocument",
+      "summary": "Create a custom document"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/documents/{documentId}",
+      "operationId": "GetDocument",
+      "summary": "Get document by ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/documents/{documentId}/uploads",
+      "operationId": "ListFilesForDocument",
+      "summary": "List document's uploads"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tests",
+      "operationId": "ListTests",
+      "summary": "List tests"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tests/{testId}",
+      "operationId": "GetTest",
+      "summary": "Get test by ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tests/{testId}/entities",
+      "operationId": "GetTestEntities",
+      "summary": "Get test entities by test ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vendors",
+      "operationId": "ListVendors",
+      "summary": "List vendors"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vendors/{vendorId}",
+      "operationId": "GetVendor",
+      "summary": "Get vendor by ID"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/vendors/{vendorId}/security-reviews",
+      "operationId": "GetSecurityReviewsByVendorId",
+      "summary": "List security reviews by vendor ID"
+    }
+  ]
+}

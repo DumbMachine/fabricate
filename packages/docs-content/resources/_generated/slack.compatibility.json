@@ -1,0 +1,50 @@
+{
+  "api": "Slack Web API v2",
+  "environment": {
+    "label": "Acme Slack",
+    "manifest": "environments/acme-slack.yaml",
+    "messages": 2
+  },
+  "integration": "slack",
+  "modes": {
+    "direct": {
+      "messagesAfter": 3,
+      "messagesBefore": 2,
+      "operations": {
+        "auth": "passed",
+        "paginate": "passed",
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 3,
+      "messagesBefore": 2,
+      "operations": {
+        "auth": "passed",
+        "paginate": "passed",
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "auth": "Test auth",
+    "paginate": "Page through channels",
+    "read": "Read channel history",
+    "write": "Post message",
+    "persistence": "Confirm posted message"
+  },
+  "testedAt": "2026-10-16T06:32:02.673Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
+  "verification": {
+    "client": "@slack/web-api@8.2.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
+}

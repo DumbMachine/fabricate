@@ -1,0 +1,660 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Outreach API
+  version: v2
+  description: >-
+    Curated Outreach REST API v2 contract. Paths, JSON:API documents, and
+    attribute names follow the official reference for sequences, prospects,
+    sequence states, and tasks. Undeclared Outreach operations are not
+    advertised. Resource ids are JSON:API strings.
+servers:
+  - url: https://api.outreach.io
+security:
+  - bearerAuth: []
+tags:
+  - name: Sequences
+  - name: Prospects
+  - name: SequenceStates
+  - name: Tasks
+paths:
+  /api/v2/sequences:
+    get:
+      operationId: listSequences
+      summary: Get a collection of sequences.
+      tags: [Sequences]
+      parameters:
+        - $ref: '#/components/parameters/FilterId'
+        - $ref: '#/components/parameters/FilterName'
+      responses:
+        '200':
+          description: Sequence collection.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/SequenceCollection'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createSequence
+      summary: Create a sequence.
+      tags: [Sequences]
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema: {$ref: '#/components/schemas/SequenceCreateDocument'}
+      responses:
+        '201':
+          description: Created sequence.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/SequenceDocument'}
+        '422': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/sequences/{id}:
+    get:
+      operationId: getSequence
+      summary: Get a sequence by id.
+      tags: [Sequences]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Sequence.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/SequenceDocument'}
+        '404': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/prospects:
+    get:
+      operationId: listProspects
+      summary: Get a collection of prospects.
+      tags: [Prospects]
+      parameters:
+        - $ref: '#/components/parameters/FilterId'
+        - $ref: '#/components/parameters/FilterFirstName'
+        - $ref: '#/components/parameters/FilterEmails'
+      responses:
+        '200':
+          description: Prospect collection.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/ProspectCollection'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createProspect
+      summary: Create a prospect.
+      tags: [Prospects]
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema: {$ref: '#/components/schemas/ProspectCreateDocument'}
+      responses:
+        '201':
+          description: Created prospect.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/ProspectDocument'}
+        '422': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/prospects/{id}:
+    get:
+      operationId: getProspect
+      summary: Get a prospect by id.
+      tags: [Prospects]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Prospect.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/ProspectDocument'}
+        '404': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/sequenceStates:
+    get:
+      operationId: listSequenceStates
+      summary: Get a collection of sequence states.
+      tags: [SequenceStates]
+      parameters:
+        - $ref: '#/components/parameters/FilterId'
+        - $ref: '#/components/parameters/FilterState'
+        - $ref: '#/components/parameters/FilterProspectId'
+        - $ref: '#/components/parameters/FilterSequenceId'
+      responses:
+        '200':
+          description: Sequence state collection.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/SequenceStateCollection'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createSequenceState
+      summary: Add a prospect to a sequence.
+      tags: [SequenceStates]
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema: {$ref: '#/components/schemas/SequenceStateCreateDocument'}
+      responses:
+        '201':
+          description: Created sequence state.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/SequenceStateDocument'}
+        '422': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/sequenceStates/{id}:
+    get:
+      operationId: getSequenceState
+      summary: Get a sequence state by id.
+      tags: [SequenceStates]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Sequence state.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/SequenceStateDocument'}
+        '404': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/tasks:
+    get:
+      operationId: listTasks
+      summary: Get a collection of tasks.
+      tags: [Tasks]
+      parameters:
+        - $ref: '#/components/parameters/FilterId'
+        - $ref: '#/components/parameters/FilterState'
+        - $ref: '#/components/parameters/FilterProspectId'
+        - $ref: '#/components/parameters/FilterSequenceId'
+      responses:
+        '200':
+          description: Task collection.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/TaskCollection'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: createTask
+      summary: Create a task.
+      tags: [Tasks]
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema: {$ref: '#/components/schemas/TaskCreateDocument'}
+      responses:
+        '201':
+          description: Created task.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/TaskDocument'}
+        '422': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+  /api/v2/tasks/{id}:
+    get:
+      operationId: getTask
+      summary: Get a task by id.
+      tags: [Tasks]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Task.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/TaskDocument'}
+        '404': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+    patch:
+      operationId: updateTask
+      summary: Update a task. Set completed to mark the task complete.
+      tags: [Tasks]
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema: {$ref: '#/components/schemas/TaskUpdateDocument'}
+      responses:
+        '200':
+          description: Updated task.
+          content:
+            application/vnd.api+json:
+              schema: {$ref: '#/components/schemas/TaskDocument'}
+        '404': {$ref: '#/components/responses/Error'}
+        '422': {$ref: '#/components/responses/Error'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Synthetic bearer token injected by Fabricate. Live Outreach uses an OAuth bearer token.
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    FilterId:
+      name: filter[id]
+      in: query
+      schema: {type: string}
+    FilterName:
+      name: filter[name]
+      in: query
+      schema: {type: string}
+    FilterFirstName:
+      name: filter[firstName]
+      in: query
+      schema: {type: string}
+    FilterEmails:
+      name: filter[emails]
+      in: query
+      schema: {type: string}
+    FilterState:
+      name: filter[state]
+      in: query
+      schema: {type: string}
+    FilterProspectId:
+      name: filter[prospect][id]
+      in: query
+      schema: {type: string}
+    FilterSequenceId:
+      name: filter[sequence][id]
+      in: query
+      schema: {type: string}
+  responses:
+    Error:
+      description: JSON:API error document.
+      content:
+        application/vnd.api+json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+  schemas:
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [errors]
+      properties:
+        errors:
+          type: array
+          items: {$ref: '#/components/schemas/ErrorObject'}
+    ErrorObject:
+      type: object
+      additionalProperties: false
+      required: [id, title, detail]
+      properties:
+        id: {type: string}
+        title: {type: string}
+        detail: {type: string}
+    CollectionMeta:
+      type: object
+      additionalProperties: false
+      required: [count, count_truncated]
+      properties:
+        count: {type: integer, minimum: 0}
+        count_truncated: {type: boolean}
+    ResourceIdentifier:
+      type: object
+      additionalProperties: false
+      required: [type, id]
+      properties:
+        type: {type: string}
+        id: {type: string}
+    ToOneRelationship:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/ResourceIdentifier'}
+    RelatedLinks:
+      type: object
+      additionalProperties: false
+      required: [links]
+      properties:
+        links:
+          type: object
+          additionalProperties: false
+          required: [related]
+          properties:
+            related: {type: string}
+    SequenceType:
+      type: string
+      enum: [date, interval]
+    ShareType:
+      type: string
+      enum: [private, read_only, shared]
+    SequenceStateName:
+      type: string
+      enum: [pending, active, paused, failed, bounced, finished, disabled]
+    TaskAction:
+      type: string
+      enum: [action_item, call, email, in_person]
+    TaskState:
+      type: string
+      enum: [pending, incomplete, complete]
+    TaskType:
+      type: string
+      enum:
+        - follow_up
+        - manual
+        - no_reply
+        - sequence_open
+        - sequence_click
+        - sequence_step_call
+        - sequence_step_email
+        - sequence_step_linkedin_interact_with_post
+        - sequence_step_linkedin_other
+        - sequence_step_linkedin_send_connection_request
+        - sequence_step_linkedin_send_message
+        - sequence_step_linkedin_view_profile
+        - sequence_step_sms
+        - sequence_step_task
+        - touch
+    SequenceAttributes:
+      type: object
+      additionalProperties: false
+      required: [name, description, enabled, sequenceType, shareType, tags, createdAt, updatedAt]
+      properties:
+        name: {type: string}
+        description: {type: string}
+        enabled: {type: boolean}
+        sequenceType: {$ref: '#/components/schemas/SequenceType'}
+        shareType: {$ref: '#/components/schemas/ShareType'}
+        tags: {type: array, items: {type: string}}
+        createdAt: {type: string}
+        updatedAt: {type: string}
+    SequenceRelationships:
+      type: object
+      additionalProperties: false
+      required: [sequenceStates, tasks]
+      properties:
+        sequenceStates: {$ref: '#/components/schemas/RelatedLinks'}
+        tasks: {$ref: '#/components/schemas/RelatedLinks'}
+    SequenceResource:
+      type: object
+      additionalProperties: false
+      required: [type, id, attributes, relationships]
+      properties:
+        type: {type: string, enum: [sequence]}
+        id: {type: string}
+        attributes: {$ref: '#/components/schemas/SequenceAttributes'}
+        relationships: {$ref: '#/components/schemas/SequenceRelationships'}
+    SequenceCollection:
+      type: object
+      additionalProperties: false
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/SequenceResource'}
+        meta: {$ref: '#/components/schemas/CollectionMeta'}
+    SequenceDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/SequenceResource'}
+    SequenceCreateAttributes:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: {type: string, minLength: 1}
+        description: {type: string}
+        enabled: {type: boolean}
+        sequenceType: {$ref: '#/components/schemas/SequenceType'}
+        shareType: {$ref: '#/components/schemas/ShareType'}
+        tags: {type: array, items: {type: string}}
+    SequenceCreateResource:
+      type: object
+      additionalProperties: false
+      required: [type, attributes]
+      properties:
+        type: {type: string, enum: [sequence]}
+        attributes: {$ref: '#/components/schemas/SequenceCreateAttributes'}
+    SequenceCreateDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/SequenceCreateResource'}
+    ProspectAttributes:
+      type: object
+      additionalProperties: false
+      required: [firstName, lastName, name, emails, title, company, mobilePhones, tags, createdAt, updatedAt]
+      properties:
+        firstName: {type: string}
+        lastName: {type: string}
+        name: {type: string}
+        emails: {type: array, items: {type: string}}
+        title: {type: string}
+        company: {type: string}
+        mobilePhones: {type: array, items: {type: string}}
+        tags: {type: array, items: {type: string}}
+        createdAt: {type: string}
+        updatedAt: {type: string}
+    ProspectRelationships:
+      type: object
+      additionalProperties: false
+      required: [sequenceStates, tasks]
+      properties:
+        sequenceStates: {$ref: '#/components/schemas/RelatedLinks'}
+        tasks: {$ref: '#/components/schemas/RelatedLinks'}
+    ProspectResource:
+      type: object
+      additionalProperties: false
+      required: [type, id, attributes, relationships]
+      properties:
+        type: {type: string, enum: [prospect]}
+        id: {type: string}
+        attributes: {$ref: '#/components/schemas/ProspectAttributes'}
+        relationships: {$ref: '#/components/schemas/ProspectRelationships'}
+    ProspectCollection:
+      type: object
+      additionalProperties: false
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/ProspectResource'}
+        meta: {$ref: '#/components/schemas/CollectionMeta'}
+    ProspectDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/ProspectResource'}
+    ProspectCreateAttributes:
+      type: object
+      additionalProperties: false
+      required: [firstName, emails]
+      properties:
+        firstName: {type: string, minLength: 1}
+        lastName: {type: string}
+        name: {type: string}
+        emails: {type: array, minItems: 1, items: {type: string, minLength: 1}}
+        title: {type: string}
+        company: {type: string}
+        mobilePhones: {type: array, items: {type: string}}
+        tags: {type: array, items: {type: string}}
+    ProspectCreateResource:
+      type: object
+      additionalProperties: false
+      required: [type, attributes]
+      properties:
+        type: {type: string, enum: [prospect]}
+        attributes: {$ref: '#/components/schemas/ProspectCreateAttributes'}
+    ProspectCreateDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/ProspectCreateResource'}
+    SequenceStateAttributes:
+      type: object
+      additionalProperties: false
+      required: [state, createdAt, updatedAt, stateChangedAt]
+      properties:
+        state: {$ref: '#/components/schemas/SequenceStateName'}
+        createdAt: {type: string}
+        updatedAt: {type: string}
+        stateChangedAt: {type: string}
+    SequenceStateRelationships:
+      type: object
+      additionalProperties: false
+      required: [prospect, sequence]
+      properties:
+        prospect: {$ref: '#/components/schemas/ToOneRelationship'}
+        sequence: {$ref: '#/components/schemas/ToOneRelationship'}
+    SequenceStateResource:
+      type: object
+      additionalProperties: false
+      required: [type, id, attributes, relationships]
+      properties:
+        type: {type: string, enum: [sequenceState]}
+        id: {type: string}
+        attributes: {$ref: '#/components/schemas/SequenceStateAttributes'}
+        relationships: {$ref: '#/components/schemas/SequenceStateRelationships'}
+    SequenceStateCollection:
+      type: object
+      additionalProperties: false
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/SequenceStateResource'}
+        meta: {$ref: '#/components/schemas/CollectionMeta'}
+    SequenceStateDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/SequenceStateResource'}
+    SequenceStateCreateAttributes:
+      type: object
+      additionalProperties: false
+      properties:
+        state: {$ref: '#/components/schemas/SequenceStateName'}
+    SequenceStateCreateResource:
+      type: object
+      additionalProperties: false
+      required: [type, relationships]
+      properties:
+        type: {type: string, enum: [sequenceState]}
+        attributes: {$ref: '#/components/schemas/SequenceStateCreateAttributes'}
+        relationships: {$ref: '#/components/schemas/SequenceStateRelationships'}
+    SequenceStateCreateDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/SequenceStateCreateResource'}
+    TaskAttributes:
+      type: object
+      additionalProperties: false
+      required: [action, note, completed, state, taskType, dueAt, completedAt, stateChangedAt, createdAt, updatedAt]
+      properties:
+        action: {$ref: '#/components/schemas/TaskAction'}
+        note: {type: string}
+        completed: {type: boolean}
+        state: {$ref: '#/components/schemas/TaskState'}
+        taskType: {$ref: '#/components/schemas/TaskType'}
+        dueAt: {type: string}
+        completedAt: {type: string}
+        stateChangedAt: {type: string}
+        createdAt: {type: string}
+        updatedAt: {type: string}
+    TaskRelationships:
+      type: object
+      additionalProperties: false
+      required: [prospect]
+      properties:
+        prospect: {$ref: '#/components/schemas/ToOneRelationship'}
+        sequence: {$ref: '#/components/schemas/ToOneRelationship'}
+    TaskResource:
+      type: object
+      additionalProperties: false
+      required: [type, id, attributes, relationships]
+      properties:
+        type: {type: string, enum: [task]}
+        id: {type: string}
+        attributes: {$ref: '#/components/schemas/TaskAttributes'}
+        relationships: {$ref: '#/components/schemas/TaskRelationships'}
+    TaskCollection:
+      type: object
+      additionalProperties: false
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/TaskResource'}
+        meta: {$ref: '#/components/schemas/CollectionMeta'}
+    TaskDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/TaskResource'}
+    TaskCreateAttributes:
+      type: object
+      additionalProperties: false
+      required: [action]
+      properties:
+        action: {$ref: '#/components/schemas/TaskAction'}
+        note: {type: string}
+        completed: {type: boolean}
+        state: {$ref: '#/components/schemas/TaskState'}
+        taskType: {$ref: '#/components/schemas/TaskType'}
+        dueAt: {type: string}
+    TaskCreateRelationships:
+      type: object
+      additionalProperties: false
+      required: [prospect]
+      properties:
+        prospect: {$ref: '#/components/schemas/ToOneRelationship'}
+        sequence: {$ref: '#/components/schemas/ToOneRelationship'}
+    TaskCreateResource:
+      type: object
+      additionalProperties: false
+      required: [type, attributes, relationships]
+      properties:
+        type: {type: string, enum: [task]}
+        attributes: {$ref: '#/components/schemas/TaskCreateAttributes'}
+        relationships: {$ref: '#/components/schemas/TaskCreateRelationships'}
+    TaskCreateDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/TaskCreateResource'}
+    TaskUpdateAttributes:
+      type: object
+      additionalProperties: false
+      properties:
+        action: {$ref: '#/components/schemas/TaskAction'}
+        note: {type: string}
+        completed: {type: boolean}
+        state: {$ref: '#/components/schemas/TaskState'}
+        taskType: {$ref: '#/components/schemas/TaskType'}
+        dueAt: {type: string}
+    TaskUpdateResource:
+      type: object
+      additionalProperties: false
+      required: [type]
+      properties:
+        type: {type: string, enum: [task]}
+        id: {type: string}
+        attributes: {$ref: '#/components/schemas/TaskUpdateAttributes'}
+    TaskUpdateDocument:
+      type: object
+      additionalProperties: false
+      required: [data]
+      properties:
+        data: {$ref: '#/components/schemas/TaskUpdateResource'}

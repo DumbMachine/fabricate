@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/docusign/scenario-v1.json",
+  "title": "Fabricate DocuSign scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["account", "users", "envelopes"],
+  "properties": {
+    "account": {"$ref": "#/$defs/account"},
+    "users": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/user"}
+    },
+    "envelopes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/envelope"}
+    }
+  },
+  "$defs": {
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accountId", "accountName", "externalAccountId", "currencyCode", "planName", "createdDate"],
+      "properties": {
+        "accountId": {"type": "string", "minLength": 1},
+        "accountName": {"type": "string", "minLength": 1},
+        "externalAccountId": {"type": "string", "minLength": 1},
+        "currencyCode": {"type": "string", "minLength": 1},
+        "planName": {"type": "string", "minLength": 1},
+        "createdDate": {"type": "string", "minLength": 1}
+      }
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userId", "userName", "email", "userStatus", "isAdmin"],
+      "properties": {
+        "userId": {"type": "string", "minLength": 1},
+        "userName": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "minLength": 3},
+        "userStatus": {
+          "enum": ["ActivationRequired", "ActivationSent", "Active", "Closed", "Disabled"]
+        },
+        "isAdmin": {"enum": ["true", "false"]}
+      }
+    },
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelopeId",
+        "status",
+        "emailSubject",
+        "emailBlurb",
+        "createdDateTime",
+        "sentDateTime",
+        "deliveredDateTime",
+        "completedDateTime",
+        "statusChangedDateTime",
+        "voidedDateTime",
+        "voidedReason",
+        "senderUserId",
+        "documents",
+        "signers"
+      ],
+      "properties": {
+        "envelopeId": {"type": "string", "minLength": 1},
+        "status": {
+          "enum": ["created", "sent", "delivered", "signed", "completed", "declined", "voided"]
+        },
+        "emailSubject": {"type": "string"},
+        "emailBlurb": {"type": "string"},
+        "createdDateTime": {"type": "string"},
+        "sentDateTime": {"type": "string"},
+        "deliveredDateTime": {"type": "string"},
+        "completedDateTime": {"type": "string"},
+        "statusChangedDateTime": {"type": "string"},
+        "voidedDateTime": {"type": "string"},
+        "voidedReason": {"type": "string"},
+        "senderUserId": {"type": "string"},
+        "documents": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/document"}
+        },
+        "signers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/signer"}
+        }
+      }
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["documentId", "name", "fileExtension", "order", "documentBase64"],
+      "properties": {
+        "documentId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "fileExtension": {"type": "string", "minLength": 1},
+        "order": {"type": "string", "minLength": 1},
+        "documentBase64": {"type": "string"}
+      }
+    },
+    "signer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recipientId",
+        "name",
+        "email",
+        "routingOrder",
+        "status",
+        "sentDateTime",
+        "deliveredDateTime",
+        "signedDateTime"
+      ],
+      "properties": {
+        "recipientId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "minLength": 3},
+        "routingOrder": {"type": "string", "minLength": 1},
+        "status": {
+          "enum": ["created", "sent", "delivered", "signed", "completed", "declined", "autoresponded", "faxpending"]
+        },
+        "sentDateTime": {"type": "string"},
+        "deliveredDateTime": {"type": "string"},
+        "signedDateTime": {"type": "string"}
+      }
+    }
+  }
+}

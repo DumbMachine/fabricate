@@ -1,0 +1,72 @@
+{
+  "integration": "chargebee",
+  "api": "Chargebee v2",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/v2/comments",
+      "operationId": "ListComments",
+      "summary": "Lists comments, newest first."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/comments",
+      "operationId": "CreateComment",
+      "summary": "Creates a user comment on a customer, subscription, or invoice."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/customers",
+      "operationId": "ListCustomers",
+      "summary": "Lists customers."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/customers/{customer-id}",
+      "operationId": "RetrieveCustomer",
+      "summary": "Retrieves a customer."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/invoices",
+      "operationId": "ListInvoices",
+      "summary": "Lists invoices."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/invoices/{invoice-id}",
+      "operationId": "RetrieveInvoice",
+      "summary": "Retrieves an invoice."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/subscriptions",
+      "operationId": "ListSubscriptions",
+      "summary": "Lists subscriptions."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/subscriptions/{subscription-id}",
+      "operationId": "RetrieveSubscription",
+      "summary": "Retrieves a subscription."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/subscriptions/{subscription-id}/cancel_for_items",
+      "operationId": "CancelSubscriptionForItems",
+      "summary": "Cancels a subscription immediately or at the end of the term."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/transactions",
+      "operationId": "ListTransactions",
+      "summary": "Lists transactions."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/transactions/{transaction-id}",
+      "operationId": "RetrieveTransaction",
+      "summary": "Retrieves a transaction."
+    }
+  ]
+}

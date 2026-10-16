@@ -1,0 +1,23 @@
+{
+  "integration": "impact",
+  "scenarios": [
+    {
+      "id": "impact.acme-partners.v1",
+      "counts": {
+        "actions": 1,
+        "notes": 0,
+        "partners": 1,
+        "programs": 1
+      }
+    },
+    {
+      "id": "impact.minimal.v1",
+      "counts": {
+        "actions": 0,
+        "notes": 0,
+        "partners": 0,
+        "programs": 0
+      }
+    }
+  ]
+}

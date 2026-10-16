@@ -1,0 +1,19 @@
+{
+  "integration": "googledrive",
+  "scenarios": [
+    {
+      "id": "googledrive.acme-drive.v1",
+      "counts": {
+        "files": 13,
+        "permissions": 13
+      }
+    },
+    {
+      "id": "googledrive.minimal.v1",
+      "counts": {
+        "files": 0,
+        "permissions": 0
+      }
+    }
+  ]
+}

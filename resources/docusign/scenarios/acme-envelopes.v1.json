@@ -1,0 +1,143 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "docusign.acme-envelopes.v1",
+  "$resource": "docusign",
+  "$resourceVersion": "v2.1",
+  "state": {
+    "account": {
+      "accountId": "acct-acme",
+      "accountName": "Acme",
+      "externalAccountId": "acct-acme",
+      "currencyCode": "USD",
+      "planName": "Demo",
+      "createdDate": "2024-01-15T00:00:00.0000000Z"
+    },
+    "users": [
+      {
+        "userId": "user-iris",
+        "userName": "Iris Berg",
+        "email": "iris@acme.example",
+        "userStatus": "Active",
+        "isAdmin": "true"
+      }
+    ],
+    "envelopes": [
+      {
+        "envelopeId": "env-fernworks-msa",
+        "status": "completed",
+        "emailSubject": "Please sign the Fernworks master services agreement",
+        "emailBlurb": "Priya Nair and Iris Berg sign Fernworks-MSA.pdf. Ironclad workflow wf-fernworks-msa.",
+        "createdDateTime": "2026-08-10T09:00:00.0000000Z",
+        "sentDateTime": "2026-08-10T09:05:00.0000000Z",
+        "deliveredDateTime": "2026-08-10T11:00:00.0000000Z",
+        "completedDateTime": "2026-08-12T15:30:00.0000000Z",
+        "statusChangedDateTime": "2026-08-12T15:30:00.0000000Z",
+        "voidedDateTime": "",
+        "voidedReason": "",
+        "senderUserId": "user-iris",
+        "documents": [
+          {
+            "documentId": "1",
+            "name": "Fernworks-MSA.pdf",
+            "fileExtension": "pdf",
+            "order": "1",
+            "documentBase64": "RmVybndvcmtzLU1TQS5wZGYK"
+          }
+        ],
+        "signers": [
+          {
+            "recipientId": "1",
+            "name": "Priya Nair",
+            "email": "priya@fernworks.example",
+            "routingOrder": "1",
+            "status": "completed",
+            "sentDateTime": "2026-08-10T09:05:00.0000000Z",
+            "deliveredDateTime": "2026-08-10T11:00:00.0000000Z",
+            "signedDateTime": "2026-08-11T10:00:00.0000000Z"
+          },
+          {
+            "recipientId": "2",
+            "name": "Iris Berg",
+            "email": "iris@acme.example",
+            "routingOrder": "2",
+            "status": "completed",
+            "sentDateTime": "2026-08-11T10:00:00.0000000Z",
+            "deliveredDateTime": "2026-08-11T10:05:00.0000000Z",
+            "signedDateTime": "2026-08-12T15:30:00.0000000Z"
+          }
+        ]
+      },
+      {
+        "envelopeId": "env-offer-jordan",
+        "status": "delivered",
+        "emailSubject": "Offer letter for Jordan Hale",
+        "emailBlurb": "Offer letter offer-letter-jordan-hale.pdf for Greenhouse offer offer-jordan. Jordan Hale starts 2026-09-08.",
+        "createdDateTime": "2026-08-20T08:00:00.0000000Z",
+        "sentDateTime": "2026-08-20T08:05:00.0000000Z",
+        "deliveredDateTime": "2026-08-24T16:10:00.0000000Z",
+        "completedDateTime": "",
+        "statusChangedDateTime": "2026-08-24T16:10:00.0000000Z",
+        "voidedDateTime": "",
+        "voidedReason": "",
+        "senderUserId": "user-iris",
+        "documents": [
+          {
+            "documentId": "1",
+            "name": "offer-letter-jordan-hale.pdf",
+            "fileExtension": "pdf",
+            "order": "1",
+            "documentBase64": "b2ZmZXItbGV0dGVyLWpvcmRhbi1oYWxlLnBkZgo="
+          }
+        ],
+        "signers": [
+          {
+            "recipientId": "1",
+            "name": "Jordan Hale",
+            "email": "jordan.hale@acme.example",
+            "routingOrder": "1",
+            "status": "delivered",
+            "sentDateTime": "2026-08-20T08:05:00.0000000Z",
+            "deliveredDateTime": "2026-08-24T16:10:00.0000000Z",
+            "signedDateTime": ""
+          }
+        ]
+      },
+      {
+        "envelopeId": "env-tinyshop-refund",
+        "status": "sent",
+        "emailSubject": "TinyShop cancellation under the 30-day guarantee",
+        "emailBlurb": "Waiting on Marco Silva to sign TinyShop-cancellation.pdf for TinyShop annual Pro invoice INV-1188. The subscription is not refunded yet. Ironclad workflow wf-tinyshop-cancel.",
+        "createdDateTime": "2026-08-25T14:00:00.0000000Z",
+        "sentDateTime": "2026-08-25T14:02:00.0000000Z",
+        "deliveredDateTime": "",
+        "completedDateTime": "",
+        "statusChangedDateTime": "2026-08-25T14:02:00.0000000Z",
+        "voidedDateTime": "",
+        "voidedReason": "",
+        "senderUserId": "user-iris",
+        "documents": [
+          {
+            "documentId": "1",
+            "name": "TinyShop-cancellation.pdf",
+            "fileExtension": "pdf",
+            "order": "1",
+            "documentBase64": "VGlueVNob3AtY2FuY2VsbGF0aW9uLnBkZgo="
+          }
+        ],
+        "signers": [
+          {
+            "recipientId": "1",
+            "name": "Marco Silva",
+            "email": "marco@tinyshop.example",
+            "routingOrder": "1",
+            "status": "sent",
+            "sentDateTime": "2026-08-25T14:02:00.0000000Z",
+            "deliveredDateTime": "",
+            "signedDateTime": ""
+          }
+        ]
+      }
+    ]
+  }
+}

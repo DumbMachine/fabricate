@@ -1,0 +1,21 @@
+{
+  "integration": "slack",
+  "scenarios": [
+    {
+      "id": "slack.acme-workspace.v1",
+      "counts": {
+        "channels": 5,
+        "messages": 4,
+        "users": 7
+      }
+    },
+    {
+      "id": "slack.minimal.v1",
+      "counts": {
+        "channels": 0,
+        "messages": 0,
+        "users": 1
+      }
+    }
+  ]
+}

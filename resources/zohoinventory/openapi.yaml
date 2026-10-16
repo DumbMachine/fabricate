@@ -1,0 +1,652 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Zoho Inventory API
+  version: v1
+  description: >-
+    Curated Zoho Inventory API v1 contract. Every operation has stateful
+    behavior. Public paths start with /inventory/v1/ on www.zohoapis.com.
+    Undeclared Inventory operations are not advertised.
+servers:
+  - url: https://www.zohoapis.com
+security:
+  - bearerAuth: []
+tags:
+  - name: Organizations
+  - name: Warehouses
+  - name: Items
+  - name: SalesOrders
+  - name: PurchaseOrders
+paths:
+  /inventory/v1/organizations:
+    get:
+      operationId: listOrganizations
+      summary: Lists Zoho Inventory organizations visible to the token.
+      tags: [Organizations]
+      responses:
+        "200":
+          description: Organization list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/OrganizationList"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/organizations/{organization_id}:
+    get:
+      operationId: getOrganization
+      summary: Gets one Zoho Inventory organization.
+      tags: [Organizations]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Organization.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/OrganizationEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/settings/warehouses:
+    get:
+      operationId: listWarehouses
+      summary: Lists warehouses in the organization.
+      tags: [Warehouses]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+      responses:
+        "200":
+          description: Warehouse list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/WarehouseList"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/settings/warehouses/{warehouse_id}:
+    get:
+      operationId: getWarehouse
+      summary: Gets a warehouse.
+      tags: [Warehouses]
+      parameters:
+        - $ref: "#/components/parameters/WarehouseId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Warehouse.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/WarehouseEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/items:
+    get:
+      operationId: listItems
+      summary: Lists items in the organization.
+      tags: [Items]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: sku
+          in: query
+          description: Exact item SKU.
+          schema: {type: string}
+      responses:
+        "200":
+          description: Item list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ItemList"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/items/{item_id}:
+    get:
+      operationId: getItem
+      summary: Gets an item, including warehouse stock.
+      tags: [Items]
+      parameters:
+        - $ref: "#/components/parameters/ItemId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Item.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ItemEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/salesorders:
+    get:
+      operationId: listSalesOrders
+      summary: Lists sales orders in the organization.
+      tags: [SalesOrders]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: salesorder_number
+          in: query
+          schema: {type: string}
+        - name: reference_number
+          in: query
+          description: External order id, such as 10482.
+          schema: {type: string}
+      responses:
+        "200":
+          description: Sales order list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/SalesOrderList"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/salesorders/{salesorder_id}:
+    get:
+      operationId: getSalesOrder
+      summary: Gets a sales order, including line items and the shipping address.
+      tags: [SalesOrders]
+      parameters:
+        - $ref: "#/components/parameters/SalesOrderId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Sales order.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/SalesOrderEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/purchaseorders:
+    get:
+      operationId: listPurchaseOrders
+      summary: Lists purchase orders in the organization.
+      tags: [PurchaseOrders]
+      parameters:
+        - $ref: "#/components/parameters/OrganizationQuery"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: purchaseorder_number
+          in: query
+          schema: {type: string}
+        - name: status
+          in: query
+          schema: {type: string}
+      responses:
+        "200":
+          description: Purchase order list.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PurchaseOrderList"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/purchaseorders/{purchaseorder_id}:
+    get:
+      operationId: getPurchaseOrder
+      summary: Gets a purchase order, including lines, approver, and comments.
+      tags: [PurchaseOrders]
+      parameters:
+        - $ref: "#/components/parameters/PurchaseOrderId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Purchase order.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/PurchaseOrderEnvelope"}
+        default: {$ref: "#/components/responses/Error"}
+  /inventory/v1/purchaseorders/{purchaseorder_id}/approve:
+    post:
+      operationId: approvePurchaseOrder
+      summary: Approves a purchase order that is pending approval. The new status is returned by a later read.
+      tags: [PurchaseOrders]
+      parameters:
+        - $ref: "#/components/parameters/PurchaseOrderId"
+        - $ref: "#/components/parameters/OrganizationQuery"
+      responses:
+        "200":
+          description: Approval acknowledged.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Result"}
+        default: {$ref: "#/components/responses/Error"}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Zoho Inventory production uses
+        Authorization: Zoho-oauthtoken. Fabricate accepts Bearer because the
+        proxy injects one.
+  parameters:
+    OrganizationId:
+      name: organization_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    OrganizationQuery:
+      name: organization_id
+      in: query
+      required: true
+      description: Acme organization id is org-acme.
+      schema: {type: string, minLength: 1}
+    WarehouseId:
+      name: warehouse_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    ItemId:
+      name: item_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    SalesOrderId:
+      name: salesorder_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    PurchaseOrderId:
+      name: purchaseorder_id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    Page:
+      name: page
+      in: query
+      schema: {type: integer, minimum: 1, default: 1}
+    PerPage:
+      name: per_page
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 200, default: 200}
+  responses:
+    Error:
+      description: Zoho Inventory error envelope.
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/Error"}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+    Result:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+    PageContext:
+      type: object
+      additionalProperties: false
+      required: [page, per_page, has_more_page, applied_filter, sort_column, sort_order]
+      properties:
+        page: {type: integer}
+        per_page: {type: integer}
+        has_more_page: {type: boolean}
+        applied_filter: {type: string}
+        sort_column: {type: string}
+        sort_order: {type: string}
+    Organization:
+      type: object
+      additionalProperties: false
+      required:
+        - organization_id
+        - name
+        - contact_name
+        - email
+        - is_default_org
+        - language_code
+        - fiscal_year_start_month
+        - account_created_date
+        - time_zone
+        - is_org_active
+        - currency_code
+        - currency_symbol
+        - currency_format
+        - price_precision
+      properties:
+        organization_id: {type: string}
+        name: {type: string}
+        contact_name: {type: string}
+        email: {type: string, format: email}
+        is_default_org: {type: boolean}
+        language_code: {type: string}
+        fiscal_year_start_month: {type: integer}
+        account_created_date: {type: string}
+        time_zone: {type: string}
+        is_org_active: {type: boolean}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        currency_format: {type: string}
+        price_precision: {type: integer}
+    OrganizationList:
+      type: object
+      additionalProperties: false
+      required: [code, message, organizations]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        organizations:
+          type: array
+          items: {$ref: "#/components/schemas/Organization"}
+    OrganizationEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, organization]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        organization: {$ref: "#/components/schemas/Organization"}
+    Warehouse:
+      type: object
+      additionalProperties: false
+      required:
+        - warehouse_id
+        - warehouse_name
+        - address
+        - city
+        - state
+        - zip
+        - country
+        - phone
+        - email
+        - is_primary
+        - status
+      properties:
+        warehouse_id: {type: string}
+        warehouse_name: {type: string}
+        address: {type: string}
+        city: {type: string}
+        state: {type: string}
+        zip: {type: string}
+        country: {type: string}
+        phone: {type: string}
+        email: {type: string}
+        is_primary: {type: boolean}
+        status: {type: string, enum: [active, inactive]}
+    WarehouseList:
+      type: object
+      additionalProperties: false
+      required: [code, message, warehouses, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        warehouses:
+          type: array
+          items: {$ref: "#/components/schemas/Warehouse"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    WarehouseEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, warehouse]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        warehouse: {$ref: "#/components/schemas/Warehouse"}
+    ItemWarehouse:
+      type: object
+      additionalProperties: false
+      required: [warehouse_id, warehouse_name, status, is_primary, warehouse_stock_on_hand]
+      properties:
+        warehouse_id: {type: string}
+        warehouse_name: {type: string}
+        status: {type: string, enum: [active, inactive]}
+        is_primary: {type: boolean}
+        warehouse_stock_on_hand: {type: number, format: double}
+    Item:
+      type: object
+      additionalProperties: false
+      required:
+        - item_id
+        - name
+        - sku
+        - status
+        - unit
+        - rate
+        - purchase_rate
+        - stock_on_hand
+        - product_type
+        - item_type
+      properties:
+        item_id: {type: string}
+        name: {type: string}
+        sku: {type: string}
+        description: {type: string}
+        status: {type: string, enum: [active, inactive]}
+        unit: {type: string}
+        rate: {type: number, format: double}
+        purchase_rate: {type: number, format: double}
+        stock_on_hand: {type: number, format: double}
+        product_type: {type: string, enum: [goods, service]}
+        item_type:
+          type: string
+          enum: [inventory, sales, purchases, sales_and_purchases]
+        warehouses:
+          type: array
+          items: {$ref: "#/components/schemas/ItemWarehouse"}
+    ItemList:
+      type: object
+      additionalProperties: false
+      required: [code, message, items, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        items:
+          type: array
+          items: {$ref: "#/components/schemas/Item"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    ItemEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, item]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        item: {$ref: "#/components/schemas/Item"}
+    Address:
+      type: object
+      additionalProperties: false
+      required: [address, city, state, zip, country]
+      properties:
+        address: {type: string}
+        city: {type: string}
+        state: {type: string}
+        zip: {type: string}
+        country: {type: string}
+    ContactPerson:
+      type: object
+      additionalProperties: false
+      required: [contact_person_id, contact_person_name, contact_person_email, phone]
+      properties:
+        contact_person_id: {type: string}
+        contact_person_name: {type: string}
+        contact_person_email: {type: string}
+        phone: {type: string}
+    SalesOrderLine:
+      type: object
+      additionalProperties: false
+      required:
+        - line_item_id
+        - item_id
+        - name
+        - sku
+        - rate
+        - quantity
+        - item_total
+        - item_order
+        - unit
+        - warehouse_id
+      properties:
+        line_item_id: {type: string}
+        item_id: {type: string}
+        name: {type: string}
+        sku: {type: string}
+        rate: {type: number, format: double}
+        quantity: {type: number, format: double}
+        item_total: {type: number, format: double}
+        item_order: {type: integer}
+        unit: {type: string}
+        warehouse_id: {type: string}
+    SalesOrder:
+      type: object
+      additionalProperties: false
+      required:
+        - salesorder_id
+        - salesorder_number
+        - reference_number
+        - customer_id
+        - customer_name
+        - status
+        - date
+        - currency_code
+        - currency_symbol
+        - total
+        - created_time
+      properties:
+        salesorder_id: {type: string}
+        salesorder_number: {type: string}
+        reference_number: {type: string}
+        customer_id: {type: string}
+        customer_name: {type: string}
+        status:
+          type: string
+          enum: [draft, confirmed, open, void, closed, fulfilled]
+        date: {type: string}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        total: {type: number, format: double}
+        created_time: {type: string}
+        line_items:
+          type: array
+          items: {$ref: "#/components/schemas/SalesOrderLine"}
+        shipping_address: {$ref: "#/components/schemas/Address"}
+        contact_persons_associated:
+          type: array
+          items: {$ref: "#/components/schemas/ContactPerson"}
+    SalesOrderList:
+      type: object
+      additionalProperties: false
+      required: [code, message, salesorders, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        salesorders:
+          type: array
+          items: {$ref: "#/components/schemas/SalesOrder"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    SalesOrderEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, salesorder]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        salesorder: {$ref: "#/components/schemas/SalesOrder"}
+    CustomField:
+      type: object
+      additionalProperties: false
+      required: [customfield_id, label, value]
+      properties:
+        customfield_id: {type: string}
+        label: {type: string}
+        value: {type: string}
+    Comment:
+      type: object
+      additionalProperties: false
+      required:
+        - comment_id
+        - purchaseorder_id
+        - commented_by
+        - comment_type
+        - date_description
+        - time
+        - operation_type
+        - transaction_id
+        - transaction_type
+      properties:
+        comment_id: {type: string}
+        purchaseorder_id: {type: string}
+        commented_by: {type: string}
+        comment_type: {type: string}
+        date_description: {type: string}
+        time: {type: string}
+        operation_type: {type: string}
+        transaction_id: {type: string}
+        transaction_type: {type: string}
+    PurchaseOrderLine:
+      type: object
+      additionalProperties: false
+      required:
+        - line_item_id
+        - item_id
+        - name
+        - sku
+        - purchase_rate
+        - quantity
+        - item_total
+        - item_order
+        - unit
+        - warehouse_id
+      properties:
+        line_item_id: {type: string}
+        item_id: {type: string}
+        name: {type: string}
+        sku: {type: string}
+        purchase_rate: {type: number, format: double}
+        quantity: {type: number, format: double}
+        item_total: {type: number, format: double}
+        item_order: {type: integer}
+        unit: {type: string}
+        warehouse_id: {type: string}
+    PurchaseOrder:
+      type: object
+      additionalProperties: false
+      required:
+        - purchaseorder_id
+        - purchaseorder_number
+        - vendor_id
+        - vendor_name
+        - status
+        - date
+        - currency_code
+        - currency_symbol
+        - total
+        - created_time
+        - last_modified_time
+        - custom_fields
+      properties:
+        purchaseorder_id: {type: string}
+        purchaseorder_number: {type: string}
+        vendor_id: {type: string}
+        vendor_name: {type: string}
+        status:
+          type: string
+          enum: [draft, pending_approval, approved, open, issued, cancelled, closed]
+        date: {type: string}
+        currency_code: {type: string}
+        currency_symbol: {type: string}
+        total: {type: number, format: double}
+        created_time: {type: string}
+        last_modified_time: {type: string}
+        custom_fields:
+          type: array
+          items: {$ref: "#/components/schemas/CustomField"}
+        line_items:
+          type: array
+          items: {$ref: "#/components/schemas/PurchaseOrderLine"}
+        comments:
+          type: array
+          items: {$ref: "#/components/schemas/Comment"}
+    PurchaseOrderList:
+      type: object
+      additionalProperties: false
+      required: [code, message, purchaseorders, page_context]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        purchaseorders:
+          type: array
+          items: {$ref: "#/components/schemas/PurchaseOrder"}
+        page_context: {$ref: "#/components/schemas/PageContext"}
+    PurchaseOrderEnvelope:
+      type: object
+      additionalProperties: false
+      required: [code, message, purchase_order]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        purchase_order: {$ref: "#/components/schemas/PurchaseOrder"}

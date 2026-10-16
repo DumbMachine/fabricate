@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "okta.minimal.v1",
+  "$resource": "okta",
+  "$resourceVersion": "2024-07",
+  "state": {
+    "users": [],
+    "groups": [],
+    "apps": [],
+    "appUsers": []
+  }
+}

@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-canny
+
+services:
+  canny:
+    resource: canny
+    scenario: canny.acme-feedback.v1

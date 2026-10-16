@@ -1,0 +1,8 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-okta
+services:
+  okta:
+    resource: okta
+    scenario: okta.acme-org.v1

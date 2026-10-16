@@ -1,0 +1,8 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-zohobooks
+services:
+  zohobooks:
+    resource: zohobooks
+    scenario: zohobooks.acme-ledger.v1

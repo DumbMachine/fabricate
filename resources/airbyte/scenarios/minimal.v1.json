@@ -1,0 +1,14 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "airbyte.minimal.v1",
+  "$resource": "airbyte",
+  "$resourceVersion": "v1",
+  "state": {
+    "workspaceId": "ws_acme",
+    "sources": [],
+    "destinations": [],
+    "connections": [],
+    "jobs": []
+  }
+}

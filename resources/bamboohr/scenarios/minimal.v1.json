@@ -1,0 +1,15 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "bamboohr.minimal.v1",
+  "$resource": "bamboohr",
+  "$resourceVersion": "v1",
+  "state": {
+    "company": {"id": 1, "name": "Acme", "domain": "acme"},
+    "currentUserId": "",
+    "departments": [],
+    "employees": [],
+    "timeOffTypes": [],
+    "timeOffRequests": []
+  }
+}

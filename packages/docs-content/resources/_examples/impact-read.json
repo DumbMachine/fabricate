@@ -1,0 +1,16 @@
+{
+  "id": "impact-read",
+  "title": "List the order 10482 action",
+  "environment": "environments/acme-impact.yaml",
+  "environmentLabel": "Acme impact.com",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/impact-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-impact.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS -H \"Accept: application/json\" \"https://api.impact.com/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482\"",
+  "argv": [
+    "curl",
+    "-sS",
+    "-H",
+    "Accept: application/json",
+    "https://api.impact.com/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482"
+  ]
+}

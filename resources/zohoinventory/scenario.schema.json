@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/zohoinventory/scenario-v1.json",
+  "title": "Fabricate Zoho Inventory scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["organization", "warehouses", "items", "salesOrders", "purchaseOrders"],
+  "properties": {
+    "organization": {"$ref": "#/$defs/organization"},
+    "warehouses": {"type": "array", "items": {"$ref": "#/$defs/warehouse"}},
+    "items": {"type": "array", "items": {"$ref": "#/$defs/item"}},
+    "salesOrders": {"type": "array", "items": {"$ref": "#/$defs/salesOrder"}},
+    "purchaseOrders": {"type": "array", "items": {"$ref": "#/$defs/purchaseOrder"}}
+  },
+  "$defs": {
+    "organization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "organizationId", "name", "contactName", "email", "isDefaultOrg", "languageCode",
+        "fiscalYearStartMonth", "accountCreatedDate", "timeZone", "isOrgActive",
+        "currencyCode", "currencySymbol", "currencyFormat", "pricePrecision"
+      ],
+      "properties": {
+        "organizationId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "contactName": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "format": "email"},
+        "isDefaultOrg": {"type": "boolean"},
+        "languageCode": {"type": "string", "minLength": 2},
+        "fiscalYearStartMonth": {"type": "integer", "minimum": 0, "maximum": 11},
+        "accountCreatedDate": {"type": "string", "minLength": 10},
+        "timeZone": {"type": "string", "minLength": 1},
+        "isOrgActive": {"type": "boolean"},
+        "currencyCode": {"type": "string", "minLength": 3},
+        "currencySymbol": {"type": "string", "minLength": 1},
+        "currencyFormat": {"type": "string", "minLength": 1},
+        "pricePrecision": {"type": "integer", "minimum": 0}
+      }
+    },
+    "warehouse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "warehouseId", "warehouseName", "address", "city", "state", "zip", "country",
+        "phone", "email", "isPrimary", "status"
+      ],
+      "properties": {
+        "warehouseId": {"type": "string", "minLength": 1},
+        "warehouseName": {"type": "string", "minLength": 1},
+        "address": {"type": "string", "minLength": 1},
+        "city": {"type": "string", "minLength": 1},
+        "state": {"type": "string", "minLength": 1},
+        "zip": {"type": "string", "minLength": 1},
+        "country": {"type": "string", "minLength": 1},
+        "phone": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "format": "email"},
+        "isPrimary": {"type": "boolean"},
+        "status": {"type": "string", "enum": ["active", "inactive"]}
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "itemId", "name", "sku", "description", "status", "unit", "rate", "purchaseRate",
+        "stockOnHand", "productType", "itemType", "warehouseId"
+      ],
+      "properties": {
+        "itemId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "sku": {"type": "string", "minLength": 1},
+        "description": {"type": "string"},
+        "status": {"type": "string", "enum": ["active", "inactive"]},
+        "unit": {"type": "string", "minLength": 1},
+        "rate": {"type": "integer", "minimum": 0},
+        "purchaseRate": {"type": "integer", "minimum": 0},
+        "stockOnHand": {"type": "integer", "minimum": 0},
+        "productType": {"type": "string", "enum": ["goods", "service"]},
+        "itemType": {"type": "string", "enum": ["inventory", "sales", "purchases", "sales_and_purchases"]},
+        "warehouseId": {"type": "string", "minLength": 1}
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "city", "state", "zip", "country"],
+      "properties": {
+        "address": {"type": "string", "minLength": 1},
+        "city": {"type": "string", "minLength": 1},
+        "state": {"type": "string", "minLength": 1},
+        "zip": {"type": "string", "minLength": 1},
+        "country": {"type": "string", "minLength": 1}
+      }
+    },
+    "customer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["customerId", "name", "email", "phone"],
+      "properties": {
+        "customerId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "format": "email"},
+        "phone": {"type": "string", "minLength": 1}
+      }
+    },
+    "salesLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lineItemId", "itemId", "name", "sku", "rate", "quantity", "itemTotal", "itemOrder"],
+      "properties": {
+        "lineItemId": {"type": "string", "minLength": 1},
+        "itemId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "sku": {"type": "string", "minLength": 1},
+        "rate": {"type": "integer", "minimum": 0},
+        "quantity": {"type": "integer", "minimum": 1},
+        "itemTotal": {"type": "integer", "minimum": 0},
+        "itemOrder": {"type": "integer", "minimum": 0}
+      }
+    },
+    "salesOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "salesorderId", "salesorderNumber", "referenceNumber", "date", "status",
+        "currencyCode", "total", "createdTime", "warehouseId", "customer",
+        "shippingAddress", "lineItems"
+      ],
+      "properties": {
+        "salesorderId": {"type": "string", "minLength": 1},
+        "salesorderNumber": {"type": "string", "minLength": 1},
+        "referenceNumber": {"type": "string", "minLength": 1},
+        "date": {"type": "string", "minLength": 10},
+        "status": {"type": "string", "enum": ["draft", "confirmed", "open", "void", "closed", "fulfilled"]},
+        "currencyCode": {"type": "string", "minLength": 3},
+        "total": {"type": "integer", "minimum": 0},
+        "createdTime": {"type": "string", "minLength": 1},
+        "warehouseId": {"type": "string", "minLength": 1},
+        "customer": {"$ref": "#/$defs/customer"},
+        "shippingAddress": {"$ref": "#/$defs/address"},
+        "lineItems": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/salesLine"}}
+      }
+    },
+    "vendor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vendorId", "name"],
+      "properties": {
+        "vendorId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1}
+      }
+    },
+    "purchaseLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lineItemId", "itemId", "name", "sku", "purchaseRate", "quantity", "itemTotal", "itemOrder"],
+      "properties": {
+        "lineItemId": {"type": "string", "minLength": 1},
+        "itemId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "sku": {"type": "string", "minLength": 1},
+        "purchaseRate": {"type": "integer", "minimum": 0},
+        "quantity": {"type": "integer", "minimum": 1},
+        "itemTotal": {"type": "integer", "minimum": 0},
+        "itemOrder": {"type": "integer", "minimum": 0}
+      }
+    },
+    "comment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commentId", "commentedBy", "commentType", "operationType", "time", "dateDescription"],
+      "properties": {
+        "commentId": {"type": "string", "minLength": 1},
+        "commentedBy": {"type": "string", "minLength": 1},
+        "commentType": {"type": "string", "minLength": 1},
+        "operationType": {"type": "string", "minLength": 1},
+        "time": {"type": "string", "minLength": 1},
+        "dateDescription": {"type": "string", "minLength": 1}
+      }
+    },
+    "purchaseOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purchaseorderId", "purchaseorderNumber", "date", "status", "currencyCode", "total",
+        "createdTime", "lastModifiedTime", "warehouseId", "vendor", "approverName",
+        "approverEmail", "lineItems", "comments"
+      ],
+      "properties": {
+        "purchaseorderId": {"type": "string", "minLength": 1},
+        "purchaseorderNumber": {"type": "string", "minLength": 1},
+        "date": {"type": "string", "minLength": 10},
+        "status": {"type": "string", "enum": ["draft", "pending_approval", "approved", "open", "issued", "cancelled", "closed"]},
+        "currencyCode": {"type": "string", "minLength": 3},
+        "total": {"type": "integer", "minimum": 0},
+        "createdTime": {"type": "string", "minLength": 1},
+        "lastModifiedTime": {"type": "string", "minLength": 1},
+        "warehouseId": {"type": "string", "minLength": 1},
+        "vendor": {"$ref": "#/$defs/vendor"},
+        "approverName": {"type": "string", "minLength": 1},
+        "approverEmail": {"type": "string", "format": "email"},
+        "lineItems": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/purchaseLine"}},
+        "comments": {"type": "array", "items": {"$ref": "#/$defs/comment"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-bamboohr
+
+services:
+  bamboohr:
+    resource: bamboohr
+    scenario: bamboohr.acme-people.v1

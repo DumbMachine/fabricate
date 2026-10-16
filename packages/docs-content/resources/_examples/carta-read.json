@@ -1,0 +1,14 @@
+{
+  "id": "carta-list-stakeholders",
+  "title": "List seeded stakeholders",
+  "environment": "environments/acme-carta.yaml",
+  "environmentLabel": "Acme's Carta",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/carta-list-stakeholders.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-carta.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.carta.com/v1alpha1/issuers/issuer-acme/stakeholders",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.carta.com/v1alpha1/issuers/issuer-acme/stakeholders"
+  ]
+}

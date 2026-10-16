@@ -1,0 +1,150 @@
+---
+title: "Acme Goods Shop"
+description: A disposable Acme Goods storefront spanning Shopify, payments, shipping, inventory, books, WhatsApp, and the warehouse.
+---
+
+Acme Goods Shop is a ready-to-run environment for testing software that takes
+an order from the storefront through payment, fulfillment, accounting, and
+the warehouse. Every run starts from the same Bengaluru D2C shop and is
+removed when the wrapped command exits.
+
+Its manifest identifier is `acme-goods-shop`.
+
+## Included integrations
+
+<IncludedIntegrations
+  services={[
+    {
+      resource: "shopify",
+      label: "Shopify",
+      href: "/resources/integrations/shopify",
+      service: "shopify",
+      scenario: "shopify.acme-goods.v1",
+      summary: "The in-house Acme Goods shop, its catalog, and the three August orders.",
+      data: "Order 10482 is Priya's tee and mugs. 10483 is the NDR. 10484 is the refunded tee.",
+    },
+    {
+      resource: "razorpay",
+      label: "Razorpay",
+      href: "/resources/integrations/razorpay",
+      service: "razorpay",
+      scenario: "razorpay.acme-payments.v1",
+      summary: "Captured shop payments and the refund on the returned tee.",
+      data: "pay_Acme10482, pay_Acme10483, and refunded pay_Acme10484 with rfnd_Acme10484.",
+    },
+    {
+      resource: "shiprocket",
+      label: "Shiprocket",
+      href: "/resources/integrations/shiprocket",
+      service: "shiprocket",
+      scenario: "shiprocket.acme-shipments.v1",
+      summary: "Courier shipments, the NDR, and the return from warehouse BLR-1.",
+      data: "SR10482AWB is in transit. SR10483AWB is an NDR. RET-10484 is the return.",
+    },
+    {
+      resource: "zohoinventory",
+      label: "Zoho Inventory",
+      href: "/resources/integrations/zohoinventory",
+      service: "zohoinventory",
+      scenario: "zohoinventory.acme-stock.v1",
+      summary: "Warehouse BLR-1, the Acme Goods catalog, and open sales orders.",
+      data: "SO-10482 and SO-10483 stay confirmed. PO-7721 restocks AG-MUG-01.",
+    },
+    {
+      resource: "zohobooks",
+      label: "Zoho Books",
+      href: "/resources/integrations/zohobooks",
+      service: "zohobooks",
+      scenario: "zohobooks.acme-ledger.v1",
+      summary: "The Acme ledger, including shop invoices and the SaaS invoices.",
+      data: "INV-10482 is paid. INV-10484 is void with credit note CN-10484.",
+    },
+    {
+      resource: "gupshup",
+      label: "Gupshup",
+      href: "/resources/integrations/gupshup",
+      service: "gupshup",
+      scenario: "gupshup.acme-whatsapp.v1",
+      summary: "WhatsApp messages for the shop orders.",
+      data: "msg_10482 was delivered to Priya. msg_10483 failed for Marco.",
+    },
+    {
+      resource: "slack",
+      label: "Slack",
+      href: "/resources/integrations/slack",
+      service: "slack",
+      scenario: "slack.acme-workspace.v1",
+      summary: "The Acme workspace, including fulfillment and finance channels.",
+      data: "Ravi posts shipment 10482 in #fulfillment. Aisha separates refund 10484 from INV-4812 in #finance.",
+    },
+    {
+      resource: "googledrive",
+      label: "Google Drive",
+      href: "/resources/integrations/googledrive",
+      service: "googledrive",
+      scenario: "googledrive.acme-drive.v1",
+      summary: "Finance, legal, HR, and compliance files for August 2026.",
+      data: "Finance/August 2026 holds the Razorpay settlement CSV and the NDR PDF.",
+    },
+    {
+      resource: "ga4",
+      label: "Google Analytics 4",
+      href: "/resources/integrations/ga4",
+      service: "ga4",
+      scenario: "ga4.acme-properties.v1",
+      summary: "Acme Goods and Acme App properties.",
+      data: "Property 309712345 records purchases 10482 and 10483 and refund 10484.",
+    },
+    {
+      resource: "redshift",
+      label: "Amazon Redshift",
+      href: "/resources/integrations/redshift",
+      service: "redshift",
+      scenario: "redshift.acme-warehouse.v1",
+      summary: "The analytics warehouse for the three shop orders.",
+      data: "commerce.orders, payments, and shipments repeat 10482, 10483, and 10484.",
+    },
+    {
+      resource: "airbyte",
+      label: "Airbyte",
+      href: "/resources/integrations/airbyte",
+      service: "airbyte",
+      scenario: "airbyte.acme-syncs.v1",
+      summary: "Syncs into the Redshift destination, including the failed NDR job.",
+      data: "job_10482 succeeded. job_fail_ndr failed while naming shipment 10483.",
+    },
+  ]}
+/>
+
+## Scenario data
+
+Order `10482` is the join key. Priya Nair bought one `AG-TEE-02` and two
+`AG-MUG-01` for ₹3097. The same number is the Shopify order, the Razorpay
+payment, the Shiprocket airway bill, the Zoho sales order and invoice, the
+WhatsApp message, the GA4 transaction, and a Redshift row.
+
+| Join key | Where it appears |
+| --- | --- |
+| `10482` | Shopify order, Shiprocket `SR10482AWB`, Inventory `SO-10482`, Books `INV-10482`, Gupshup `msg_10482`, GA4 transaction, Redshift order |
+| `pay_Acme10482` | Razorpay captured UPI payment and the August settlement CSV in Drive |
+| `10483` | NDR on `SR10483AWB` ("Customer not available"), Inventory `SO-10483`, Airbyte `job_fail_ndr` |
+| `10484` | Refunded tee, Razorpay `rfnd_Acme10484`, Shiprocket `RET-10484`, Books credit note `CN-10484` |
+
+`INV-4812` is also in Zoho Books, Slack, and Redshift. That is the Northwind
+SaaS duplicate charge, not a shop order. Refunding `10484` does not close it.
+
+Zoho Inventory is mounted at `/inventory/` and Zoho Books at `/books/` on
+`www.zohoapis.com`, so both ledgers run in this environment. Shopify here is
+only Acme Goods. The four-shop view is
+[Acme Commerce Agency](/resources/environments/acme-commerce-agency).
+
+## Get started
+
+Paste this command to download the manifest and read order `10482` from the
+shop, the payment, the courier, inventory, and books. You do not need to clone
+Fabricate.
+
+<CommandOutput id="acme-goods-shop-10482" />
+
+`--proxy` keeps each provider’s normal hostname. Direct URLs and the rest of
+each API are on the integration pages linked above.

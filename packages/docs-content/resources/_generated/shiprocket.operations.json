@@ -1,0 +1,102 @@
+{
+  "integration": "shiprocket",
+  "api": "Shiprocket v1",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/v1/external/auth/login",
+      "operationId": "login",
+      "summary": "Exchange API user credentials for the synthetic bearer token."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/external/courier/assign/awb",
+      "operationId": "assignAwb",
+      "summary": "Assign an AWB and courier to a shipment."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/courier/courierListWithCounts",
+      "operationId": "listCouriers",
+      "summary": "List courier partners enabled for the account."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/courier/serviceability",
+      "operationId": "checkServiceability",
+      "summary": "List couriers that can carry a shipment between two pincodes."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/courier/track/awb/{awb_code}",
+      "operationId": "trackByAwb",
+      "summary": "Track a shipment by AWB."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/courier/track/shipment/{shipment_id}",
+      "operationId": "trackByShipment",
+      "summary": "Track a shipment by shipment id."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/ndr/all",
+      "operationId": "listNdr",
+      "summary": "List shipments in non-delivery report status."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/ndr/{awb}",
+      "operationId": "getNdr",
+      "summary": "Get one NDR shipment by AWB."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/external/ndr/{awb}/action",
+      "operationId": "actOnNdr",
+      "summary": "Record a re-attempt or RTO action on an NDR shipment."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/orders",
+      "operationId": "listOrders",
+      "summary": "List orders and their shipments."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/external/orders/cancel",
+      "operationId": "cancelOrders",
+      "summary": "Cancel orders by id."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/external/orders/create/adhoc",
+      "operationId": "createAdhocOrder",
+      "summary": "Create a custom order and its shipment."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/external/orders/create/return",
+      "operationId": "createReturnOrder",
+      "summary": "Create a return for an order."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/orders/processing/return",
+      "operationId": "listReturnOrders",
+      "summary": "List return orders."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/orders/show/{id}",
+      "operationId": "getOrder",
+      "summary": "Get one order by Shiprocket id or channel order id."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/external/settings/company/pickup",
+      "operationId": "listPickups",
+      "summary": "List pickup locations."
+    }
+  ]
+}

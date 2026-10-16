@@ -1,0 +1,44 @@
+{
+  "api": "DocuSign eSignature REST API v2.1",
+  "environment": {
+    "label": "Acme DocuSign",
+    "manifest": "environments/acme-docusign.yaml",
+    "messages": 3
+  },
+  "integration": "docusign",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List envelopes",
+    "write": "Create envelope",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:38:54.024Z",
+  "testedCommit": "b19647c886dca0ed9e7d4e729fd9d690e3c14df0"
+}

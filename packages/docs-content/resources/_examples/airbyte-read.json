@@ -1,0 +1,14 @@
+{
+  "id": "airbyte-read",
+  "title": "List seeded jobs",
+  "environment": "environments/acme-airbyte.yaml",
+  "environmentLabel": "Acme Airbyte",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/airbyte-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-airbyte.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.airbyte.com/v1/jobs",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.airbyte.com/v1/jobs"
+  ]
+}

@@ -8,7 +8,10 @@ checking out Fabricate or creating an environment file by hand.
 - Every command block must be usable as a single paste in a POSIX shell.
 - When an example needs a repository manifest, fetch its canonical raw GitHub
   file and pipe it to `fab run /dev/stdin`; `fab run` accepts a
-  file path, not an environment URL.
+  file path, not an environment URL. Write those URLs against `main`. The
+  site rewrites Fabricate raw, blob, and tree links to `FABRICATE_GIT_REF`
+  (default `main`; a development server uses the checked-out branch when
+  it tracks a branch on DumbMachine/fabricate, and `main` otherwise).
 - Use `curl -fsSL` for manifest downloads and `curl -sS` for request examples
   so successful output stays readable while failures remain visible.
 - Do not leave placeholder commands such as `your-app` as the only runnable
@@ -40,7 +43,7 @@ The Integrations sidebar starts with **All** (`index.mdx`), which renders
 icon, title, and scenario and API counts from the generated snapshots. Do not
 hand-build a service card list on that page.
 
-Planned pages (GitHub, Shopify) are not runnable resources. Do not invent an
+Planned pages (GitHub) are not runnable resources. Do not invent an
 entity list or integration table for them.
 
 ## Generated page artifacts

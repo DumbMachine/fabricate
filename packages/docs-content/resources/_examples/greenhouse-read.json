@@ -1,0 +1,14 @@
+{
+  "id": "greenhouse-read",
+  "title": "List seeded jobs",
+  "environment": "environments/acme-greenhouse.yaml",
+  "environmentLabel": "Acme Greenhouse",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/greenhouse-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-greenhouse.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://harvest.greenhouse.io/v1/jobs",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://harvest.greenhouse.io/v1/jobs"
+  ]
+}

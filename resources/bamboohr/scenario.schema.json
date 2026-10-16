@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/bamboohr/scenario-v1.json",
+  "title": "Fabricate BambooHR scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["company", "currentUserId", "departments", "employees", "timeOffTypes", "timeOffRequests"],
+  "properties": {
+    "company": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "domain"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "name": {"type": "string", "minLength": 1},
+        "domain": {"type": "string", "minLength": 1, "pattern": "^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"}
+      }
+    },
+    "currentUserId": {"type": "string"},
+    "departments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+          "name": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "employees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "firstName", "lastName", "preferredName", "workEmail", "mobilePhone", "jobTitleName", "status", "employmentStatus", "location"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+          "firstName": {"type": "string", "minLength": 1},
+          "lastName": {"type": "string", "minLength": 1},
+          "preferredName": {"type": "string", "minLength": 1},
+          "workEmail": {"type": "string", "minLength": 3},
+          "mobilePhone": {"type": "string", "minLength": 1},
+          "jobTitleName": {"type": "string", "minLength": 1},
+          "departmentId": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+          "status": {"type": "string", "enum": ["Active", "Inactive"]},
+          "employmentStatus": {"type": "string", "minLength": 1},
+          "hireDate": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "location": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "timeOffTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "units", "color", "icon", "source"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "units": {"type": "string", "enum": ["hours", "days"]},
+          "color": {"type": "string", "minLength": 1},
+          "icon": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "enum": ["internal", "remote", "external"]}
+        }
+      }
+    },
+    "timeOffRequests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "employeeId", "typeId", "start", "end", "status", "amount", "unit", "employeeNote", "created", "updated", "lastChanged", "lastChangedByUserId", "dates"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "employeeId": {"type": "string", "minLength": 1},
+          "typeId": {"type": "string", "minLength": 1},
+          "start": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "end": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "status": {"type": "string", "enum": ["approved", "denied", "requested", "canceled", "superceded"]},
+          "amount": {"type": "number", "minimum": 0},
+          "unit": {"type": "string", "enum": ["hours", "days"]},
+          "employeeNote": {"type": "string"},
+          "managerNote": {"type": "string"},
+          "created": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "updated": {"type": "string", "minLength": 1},
+          "lastChanged": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+          "lastChangedByUserId": {"type": "string", "minLength": 1},
+          "dates": {
+            "type": "object",
+            "additionalProperties": {"type": "number", "minimum": 0}
+          }
+        }
+      }
+    }
+  }
+}

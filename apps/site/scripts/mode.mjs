@@ -1,7 +1,9 @@
+import { spawn } from "node:child_process";
 import { copyFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
+
+import { developmentGitRef } from "./git-ref.mjs";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(scriptDir, "..", "..", "..");
@@ -31,11 +33,18 @@ const docsOrigin = mode === "development"
 const siteUrl = app === "docs" ? docsOrigin : landingOrigin;
 const docsUrl = `${docsOrigin.replace(/\/$/, "")}${docsBase}`;
 const appRoot = resolve(repositoryRoot, "apps", app);
+// Published docs stay on main unless FABRICATE_GIT_REF is set. A development
+// server follows the checked-out branch only when that branch tracks a branch
+// on DumbMachine/fabricate; a local-only or fork branch would 404, so it stays
+// on main. packages/docs-content/git-ref.ts validates whichever ref is chosen.
+const gitRef = process.env.FABRICATE_GIT_REF?.trim()
+  || (mode === "development" ? developmentGitRef({ cwd: repositoryRoot }) : "main");
 const env = {
   ...process.env,
   FABRICATE_SITE_MODE: mode,
   PUBLIC_FABRICATE_SITE_MODE: mode,
   PUBLIC_FABRICATE_COMMAND: command,
+  PUBLIC_FABRICATE_GIT_REF: gitRef,
   PUBLIC_FABRICATE_SITE_URL: siteUrl,
   PUBLIC_FABRICATE_DOCS_BASE: docsBase,
   PUBLIC_FABRICATE_DOCS_URL: docsUrl,

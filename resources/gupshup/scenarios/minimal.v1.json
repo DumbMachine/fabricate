@@ -1,0 +1,46 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "gupshup.minimal.v1",
+  "$resource": "gupshup",
+  "$resourceVersion": "v1",
+  "state": {
+    "app": {
+      "id": "app_acme_goods",
+      "name": "Acme Goods",
+      "phone": "918041230101",
+      "about": "Acme Goods order updates.",
+      "business": {
+        "name": "Acme Goods",
+        "addressLine1": "18 Industrial Layout",
+        "addressLine2": "",
+        "city": "Bengaluru",
+        "state": "KA",
+        "country": "IN",
+        "pinCode": "560058",
+        "contactName": "Ravi Mehta",
+        "contactNumber": "+91-80-4123-0103",
+        "email": "ravi@acme.example",
+        "website": "https://acme-goods.myshopify.com",
+        "vertical": "RETAIL",
+        "emailVerified": true,
+        "tncAccepted": true
+      },
+      "profile": {
+        "addressLine1": "18 Industrial Layout",
+        "addressLine2": "",
+        "city": "Bengaluru",
+        "country": "IN",
+        "desc": "Acme Goods ships from warehouse BLR-1.",
+        "pinCode": "560058",
+        "profileEmail": "ravi@acme.example",
+        "state": "KA",
+        "vertical": "RETAIL",
+        "website1": "https://acme-goods.myshopify.com",
+        "website2": "https://acme.example"
+      }
+    },
+    "templates": [],
+    "messages": []
+  }
+}

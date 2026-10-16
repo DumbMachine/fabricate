@@ -1,0 +1,60 @@
+{
+  "integration": "ga4",
+  "api": "Google Analytics 4 v1beta",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1beta/properties/{property}/audienceExports",
+      "operationId": "properties.audienceExports.list",
+      "summary": "Lists audience exports for a property."
+    },
+    {
+      "method": "POST",
+      "path": "/v1beta/properties/{property}/audienceExports",
+      "operationId": "properties.audienceExports.create",
+      "summary": "Creates an audience export and stores it for later retrieval."
+    },
+    {
+      "method": "GET",
+      "path": "/v1beta/properties/{property}/audienceExports/{audienceExport}",
+      "operationId": "properties.audienceExports.get",
+      "summary": "Gets configuration metadata for an audience export."
+    },
+    {
+      "method": "POST",
+      "path": "/v1beta/properties/{property}/audienceExports/{audienceExport}:query",
+      "operationId": "properties.audienceExports.query",
+      "summary": "Retrieves users from an audience export."
+    },
+    {
+      "method": "GET",
+      "path": "/v1beta/properties/{property}/metadata",
+      "operationId": "properties.getMetadata",
+      "summary": "Returns dimensions and metrics accepted by reporting methods."
+    },
+    {
+      "method": "POST",
+      "path": "/v1beta/properties/{property}:batchRunReports",
+      "operationId": "properties.batchRunReports",
+      "summary": "Returns multiple reports for one Google Analytics property."
+    },
+    {
+      "method": "POST",
+      "path": "/v1beta/properties/{property}:checkCompatibility",
+      "operationId": "properties.checkCompatibility",
+      "summary": "Lists whether dimensions and metrics can be used together."
+    },
+    {
+      "method": "POST",
+      "path": "/v1beta/properties/{property}:runRealtimeReport",
+      "operationId": "properties.runRealtimeReport",
+      "summary": "Returns a realtime report for the last minutes of event data."
+    },
+    {
+      "method": "POST",
+      "path": "/v1beta/properties/{property}:runReport",
+      "operationId": "properties.runReport",
+      "summary": "Returns a customized report of Google Analytics event data."
+    }
+  ]
+}

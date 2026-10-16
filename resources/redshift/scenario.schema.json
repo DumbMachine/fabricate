@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/redshift/scenario-v1.json",
+  "title": "Fabricate Amazon Redshift scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["clusterIdentifier", "database", "schema", "dbUser", "orders", "payments", "shipments", "saasInvoices"],
+  "properties": {
+    "clusterIdentifier": {"type": "string", "minLength": 1},
+    "database": {"type": "string", "minLength": 1},
+    "schema": {"type": "string", "minLength": 1},
+    "dbUser": {"type": "string", "minLength": 1},
+    "orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order_id", "placed_at", "customer_name", "customer_email", "customer_phone", "ship_to", "lines", "merchandise_inr", "merchandise_paise", "currency", "shop", "status"],
+        "properties": {
+          "order_id": {"type": "string", "minLength": 1},
+          "placed_at": {"type": "string", "minLength": 1},
+          "customer_name": {"type": "string", "minLength": 1},
+          "customer_email": {"type": "string", "minLength": 1},
+          "customer_phone": {"type": "string", "minLength": 1},
+          "ship_to": {"type": "string", "minLength": 1},
+          "lines": {"type": "string", "minLength": 1},
+          "merchandise_inr": {"type": "integer", "minimum": 0},
+          "merchandise_paise": {"type": "integer", "minimum": 0},
+          "currency": {"type": "string", "minLength": 1},
+          "shop": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["payment_id", "order_id", "razorpay_order_id", "status", "method", "amount_paise", "currency", "refund_id", "captured"],
+        "properties": {
+          "payment_id": {"type": "string", "minLength": 1},
+          "order_id": {"type": "string", "minLength": 1},
+          "razorpay_order_id": {"type": ["string", "null"]},
+          "status": {"type": "string", "minLength": 1},
+          "method": {"type": ["string", "null"]},
+          "amount_paise": {"type": "integer", "minimum": 0},
+          "currency": {"type": "string", "minLength": 1},
+          "refund_id": {"type": ["string", "null"]},
+          "captured": {"type": "boolean"}
+        }
+      }
+    },
+    "shipments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order_id", "awb", "courier", "status", "ndr_reason", "return_id", "channel"],
+        "properties": {
+          "order_id": {"type": "string", "minLength": 1},
+          "awb": {"type": ["string", "null"]},
+          "courier": {"type": ["string", "null"]},
+          "status": {"type": "string", "minLength": 1},
+          "ndr_reason": {"type": ["string", "null"]},
+          "return_id": {"type": ["string", "null"]},
+          "channel": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "saasInvoices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["invoice_id", "customer_name", "contact_email", "amount_usd", "currency", "status", "payment_id", "duplicate_payment_id", "hubspot_deal_id", "chargebee_subscription", "chargebee_customer"],
+        "properties": {
+          "invoice_id": {"type": "string", "minLength": 1},
+          "customer_name": {"type": "string", "minLength": 1},
+          "contact_email": {"type": "string", "minLength": 1},
+          "amount_usd": {"type": "integer", "minimum": 0},
+          "currency": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "minLength": 1},
+          "payment_id": {"type": "string", "minLength": 1},
+          "duplicate_payment_id": {"type": "string", "minLength": 1},
+          "hubspot_deal_id": {"type": "string", "minLength": 1},
+          "chargebee_subscription": {"type": "string", "minLength": 1},
+          "chargebee_customer": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

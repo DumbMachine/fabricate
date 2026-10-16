@@ -1,0 +1,65 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "impact.acme-partners.v1",
+  "$resource": "impact",
+  "$resourceVersion": "v1",
+  "state": {
+    "accountSid": "acct-acme",
+    "programs": [
+      {
+        "id": 1001,
+        "name": "Acme Goods affiliates",
+        "state": "ACTIVE",
+        "type": "Performance",
+        "shortDescription": "Affiliate program for the Acme Goods shop."
+      }
+    ],
+    "partners": [
+      {
+        "id": "partner_northwind",
+        "campaignId": 1001,
+        "name": "Northwind Creators",
+        "state": "ACTIVE",
+        "currency": "INR",
+        "website": "https://northwind.example",
+        "description": "Creator partner for Acme Goods.",
+        "dateCreated": "2026-08-01T00:00:00Z"
+      }
+    ],
+    "actions": [
+      {
+        "id": "act_10482",
+        "campaignId": 1001,
+        "partnerId": "partner_northwind",
+        "oid": "10482",
+        "state": "PENDING",
+        "payoutPaise": 15000,
+        "amountPaise": 309700,
+        "currency": "INR",
+        "eventDate": "2026-08-25T09:14:00Z",
+        "creationDate": "2026-08-25T09:14:00Z",
+        "customerCity": "Bengaluru",
+        "customerRegion": "KA",
+        "customerCountry": "IN",
+        "customerPostCode": "560025",
+        "note": "",
+        "items": [
+          {
+            "sku": "AG-TEE-02",
+            "name": "Acme Field Tee",
+            "quantity": 1,
+            "saleAmountPaise": 149900
+          },
+          {
+            "sku": "AG-MUG-01",
+            "name": "Acme Ceramic Mug",
+            "quantity": 2,
+            "saleAmountPaise": 159800
+          }
+        ]
+      }
+    ],
+    "notes": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "googledrive.minimal.v1",
+  "$resource": "googledrive",
+  "$resourceVersion": "v3",
+  "state": {
+    "user": {
+      "displayName": "Val Ortega",
+      "emailAddress": "val@acme.example",
+      "permissionId": "user-val"
+    },
+    "files": [],
+    "permissions": []
+  }
+}

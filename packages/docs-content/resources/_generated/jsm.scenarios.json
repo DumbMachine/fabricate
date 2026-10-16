@@ -1,0 +1,25 @@
+{
+  "integration": "jsm",
+  "scenarios": [
+    {
+      "id": "jsm.acme-desk.v1",
+      "counts": {
+        "comments": 0,
+        "requestTypes": 2,
+        "requests": 4,
+        "serviceDesks": 1,
+        "users": 4
+      }
+    },
+    {
+      "id": "jsm.minimal.v1",
+      "counts": {
+        "comments": 0,
+        "requestTypes": 0,
+        "requests": 0,
+        "serviceDesks": 0,
+        "users": 1
+      }
+    }
+  ]
+}

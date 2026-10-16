@@ -1,0 +1,14 @@
+{
+  "id": "shiprocket-read",
+  "title": "Track a seeded shipment",
+  "environment": "environments/acme-shiprocket.yaml",
+  "environmentLabel": "Acme Shiprocket",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/shiprocket-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-shiprocket.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://apiv2.shiprocket.in/v1/external/courier/track/awb/SR10482AWB",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://apiv2.shiprocket.in/v1/external/courier/track/awb/SR10482AWB"
+  ]
+}

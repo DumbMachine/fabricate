@@ -1,0 +1,32 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "slack.minimal.v1",
+  "$resource": "slack",
+  "$resourceVersion": "v2",
+  "state": {
+    "team": {
+      "id": "T-acme",
+      "name": "Acme",
+      "domain": "acme",
+      "url": "https://acme.slack.com/"
+    },
+    "currentUserId": "U-val",
+    "users": [
+      {
+        "id": "U-val",
+        "name": "val",
+        "realName": "Val Ortega",
+        "email": "val@acme.example",
+        "phone": "+91-80-4123-0101",
+        "title": "Operator",
+        "isOwner": true,
+        "isAdmin": true,
+        "isBot": false,
+        "deleted": false
+      }
+    ],
+    "channels": [],
+    "messages": []
+  }
+}

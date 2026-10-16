@@ -1,0 +1,44 @@
+{
+  "api": "Shopify Admin REST 2024-10",
+  "environment": {
+    "label": "Acme Goods Shopify",
+    "manifest": "environments/acme-shopify.yaml",
+    "messages": 3
+  },
+  "integration": "shopify",
+  "modes": {
+    "direct": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 4,
+      "messagesBefore": 3,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read order 10482",
+    "write": "Create order and refund",
+    "persistence": "Confirm order and refund"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T06:01:26.010Z",
+  "testedCommit": "268190983296bea14e22167e58f7cf9585dba9cb"
+}

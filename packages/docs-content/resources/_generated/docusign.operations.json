@@ -1,0 +1,78 @@
+{
+  "integration": "docusign",
+  "api": "DocuSign v2.1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}",
+      "operationId": "Accounts_GetAccount",
+      "summary": "Retrieves the account information for the specified account."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes",
+      "operationId": "Envelopes_GetEnvelopes",
+      "summary": "Lists envelopes for the account. from_date is optional on this curated surface."
+    },
+    {
+      "method": "POST",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes",
+      "operationId": "Envelopes_PostEnvelopes",
+      "summary": "Creates a draft envelope or creates and sends an envelope."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}",
+      "operationId": "Envelopes_GetEnvelope",
+      "summary": "Gets the status of a single envelope."
+    },
+    {
+      "method": "PUT",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}",
+      "operationId": "Envelopes_PutEnvelope",
+      "summary": "Sends a draft envelope or voids an in-process envelope."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/documents",
+      "operationId": "Documents_GetDocuments",
+      "summary": "Lists the documents in an envelope."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/documents/{documentId}",
+      "operationId": "Documents_GetDocument",
+      "summary": "Retrieves one document, or all documents when documentId is combined."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/recipients",
+      "operationId": "Recipients_GetRecipients",
+      "summary": "Gets the recipients for an envelope."
+    },
+    {
+      "method": "PUT",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/recipients",
+      "operationId": "Recipients_PutRecipients",
+      "summary": "Updates signer name, email, or routing order on an in-process envelope."
+    },
+    {
+      "method": "POST",
+      "path": "/restapi/v2.1/accounts/{accountId}/envelopes/{envelopeId}/views/recipient",
+      "operationId": "Views_PostEnvelopeRecipientView",
+      "summary": "Returns a URL to the recipient signing view."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/users",
+      "operationId": "Users_GetUsers",
+      "summary": "Retrieves the list of users for the specified account."
+    },
+    {
+      "method": "GET",
+      "path": "/restapi/v2.1/accounts/{accountId}/users/{userId}",
+      "operationId": "User_GetUser",
+      "summary": "Gets the user information for a specified user."
+    }
+  ]
+}

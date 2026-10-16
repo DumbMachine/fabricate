@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-redshift
+
+services:
+  redshift:
+    resource: redshift
+    scenario: redshift.acme-warehouse.v1

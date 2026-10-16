@@ -1,0 +1,90 @@
+{
+  "integration": "shopify",
+  "api": "Shopify 2024-10",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/customers.json",
+      "operationId": "ShopifyCustomersList",
+      "summary": "List customers for the shop."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/customers/{customer_id}.json",
+      "operationId": "ShopifyCustomersGet",
+      "summary": "Retrieve a customer."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/api/2024-10/fulfillments.json",
+      "operationId": "ShopifyFulfillmentsCreate",
+      "summary": "Create a fulfillment."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/orders.json",
+      "operationId": "ShopifyOrdersList",
+      "summary": "List orders for the shop."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/api/2024-10/orders.json",
+      "operationId": "ShopifyOrdersCreate",
+      "summary": "Create an order."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/orders/{order_id}.json",
+      "operationId": "ShopifyOrdersGet",
+      "summary": "Retrieve an order."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/orders/{order_id}/fulfillments.json",
+      "operationId": "ShopifyOrdersFulfillmentsList",
+      "summary": "List fulfillments for an order."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/orders/{order_id}/refunds.json",
+      "operationId": "ShopifyOrdersRefundsList",
+      "summary": "List refunds for an order."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/api/2024-10/orders/{order_id}/refunds.json",
+      "operationId": "ShopifyOrdersRefundsCreate",
+      "summary": "Create a refund."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/products.json",
+      "operationId": "ShopifyProductsList",
+      "summary": "List products for the shop."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/api/2024-10/products.json",
+      "operationId": "ShopifyProductsCreate",
+      "summary": "Create a product."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/products/{product_id}.json",
+      "operationId": "ShopifyProductsGet",
+      "summary": "Retrieve a product."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/shop.json",
+      "operationId": "ShopifyShopGet",
+      "summary": "Retrieve the shop for the request host."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api/2024-10/variants/{variant_id}.json",
+      "operationId": "ShopifyVariantsGet",
+      "summary": "Retrieve a product variant."
+    }
+  ]
+}

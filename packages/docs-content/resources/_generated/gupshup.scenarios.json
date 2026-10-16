@@ -1,0 +1,19 @@
+{
+  "integration": "gupshup",
+  "scenarios": [
+    {
+      "id": "gupshup.acme-whatsapp.v1",
+      "counts": {
+        "messages": 4,
+        "templates": 1
+      }
+    },
+    {
+      "id": "gupshup.minimal.v1",
+      "counts": {
+        "messages": 0,
+        "templates": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "shiprocket.minimal.v1",
+  "$resource": "shiprocket",
+  "$resourceVersion": "v1",
+  "state": {
+    "companyId": 1048001,
+    "user": {
+      "id": 1048002,
+      "firstName": "Ravi",
+      "lastName": "Mehta",
+      "email": "ravi@acme.example",
+      "createdAt": "2026-08-26 12:00:00"
+    },
+    "couriers": [],
+    "pickups": [],
+    "orders": [],
+    "returns": []
+  }
+}

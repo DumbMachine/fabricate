@@ -1,0 +1,586 @@
+openapi: 3.0.0
+info:
+  title: Carta API
+  version: v1alpha1
+  description: >-
+    Curated Carta API Platform v1alpha1 surface for issuer stakeholders,
+    certificates, option grants, fair market values, and draft option grants.
+    Field names and operation ids follow Carta's published public reference.
+    The live API at api.carta.com is approval-gated. This document is that
+    curated public surface, not a private spec and not a third-party dump.
+  contact:
+    name: Carta - Developer Ecosystem Team
+    email: developers@carta.com
+servers:
+  - url: https://api.carta.com
+    description: Production API Platform environment
+security:
+  - bearerAuth: []
+tags:
+  - name: Issuers
+  - name: Stakeholders
+  - name: Securities
+  - name: Valuations
+  - name: Draft Securities
+paths:
+  /v1alpha1/issuers/{id}:
+    get:
+      operationId: v1alpha1.issuers.getIssuer
+      summary: Get Issuer
+      description: Scope read_issuer_info. Retrieve an issuer.
+      tags: [Issuers]
+      parameters:
+        - $ref: '#/components/parameters/IssuerPathId'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/GetIssuerResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/stakeholders:
+    get:
+      operationId: v1alpha1.issuers.listStakeholders
+      summary: List Stakeholders
+      description: >-
+        Scope read_issuer_stakeholders. Retrieve stakeholders. A stakeholder
+        is a person or entity that has been issued a security by an issuer.
+      tags: [Stakeholders]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListStakeholdersResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/stakeholders/{id}:
+    get:
+      operationId: v1alpha1.issuers.getStakeholder
+      summary: Get Stakeholder
+      description: Scope read_issuer_stakeholders. Retrieve a stakeholder.
+      tags: [Stakeholders]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/GetStakeholderResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/certificates:
+    get:
+      operationId: v1alpha1.issuers.listCertificates
+      summary: List Certificates
+      description: Scope read_issuer_securities. Retrieve certificates.
+      tags: [Securities]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListCertificatesResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/certificates/{id}:
+    get:
+      operationId: v1alpha1.issuers.getCertificate
+      summary: Get Certificate
+      description: Scope read_issuer_securities. Retrieve a certificate.
+      tags: [Securities]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/GetCertificateResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/optionGrants:
+    get:
+      operationId: v1alpha1.issuers.listOptionGrants
+      summary: List Option Grants
+      description: Scope read_issuer_securities. Retrieve option grants.
+      tags: [Securities]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListOptionGrantsResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/optionGrants/{id}:
+    get:
+      operationId: v1alpha1.issuers.getOptionGrant
+      summary: Get Option Grant
+      description: Scope read_issuer_securities. Retrieve an option grant.
+      tags: [Securities]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/GetOptionGrantResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/fairMarketValues:
+    get:
+      operationId: v1alpha1.issuers.listFairMarketValues
+      summary: List Fair Market Values
+      description: >-
+        Scope read_issuer_valuations. Retrieve fair market values of an
+        issuer's securities. These values come from 409A reports. The
+        published fair market value object has no report filename.
+      tags: [Valuations]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListFairMarketValuesResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/draftOptionGrantSets/{draftOptionGrantSetId}/draftOptionGrants:
+    post:
+      operationId: v1alpha1.issuers.draftsecurities.createDraftOptionGrant
+      summary: Create a Draft Option Grant
+      description: >-
+        Scope readwrite_issuer_draftsecurities. Create a draft option grant
+        that is still being finalized or has not yet received board consent.
+        Use LATEST as draftOptionGrantSetId to target the newest set, creating
+        one when the issuer has none. Notes on the draft are stored and
+        returned by Get Draft Option Grant.
+      tags: [Draft Securities]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/DraftOptionGrantSetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateDraftOptionGrantRequest'}
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/DraftOptionGrantResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1alpha1/issuers/{issuerId}/draftOptionGrantSets/{draftOptionGrantSetId}/draftOptionGrants/{draftOptionGrantId}:
+    get:
+      operationId: v1alpha1.issuers.draftsecurities.getDraftOptionGrant
+      summary: Get Draft Option Grant
+      description: >-
+        Scope read_issuer_draftsecurities. Retrieve a draft option grant.
+      tags: [Draft Securities]
+      parameters:
+        - $ref: '#/components/parameters/IssuerId'
+        - $ref: '#/components/parameters/DraftOptionGrantSetId'
+        - $ref: '#/components/parameters/DraftOptionGrantId'
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/DraftOptionGrantResponse'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Synthetic bearer token. Carta's live API uses an OAuth 2.0
+        authorization-code access token in the Authorization header. Fabricate
+        accepts Authorization Bearer because the proxy injects that token.
+  parameters:
+    IssuerPathId:
+      name: id
+      in: path
+      required: true
+      description: The identifier of the issuer.
+      schema: {type: string, minLength: 1, maxLength: 50}
+    IssuerId:
+      name: issuerId
+      in: path
+      required: true
+      description: The identifier of the issuer.
+      schema: {type: string, minLength: 1, maxLength: 50}
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: {type: string, minLength: 1, maxLength: 50}
+    DraftOptionGrantSetId:
+      name: draftOptionGrantSetId
+      in: path
+      required: true
+      description: Draft option grant set id, or LATEST for the newest set.
+      schema: {type: string, minLength: 1}
+    DraftOptionGrantId:
+      name: draftOptionGrantId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    PageSize:
+      name: pageSize
+      in: query
+      required: false
+      description: >-
+        Maximum number of records to return. Defaults to 25. Values above the
+        collection maximum (100 for stakeholders and certificates, 50 for
+        option grants and fair market values) are coerced down to that maximum.
+      schema: {type: integer, format: int32, minimum: 1}
+    PageToken:
+      name: pageToken
+      in: query
+      required: false
+      description: Offset token returned as nextPageToken.
+      schema: {type: string}
+  responses:
+    Error:
+      description: Error response using the published rpcStatus shape.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/RpcStatus'}
+  schemas:
+    RpcStatus:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code: {type: integer, format: int32}
+        message: {type: string}
+        details:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    StringValue:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value: {type: string, minLength: 1, maxLength: 100}
+    CalendarDate:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value:
+          type: string
+          minLength: 10
+          maxLength: 10
+          pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+    DateTime:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value:
+          type: string
+          minLength: 20
+          maxLength: 24
+          pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,3})?Z$'
+    CurrencyCode:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value: {type: string, minLength: 3, maxLength: 3, pattern: '^[A-Z]{3}$'}
+    Money:
+      type: object
+      additionalProperties: false
+      required: [currencyCode, amount]
+      properties:
+        currencyCode: {$ref: '#/components/schemas/CurrencyCode'}
+        amount: {$ref: '#/components/schemas/StringValue'}
+    Issuer:
+      type: object
+      additionalProperties: false
+      required: [id, legalName, doingBusinessAsName, website]
+      properties:
+        id: {type: string, maxLength: 50}
+        legalName: {type: string, maxLength: 1000}
+        doingBusinessAsName: {type: string, maxLength: 1000}
+        website: {type: string, maxLength: 1000}
+    GetIssuerResponse:
+      type: object
+      additionalProperties: false
+      required: [issuer]
+      properties:
+        issuer: {$ref: '#/components/schemas/Issuer'}
+    StakeholderRelationship:
+      type: string
+      enum:
+        - ADVISOR
+        - EX_ADVISOR
+        - BOARD_MEMBER
+        - CONSULTANT
+        - EX_CONSULTANT
+        - EMPLOYEE
+        - EX_EMPLOYEE
+        - EXECUTIVE
+        - FOUNDER
+        - INTERNATIONAL_EMPLOYEE
+        - INVESTOR
+        - OFFICER
+        - OTHER
+        - EX_BOARD_MEMBER
+        - EX_INTERNATIONAL_EMPLOYEE
+    StakeholderEntityType:
+      type: string
+      enum:
+        - INDIVIDUAL
+        - CORPORATION
+        - LIMITED_LIABILITY_CORPORATION
+        - ESTATE_OR_TRUST
+        - PARTNERSHIP
+        - DISREGARDED_ENTITY
+        - UNKNOWN
+    StakeholderAddress:
+      type: object
+      additionalProperties: false
+      properties:
+        country: {type: string, maxLength: 1000}
+    Stakeholder:
+      type: object
+      additionalProperties: false
+      required: [id, issuerId, fullName, relationship, entityType]
+      properties:
+        id: {type: string, maxLength: 50}
+        issuerId: {type: string, maxLength: 50}
+        fullName: {type: string, maxLength: 1000}
+        email: {type: string, maxLength: 1000}
+        relationship: {$ref: '#/components/schemas/StakeholderRelationship'}
+        entityType: {$ref: '#/components/schemas/StakeholderEntityType'}
+        address: {$ref: '#/components/schemas/StakeholderAddress'}
+    ListStakeholdersResponse:
+      type: object
+      additionalProperties: false
+      required: [stakeholders]
+      properties:
+        stakeholders:
+          type: array
+          items: {$ref: '#/components/schemas/Stakeholder'}
+        nextPageToken: {type: string}
+    GetStakeholderResponse:
+      type: object
+      additionalProperties: false
+      required: [stakeholder]
+      properties:
+        stakeholder: {$ref: '#/components/schemas/Stakeholder'}
+    Certificate:
+      type: object
+      additionalProperties: false
+      required: [id, issuerId, stakeholderId, shareClassName, issueDate, quantity, securityLabel, pricePerShare]
+      properties:
+        id: {type: string, maxLength: 50}
+        issuerId: {type: string, maxLength: 50}
+        stakeholderId: {type: string, maxLength: 50}
+        shareClassName: {type: string, maxLength: 100}
+        issueDate: {$ref: '#/components/schemas/CalendarDate'}
+        quantity: {$ref: '#/components/schemas/StringValue'}
+        securityLabel: {type: string, maxLength: 50}
+        pricePerShare: {$ref: '#/components/schemas/Money'}
+    ListCertificatesResponse:
+      type: object
+      additionalProperties: false
+      required: [certificates]
+      properties:
+        certificates:
+          type: array
+          items: {$ref: '#/components/schemas/Certificate'}
+        nextPageToken: {type: string}
+    GetCertificateResponse:
+      type: object
+      additionalProperties: false
+      required: [certificate]
+      properties:
+        certificate: {$ref: '#/components/schemas/Certificate'}
+    StockOptionType:
+      type: string
+      enum: [ISO, NSO, OTHER]
+    OptionGrant:
+      type: object
+      additionalProperties: false
+      required: [id, issuerId, stakeholderId, equityIncentivePlanName, issueDate, stockOptionType, quantity, outstandingQuantity, exercisePrice, securityLabel]
+      properties:
+        id: {type: string, maxLength: 50}
+        issuerId: {type: string, maxLength: 50}
+        stakeholderId: {type: string, maxLength: 50}
+        equityIncentivePlanName: {type: string, maxLength: 100}
+        issueDate: {$ref: '#/components/schemas/CalendarDate'}
+        stockOptionType: {$ref: '#/components/schemas/StockOptionType'}
+        quantity: {$ref: '#/components/schemas/StringValue'}
+        outstandingQuantity: {$ref: '#/components/schemas/StringValue'}
+        exercisePrice: {$ref: '#/components/schemas/Money'}
+        securityLabel: {type: string, maxLength: 50}
+    ListOptionGrantsResponse:
+      type: object
+      additionalProperties: false
+      required: [optionGrants]
+      properties:
+        optionGrants:
+          type: array
+          items: {$ref: '#/components/schemas/OptionGrant'}
+        nextPageToken: {type: string}
+    GetOptionGrantResponse:
+      type: object
+      additionalProperties: false
+      required: [optionGrant]
+      properties:
+        optionGrant: {$ref: '#/components/schemas/OptionGrant'}
+    ShareClassValuation:
+      type: object
+      additionalProperties: false
+      required: [shareClassId, shareClassName, common, price]
+      properties:
+        shareClassId: {type: string, maxLength: 50}
+        shareClassName: {type: string, maxLength: 100}
+        common: {type: boolean}
+        price: {$ref: '#/components/schemas/Money'}
+    FairMarketValue:
+      type: object
+      additionalProperties: false
+      required: [id, effectiveDate, expirationDate, shareClassValuations]
+      properties:
+        id: {type: string, maxLength: 50}
+        effectiveDate: {$ref: '#/components/schemas/CalendarDate'}
+        expirationDate: {$ref: '#/components/schemas/CalendarDate'}
+        shareClassValuations:
+          type: array
+          items: {$ref: '#/components/schemas/ShareClassValuation'}
+    ListFairMarketValuesResponse:
+      type: object
+      additionalProperties: false
+      required: [fairMarketValues]
+      properties:
+        fairMarketValues:
+          type: array
+          items: {$ref: '#/components/schemas/FairMarketValue'}
+        nextPageToken: {type: string}
+    DraftStockOptionType:
+      type: string
+      enum:
+        - STOCK_OPTION_TYPE_ISO
+        - STOCK_OPTION_TYPE_NSO
+        - STOCK_OPTION_TYPE_INTL
+        - STOCK_OPTION_TYPE_EMI
+        - STOCK_OPTION_TYPE_CSOP
+        - STOCK_OPTION_TYPE_102_CG
+        - STOCK_OPTION_TYPE_102_OI
+        - STOCK_OPTION_TYPE_NON_TRUSTEE
+        - STOCK_OPTION_TYPE_3I
+        - STOCK_OPTION_TYPE_UNAPPROVED
+    GrantReason:
+      type: string
+      enum:
+        - GRANT_REASON_NEW_HIRE
+        - GRANT_REASON_MERIT
+        - GRANT_REASON_PROMOTION
+        - GRANT_REASON_REFRESH
+        - GRANT_REASON_CORPORATE_TRANSACTION
+        - GRANT_REASON_RELATIONSHIP_CHANGE
+        - GRANT_REASON_RETENTION
+        - GRANT_REASON_ADVISOR
+        - GRANT_REASON_CONSULTANT
+        - GRANT_REASON_BOARD
+    DraftStakeholderType:
+      type: string
+      enum: [STAKEHOLDER_TYPE_INDIVIDUAL, STAKEHOLDER_TYPE_NON_INDIVIDUAL]
+    DraftStakeholderRelationship:
+      type: string
+      enum:
+        - STAKEHOLDER_RELATIONSHIP_ADVISOR
+        - STAKEHOLDER_RELATIONSHIP_EX_ADVISOR
+        - STAKEHOLDER_RELATIONSHIP_BOARD_MEMBER
+        - STAKEHOLDER_RELATIONSHIP_CONSULTANT
+        - STAKEHOLDER_RELATIONSHIP_EX_CONSULTANT
+        - STAKEHOLDER_RELATIONSHIP_EMPLOYEE
+        - STAKEHOLDER_RELATIONSHIP_EX_EMPLOYEE
+        - STAKEHOLDER_RELATIONSHIP_EXECUTIVE
+        - STAKEHOLDER_RELATIONSHIP_FOUNDER
+        - STAKEHOLDER_RELATIONSHIP_INVESTOR
+        - STAKEHOLDER_RELATIONSHIP_INTERNATIONAL_EMPLOYEE
+        - STAKEHOLDER_RELATIONSHIP_OFFICER
+        - STAKEHOLDER_RELATIONSHIP_OTHER
+        - STAKEHOLDER_RELATIONSHIP_EX_BOARD_MEMBER
+        - STAKEHOLDER_RELATIONSHIP_EX_INTERNATIONAL_EMPLOYEE
+    DraftSecurityState:
+      type: string
+      enum:
+        - DRAFT_SECURITY_STATE_DRAFTING
+        - DRAFT_SECURITY_STATE_PENDING_BOARD_APPROVAL
+        - DRAFT_SECURITY_STATE_ISSUED
+    DraftStakeholder:
+      type: object
+      additionalProperties: false
+      required: [name, email]
+      properties:
+        name: {type: string, minLength: 1, maxLength: 256}
+        email: {type: string, minLength: 1, maxLength: 100}
+        employeeId: {type: string, maxLength: 100}
+        type: {$ref: '#/components/schemas/DraftStakeholderType'}
+        relationship: {$ref: '#/components/schemas/DraftStakeholderRelationship'}
+    DraftOptionGrantInput:
+      type: object
+      additionalProperties: false
+      required: [stockOptionType, quantity, stakeholder]
+      properties:
+        stockOptionType: {$ref: '#/components/schemas/DraftStockOptionType'}
+        grantReason: {$ref: '#/components/schemas/GrantReason'}
+        quantity: {$ref: '#/components/schemas/StringValue'}
+        earlyExercise: {type: boolean}
+        exercisePrice: {$ref: '#/components/schemas/Money'}
+        stakeholder: {$ref: '#/components/schemas/DraftStakeholder'}
+        notes: {type: string, maxLength: 1000}
+    CreateDraftOptionGrantRequest:
+      type: object
+      additionalProperties: false
+      required: [draftOptionGrant]
+      properties:
+        draftOptionGrant: {$ref: '#/components/schemas/DraftOptionGrantInput'}
+    DraftOptionGrant:
+      type: object
+      additionalProperties: false
+      required: [id, draftOptionGrantSetId, issuerId, state, stockOptionType, quantity, stakeholder, createTime, updateTime]
+      properties:
+        id: {type: string}
+        draftOptionGrantSetId: {type: string}
+        issuerId: {type: string}
+        state: {$ref: '#/components/schemas/DraftSecurityState'}
+        stockOptionType: {$ref: '#/components/schemas/DraftStockOptionType'}
+        grantReason: {$ref: '#/components/schemas/GrantReason'}
+        quantity: {$ref: '#/components/schemas/StringValue'}
+        earlyExercise: {type: boolean}
+        exercisePrice: {$ref: '#/components/schemas/Money'}
+        stakeholder: {$ref: '#/components/schemas/DraftStakeholder'}
+        notes: {type: string, maxLength: 1000}
+        createTime: {$ref: '#/components/schemas/DateTime'}
+        updateTime: {$ref: '#/components/schemas/DateTime'}
+    DraftOptionGrantResponse:
+      type: object
+      additionalProperties: false
+      required: [draftOptionGrant]
+      properties:
+        draftOptionGrant: {$ref: '#/components/schemas/DraftOptionGrant'}

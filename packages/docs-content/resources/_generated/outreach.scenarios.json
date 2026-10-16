@@ -1,0 +1,23 @@
+{
+  "integration": "outreach",
+  "scenarios": [
+    {
+      "id": "outreach.acme-sequences.v1",
+      "counts": {
+        "prospects": 3,
+        "sequenceStates": 3,
+        "sequences": 2,
+        "tasks": 1
+      }
+    },
+    {
+      "id": "outreach.minimal.v1",
+      "counts": {
+        "prospects": 0,
+        "sequenceStates": 0,
+        "sequences": 0,
+        "tasks": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "vanta.minimal.v1",
+  "$resource": "vanta",
+  "$resourceVersion": "v1",
+  "state": {
+    "vendors": [],
+    "securityReviews": [],
+    "tests": [],
+    "entities": [],
+    "documents": [],
+    "uploads": []
+  }
+}

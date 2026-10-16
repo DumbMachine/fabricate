@@ -1,0 +1,14 @@
+{
+  "id": "googledrive-read",
+  "title": "Read a seeded Drive file",
+  "environment": "environments/acme-googledrive.yaml",
+  "environmentLabel": "Acme's Google Drive",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/googledrive-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-googledrive.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://www.googleapis.com/drive/v3/files/file-razorpay-settlement-2026-08-25",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://www.googleapis.com/drive/v3/files/file-razorpay-settlement-2026-08-25"
+  ]
+}

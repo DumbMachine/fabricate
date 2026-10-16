@@ -1,0 +1,19 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "docusign.minimal.v1",
+  "$resource": "docusign",
+  "$resourceVersion": "v2.1",
+  "state": {
+    "account": {
+      "accountId": "acct-acme",
+      "accountName": "Acme",
+      "externalAccountId": "acct-acme",
+      "currencyCode": "USD",
+      "planName": "Demo",
+      "createdDate": "2024-01-15T00:00:00.0000000Z"
+    },
+    "users": [],
+    "envelopes": []
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/greenhouse/scenario-v1.json",
+  "title": "Fabricate Greenhouse scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["users", "offices", "departments", "jobs", "jobStages", "candidates", "applications", "offers", "notes", "scorecards"],
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "firstName", "lastName", "name", "email", "emails", "employeeId", "disabled", "siteAdmin", "createdAt", "updatedAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "firstName": {"type": "string", "minLength": 1},
+          "lastName": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "email": {"type": "string", "format": "email"},
+          "emails": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "email"}},
+          "employeeId": {"type": "string"},
+          "disabled": {"type": "boolean"},
+          "siteAdmin": {"type": "boolean"},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "offices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "locationName"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "locationName": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "departments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "requisitionId", "notes", "confidential", "status", "createdAt", "openedAt", "closedAt", "updatedAt", "departmentId", "officeId", "hiringManagers", "recruiters", "coordinators", "sourcers", "responsibleRecruiterId"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "requisitionId": {"type": "string"},
+          "notes": {"type": "string"},
+          "confidential": {"type": "boolean"},
+          "status": {"type": "string", "enum": ["open", "closed", "draft"]},
+          "createdAt": {"type": "string", "minLength": 1},
+          "openedAt": {"type": "string", "minLength": 1},
+          "closedAt": {"type": "string"},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "departmentId": {"type": "string", "minLength": 1},
+          "officeId": {"type": "string", "minLength": 1},
+          "hiringManagers": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "recruiters": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "coordinators": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "sourcers": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "responsibleRecruiterId": {"type": "string"}
+        }
+      }
+    },
+    "jobStages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "jobId", "name", "priority", "active", "createdAt", "updatedAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "jobId": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "priority": {"type": "integer", "minimum": 0},
+          "active": {"type": "boolean"},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "firstName", "lastName", "company", "title", "createdAt", "updatedAt", "lastActivity", "isPrivate", "canEmail", "recruiterId", "emails", "phones", "tags", "attachments"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "firstName": {"type": "string", "minLength": 1},
+          "lastName": {"type": "string", "minLength": 1},
+          "company": {"type": "string"},
+          "title": {"type": "string"},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "lastActivity": {"type": "string", "minLength": 1},
+          "isPrivate": {"type": "boolean"},
+          "canEmail": {"type": "boolean"},
+          "recruiterId": {"type": "string", "minLength": 1},
+          "emails": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["value", "type"],
+              "properties": {
+                "value": {"type": "string", "format": "email"},
+                "type": {"type": "string", "enum": ["personal", "work", "other"]}
+              }
+            }
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["value", "type"],
+              "properties": {
+                "value": {"type": "string", "minLength": 1},
+                "type": {"type": "string", "enum": ["home", "work", "mobile", "skype", "other"]}
+              }
+            }
+          },
+          "tags": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["filename", "url", "type", "createdAt"],
+              "properties": {
+                "filename": {"type": "string", "minLength": 1},
+                "url": {"type": "string", "minLength": 1},
+                "type": {"type": "string", "enum": ["resume", "cover_letter", "offer_packet", "offer_letter", "take_home_test", "other"]},
+                "createdAt": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    },
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "candidateId", "jobId", "prospect", "status", "stageId", "appliedAt", "rejectedAt", "lastActivityAt", "recruiterId", "sourceId", "sourceName"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "candidateId": {"type": "string", "minLength": 1},
+          "jobId": {"type": "string", "minLength": 1},
+          "prospect": {"type": "boolean"},
+          "status": {"type": "string", "enum": ["active", "rejected", "hired", "converted"]},
+          "stageId": {"type": "string", "minLength": 1},
+          "appliedAt": {"type": "string", "minLength": 1},
+          "rejectedAt": {"type": "string"},
+          "lastActivityAt": {"type": "string", "minLength": 1},
+          "recruiterId": {"type": "string", "minLength": 1},
+          "sourceId": {"type": "string", "minLength": 1},
+          "sourceName": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "offers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "version", "applicationId", "jobId", "candidateId", "status", "createdAt", "updatedAt", "sentAt", "resolvedAt", "startsAt", "customFields"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "version": {"type": "integer", "minimum": 1},
+          "applicationId": {"type": "string", "minLength": 1},
+          "jobId": {"type": "string", "minLength": 1},
+          "candidateId": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["unresolved", "accepted", "rejected", "deprecated"]},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "sentAt": {"type": "string"},
+          "resolvedAt": {"type": "string"},
+          "startsAt": {"type": "string"},
+          "customFields": {"type": "object", "additionalProperties": {"type": "string"}}
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "candidateId", "userId", "body", "visibility", "createdAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "candidateId": {"type": "string", "minLength": 1},
+          "userId": {"type": "string", "minLength": 1},
+          "body": {"type": "string", "minLength": 1},
+          "visibility": {"type": "string", "enum": ["admin_only", "private", "public"]},
+          "createdAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "scorecards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "candidateId", "applicationId", "interview", "interviewStepId", "interviewStepName", "interviewedAt", "submittedBy", "interviewerId", "submittedAt", "overallRecommendation", "createdAt", "updatedAt", "attributes", "questions"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "candidateId": {"type": "string", "minLength": 1},
+          "applicationId": {"type": "string", "minLength": 1},
+          "interview": {"type": "string", "minLength": 1},
+          "interviewStepId": {"type": "string", "minLength": 1},
+          "interviewStepName": {"type": "string", "minLength": 1},
+          "interviewedAt": {"type": "string", "minLength": 1},
+          "submittedBy": {"type": "string", "minLength": 1},
+          "interviewerId": {"type": "string", "minLength": 1},
+          "submittedAt": {"type": "string", "minLength": 1},
+          "overallRecommendation": {"type": "string", "enum": ["definitely_not", "no", "yes", "strong_yes", "no_decision"]},
+          "createdAt": {"type": "string", "minLength": 1},
+          "updatedAt": {"type": "string", "minLength": 1},
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "type", "note", "rating"],
+              "properties": {
+                "name": {"type": "string", "minLength": 1},
+                "type": {"type": "string", "minLength": 1},
+                "note": {"type": "string"},
+                "rating": {"type": "string", "enum": ["definitely_not", "no", "mixed", "yes", "strong_yes", "no_decision"]}
+              }
+            }
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "question", "answer"],
+              "properties": {
+                "id": {"type": "string", "minLength": 1},
+                "question": {"type": "string", "minLength": 1},
+                "answer": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

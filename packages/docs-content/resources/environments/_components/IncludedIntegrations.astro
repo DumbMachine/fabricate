@@ -1,5 +1,6 @@
 ---
 import {formatScenarioCounts, loadScenarioCatalog, scenarioFacts} from "../../_components/generated";
+import {composioLogo} from "../../integrations/catalog";
 
 interface IncludedService {
   data: string;
@@ -13,9 +14,8 @@ interface IncludedService {
 
 const {services} = Astro.props as {services: IncludedService[]};
 const docsBase = (import.meta.env.BASE_URL || "/docs").replace(/\/$/, "");
-const logo = (resource: string, theme?: "dark") =>
-  `https://logos.composio.dev/api/${resource}${theme === "dark" ? "?theme=dark" : ""}`;
 const toDocsHref = (href: string) => (href.startsWith("http") ? href : `${docsBase}${href.startsWith("/") ? href : `/${href}`}`);
+const logo = (resource: string, theme?: "dark") => toDocsHref(composioLogo(resource, theme));
 const countsFor = (entry: IncludedService) =>
   formatScenarioCounts(scenarioFacts(loadScenarioCatalog(entry.resource), entry.scenario));
 ---
@@ -133,6 +133,12 @@ const countsFor = (entry: IncludedService) =>
   .logo-dark { display: none; }
   :global(:root[data-theme="dark"]) .logo-light { display: none; }
   :global(:root[data-theme="dark"]) .logo-dark { display: block; }
+  /* The marks have no dark variants, so dark-on-transparent marks such as
+     GitHub's would vanish on a dark chip. Dark mode keeps the chip light. */
+  :global(:root[data-theme="dark"]) .icons a,
+  :global(:root[data-theme="dark"]) .icon {
+    background: #f5f5f5;
+  }
   table {
     border-collapse: collapse;
     color: var(--fabricate-text);

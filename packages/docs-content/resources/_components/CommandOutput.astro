@@ -1,4 +1,5 @@
 ---
+import {rewriteFabricateGitRef} from "../../git-ref.ts";
 import SnapshotUnavailable from "./SnapshotUnavailable.astro";
 import {loadCommandExample} from "./generated";
 
@@ -12,7 +13,7 @@ const {example: provided, id, showCommand = true} = Astro.props as Props;
 const example = loadCommandExample(id, provided);
 const fab = import.meta.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const command = example
-  ? example.command.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`)
+  ? rewriteFabricateGitRef(example.command.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`))
   : "";
 
 const highlightJSON = (value: string) => {

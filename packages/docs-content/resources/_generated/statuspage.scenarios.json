@@ -1,0 +1,19 @@
+{
+  "integration": "statuspage",
+  "scenarios": [
+    {
+      "id": "statuspage.acme-status.v1",
+      "counts": {
+        "components": 2,
+        "incidents": 2
+      }
+    },
+    {
+      "id": "statuspage.minimal.v1",
+      "counts": {
+        "components": 0,
+        "incidents": 0
+      }
+    }
+  ]
+}

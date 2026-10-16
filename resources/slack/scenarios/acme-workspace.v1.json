@@ -1,0 +1,189 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "slack.acme-workspace.v1",
+  "$resource": "slack",
+  "$resourceVersion": "v2",
+  "state": {
+    "team": {
+      "id": "T-acme",
+      "name": "Acme",
+      "domain": "acme",
+      "url": "https://acme.slack.com/"
+    },
+    "currentUserId": "U-val",
+    "users": [
+      {
+        "id": "U-aisha",
+        "name": "aisha",
+        "realName": "Aisha Rahman",
+        "email": "aisha@acme.example",
+        "phone": "+91-80-4123-0102",
+        "title": "Finance",
+        "isOwner": false,
+        "isAdmin": false,
+        "isBot": false,
+        "deleted": false
+      },
+      {
+        "id": "U-iris",
+        "name": "iris",
+        "realName": "Iris Berg",
+        "email": "iris@acme.example",
+        "phone": "+91-80-4123-0107",
+        "title": "Legal",
+        "isOwner": false,
+        "isAdmin": false,
+        "isBot": false,
+        "deleted": false
+      },
+      {
+        "id": "U-leo",
+        "name": "leo",
+        "realName": "Leo Park",
+        "email": "leo@acme.example",
+        "phone": "+91-80-4123-0105",
+        "title": "Recruiting",
+        "isOwner": false,
+        "isAdmin": false,
+        "isBot": false,
+        "deleted": false
+      },
+      {
+        "id": "U-nina",
+        "name": "nina",
+        "realName": "Nina Kapoor",
+        "email": "nina@acme.example",
+        "phone": "+91-80-4123-0104",
+        "title": "HR",
+        "isOwner": false,
+        "isAdmin": false,
+        "isBot": false,
+        "deleted": false
+      },
+      {
+        "id": "U-ravi",
+        "name": "ravi",
+        "realName": "Ravi Mehta",
+        "email": "ravi@acme.example",
+        "phone": "+91-80-4123-0103",
+        "title": "Logistics",
+        "isOwner": false,
+        "isAdmin": false,
+        "isBot": false,
+        "deleted": false
+      },
+      {
+        "id": "U-sam",
+        "name": "sam",
+        "realName": "Sam Adeyemi",
+        "email": "sam@acme.example",
+        "phone": "+91-80-4123-0106",
+        "title": "Support",
+        "isOwner": false,
+        "isAdmin": false,
+        "isBot": false,
+        "deleted": false
+      },
+      {
+        "id": "U-val",
+        "name": "val",
+        "realName": "Val Ortega",
+        "email": "val@acme.example",
+        "phone": "+91-80-4123-0101",
+        "title": "Operator",
+        "isOwner": true,
+        "isAdmin": true,
+        "isBot": false,
+        "deleted": false
+      }
+    ],
+    "channels": [
+      {
+        "id": "C-finance",
+        "name": "finance",
+        "creator": "U-val",
+        "isPrivate": false,
+        "isArchived": false,
+        "topic": "Shop refunds are not SaaS invoices",
+        "purpose": "Acme finance",
+        "created": 1768467600,
+        "members": ["U-aisha", "U-val"]
+      },
+      {
+        "id": "C-fulfillment",
+        "name": "fulfillment",
+        "creator": "U-val",
+        "isPrivate": false,
+        "isArchived": false,
+        "topic": "Acme Goods shipments",
+        "purpose": "Warehouse and carrier updates",
+        "created": 1768467600,
+        "members": ["U-ravi", "U-sam", "U-val"]
+      },
+      {
+        "id": "C-hiring",
+        "name": "hiring",
+        "creator": "U-val",
+        "isPrivate": false,
+        "isArchived": false,
+        "topic": "Open roles",
+        "purpose": "Recruiting",
+        "created": 1768467600,
+        "members": ["U-leo", "U-nina", "U-val"]
+      },
+      {
+        "id": "C-incidents",
+        "name": "incidents",
+        "creator": "U-val",
+        "isPrivate": false,
+        "isArchived": false,
+        "topic": "Production incidents",
+        "purpose": "Checkout, SSO, and delivery incidents",
+        "created": 1768467600,
+        "members": ["U-sam", "U-val"]
+      },
+      {
+        "id": "C-support",
+        "name": "support",
+        "creator": "U-val",
+        "isPrivate": false,
+        "isArchived": false,
+        "topic": "Acme App and shop support",
+        "purpose": "Customer support",
+        "created": 1768467600,
+        "members": ["U-sam", "U-val"]
+      }
+    ],
+    "messages": [
+      {
+        "channel": "C-finance",
+        "user": "U-aisha",
+        "text": "rfnd_Acme10484 is the Acme Goods shop refund. INV-4812 is a different record, the SaaS duplicate invoice, not that refund.",
+        "ts": "1787407800.000000",
+        "threadTs": ""
+      },
+      {
+        "channel": "C-fulfillment",
+        "user": "U-sam",
+        "text": "NDR on Acme Goods #10483. Customer was not available.",
+        "ts": "1787592600.000000",
+        "threadTs": ""
+      },
+      {
+        "channel": "C-fulfillment",
+        "user": "U-ravi",
+        "text": "Acme Goods #10482 is in transit with Delhivery. AWB SR10482AWB.",
+        "ts": "1787652300.000000",
+        "threadTs": ""
+      },
+      {
+        "channel": "C-incidents",
+        "user": "U-sam",
+        "text": "Contoso SAML login loop for org slug contoso-eu.",
+        "ts": "1787733600.000000",
+        "threadTs": ""
+      }
+    ]
+  }
+}

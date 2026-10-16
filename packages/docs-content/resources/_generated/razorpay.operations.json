@@ -1,0 +1,90 @@
+{
+  "integration": "razorpay",
+  "api": "Razorpay v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/orders",
+      "operationId": "RazorpayOrdersList",
+      "summary": "Fetch all orders."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orders",
+      "operationId": "RazorpayOrdersCreate",
+      "summary": "Create an order."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orders/{id}",
+      "operationId": "RazorpayOrdersFetch",
+      "summary": "Fetch an order by id."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orders/{id}/payments",
+      "operationId": "RazorpayOrdersFetchPayments",
+      "summary": "Fetch payments for an order."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_links",
+      "operationId": "RazorpayPaymentLinksList",
+      "summary": "Fetch all standard payment links."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_links",
+      "operationId": "RazorpayPaymentLinksCreate",
+      "summary": "Create a standard payment link."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_links/{id}",
+      "operationId": "RazorpayPaymentLinksFetch",
+      "summary": "Fetch a standard payment link by id."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_links/{id}/cancel",
+      "operationId": "RazorpayPaymentLinksCancel",
+      "summary": "Cancel a standard payment link."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payments",
+      "operationId": "RazorpayPaymentsList",
+      "summary": "Fetch all payments."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payments/{id}",
+      "operationId": "RazorpayPaymentsFetch",
+      "summary": "Fetch a payment by id."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payments/{id}/refund",
+      "operationId": "RazorpayPaymentsRefund",
+      "summary": "Create a normal refund for a captured payment."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payments/{id}/refunds",
+      "operationId": "RazorpayPaymentsFetchRefunds",
+      "summary": "Fetch refunds for a payment."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/refunds",
+      "operationId": "RazorpayRefundsList",
+      "summary": "Fetch all refunds."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/refunds/{id}",
+      "operationId": "RazorpayRefundsFetch",
+      "summary": "Fetch a refund by id."
+    }
+  ]
+}

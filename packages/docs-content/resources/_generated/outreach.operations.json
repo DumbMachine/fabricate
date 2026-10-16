@@ -1,0 +1,84 @@
+{
+  "integration": "outreach",
+  "api": "Outreach v2",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/v2/prospects",
+      "operationId": "ListProspects",
+      "summary": "Get a collection of prospects."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/prospects",
+      "operationId": "CreateProspect",
+      "summary": "Create a prospect."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/prospects/{id}",
+      "operationId": "GetProspect",
+      "summary": "Get a prospect by id."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/sequenceStates",
+      "operationId": "ListSequenceStates",
+      "summary": "Get a collection of sequence states."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/sequenceStates",
+      "operationId": "CreateSequenceState",
+      "summary": "Add a prospect to a sequence."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/sequenceStates/{id}",
+      "operationId": "GetSequenceState",
+      "summary": "Get a sequence state by id."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/sequences",
+      "operationId": "ListSequences",
+      "summary": "Get a collection of sequences."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/sequences",
+      "operationId": "CreateSequence",
+      "summary": "Create a sequence."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/sequences/{id}",
+      "operationId": "GetSequence",
+      "summary": "Get a sequence by id."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/tasks",
+      "operationId": "ListTasks",
+      "summary": "Get a collection of tasks."
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/tasks",
+      "operationId": "CreateTask",
+      "summary": "Create a task."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/tasks/{id}",
+      "operationId": "GetTask",
+      "summary": "Get a task by id."
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v2/tasks/{id}",
+      "operationId": "UpdateTask",
+      "summary": "Update a task. Set completed to mark the task complete."
+    }
+  ]
+}

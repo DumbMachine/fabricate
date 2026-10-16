@@ -1,0 +1,711 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Vanta API
+  version: v1
+  description: >-
+    Curated Manage Vanta API surface for vendors, tests, and documents.
+    Paths are the public paths on api.vanta.com. Undeclared Vanta operations
+    are not advertised. Field names follow the official reference retrieved
+    on 2026-10-03.
+servers:
+  - url: https://api.vanta.com
+    description: Vanta (Commercial)
+security:
+  - bearerAuth: []
+tags:
+  - name: Vendors
+  - name: Tests
+  - name: Documents
+paths:
+  /v1/vendors:
+    get:
+      operationId: ListVendors
+      summary: List vendors
+      description: List of vendors.
+      tags: [Vendors]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageCursor'
+        - name: name
+          in: query
+          required: false
+          description: Filter vendors by name (case-insensitive, partial match).
+          schema: {type: string}
+        - name: statusMatchesAny
+          in: query
+          required: false
+          description: Filter vendors by status (can specify multiple).
+          style: form
+          explode: true
+          schema:
+            type: array
+            items: {$ref: '#/components/schemas/VendorStatus'}
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/VendorPage'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/vendors/{vendorId}:
+    get:
+      operationId: GetVendor
+      summary: Get vendor by ID
+      description: Get a vendor.
+      tags: [Vendors]
+      parameters:
+        - $ref: '#/components/parameters/VendorId'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Vendor'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/vendors/{vendorId}/security-reviews:
+    get:
+      operationId: GetSecurityReviewsByVendorId
+      summary: List security reviews by vendor ID
+      description: Returns a vendor's security reviews.
+      tags: [Vendors]
+      parameters:
+        - $ref: '#/components/parameters/VendorId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageCursor'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SecurityReviewPage'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/tests:
+    get:
+      operationId: ListTests
+      summary: List tests
+      description: Lists all tests based on applied filters.
+      tags: [Tests]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageCursor'
+        - name: statusFilter
+          in: query
+          required: false
+          description: Filter tests by test status.
+          schema: {$ref: '#/components/schemas/TestStatus'}
+        - name: frameworkFilter
+          in: query
+          required: false
+          description: Filter tests by framework.
+          schema: {type: string}
+        - name: integrationFilter
+          in: query
+          required: false
+          description: Filter tests by integration.
+          schema: {type: string}
+        - name: controlFilter
+          in: query
+          required: false
+          description: Filter tests by control ID.
+          schema: {type: string}
+        - name: ownerFilter
+          in: query
+          required: false
+          description: Filter tests by owner ID.
+          schema: {type: string}
+        - name: categoryFilter
+          in: query
+          required: false
+          description: Filter tests by category.
+          schema: {$ref: '#/components/schemas/TestCategory'}
+        - name: isInRollout
+          in: query
+          required: false
+          description: Filter tests by rollout status.
+          schema: {type: boolean}
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TestPage'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/tests/{testId}:
+    get:
+      operationId: GetTest
+      summary: Get test by ID
+      description: Gets a test by ID.
+      tags: [Tests]
+      parameters:
+        - $ref: '#/components/parameters/TestId'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Test'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/tests/{testId}/entities:
+    get:
+      operationId: GetTestEntities
+      summary: Get test entities by test ID
+      description: >-
+        Gets tested items for a test. entityStatus defaults to FAILING.
+      tags: [Tests]
+      parameters:
+        - $ref: '#/components/parameters/TestId'
+        - name: entityStatus
+          in: query
+          required: false
+          description: Entity status. Defaults to FAILING.
+          schema: {$ref: '#/components/schemas/EntityStatus'}
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageCursor'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TestEntityPage'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/documents:
+    get:
+      operationId: ListDocuments
+      summary: List documents
+      description: List documents.
+      tags: [Documents]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageCursor'
+        - name: frameworkMatchesAny
+          in: query
+          required: false
+          description: Documents matching one of the provided framework values.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items: {type: string}
+        - name: statusMatchesAny
+          in: query
+          required: false
+          description: Documents matching one of the provided status values.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items: {$ref: '#/components/schemas/DocumentStatus'}
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/DocumentPage'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: CreateDocument
+      summary: Create a custom document
+      description: Create a custom document.
+      tags: [Documents]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateDocumentInput'}
+      responses:
+        '201':
+          description: Document created
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Document'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/documents/{documentId}:
+    get:
+      operationId: GetDocument
+      summary: Get document by ID
+      description: Get a document by ID.
+      tags: [Documents]
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Document'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/documents/{documentId}/uploads:
+    get:
+      operationId: ListFilesForDocument
+      summary: List document's uploads
+      description: List the uploaded files for a document.
+      tags: [Documents]
+      parameters:
+        - $ref: '#/components/parameters/DocumentId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageCursor'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/UploadedFilePage'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  parameters:
+    PageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema: {$ref: '#/components/schemas/PageSize'}
+    PageCursor:
+      name: pageCursor
+      in: query
+      required: false
+      schema: {$ref: '#/components/schemas/PageCursor'}
+    VendorId:
+      name: vendorId
+      in: path
+      required: true
+      schema: {type: string}
+    TestId:
+      name: testId
+      in: path
+      required: true
+      schema: {type: string}
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      schema: {type: string}
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [message]
+      properties:
+        message: {type: string}
+    PageSize:
+      type: integer
+      format: int32
+      default: 10
+      minimum: 1
+      maximum: 100
+      description: Maximum number of items returned in one response.
+    PageCursor:
+      type: string
+      description: >-
+        Cursor of the last item on the previous page. The next page starts
+        at the item immediately after this cursor.
+    PageInfo:
+      type: object
+      additionalProperties: false
+      required: [endCursor, hasNextPage, hasPreviousPage, startCursor]
+      properties:
+        endCursor: {type: string, nullable: true}
+        hasNextPage: {type: boolean}
+        hasPreviousPage: {type: boolean}
+        startCursor: {type: string, nullable: true}
+    VendorStatus:
+      type: string
+      description: MANAGED, ARCHIVED, or IN_PROCUREMENT.
+      enum: [MANAGED, ARCHIVED, IN_PROCUREMENT]
+    VendorRiskLevel:
+      type: string
+      enum: [CRITICAL, HIGH, LOW, MEDIUM, UNSCORED]
+    VendorDecisionStatus:
+      type: string
+      enum: [APPROVED, CONDITIONALLY_APPROVED, NOT_APPROVED]
+    VendorDecision:
+      type: object
+      additionalProperties: false
+      required: [status, lastUpdatedAt]
+      properties:
+        status: {$ref: '#/components/schemas/VendorDecisionStatus'}
+        lastUpdatedAt: {type: string, format: date-time}
+    VendorCategory:
+      type: object
+      additionalProperties: false
+      required: [displayName]
+      properties:
+        displayName: {type: string}
+    Vendor:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - websiteUrl
+        - servicesProvided
+        - additionalNotes
+        - status
+        - inherentRiskLevel
+        - residualRiskLevel
+        - latestDecision
+        - category
+        - securityOwnerUserId
+        - businessOwnerUserId
+        - nextSecurityReviewDueDate
+        - lastSecurityReviewCompletionDate
+        - vendorHeadquarters
+        - isVisibleToAuditors
+      properties:
+        id: {type: string, description: The vendor's unique ID.}
+        name: {type: string, description: The vendor's display name.}
+        websiteUrl: {type: string, nullable: true}
+        servicesProvided: {type: string, nullable: true}
+        additionalNotes: {type: string, nullable: true}
+        status: {$ref: '#/components/schemas/VendorStatus'}
+        inherentRiskLevel: {$ref: '#/components/schemas/VendorRiskLevel'}
+        residualRiskLevel: {$ref: '#/components/schemas/VendorRiskLevel'}
+        latestDecision:
+          nullable: true
+          allOf: [{$ref: '#/components/schemas/VendorDecision'}]
+          description: Null when no decision has been made.
+        category:
+          nullable: true
+          allOf: [{$ref: '#/components/schemas/VendorCategory'}]
+        securityOwnerUserId: {type: string, nullable: true}
+        businessOwnerUserId: {type: string, nullable: true}
+        nextSecurityReviewDueDate: {type: string, format: date-time, nullable: true}
+        lastSecurityReviewCompletionDate: {type: string, format: date-time, nullable: true}
+        vendorHeadquarters: {type: string, nullable: true, description: ISO 3166-1 alpha-3 country code.}
+        isVisibleToAuditors: {type: boolean, nullable: true}
+    VendorPage:
+      type: object
+      additionalProperties: false
+      required: [results]
+      properties:
+        results: {$ref: '#/components/schemas/VendorResults'}
+    VendorResults:
+      type: object
+      additionalProperties: false
+      required: [data, pageInfo]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/Vendor'}
+        pageInfo: {$ref: '#/components/schemas/PageInfo'}
+    AssessmentOwnerType:
+      type: string
+      enum: [USER, TEAM]
+    AssessmentOwner:
+      type: object
+      additionalProperties: false
+      required: [id, type, displayName, email]
+      properties:
+        id: {type: string}
+        type: {$ref: '#/components/schemas/AssessmentOwnerType'}
+        displayName: {type: string, nullable: true}
+        email: {type: string, nullable: true}
+    SecurityReview:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - vendorId
+        - decisionNotes
+        - comments
+        - completedByUserId
+        - startDate
+        - dueDate
+        - completionDate
+        - decision
+        - owner
+      properties:
+        id: {type: string}
+        vendorId: {type: string}
+        decisionNotes: {type: string, nullable: true}
+        comments: {type: string, nullable: true}
+        completedByUserId: {type: string, nullable: true}
+        startDate: {type: string, format: date-time, nullable: true}
+        dueDate: {type: string, format: date-time, nullable: true}
+        completionDate: {type: string, format: date-time, nullable: true}
+        decision:
+          nullable: true
+          allOf: [{$ref: '#/components/schemas/VendorDecision'}]
+        owner:
+          nullable: true
+          allOf: [{$ref: '#/components/schemas/AssessmentOwner'}]
+    SecurityReviewPage:
+      type: object
+      additionalProperties: false
+      required: [results]
+      properties:
+        results: {$ref: '#/components/schemas/SecurityReviewResults'}
+    SecurityReviewResults:
+      type: object
+      additionalProperties: false
+      required: [data, pageInfo]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/SecurityReview'}
+        pageInfo: {$ref: '#/components/schemas/PageInfo'}
+    TestStatus:
+      type: string
+      enum: [OK, DEACTIVATED, NEEDS_ATTENTION, IN_PROGRESS, INVALID, NOT_APPLICABLE]
+    TestCategory:
+      type: string
+      enum:
+        - ACCOUNTS_ACCESS
+        - ACCOUNT_SECURITY
+        - ACCOUNT_SETUP
+        - COMPUTERS
+        - CUSTOM
+        - DATA_STORAGE
+        - EMPLOYEES
+        - INFRASTRUCTURE
+        - IT
+        - LOGGING
+        - MONITORING_ALERTS
+        - PEOPLE
+        - POLICIES
+        - RISK_ANALYSIS
+        - SECURITY_ALERT_MANAGEMENT
+        - SOFTWARE_DEVELOPMENT
+        - VENDORS
+        - VULNERABILITY_MANAGEMENT
+    DocumentAndTestCategory:
+      type: string
+      enum:
+        - Accounts access
+        - Account security
+        - Account setup
+        - Computers
+        - Custom
+        - Data storage
+        - Employees
+        - Infrastructure
+        - IT
+        - Logging
+        - Monitoring alerts
+        - People
+        - Policies
+        - Risk analysis
+        - Software development
+        - CSPM alert management
+        - Vendors
+        - Vulnerability management
+    TestVersion:
+      type: object
+      additionalProperties: false
+      required: [major, minor]
+      properties:
+        major: {type: number, format: double}
+        minor: {type: number, format: double}
+    DeactivatedStatusInfo:
+      type: object
+      additionalProperties: false
+      required: [isDeactivated, deactivatedReason, lastUpdatedDate]
+      properties:
+        isDeactivated: {type: boolean}
+        deactivatedReason: {type: string, nullable: true}
+        lastUpdatedDate: {type: string, format: date-time, nullable: true}
+    TestRemediationStatus:
+      type: string
+      enum: [DISABLED, DUE_SOON, INVALID, IN_PROGRESS, NA, NEEDS_WORK, OVERDUE, PASS]
+    RemediationStatusInfo:
+      type: object
+      additionalProperties: false
+      required: [status, soonestRemediateByDate, itemCount]
+      properties:
+        status: {$ref: '#/components/schemas/TestRemediationStatus'}
+        soonestRemediateByDate: {type: string, format: date-time, nullable: true}
+        itemCount: {type: number, format: double}
+    Owner:
+      type: object
+      additionalProperties: false
+      required: [id, displayName, emailAddress]
+      properties:
+        id: {type: string}
+        displayName: {type: string}
+        emailAddress: {type: string}
+    Test:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - lastTestRunDate
+        - latestFlipDate
+        - description
+        - failureDescription
+        - remediationDescription
+        - version
+        - category
+        - integrations
+        - status
+        - deactivatedStatusInfo
+        - remediationStatusInfo
+        - owner
+      properties:
+        id: {type: string}
+        name: {type: string}
+        lastTestRunDate: {type: string, format: date-time}
+        latestFlipDate: {type: string, format: date-time, nullable: true}
+        description: {type: string}
+        failureDescription: {type: string}
+        remediationDescription: {type: string}
+        version: {$ref: '#/components/schemas/TestVersion'}
+        category: {$ref: '#/components/schemas/DocumentAndTestCategory'}
+        integrations:
+          type: array
+          items: {type: string}
+        status: {$ref: '#/components/schemas/TestStatus'}
+        deactivatedStatusInfo: {$ref: '#/components/schemas/DeactivatedStatusInfo'}
+        remediationStatusInfo: {$ref: '#/components/schemas/RemediationStatusInfo'}
+        owner:
+          nullable: true
+          allOf: [{$ref: '#/components/schemas/Owner'}]
+    TestPage:
+      type: object
+      additionalProperties: false
+      required: [results]
+      properties:
+        results: {$ref: '#/components/schemas/TestResults'}
+    TestResults:
+      type: object
+      additionalProperties: false
+      required: [data, pageInfo]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/Test'}
+        pageInfo: {$ref: '#/components/schemas/PageInfo'}
+    EntityStatus:
+      type: string
+      enum: [FAILING, DEACTIVATED]
+    TestResourceEntity:
+      type: object
+      additionalProperties: false
+      required: [id, entityStatus, displayName, responseType, deactivatedReason, lastUpdatedDate, createdDate]
+      properties:
+        id: {type: string}
+        entityStatus: {$ref: '#/components/schemas/EntityStatus'}
+        displayName: {type: string}
+        responseType: {type: string}
+        deactivatedReason: {type: string, nullable: true}
+        lastUpdatedDate: {type: string, format: date-time}
+        createdDate: {type: string, format: date-time}
+    TestEntityPage:
+      type: object
+      additionalProperties: false
+      required: [results]
+      properties:
+        results: {$ref: '#/components/schemas/TestEntityResults'}
+    TestEntityResults:
+      type: object
+      additionalProperties: false
+      required: [data, pageInfo]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/TestResourceEntity'}
+        pageInfo: {$ref: '#/components/schemas/PageInfo'}
+    DocumentStatus:
+      type: string
+      enum: ["Needs document", "Needs update", "Not relevant", "OK"]
+    TimeSensitivity:
+      type: string
+      enum: [MOST_RECENT, DURING_AUDIT_WINDOW]
+    RecurrenceDuration:
+      type: string
+      enum: [P0D, P1D, P1W, P1M, P3M, P6M, P1Y, P2Y]
+    ReminderWindow:
+      type: string
+      enum: [P0D, P1D, P1W, P1M, P3M]
+    CreateDocumentInput:
+      type: object
+      additionalProperties: false
+      required: [title, description, timeSensitivity, cadence, reminderWindow, isSensitive]
+      properties:
+        title: {type: string}
+        description: {type: string}
+        timeSensitivity: {$ref: '#/components/schemas/TimeSensitivity'}
+        cadence: {$ref: '#/components/schemas/RecurrenceDuration'}
+        reminderWindow: {$ref: '#/components/schemas/ReminderWindow'}
+        isSensitive: {type: boolean}
+    Document:
+      type: object
+      additionalProperties: false
+      required: [id, ownerId, category, description, isSensitive, title, uploadStatus, uploadStatusDate, url]
+      properties:
+        id: {type: string}
+        ownerId: {type: string, nullable: true}
+        category: {$ref: '#/components/schemas/DocumentAndTestCategory'}
+        description: {type: string}
+        isSensitive: {type: boolean}
+        title: {type: string}
+        uploadStatus: {$ref: '#/components/schemas/DocumentStatus'}
+        uploadStatusDate: {type: string, format: date-time, nullable: true}
+        url: {type: string, nullable: true}
+    DocumentPage:
+      type: object
+      additionalProperties: false
+      required: [results]
+      properties:
+        results: {$ref: '#/components/schemas/DocumentResults'}
+    DocumentResults:
+      type: object
+      additionalProperties: false
+      required: [data, pageInfo]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/Document'}
+        pageInfo: {$ref: '#/components/schemas/PageInfo'}
+    UploadedByType:
+      type: string
+      enum: [USER, APPLICATION]
+    UploadedBy:
+      type: object
+      additionalProperties: false
+      required: [id, type]
+      properties:
+        id: {type: string}
+        type: {$ref: '#/components/schemas/UploadedByType'}
+    UploadedFile:
+      type: object
+      additionalProperties: false
+      required: [id, fileName, title, description, mimeType, uploadedBy, creationDate, updatedDate, deletionDate, effectiveDate, url]
+      properties:
+        id: {type: string}
+        fileName: {type: string, nullable: true}
+        title: {type: string}
+        description: {type: string, nullable: true}
+        mimeType: {type: string}
+        uploadedBy:
+          nullable: true
+          allOf: [{$ref: '#/components/schemas/UploadedBy'}]
+        creationDate: {type: string, format: date-time}
+        updatedDate: {type: string, format: date-time}
+        deletionDate: {type: string, format: date-time, nullable: true}
+        effectiveDate: {type: string, format: date-time, nullable: true}
+        url: {type: string}
+    UploadedFilePage:
+      type: object
+      additionalProperties: false
+      required: [results]
+      properties:
+        results: {$ref: '#/components/schemas/UploadedFileResults'}
+    UploadedFileResults:
+      type: object
+      additionalProperties: false
+      required: [data, pageInfo]
+      properties:
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/UploadedFile'}
+        pageInfo: {$ref: '#/components/schemas/PageInfo'}
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Synthetic bearer token injected by Fabricate. Production Vanta uses an OAuth bearer from POST /oauth/token.

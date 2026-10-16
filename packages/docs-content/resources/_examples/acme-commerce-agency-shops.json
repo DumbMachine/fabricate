@@ -1,0 +1,14 @@
+{
+  "id": "acme-commerce-agency-shops",
+  "title": "Read three shops, the Northwind payment, and the affiliate action",
+  "environment": "environments/acme-commerce-agency.yaml",
+  "environmentLabel": "Acme Commerce Agency",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/acme-commerce-agency-shops.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-commerce-agency.yaml \\\n  | fab run /dev/stdin --proxy -- sh -c '\n      curl -sS https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json\n      echo\n      curl -sS https://northwind-market.myshopify.com/admin/api/2024-10/orders/10490.json\n      echo\n      curl -sS https://tinyshop.myshopify.com/admin/api/2024-10/orders/10491.json\n      echo\n      curl -sS https://api.razorpay.com/v1/payments/pay_NW10490\n      echo\n      curl -sS -H \"Accept: application/json\" \"https://api.impact.com/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482\"\n    '",
+  "argv": [
+    "sh",
+    "-c",
+    "curl -sS https://acme-goods.myshopify.com/admin/api/2024-10/orders/10482.json\necho\ncurl -sS https://northwind-market.myshopify.com/admin/api/2024-10/orders/10490.json\necho\ncurl -sS https://tinyshop.myshopify.com/admin/api/2024-10/orders/10491.json\necho\ncurl -sS https://api.razorpay.com/v1/payments/pay_NW10490\necho\ncurl -sS -H \"Accept: application/json\" \"https://api.impact.com/Advertisers/acct-acme/Actions?CampaignId=1001&Oid=10482\""
+  ]
+}

@@ -1,0 +1,569 @@
+openapi: 3.0.3
+info:
+  title: Google Drive API
+  version: v3
+  description: >-
+    Curated Google Drive API v3 contract supported by Fabricate. Paths are the
+    public paths on www.googleapis.com. Field names are taken from the pinned
+    Drive v3 discovery conversion. Undeclared Drive operations are not
+    advertised.
+servers:
+  - url: https://www.googleapis.com
+security:
+  - bearerAuth: []
+tags:
+  - name: about
+  - name: files
+  - name: permissions
+paths:
+  /drive/v3/about:
+    get:
+      operationId: drive.about.get
+      summary: Gets information about the user, the user's Drive, and system capabilities.
+      tags: [about]
+      responses:
+        '200':
+          description: Drive about resource.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/About'}
+        default: {$ref: '#/components/responses/Error'}
+  /drive/v3/files:
+    get:
+      operationId: drive.files.list
+      summary: Lists the user's files.
+      description: >-
+        Accepts the q parameter. When orderBy is omitted, results are ordered
+        by name, then id. Trashed files are included unless q excludes them.
+      tags: [files]
+      parameters:
+        - $ref: '#/components/parameters/Corpora'
+        - $ref: '#/components/parameters/DriveId'
+        - $ref: '#/components/parameters/IncludeItemsFromAllDrives'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/Spaces'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+        - $ref: '#/components/parameters/SupportsTeamDrives'
+      responses:
+        '200':
+          description: File list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/FileList'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: drive.files.create
+      summary: Creates a file.
+      tags: [files]
+      parameters:
+        - $ref: '#/components/parameters/IgnoreDefaultVisibility'
+        - $ref: '#/components/parameters/KeepRevisionForever'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/File'}
+      responses:
+        '200':
+          description: Created file.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/File'}
+        default: {$ref: '#/components/responses/Error'}
+  /drive/v3/files/{fileId}:
+    parameters:
+      - $ref: '#/components/parameters/FileId'
+    get:
+      operationId: drive.files.get
+      summary: Gets a file's metadata by ID.
+      tags: [files]
+      parameters:
+        - $ref: '#/components/parameters/AcknowledgeAbuse'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+        - $ref: '#/components/parameters/SupportsTeamDrives'
+      responses:
+        '200':
+          description: File metadata.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/File'}
+        default: {$ref: '#/components/responses/Error'}
+    patch:
+      operationId: drive.files.update
+      summary: Updates a file's metadata.
+      description: >-
+        Parents are changed with addParents and removeParents. The parents
+        field on the JSON body is ignored.
+      tags: [files]
+      parameters:
+        - $ref: '#/components/parameters/AddParents'
+        - $ref: '#/components/parameters/RemoveParents'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/File'}
+      responses:
+        '200':
+          description: Updated file.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/File'}
+        default: {$ref: '#/components/responses/Error'}
+    delete:
+      operationId: drive.files.delete
+      summary: Permanently deletes a file owned by the user.
+      tags: [files]
+      parameters:
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      responses:
+        '204':
+          description: The file was permanently deleted.
+        default: {$ref: '#/components/responses/Error'}
+  /drive/v3/files/{fileId}/copy:
+    post:
+      operationId: drive.files.copy
+      summary: Creates a copy of a file and applies any requested updates with patch semantics.
+      tags: [files]
+      parameters:
+        - $ref: '#/components/parameters/FileId'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/File'}
+      responses:
+        '200':
+          description: Copied file.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/File'}
+        default: {$ref: '#/components/responses/Error'}
+  /drive/v3/files/{fileId}/permissions:
+    parameters:
+      - $ref: '#/components/parameters/FileId'
+    get:
+      operationId: drive.permissions.list
+      summary: Lists a file's permissions.
+      tags: [permissions]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageToken'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      responses:
+        '200':
+          description: Permission list.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PermissionList'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: drive.permissions.create
+      summary: Creates a permission for a file.
+      tags: [permissions]
+      parameters:
+        - $ref: '#/components/parameters/SendNotificationEmail'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Permission'}
+      responses:
+        '200':
+          description: Created permission.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Permission'}
+        default: {$ref: '#/components/responses/Error'}
+  /drive/v3/files/{fileId}/permissions/{permissionId}:
+    get:
+      operationId: drive.permissions.get
+      summary: Gets a permission by ID.
+      tags: [permissions]
+      parameters:
+        - $ref: '#/components/parameters/FileId'
+        - $ref: '#/components/parameters/PermissionId'
+        - $ref: '#/components/parameters/SupportsAllDrives'
+      responses:
+        '200':
+          description: Permission.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Permission'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Environment- and service-scoped synthetic bearer token.
+  parameters:
+    FileId:
+      name: fileId
+      in: path
+      required: true
+      description: The ID of the file.
+      schema: {type: string, minLength: 1}
+    PermissionId:
+      name: permissionId
+      in: path
+      required: true
+      description: The ID of the permission.
+      schema: {type: string, minLength: 1}
+    Query:
+      name: q
+      in: query
+      description: >-
+        A query for filtering the file results. Supported clauses are
+        name, mimeType, and description equality or contains; fullText
+        contains; trashed and starred equality; and 'id' in parents,
+        combined with and.
+      schema: {type: string}
+    PageSize:
+      name: pageSize
+      in: query
+      description: >-
+        The maximum number of files to return. The maximum value is 1000.
+        When omitted, files.list returns the full My Drive list.
+      schema: {type: integer, minimum: 1, maximum: 1000}
+    PageToken:
+      name: pageToken
+      in: query
+      description: The token for continuing a previous list request on the next page.
+      schema: {type: string}
+    OrderBy:
+      name: orderBy
+      in: query
+      description: >-
+        A comma-separated list of sort keys. Valid keys are createdTime,
+        folder, modifiedByMeTime, modifiedTime, name, quotaBytesUsed, and
+        starred. Each key sorts ascending unless suffixed with desc.
+      schema: {type: string}
+    Corpora:
+      name: corpora
+      in: query
+      description: >-
+        Specifies a collection of items to which the query applies. Supported
+        values in this contract are user and drive.
+      schema: {type: string}
+    DriveId:
+      name: driveId
+      in: query
+      description: ID of the shared drive to search.
+      schema: {type: string}
+    Spaces:
+      name: spaces
+      in: query
+      description: A comma-separated list of spaces to query. Supported value is drive.
+      schema: {type: string}
+    IncludeItemsFromAllDrives:
+      name: includeItemsFromAllDrives
+      in: query
+      description: Whether both My Drive and shared drive items should be included in results.
+      schema: {type: boolean}
+    SupportsAllDrives:
+      name: supportsAllDrives
+      in: query
+      description: Whether the requesting application supports both My Drives and shared drives.
+      schema: {type: boolean}
+    SupportsTeamDrives:
+      name: supportsTeamDrives
+      in: query
+      description: 'Deprecated: Use supportsAllDrives instead.'
+      schema: {type: boolean}
+    AcknowledgeAbuse:
+      name: acknowledgeAbuse
+      in: query
+      description: Whether the user is acknowledging the risk of downloading known malware.
+      schema: {type: boolean}
+    IgnoreDefaultVisibility:
+      name: ignoreDefaultVisibility
+      in: query
+      description: Whether to ignore the domain's default visibility settings for the created file.
+      schema: {type: boolean}
+    KeepRevisionForever:
+      name: keepRevisionForever
+      in: query
+      description: Whether to set the keepForever field in the new head revision.
+      schema: {type: boolean}
+    AddParents:
+      name: addParents
+      in: query
+      description: A comma-separated list of parent IDs to add.
+      schema: {type: string}
+    RemoveParents:
+      name: removeParents
+      in: query
+      description: A comma-separated list of parent IDs to remove.
+      schema: {type: string}
+    SendNotificationEmail:
+      name: sendNotificationEmail
+      in: query
+      description: Whether to send a notification email when sharing to users or groups.
+      schema: {type: boolean}
+  responses:
+    Error:
+      description: Google Drive error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorEnvelope'}
+  schemas:
+    About:
+      type: object
+      additionalProperties: false
+      required: [kind, user, storageQuota, maxUploadSize, canCreateDrives, appInstalled, folderColorPalette]
+      properties:
+        kind:
+          type: string
+          description: 'Identifies what kind of resource this is. Value: the fixed string "drive#about".'
+        user: {$ref: '#/components/schemas/User'}
+        storageQuota: {$ref: '#/components/schemas/StorageQuota'}
+        maxUploadSize:
+          type: string
+          description: The maximum upload size in bytes.
+        canCreateDrives:
+          type: boolean
+          description: Whether the user can create shared drives.
+        appInstalled:
+          type: boolean
+          description: Whether the user has installed the requesting app.
+        folderColorPalette:
+          type: array
+          description: The currently supported folder colors as RGB hex strings.
+          items: {type: string}
+    StorageQuota:
+      type: object
+      additionalProperties: false
+      required: [limit, usage, usageInDrive, usageInDriveTrash]
+      description: The user's storage quota limits and usage. All fields are measured in bytes.
+      properties:
+        limit:
+          type: string
+          description: The usage limit, if applicable, in bytes.
+        usage:
+          type: string
+          description: The total usage across all services, in bytes.
+        usageInDrive:
+          type: string
+          description: The usage by all files in Google Drive, in bytes.
+        usageInDriveTrash:
+          type: string
+          description: The usage by trashed files in Google Drive, in bytes.
+    User:
+      type: object
+      additionalProperties: false
+      required: [kind, displayName, emailAddress, permissionId, me]
+      description: Information about a Drive user.
+      properties:
+        kind:
+          type: string
+          description: 'Output only. Identifies what kind of resource this is. Value: the fixed string "drive#user".'
+        displayName:
+          type: string
+          description: Output only. A plain text displayable name for this user.
+        emailAddress:
+          type: string
+          description: Output only. The email address of the user.
+        permissionId:
+          type: string
+          description: Output only. The user's ID as visible in Permission resources.
+        me:
+          type: boolean
+          description: Output only. Whether this user is the requesting user.
+    File:
+      type: object
+      additionalProperties: false
+      description: The metadata for a file.
+      properties:
+        kind:
+          type: string
+          description: 'Output only. Identifies what kind of resource this is. Value: the fixed string "drive#file".'
+        id:
+          type: string
+          description: The ID of the file.
+        name:
+          type: string
+          description: The name of the file. This is not necessarily unique within a folder.
+        mimeType:
+          type: string
+          description: The MIME type of the file.
+        description:
+          type: string
+          description: A short description of the file.
+        parents:
+          type: array
+          description: The IDs of the parent folders containing the file. This contract allows one parent.
+          items: {type: string}
+        starred:
+          type: boolean
+          description: Whether the user has starred the file.
+        trashed:
+          type: boolean
+          description: Whether the file has been trashed.
+        explicitlyTrashed:
+          type: boolean
+          description: Output only. Whether the file has been explicitly trashed, as opposed to recursively trashed from a parent folder.
+        createdTime:
+          type: string
+          description: The time at which the file was created (RFC 3339 date-time).
+        modifiedTime:
+          type: string
+          description: The last time the file was modified by anyone (RFC 3339 date-time).
+        modifiedByMeTime:
+          type: string
+          description: The last time the file was modified by the user (RFC 3339 date-time).
+        size:
+          type: string
+          description: Output only. Size in bytes of blobs. Not populated for folders.
+        quotaBytesUsed:
+          type: string
+          description: Output only. The number of storage quota bytes used by the file.
+        md5Checksum:
+          type: string
+          description: Output only. The MD5 checksum for the content of the file. Populated for non-folder files.
+        version:
+          type: string
+          description: Output only. A monotonically increasing version number for the file.
+        ownedByMe:
+          type: boolean
+          description: Output only. Whether the user owns the file.
+        shared:
+          type: boolean
+          description: Output only. Whether the file has been shared.
+        writersCanShare:
+          type: boolean
+          description: Whether users with only writer permission can modify the file's permissions.
+        copyRequiresWriterPermission:
+          type: boolean
+          description: Whether the options to copy, print, or download this file should be disabled for readers and commenters.
+        modifiedByMe:
+          type: boolean
+          description: Output only. Whether the file has been modified by this user.
+        viewedByMe:
+          type: boolean
+          description: Output only. Whether the file has been viewed by this user.
+        spaces:
+          type: array
+          description: Output only. The list of spaces which contain the file.
+          items: {type: string}
+        permissionIds:
+          type: array
+          description: Output only. List of permission IDs for users with access to this file.
+          items: {type: string}
+        fileExtension:
+          type: string
+          description: Output only. The final component of fullFileExtension.
+        fullFileExtension:
+          type: string
+          description: Output only. The full file extension extracted from the name field.
+        originalFilename:
+          type: string
+          description: The original filename of the uploaded content if available, or else the original value of the name field.
+        webViewLink:
+          type: string
+          description: Output only. A link for opening the file in a browser.
+        folderColorRgb:
+          type: string
+          description: The color for a folder as an RGB hex string.
+        owners:
+          type: array
+          description: Output only. The owner of this file.
+          items: {$ref: '#/components/schemas/User'}
+        lastModifyingUser:
+          $ref: '#/components/schemas/User'
+    FileList:
+      type: object
+      additionalProperties: false
+      required: [kind, files, incompleteSearch]
+      description: A list of files.
+      properties:
+        kind:
+          type: string
+          description: 'Identifies what kind of resource this is. Value: the fixed string "drive#fileList".'
+        files:
+          type: array
+          items: {$ref: '#/components/schemas/File'}
+          description: The list of files.
+        nextPageToken:
+          type: string
+          description: The page token for the next page of files. Absent when the end of the list has been reached.
+        incompleteSearch:
+          type: boolean
+          description: Whether the search process was incomplete.
+    Permission:
+      type: object
+      additionalProperties: false
+      description: A permission for a file.
+      properties:
+        kind:
+          type: string
+          description: 'Output only. Identifies what kind of resource this is. Value: the fixed string "drive#permission".'
+        id:
+          type: string
+          description: Output only. The ID of this permission.
+        type:
+          type: string
+          description: 'The type of the grantee. Supported values: user, group, domain, anyone.'
+        role:
+          type: string
+          description: 'The role granted by this permission. Supported values: owner, organizer, fileOrganizer, writer, commenter, reader.'
+        emailAddress:
+          type: string
+          description: The email address of the user or group to which this permission refers.
+        displayName:
+          type: string
+          description: Output only. The name of the permission grantee.
+        deleted:
+          type: boolean
+          description: Output only. Whether the account associated with this permission has been deleted.
+        allowFileDiscovery:
+          type: boolean
+          description: Whether the permission allows the file to be discovered through search. Only applicable for domain or anyone.
+    PermissionList:
+      type: object
+      additionalProperties: false
+      required: [kind, permissions]
+      description: A list of permissions for a file.
+      properties:
+        kind:
+          type: string
+          description: 'Identifies what kind of resource this is. Value: the fixed string "drive#permissionList".'
+        permissions:
+          type: array
+          items: {$ref: '#/components/schemas/Permission'}
+          description: The list of permissions.
+        nextPageToken:
+          type: string
+          description: The page token for the next page of permissions.
+    ErrorDetail:
+      type: object
+      additionalProperties: false
+      required: [message, domain, reason]
+      properties:
+        message: {type: string}
+        domain: {type: string}
+        reason: {type: string}
+    ErrorBody:
+      type: object
+      additionalProperties: false
+      required: [code, message, status, errors]
+      properties:
+        code: {type: integer}
+        message: {type: string}
+        status: {type: string}
+        errors:
+          type: array
+          items: {$ref: '#/components/schemas/ErrorDetail'}
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error: {$ref: '#/components/schemas/ErrorBody'}

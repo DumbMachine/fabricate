@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/gupshup/scenario-v1.json",
+  "title": "Fabricate Gupshup scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["app", "templates", "messages"],
+  "properties": {
+    "app": {"$ref": "#/$defs/app"},
+    "templates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/template"}
+    },
+    "messages": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/message"}
+    }
+  },
+  "$defs": {
+    "app": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "phone", "about", "business", "profile"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "phone": {"type": "string", "minLength": 1},
+        "about": {"type": "string"},
+        "business": {"$ref": "#/$defs/business"},
+        "profile": {"$ref": "#/$defs/profile"}
+      }
+    },
+    "business": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "addressLine1", "addressLine2", "city", "state", "country", "pinCode", "contactName", "contactNumber", "email", "website", "vertical", "emailVerified", "tncAccepted"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "addressLine1": {"type": "string"},
+        "addressLine2": {"type": "string"},
+        "city": {"type": "string"},
+        "state": {"type": "string"},
+        "country": {"type": "string"},
+        "pinCode": {"type": "string"},
+        "contactName": {"type": "string"},
+        "contactNumber": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "website": {"type": "string", "minLength": 1},
+        "vertical": {"type": "string"},
+        "emailVerified": {"type": "boolean"},
+        "tncAccepted": {"type": "boolean"}
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["addressLine1", "addressLine2", "city", "country", "desc", "pinCode", "profileEmail", "state", "vertical", "website1", "website2"],
+      "properties": {
+        "addressLine1": {"type": "string"},
+        "addressLine2": {"type": "string"},
+        "city": {"type": "string"},
+        "country": {"type": "string"},
+        "desc": {"type": "string"},
+        "pinCode": {"type": "string"},
+        "profileEmail": {"type": "string", "format": "email"},
+        "state": {"type": "string"},
+        "vertical": {"type": "string"},
+        "website1": {"type": "string", "minLength": 1},
+        "website2": {"type": "string", "minLength": 1}
+      }
+    },
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "elementName", "category", "status", "languageCode", "templateType", "data"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "elementName": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "enum": ["MARKETING", "UTILITY", "AUTHENTICATION"]},
+        "status": {"type": "string", "enum": ["APPROVED", "PENDING", "REJECTED"]},
+        "languageCode": {"type": "string", "minLength": 1},
+        "templateType": {"type": "string", "enum": ["TEXT", "IMAGE", "VIDEO", "DOCUMENT", "LOCATION"]},
+        "data": {"type": "string"}
+      }
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["messageId", "direction", "source", "destination", "type", "text", "status", "senderName", "contextGsId", "read", "timestamp"],
+      "properties": {
+        "messageId": {"type": "string", "minLength": 1},
+        "direction": {"type": "string", "enum": ["outbound", "inbound"]},
+        "source": {"type": "string", "minLength": 1},
+        "destination": {"type": "string", "minLength": 1},
+        "type": {"type": "string", "enum": ["text", "template"]},
+        "text": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["submitted", "enqueued", "sent", "delivered", "read", "failed", "deleted", "received"]},
+        "senderName": {"type": "string"},
+        "contextGsId": {"type": "string"},
+        "read": {"type": "boolean"},
+        "timestamp": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-greenhouse
+
+services:
+  greenhouse:
+    resource: greenhouse
+    scenario: greenhouse.acme-pipeline.v1

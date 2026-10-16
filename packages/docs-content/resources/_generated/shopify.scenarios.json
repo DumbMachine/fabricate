@@ -1,0 +1,38 @@
+{
+  "integration": "shopify",
+  "scenarios": [
+    {
+      "id": "shopify.acme-agency.v1",
+      "counts": {
+        "customers": 5,
+        "fulfillments": 4,
+        "orders": 5,
+        "products": 7,
+        "refunds": 1,
+        "shops": 4
+      }
+    },
+    {
+      "id": "shopify.acme-goods.v1",
+      "counts": {
+        "customers": 3,
+        "fulfillments": 3,
+        "orders": 3,
+        "products": 3,
+        "refunds": 1,
+        "shops": 1
+      }
+    },
+    {
+      "id": "shopify.minimal.v1",
+      "counts": {
+        "customers": 0,
+        "fulfillments": 0,
+        "orders": 0,
+        "products": 0,
+        "refunds": 0,
+        "shops": 1
+      }
+    }
+  ]
+}

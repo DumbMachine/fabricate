@@ -1,9 +1,13 @@
 import { defineConfig } from "blume";
 
+import {fabricateGitRef, rewriteFabricateGitRef} from "../../packages/docs-content/git-ref.ts";
 import {integrationSidebarItems} from "../../packages/docs-content/resources/integrations/catalog.ts";
 
 const fab = process.env.PUBLIC_FABRICATE_COMMAND || "fab";
 const docsBase = process.env.PUBLIC_FABRICATE_DOCS_BASE || "/docs";
+// fabricateGitRef reads PUBLIC_FABRICATE_GIT_REF, then FABRICATE_GIT_REF, and
+// falls back to main for HEAD, "..", or any other unsafe value.
+const gitRef = fabricateGitRef();
 const isDevelopment = process.env.PUBLIC_FABRICATE_SITE_MODE === "development";
 const replaceFabCommand = (value: string) =>
   value.replace(/(^|[^A-Za-z0-9-])fab(?![A-Za-z0-9-])/g, `$1${fab}`);
@@ -28,7 +32,7 @@ export default defineConfig({
                   enforce: "pre",
                   transform(code, id) {
                     if (!id.includes("packages/docs-content/") || !/\.mdx?$/.test(id)) return;
-                    return { code: replaceFabCommand(code), map: null };
+                    return { code: rewriteFabricateGitRef(replaceFabCommand(code), gitRef), map: null };
                   },
                 },
               ],
@@ -103,6 +107,18 @@ export default defineConfig({
               {
                 label: "Acme's Gmail",
                 href: "/resources/environments/acme-gmail",
+              },
+              {
+                label: "Acme Goods Shop",
+                href: "/resources/environments/acme-goods-shop",
+              },
+              {
+                label: "Acme Commerce Agency",
+                href: "/resources/environments/acme-commerce-agency",
+              },
+              {
+                label: "Acme Company Ops",
+                href: "/resources/environments/acme-company-ops",
               },
             ],
           },

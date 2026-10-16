@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-googledrive
+
+services:
+  googledrive:
+    resource: googledrive
+    scenario: googledrive.acme-drive.v1

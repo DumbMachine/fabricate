@@ -1,0 +1,14 @@
+{
+  "id": "docusign-read",
+  "title": "List seeded envelopes",
+  "environment": "environments/acme-docusign.yaml",
+  "environmentLabel": "Acme DocuSign",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/docusign-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-docusign.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://demo.docusign.net/restapi/v2.1/accounts/acct-acme/envelopes",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://demo.docusign.net/restapi/v2.1/accounts/acct-acme/envelopes"
+  ]
+}

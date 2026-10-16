@@ -1,0 +1,23 @@
+{
+  "integration": "razorpay",
+  "scenarios": [
+    {
+      "id": "razorpay.acme-payments.v1",
+      "counts": {
+        "orders": 5,
+        "paymentLinks": 0,
+        "payments": 5,
+        "refunds": 1
+      }
+    },
+    {
+      "id": "razorpay.minimal.v1",
+      "counts": {
+        "orders": 0,
+        "paymentLinks": 0,
+        "payments": 0,
+        "refunds": 0
+      }
+    }
+  ]
+}

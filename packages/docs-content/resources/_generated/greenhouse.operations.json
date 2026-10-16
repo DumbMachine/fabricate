@@ -1,0 +1,102 @@
+{
+  "integration": "greenhouse",
+  "api": "Greenhouse v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/applications",
+      "operationId": "ListApplications",
+      "summary": "List applications."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/applications/{id}",
+      "operationId": "GetApplication",
+      "summary": "Retrieve an application."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/applications/{id}/offers",
+      "operationId": "ListApplicationOffers",
+      "summary": "List offers for an application."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/applications/{id}/scorecards",
+      "operationId": "ListApplicationScorecards",
+      "summary": "List scorecards for an application."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/candidates",
+      "operationId": "ListCandidates",
+      "summary": "List candidates."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/candidates/{id}",
+      "operationId": "GetCandidate",
+      "summary": "Retrieve a candidate."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/candidates/{id}/activity_feed",
+      "operationId": "GetActivityFeed",
+      "summary": "Retrieve a candidate activity feed."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/candidates/{id}/activity_feed/notes",
+      "operationId": "CreateCandidateNote",
+      "summary": "Add a note to a candidate."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/jobs",
+      "operationId": "ListJobs",
+      "summary": "List jobs."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/jobs/{id}",
+      "operationId": "GetJob",
+      "summary": "Retrieve a job."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/jobs/{id}/stages",
+      "operationId": "ListJobStages",
+      "summary": "List stages for a job."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/offers",
+      "operationId": "ListOffers",
+      "summary": "List offers."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/offers/{id}",
+      "operationId": "GetOffer",
+      "summary": "Retrieve an offer."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/scorecards",
+      "operationId": "ListScorecards",
+      "summary": "List scorecards."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users",
+      "operationId": "ListUsers",
+      "summary": "List users."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{id}",
+      "operationId": "GetUser",
+      "summary": "Retrieve a user."
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "greenhouse.acme-pipeline.v1",
+  "$resource": "greenhouse",
+  "$resourceVersion": "v1",
+  "state": {
+    "users": [
+      {
+        "id": "user-leo",
+        "firstName": "Leo",
+        "lastName": "Park",
+        "name": "Leo Park",
+        "email": "leo@acme.example",
+        "emails": ["leo@acme.example"],
+        "employeeId": "",
+        "disabled": false,
+        "siteAdmin": false,
+        "createdAt": "2026-01-15T09:00:00Z",
+        "updatedAt": "2026-01-15T09:00:00Z"
+      },
+      {
+        "id": "user-sam",
+        "firstName": "Sam",
+        "lastName": "Adeyemi",
+        "name": "Sam Adeyemi",
+        "email": "sam@acme.example",
+        "emails": ["sam@acme.example"],
+        "employeeId": "",
+        "disabled": false,
+        "siteAdmin": false,
+        "createdAt": "2026-01-15T09:00:00Z",
+        "updatedAt": "2026-01-15T09:00:00Z"
+      }
+    ],
+    "offices": [
+      {
+        "id": "office-blr",
+        "name": "Bengaluru",
+        "locationName": "Bengaluru, KA, IN"
+      }
+    ],
+    "departments": [
+      {
+        "id": "dept-support",
+        "name": "Support"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "job-support",
+        "name": "Support Engineer",
+        "requisitionId": "",
+        "notes": "Support Engineer for Acme App.",
+        "confidential": false,
+        "status": "open",
+        "createdAt": "2026-07-01T08:00:00Z",
+        "openedAt": "2026-07-01T08:00:00Z",
+        "closedAt": "",
+        "updatedAt": "2026-08-20T16:30:00Z",
+        "departmentId": "dept-support",
+        "officeId": "office-blr",
+        "hiringManagers": ["user-sam"],
+        "recruiters": ["user-leo"],
+        "coordinators": [],
+        "sourcers": [],
+        "responsibleRecruiterId": "user-leo"
+      }
+    ],
+    "jobStages": [
+      {
+        "id": "stage-application-review",
+        "jobId": "job-support",
+        "name": "Application Review",
+        "priority": 0,
+        "active": true,
+        "createdAt": "2026-07-01T08:00:00Z",
+        "updatedAt": "2026-07-01T08:00:00Z"
+      },
+      {
+        "id": "stage-offer",
+        "jobId": "job-support",
+        "name": "Offer",
+        "priority": 3,
+        "active": true,
+        "createdAt": "2026-07-01T08:00:00Z",
+        "updatedAt": "2026-07-01T08:00:00Z"
+      },
+      {
+        "id": "stage-onsite",
+        "jobId": "job-support",
+        "name": "On-site",
+        "priority": 2,
+        "active": true,
+        "createdAt": "2026-07-01T08:00:00Z",
+        "updatedAt": "2026-07-01T08:00:00Z"
+      },
+      {
+        "id": "stage-phone",
+        "jobId": "job-support",
+        "name": "Recruiter Screen",
+        "priority": 1,
+        "active": true,
+        "createdAt": "2026-07-01T08:00:00Z",
+        "updatedAt": "2026-07-01T08:00:00Z"
+      }
+    ],
+    "candidates": [
+      {
+        "id": "cand-jordan",
+        "firstName": "Jordan",
+        "lastName": "Hale",
+        "company": "",
+        "title": "",
+        "createdAt": "2026-08-10T09:00:00Z",
+        "updatedAt": "2026-08-20T16:30:00Z",
+        "lastActivity": "2026-08-20T16:30:00Z",
+        "isPrivate": false,
+        "canEmail": true,
+        "recruiterId": "user-leo",
+        "emails": [{"value": "jordan.hale@acme.example", "type": "work"}],
+        "phones": [{"value": "+91-80-4123-0190", "type": "mobile"}],
+        "tags": [],
+        "attachments": [
+          {
+            "filename": "offer-letter-jordan-hale.pdf",
+            "url": "https://acme.example/hr/offer-letter-jordan-hale.pdf",
+            "type": "offer_letter",
+            "createdAt": "2026-08-20T16:30:00Z"
+          }
+        ]
+      },
+      {
+        "id": "cand-sasha",
+        "firstName": "Sasha",
+        "lastName": "Iqbal",
+        "company": "",
+        "title": "",
+        "createdAt": "2026-08-12T08:30:00Z",
+        "updatedAt": "2026-08-24T10:30:00Z",
+        "lastActivity": "2026-08-24T10:30:00Z",
+        "isPrivate": false,
+        "canEmail": true,
+        "recruiterId": "user-leo",
+        "emails": [{"value": "sasha.iqbal@example.com", "type": "personal"}],
+        "phones": [],
+        "tags": [],
+        "attachments": []
+      }
+    ],
+    "applications": [
+      {
+        "id": "app-jordan",
+        "candidateId": "cand-jordan",
+        "jobId": "job-support",
+        "prospect": false,
+        "status": "active",
+        "stageId": "stage-offer",
+        "appliedAt": "2026-08-10T09:00:00Z",
+        "rejectedAt": "",
+        "lastActivityAt": "2026-08-20T16:30:00Z",
+        "recruiterId": "user-leo",
+        "sourceId": "src-jobs-page",
+        "sourceName": "Jobs page on your website"
+      },
+      {
+        "id": "app-sasha",
+        "candidateId": "cand-sasha",
+        "jobId": "job-support",
+        "prospect": false,
+        "status": "active",
+        "stageId": "stage-onsite",
+        "appliedAt": "2026-08-12T08:30:00Z",
+        "rejectedAt": "",
+        "lastActivityAt": "2026-08-24T10:30:00Z",
+        "recruiterId": "user-leo",
+        "sourceId": "src-jobs-page",
+        "sourceName": "Jobs page on your website"
+      }
+    ],
+    "offers": [
+      {
+        "id": "offer-jordan",
+        "version": 1,
+        "applicationId": "app-jordan",
+        "jobId": "job-support",
+        "candidateId": "cand-jordan",
+        "status": "accepted",
+        "createdAt": "2026-08-18T11:00:00Z",
+        "updatedAt": "2026-08-20T16:30:00Z",
+        "sentAt": "2026-08-18",
+        "resolvedAt": "2026-08-20T16:30:00Z",
+        "startsAt": "2026-09-08",
+        "customFields": {
+          "docusign_envelope": "env-offer-jordan",
+          "offer_letter": "offer-letter-jordan-hale.pdf"
+        }
+      }
+    ],
+    "notes": [],
+    "scorecards": [
+      {
+        "id": "scorecard-sasha-onsite",
+        "candidateId": "cand-sasha",
+        "applicationId": "app-sasha",
+        "interview": "On-site",
+        "interviewStepId": "stage-onsite",
+        "interviewStepName": "On-site",
+        "interviewedAt": "2026-08-24T10:00:00Z",
+        "submittedBy": "user-leo",
+        "interviewerId": "user-leo",
+        "submittedAt": "2026-08-24T10:30:00Z",
+        "overallRecommendation": "yes",
+        "createdAt": "2026-08-24T10:30:00Z",
+        "updatedAt": "2026-08-24T10:30:00Z",
+        "attributes": [
+          {
+            "name": "Communication",
+            "type": "Skills",
+            "note": "On-site interview for Support Engineer.",
+            "rating": "yes"
+          }
+        ],
+        "questions": [
+          {
+            "id": "q-sasha-takeaway",
+            "question": "Key Take-Aways",
+            "answer": "On-site interview for the Support Engineer role."
+          }
+        ]
+      }
+    ]
+  }
+}

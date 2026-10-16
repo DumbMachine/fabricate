@@ -1,0 +1,424 @@
+openapi: 3.0.3
+info:
+  title: Fabricate Gupshup WhatsApp API
+  version: v1
+  description: >-
+    Curated Gupshup WhatsApp API v1 contract. Session text send, template send,
+    business profile, templates, and inbound read receipts follow the public
+    Gupshup paths. Message list and get are Fabricate reads over stored
+    messages so delivery status can be observed after send. Gupshup production
+    reports that status on message-event webhooks. Accept either an apikey
+    header or Authorization Bearer; both must equal the synthetic token.
+servers:
+  - url: https://api.gupshup.io
+security:
+  - bearerAuth: []
+  - apiKeyAuth: []
+tags:
+  - name: App
+  - name: Templates
+  - name: Messages
+paths:
+  /wa/app/{appId}/business:
+    get:
+      operationId: gupshup.app.business.get
+      summary: Gets WhatsApp business details for an app.
+      tags: [App]
+      parameters:
+        - $ref: '#/components/parameters/AppId'
+      responses:
+        '200':
+          description: Business details.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/BusinessResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/app/{appId}/business/profile:
+    get:
+      operationId: gupshup.app.profile.get
+      summary: Gets the WhatsApp business profile.
+      tags: [App]
+      parameters:
+        - $ref: '#/components/parameters/AppId'
+      responses:
+        '200':
+          description: Business profile.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ProfileResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/app/{appId}/business/profile/about:
+    get:
+      operationId: gupshup.app.profile.about.get
+      summary: Gets the WhatsApp profile about text.
+      tags: [App]
+      parameters:
+        - $ref: '#/components/parameters/AppId'
+      responses:
+        '200':
+          description: Profile about text.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/AboutResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/app/{appId}/template:
+    get:
+      operationId: gupshup.templates.list
+      summary: Lists message templates for an app.
+      tags: [Templates]
+      parameters:
+        - $ref: '#/components/parameters/AppId'
+        - name: pageNo
+          in: query
+          description: Zero-based page index.
+          schema: {type: integer, minimum: 0, default: 0}
+        - name: pageSize
+          in: query
+          description: Page size.
+          schema: {type: integer, minimum: 1, maximum: 1000, default: 100}
+        - name: templateStatus
+          in: query
+          description: Filter by template status, for example APPROVED.
+          schema: {type: string}
+      responses:
+        '200':
+          description: Templates.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListTemplatesResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/app/{appId}/template/{templateId}:
+    get:
+      operationId: gupshup.templates.get
+      summary: Gets one message template.
+      tags: [Templates]
+      parameters:
+        - $ref: '#/components/parameters/AppId'
+        - $ref: '#/components/parameters/TemplateId'
+      responses:
+        '200':
+          description: Template.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/TemplateResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/api/v1/msg:
+    get:
+      operationId: gupshup.messages.list
+      summary: Lists stored WhatsApp messages and their status.
+      tags: [Messages]
+      parameters:
+        - name: destination
+          in: query
+          description: Filter by destination phone. A leading plus is ignored.
+          schema: {type: string}
+        - name: status
+          in: query
+          description: Filter by message status.
+          schema: {type: string}
+        - name: direction
+          in: query
+          description: Filter by inbound or outbound.
+          schema: {type: string, enum: [inbound, outbound]}
+      responses:
+        '200':
+          description: Messages.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ListMessagesResponse'}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: gupshup.messages.send
+      summary: Sends a WhatsApp session text message.
+      tags: [Messages]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema: {$ref: '#/components/schemas/SendSessionMessageRequest'}
+      responses:
+        '200':
+          description: Message submitted.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SendResult'}
+              example: {status: submitted, messageId: msg_10482}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/api/v1/template/msg:
+    post:
+      operationId: gupshup.messages.sendTemplate
+      summary: Sends a WhatsApp template message.
+      tags: [Messages]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema: {$ref: '#/components/schemas/SendTemplateMessageRequest'}
+      responses:
+        '200':
+          description: Template message submitted.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SendResult'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/api/v1/msg/{messageId}:
+    get:
+      operationId: gupshup.messages.get
+      summary: Gets one stored WhatsApp message and its status.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/MessageId'
+      responses:
+        '200':
+          description: Message.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/MessageResponse'}
+        default: {$ref: '#/components/responses/Error'}
+  /wa/app/{appId}/msg/{msgId}/read:
+    put:
+      operationId: gupshup.messages.markRead
+      summary: Marks an inbound WhatsApp message as read.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/AppId'
+        - name: msgId
+          in: path
+          required: true
+          description: Inbound message id.
+          schema: {type: string, minLength: 1}
+      responses:
+        '202':
+          description: Accepted.
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Fabricate synthetic bearer token. The proxy writes this header. The
+        token value is the secret key `token`.
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: >-
+        Gupshup apikey header. Fabricate accepts it when the value equals the
+        same synthetic bearer token.
+  parameters:
+    AppId:
+      name: appId
+      in: path
+      required: true
+      description: Gupshup app id.
+      schema: {type: string, minLength: 1}
+    TemplateId:
+      name: templateId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+    MessageId:
+      name: messageId
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+  responses:
+    Error:
+      description: Gupshup-style error.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [status, message]
+      properties:
+        status: {type: string, enum: [error]}
+        message: {type: string}
+    SendResult:
+      type: object
+      additionalProperties: false
+      required: [status, messageId]
+      properties:
+        status: {type: string, description: submitted when the send is accepted.}
+        messageId: {type: string}
+    SendSessionMessageRequest:
+      type: object
+      additionalProperties: false
+      required: [source, destination, src.name, message]
+      properties:
+        channel:
+          type: string
+          description: Must be whatsapp when present.
+        source:
+          type: string
+          description: Sender WhatsApp number. Digits, optional leading plus.
+        destination:
+          type: string
+          description: Recipient WhatsApp number. Digits, optional leading plus.
+        src.name:
+          type: string
+          description: Gupshup app name.
+          x-go-name: SrcName
+        message:
+          type: string
+          description: JSON session message, for example {"type":"text","text":"hello"}.
+    SendTemplateMessageRequest:
+      type: object
+      additionalProperties: false
+      required: [source, destination, template]
+      properties:
+        channel: {type: string}
+        source: {type: string}
+        destination: {type: string}
+        src.name:
+          type: string
+          description: Gupshup app name. Checked when present.
+          x-go-name: SrcName
+        template:
+          type: string
+          description: JSON template object with id and params.
+        message:
+          type: string
+          description: Optional JSON media object. Accepted and ignored for text templates.
+    Business:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - addressLine1
+        - addressLine2
+        - city
+        - state
+        - country
+        - pinCode
+        - contactName
+        - contactNumber
+        - email
+        - website
+        - vertical
+        - emailVerified
+        - tncAccepted
+      properties:
+        name: {type: string}
+        addressLine1: {type: string}
+        addressLine2: {type: string}
+        city: {type: string}
+        state: {type: string}
+        country: {type: string}
+        pinCode: {type: string}
+        contactName: {type: string}
+        contactNumber: {type: string}
+        email: {type: string}
+        website: {type: string}
+        vertical: {type: string}
+        emailVerified: {type: boolean}
+        tncAccepted: {type: boolean}
+    BusinessResponse:
+      type: object
+      additionalProperties: false
+      required: [status, business]
+      properties:
+        status: {type: string}
+        business: {$ref: '#/components/schemas/Business'}
+    Profile:
+      type: object
+      additionalProperties: false
+      required: [addressLine1, addressLine2, city, country, desc, pinCode, profileEmail, state, vertical, website1, website2]
+      properties:
+        addressLine1: {type: string}
+        addressLine2: {type: string}
+        city: {type: string}
+        country: {type: string}
+        desc: {type: string}
+        pinCode: {type: string}
+        profileEmail: {type: string}
+        state: {type: string}
+        vertical: {type: string}
+        website1: {type: string}
+        website2: {type: string}
+    ProfileResponse:
+      type: object
+      additionalProperties: false
+      required: [status, profile]
+      properties:
+        status: {type: string}
+        profile: {$ref: '#/components/schemas/Profile'}
+    About:
+      type: object
+      additionalProperties: false
+      required: [message]
+      properties:
+        message: {type: string}
+    AboutResponse:
+      type: object
+      additionalProperties: false
+      required: [status, about]
+      properties:
+        status: {type: string}
+        about: {$ref: '#/components/schemas/About'}
+    Template:
+      type: object
+      additionalProperties: false
+      required: [id, appId, elementName, category, status, languageCode, templateType, data]
+      properties:
+        id: {type: string}
+        appId: {type: string}
+        elementName: {type: string}
+        category: {type: string}
+        status: {type: string}
+        languageCode: {type: string}
+        templateType: {type: string}
+        data: {type: string}
+    ListTemplatesResponse:
+      type: object
+      additionalProperties: false
+      required: [status, templates]
+      properties:
+        status: {type: string}
+        templates:
+          type: array
+          items: {$ref: '#/components/schemas/Template'}
+    TemplateResponse:
+      type: object
+      additionalProperties: false
+      required: [status, template]
+      properties:
+        status: {type: string}
+        template: {$ref: '#/components/schemas/Template'}
+    Message:
+      type: object
+      additionalProperties: false
+      required: [messageId, direction, source, destination, type, text, status, read, timestamp]
+      properties:
+        messageId: {type: string}
+        direction: {type: string}
+        source: {type: string}
+        destination: {type: string}
+        type: {type: string}
+        text: {type: string}
+        status:
+          type: string
+          description: One of submitted, enqueued, sent, delivered, read, failed, deleted, or received.
+        senderName: {type: string, description: Present on inbound messages.}
+        contextGsId: {type: string, description: Gupshup id of the message this inbound message references.}
+        read: {type: boolean}
+        timestamp: {type: integer, format: int64}
+    ListMessagesResponse:
+      type: object
+      additionalProperties: false
+      required: [status, messages]
+      properties:
+        status: {type: string}
+        messages:
+          type: array
+          items: {$ref: '#/components/schemas/Message'}
+    MessageResponse:
+      type: object
+      additionalProperties: false
+      required: [status, message]
+      properties:
+        status: {type: string}
+        message: {$ref: '#/components/schemas/Message'}

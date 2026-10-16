@@ -1,5 +1,6 @@
-export const OFFICIAL_SCENARIO_REPO = "DumbMachine/fabricate";
-export const OFFICIAL_SCENARIO_REF = "main";
+import {FABRICATE_REPOSITORY, fabricateGitRef} from "../../git-ref.ts";
+
+export const OFFICIAL_SCENARIO_REPO = FABRICATE_REPOSITORY;
 export const DEFAULT_ROW_LIMIT = 25;
 export const DEFAULT_COLUMN_LIMIT = 10;
 export const DEFAULT_CELL_CHARS = 96;
@@ -87,8 +88,8 @@ export function officialScenarioSource(resource: string, scenario: string): Reso
   const path = `resources/${resource}/scenarios/${file}`;
   return {
     path,
-    blobURL: `https://github.com/${OFFICIAL_SCENARIO_REPO}/blob/${OFFICIAL_SCENARIO_REF}/${path}`,
-    rawURL: `https://raw.githubusercontent.com/${OFFICIAL_SCENARIO_REPO}/${OFFICIAL_SCENARIO_REF}/${path}`,
+    blobURL: `https://github.com/${OFFICIAL_SCENARIO_REPO}/blob/${fabricateGitRef()}/${path}`,
+    rawURL: `https://raw.githubusercontent.com/${OFFICIAL_SCENARIO_REPO}/${fabricateGitRef()}/${path}`,
   };
 }
 

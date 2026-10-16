@@ -1,0 +1,28 @@
+CREATE TABLE metadata (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
+
+CREATE TABLE sources (
+  seq INTEGER NOT NULL,
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE destinations (
+  seq INTEGER NOT NULL,
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE connections (
+  seq INTEGER NOT NULL,
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);
+
+CREATE TABLE jobs (
+  seq INTEGER NOT NULL,
+  id TEXT PRIMARY KEY,
+  body TEXT NOT NULL
+);

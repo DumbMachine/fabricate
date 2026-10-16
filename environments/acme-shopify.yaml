@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-shopify
+
+services:
+  shopify:
+    resource: shopify
+    scenario: shopify.acme-goods.v1

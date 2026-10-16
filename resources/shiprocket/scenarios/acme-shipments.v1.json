@@ -1,0 +1,153 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "shiprocket.acme-shipments.v1",
+  "$resource": "shiprocket",
+  "$resourceVersion": "v1",
+  "state": {
+    "companyId": 1048001,
+    "user": {
+      "id": 1048002,
+      "firstName": "Ravi",
+      "lastName": "Mehta",
+      "email": "ravi@acme.example",
+      "createdAt": "2026-08-26 12:00:00"
+    },
+    "couriers": [
+      {"id": 1, "name": "Bluedart"},
+      {"id": 10, "name": "Delhivery"}
+    ],
+    "pickups": [
+      {
+        "id": "pickup-blr-1",
+        "location": "BLR-1",
+        "name": "Ravi Mehta",
+        "email": "ravi@acme.example",
+        "phone": "+91-80-4123-0103",
+        "address": "18 Industrial Layout",
+        "address2": "",
+        "city": "Bengaluru",
+        "state": "KA",
+        "country": "IN",
+        "pincode": "560058"
+      }
+    ],
+    "orders": [
+      {
+        "id": "10482",
+        "channelOrderId": "10482",
+        "channelName": "Acme Goods",
+        "status": "in_transit",
+        "awb": "SR10482AWB",
+        "courierId": 10,
+        "courierName": "Delhivery",
+        "shipmentId": "20482",
+        "customerName": "Priya Nair",
+        "customerEmail": "priya@fernworks.example",
+        "customerPhone": "+91-98450-11223",
+        "address": "42 Residency Road",
+        "address2": "",
+        "city": "Bengaluru",
+        "state": "KA",
+        "pincode": "560025",
+        "country": "IN",
+        "pickupLocation": "BLR-1",
+        "paymentMethod": "Prepaid",
+        "paymentStatus": "paid",
+        "subTotal": 3097,
+        "orderDate": "2026-08-25 09:14",
+        "ndrReason": "",
+        "ndrAttempts": 0,
+        "items": [
+          {"name": "Acme Field Tee", "sku": "AG-TEE-02", "units": 1, "sellingPrice": 1499},
+          {"name": "Acme Ceramic Mug", "sku": "AG-MUG-01", "units": 2, "sellingPrice": 799}
+        ]
+      },
+      {
+        "id": "10483",
+        "channelOrderId": "10483",
+        "channelName": "Acme Goods",
+        "status": "ndr",
+        "awb": "SR10483AWB",
+        "courierId": 1,
+        "courierName": "Bluedart",
+        "shipmentId": "20483",
+        "customerName": "Marco Silva",
+        "customerEmail": "marco@tinyshop.example",
+        "customerPhone": "+91-98111-22008",
+        "address": "7 Linking Road",
+        "address2": "",
+        "city": "Mumbai",
+        "state": "MH",
+        "pincode": "400050",
+        "country": "IN",
+        "pickupLocation": "BLR-1",
+        "paymentMethod": "Prepaid",
+        "paymentStatus": "paid",
+        "subTotal": 499,
+        "orderDate": "2026-08-24 16:40",
+        "ndrReason": "Customer not available",
+        "ndrAttempts": 1,
+        "items": [
+          {"name": "Acme Field Notebook", "sku": "AG-NOTE-03", "units": 1, "sellingPrice": 499}
+        ]
+      },
+      {
+        "id": "10490",
+        "channelOrderId": "10490",
+        "channelName": "Northwind Market",
+        "status": "delivered",
+        "awb": "SR10490AWB",
+        "courierId": 10,
+        "courierName": "Delhivery",
+        "shipmentId": "20490",
+        "customerName": "Jules Okonkwo",
+        "customerEmail": "jules@northwind.example",
+        "customerPhone": "+91-99000-48121",
+        "address": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "pincode": "",
+        "country": "",
+        "pickupLocation": "BLR-1",
+        "paymentMethod": "Prepaid",
+        "paymentStatus": "paid",
+        "subTotal": 2499,
+        "orderDate": "2026-08-23 08:20",
+        "ndrReason": "",
+        "ndrAttempts": 0,
+        "items": [
+          {"name": "Northwind Travel Kettle", "sku": "NW-KETTLE-01", "units": 1, "sellingPrice": 2499}
+        ]
+      }
+    ],
+    "returns": [
+      {
+        "id": "RET-10484",
+        "orderId": "10484",
+        "shipmentId": "20484",
+        "channelName": "Acme Goods",
+        "status": "initiated",
+        "forwardShipmentStatus": "cancelled",
+        "customerName": "Dana Whitfield",
+        "customerEmail": "dana@northwind.example",
+        "customerPhone": "+91-99000-48120",
+        "address": "18 Harbor Road",
+        "address2": "",
+        "city": "Pune",
+        "state": "MH",
+        "pincode": "411001",
+        "country": "IN",
+        "pickupLocation": "BLR-1",
+        "subTotal": 1499,
+        "orderDate": "2026-08-22 11:05",
+        "awb": "",
+        "courierName": "",
+        "items": [
+          {"name": "Acme Field Tee", "sku": "AG-TEE-02", "units": 1, "sellingPrice": 1499}
+        ]
+      }
+    ]
+  }
+}

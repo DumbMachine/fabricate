@@ -1,0 +1,23 @@
+{
+  "integration": "airbyte",
+  "scenarios": [
+    {
+      "id": "airbyte.acme-syncs.v1",
+      "counts": {
+        "connections": 2,
+        "destinations": 1,
+        "jobs": 2,
+        "sources": 3
+      }
+    },
+    {
+      "id": "airbyte.minimal.v1",
+      "counts": {
+        "connections": 0,
+        "destinations": 0,
+        "jobs": 0,
+        "sources": 0
+      }
+    }
+  ]
+}

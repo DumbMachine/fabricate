@@ -1,0 +1,23 @@
+{
+  "integration": "ironclad",
+  "scenarios": [
+    {
+      "id": "ironclad.acme-contracts.v1",
+      "counts": {
+        "approvals": 3,
+        "comments": 1,
+        "records": 2,
+        "workflows": 3
+      }
+    },
+    {
+      "id": "ironclad.minimal.v1",
+      "counts": {
+        "approvals": 0,
+        "comments": 0,
+        "records": 0,
+        "workflows": 0
+      }
+    }
+  ]
+}

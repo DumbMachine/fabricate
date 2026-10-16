@@ -1,0 +1,44 @@
+{
+  "api": "Chargebee API v2",
+  "environment": {
+    "label": "Acme Chargebee",
+    "manifest": "environments/acme-chargebee.yaml",
+    "messages": 3
+  },
+  "integration": "chargebee",
+  "modes": {
+    "direct": {
+      "messagesAfter": 2,
+      "messagesBefore": 1,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 2,
+      "messagesBefore": 1,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "List subscriptions and invoices",
+    "write": "Cancel subscription and comment",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:36:23.481Z",
+  "testedCommit": "192ecd6f8db2cf2870647bfe730165ffafda338e"
+}

@@ -1,0 +1,47 @@
+{
+  "api": "Google Drive API v3",
+  "environment": {
+    "label": "Acme Google Drive",
+    "manifest": "environments/acme-googledrive.yaml",
+    "messages": 13
+  },
+  "integration": "googledrive",
+  "modes": {
+    "direct": {
+      "messagesAfter": 14,
+      "messagesBefore": 13,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "update": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 14,
+      "messagesBefore": 13,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "update": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "persistence": "Confirm persistence",
+    "read": "Read Drive files",
+    "update": "Move and update file",
+    "write": "Create file"
+  },
+  "testedAt": "2026-10-16T06:29:01.856Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
+  "verification": {
+    "client": "googleapis@144.0.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
+}

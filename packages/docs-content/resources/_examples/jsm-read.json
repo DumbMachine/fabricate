@@ -1,0 +1,14 @@
+{
+  "id": "jsm-read",
+  "title": "List seeded requests",
+  "environment": "environments/acme-jsm.yaml",
+  "environmentLabel": "Acme's Jira Service Management",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/jsm-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-jsm.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://acme.atlassian.net/rest/servicedeskapi/request",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://acme.atlassian.net/rest/servicedeskapi/request"
+  ]
+}

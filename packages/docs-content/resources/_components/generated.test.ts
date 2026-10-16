@@ -118,3 +118,15 @@ test("integration sidebar puts All first", () => {
   assert.equal(items[0]?.href, "/resources/integrations");
   assert.ok(items.some((item) => item.href === "/resources/integrations/gmail"));
 });
+
+test("every integration sidebar icon is a local logo file", () => {
+  const logos = fileURLToPath(new URL("../../../../apps/docs/public/integrations/", import.meta.url));
+  const items = integrationSidebarItems().filter((item) => item.href !== "/resources/integrations");
+  assert.ok(items.length > 0);
+  for (const item of items) {
+    assert.ok(item.icon?.startsWith("/integrations/"), item.href);
+    assert.equal(item.icon?.includes("logos.composio.dev"), false);
+    const file = path.join(logos, path.basename(item.icon ?? ""));
+    assert.equal(fs.existsSync(file), true, file);
+  }
+});

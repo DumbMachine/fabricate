@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "gainsight.minimal.v1",
+  "$resource": "gainsight",
+  "$resourceVersion": "v1",
+  "state": {
+    "companies": [],
+    "ctas": [],
+    "successPlans": [],
+    "activities": []
+  }
+}

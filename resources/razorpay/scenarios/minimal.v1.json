@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "razorpay.minimal.v1",
+  "$resource": "razorpay",
+  "$resourceVersion": "v1",
+  "state": {
+    "orders": [],
+    "payments": [],
+    "refunds": [],
+    "paymentLinks": []
+  }
+}

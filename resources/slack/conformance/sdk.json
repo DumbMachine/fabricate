@@ -1,0 +1,4 @@
+{
+  "package": "@slack/web-api@8.2.0",
+  "entry": "slack-web-api.mjs"
+}

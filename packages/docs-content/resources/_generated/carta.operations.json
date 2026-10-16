@@ -1,0 +1,66 @@
+{
+  "integration": "carta",
+  "api": "Carta v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{id}",
+      "operationId": "V1alpha1IssuersGetIssuer",
+      "summary": "Get Issuer"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/certificates",
+      "operationId": "V1alpha1IssuersListCertificates",
+      "summary": "List Certificates"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/certificates/{id}",
+      "operationId": "V1alpha1IssuersGetCertificate",
+      "summary": "Get Certificate"
+    },
+    {
+      "method": "POST",
+      "path": "/v1alpha1/issuers/{issuerId}/draftOptionGrantSets/{draftOptionGrantSetId}/draftOptionGrants",
+      "operationId": "V1alpha1IssuersDraftsecuritiesCreateDraftOptionGrant",
+      "summary": "Create a Draft Option Grant"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/draftOptionGrantSets/{draftOptionGrantSetId}/draftOptionGrants/{draftOptionGrantId}",
+      "operationId": "V1alpha1IssuersDraftsecuritiesGetDraftOptionGrant",
+      "summary": "Get Draft Option Grant"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/fairMarketValues",
+      "operationId": "V1alpha1IssuersListFairMarketValues",
+      "summary": "List Fair Market Values"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/optionGrants",
+      "operationId": "V1alpha1IssuersListOptionGrants",
+      "summary": "List Option Grants"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/optionGrants/{id}",
+      "operationId": "V1alpha1IssuersGetOptionGrant",
+      "summary": "Get Option Grant"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/stakeholders",
+      "operationId": "V1alpha1IssuersListStakeholders",
+      "summary": "List Stakeholders"
+    },
+    {
+      "method": "GET",
+      "path": "/v1alpha1/issuers/{issuerId}/stakeholders/{id}",
+      "operationId": "V1alpha1IssuersGetStakeholder",
+      "summary": "Get Stakeholder"
+    }
+  ]
+}

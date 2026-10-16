@@ -1,0 +1,23 @@
+{
+  "integration": "bamboohr",
+  "scenarios": [
+    {
+      "id": "bamboohr.acme-people.v1",
+      "counts": {
+        "departments": 6,
+        "employees": 8,
+        "timeOffRequests": 1,
+        "timeOffTypes": 1
+      }
+    },
+    {
+      "id": "bamboohr.minimal.v1",
+      "counts": {
+        "departments": 0,
+        "employees": 0,
+        "timeOffRequests": 0,
+        "timeOffTypes": 0
+      }
+    }
+  ]
+}

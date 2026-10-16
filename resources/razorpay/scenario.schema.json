@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/razorpay/scenario-v1.json",
+  "title": "Fabricate Razorpay scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["orders", "payments", "refunds", "paymentLinks"],
+  "properties": {
+    "orders": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/order"}
+    },
+    "payments": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/payment"}
+    },
+    "refunds": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/refund"}
+    },
+    "paymentLinks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/paymentLink"}
+    }
+  },
+  "$defs": {
+    "notes": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "amount", "amountPaid", "amountDue", "currency", "receipt", "status", "attempts", "notes", "createdAt"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "amount": {"type": "integer", "minimum": 0},
+        "amountPaid": {"type": "integer", "minimum": 0},
+        "amountDue": {"type": "integer", "minimum": 0},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "receipt": {"type": "string", "maxLength": 40},
+        "status": {"type": "string", "enum": ["created", "attempted", "paid"]},
+        "attempts": {"type": "integer", "minimum": 0},
+        "notes": {"$ref": "#/$defs/notes"},
+        "createdAt": {"type": "integer", "minimum": 1}
+      }
+    },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "amount", "currency", "status", "orderId", "method", "amountRefunded", "refundStatus", "captured", "description", "email", "contact", "vpa", "notes", "fee", "tax", "international", "createdAt"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "amount": {"type": "integer", "minimum": 1},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "status": {"type": "string", "enum": ["created", "authorized", "captured", "refunded", "failed"]},
+        "orderId": {"type": "string", "minLength": 1},
+        "method": {"type": "string", "enum": ["card", "netbanking", "wallet", "emi", "upi"]},
+        "amountRefunded": {"type": "integer", "minimum": 0},
+        "refundStatus": {"type": "string", "enum": ["", "partial", "full"]},
+        "captured": {"type": "boolean"},
+        "description": {"type": "string"},
+        "email": {"type": "string"},
+        "contact": {"type": "string"},
+        "vpa": {"type": "string"},
+        "notes": {"$ref": "#/$defs/notes"},
+        "fee": {"type": "integer", "minimum": 0},
+        "tax": {"type": "integer", "minimum": 0},
+        "international": {"type": "boolean"},
+        "createdAt": {"type": "integer", "minimum": 1}
+      }
+    },
+    "refund": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "paymentId", "amount", "currency", "status", "speedRequested", "speedProcessed", "receipt", "notes", "createdAt"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "paymentId": {"type": "string", "minLength": 1},
+        "amount": {"type": "integer", "minimum": 1},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "status": {"type": "string", "enum": ["pending", "processed", "failed"]},
+        "speedRequested": {"type": "string", "enum": ["normal", "optimum"]},
+        "speedProcessed": {"type": "string", "enum": ["normal", "optimum", "instant"]},
+        "receipt": {"type": "string", "maxLength": 40},
+        "notes": {"$ref": "#/$defs/notes"},
+        "createdAt": {"type": "integer", "minimum": 1}
+      }
+    },
+    "paymentLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "amount", "amountPaid", "currency", "acceptPartial", "description", "referenceId", "customerName", "customerEmail", "customerContact", "notes", "notifyEmail", "notifySms", "reminderEnable", "status", "shortUrl", "expireBy", "expiredAt", "cancelledAt", "createdAt", "updatedAt", "userId"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "amount": {"type": "integer", "minimum": 1},
+        "amountPaid": {"type": "integer", "minimum": 0},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "acceptPartial": {"type": "boolean"},
+        "description": {"type": "string"},
+        "referenceId": {"type": "string"},
+        "customerName": {"type": "string"},
+        "customerEmail": {"type": "string"},
+        "customerContact": {"type": "string"},
+        "notes": {"$ref": "#/$defs/notes"},
+        "notifyEmail": {"type": "boolean"},
+        "notifySms": {"type": "boolean"},
+        "reminderEnable": {"type": "boolean"},
+        "status": {"type": "string", "enum": ["created", "partially_paid", "paid", "expired", "cancelled"]},
+        "shortUrl": {"type": "string"},
+        "expireBy": {"type": "integer", "minimum": 0},
+        "expiredAt": {"type": "integer", "minimum": 0},
+        "cancelledAt": {"type": "integer", "minimum": 0},
+        "createdAt": {"type": "integer", "minimum": 1},
+        "updatedAt": {"type": "integer", "minimum": 1},
+        "userId": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "api": "Gainsight NXT v1",
+  "environment": {
+    "label": "Acme Gainsight",
+    "manifest": "environments/acme-gainsight.yaml",
+    "messages": 4
+  },
+  "integration": "gainsight",
+  "modes": {
+    "direct": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 1,
+      "messagesBefore": 0,
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read companies and CTAs",
+    "write": "Create timeline activity",
+    "persistence": "Confirm persistence"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-03T05:44:32.595Z",
+  "testedCommit": "77e334621a33a9c39cce059ae03dcd8ac3b51483"
+}

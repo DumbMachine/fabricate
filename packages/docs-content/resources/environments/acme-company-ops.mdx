@@ -1,0 +1,156 @@
+---
+title: "Acme Company Ops"
+description: A disposable Acme App company spanning mail, CRM, identity, HR, subscription billing, customer success, and the service desk.
+---
+
+Acme Company Ops is a ready-to-run environment for testing software that works
+across Acme's people and the SaaS side of the business. Every run starts from
+the same company and is removed when the wrapped command exits.
+
+Its manifest identifier is `acme-company-ops`.
+
+## Included integrations
+
+<IncludedIntegrations
+  services={[
+    {
+      resource: "gmail",
+      label: "Gmail",
+      href: "/resources/integrations/gmail",
+      service: "support-mail",
+      scenario: "gmail.acme-corp.v1",
+      summary: "A populated Acme support inbox with labels and threads.",
+      data: "Dana's INV-4812 double-charge thread sits next to SSO, refund, and key-rotation mail.",
+    },
+    {
+      resource: "intercom",
+      label: "Intercom",
+      href: "/resources/integrations/intercom",
+      service: "inbox",
+      scenario: "intercom.acme-inbox.v1",
+      summary: "Dana's billing thread, a Contoso SSO loop, and a closed key-rotation conversation.",
+      data: "Open conversation 101 is the INV-4812 dispute.",
+    },
+    {
+      resource: "asana",
+      label: "Asana",
+      href: "/resources/integrations/asana",
+      service: "board",
+      scenario: "asana.acme-sprint.v1",
+      summary: "The engineering board that tracks the same customer incidents.",
+      data: "task-double-charge follows INV-4812. task-sso follows contoso-eu.",
+    },
+    {
+      resource: "hubspot",
+      label: "HubSpot",
+      href: "/resources/integrations/hubspot",
+      service: "crm",
+      scenario: "hubspot.acme-pipeline.v1",
+      summary: "Dana at Northwind, a stalled INV-4812 deal, Contoso SSO, and Fernworks.",
+      data: "Deal 301 is still open on INV-4812.",
+    },
+    {
+      resource: "okta",
+      label: "Okta",
+      href: "/resources/integrations/okta",
+      service: "okta",
+      scenario: "okta.acme-org.v1",
+      summary: "The Acme directory, groups, and the Shopify Admin assignment.",
+      data: "Val Ortega is 00u-val. Jordan Hale is staged. The old contractor is deprovisioned.",
+    },
+    {
+      resource: "bamboohr",
+      label: "BambooHR",
+      href: "/resources/integrations/bamboohr",
+      service: "bamboohr",
+      scenario: "bamboohr.acme-people.v1",
+      summary: "Employees and departments for the same people.",
+      data: "Employee 101 is Val Ortega. Jordan Hale is still onboarding.",
+    },
+    {
+      resource: "chargebee",
+      label: "Chargebee",
+      href: "/resources/integrations/chargebee",
+      service: "chargebee",
+      scenario: "chargebee.acme-billing.v1",
+      summary: "USD subscriptions for the Acme App customers.",
+      data: "sub_northwind_checkout shows INV-4812 paid twice. sub_tinyshop_pro is non-renewing.",
+    },
+    {
+      resource: "zohobooks",
+      label: "Zoho Books",
+      href: "/resources/integrations/zohobooks",
+      service: "zohobooks",
+      scenario: "zohobooks.acme-ledger.v1",
+      summary: "The Acme ledger. The SaaS invoice stays sent.",
+      data: "INV-4812 is sent. pay_saas_4812 and pay_saas_4812b are stored and not applied.",
+    },
+    {
+      resource: "gainsight",
+      label: "Gainsight",
+      href: "/resources/integrations/gainsight",
+      service: "gainsight",
+      scenario: "gainsight.acme-success.v1",
+      summary: "Success plans for the SaaS accounts.",
+      data: "Northwind is red on INV-4812. TinyShop is yellow on INV-1188. Contoso is red on contoso-eu.",
+    },
+    {
+      resource: "jsm",
+      label: "Jira Service Management",
+      href: "/resources/integrations/jsm",
+      service: "jsm",
+      scenario: "jsm.acme-desk.v1",
+      summary: "The SUP service desk for billing, NDR, and SSO.",
+      data: "ITSM-4812 is the duplicate charge. ITSM-SSO is the contoso-eu login loop.",
+    },
+    {
+      resource: "slack",
+      label: "Slack",
+      href: "/resources/integrations/slack",
+      service: "slack",
+      scenario: "slack.acme-workspace.v1",
+      summary: "Finance, support, and incident channels.",
+      data: "Aisha's #finance note keeps the shop refund apart from INV-4812.",
+    },
+    {
+      resource: "googledrive",
+      label: "Google Drive",
+      href: "/resources/integrations/googledrive",
+      service: "googledrive",
+      scenario: "googledrive.acme-drive.v1",
+      summary: "Invoice, contract, offer, and compliance files.",
+      data: "Finance/August 2026 holds INV-4812-northwind.pdf.",
+    },
+  ]}
+/>
+
+## Scenario data
+
+Invoice `INV-4812` is the join key. Northwind Traders was billed 1240 USD
+twice. Zoho Books still shows the invoice as sent. Chargebee shows both
+payments. Gainsight and the service desk call it out. Mail, chat, the board,
+and CRM already carry the same dispute.
+
+| Join key | Where it appears |
+| --- | --- |
+| `INV-4812` | Gmail thread, Intercom 101, Asana `task-double-charge`, HubSpot deal 301, Chargebee `sub_northwind_checkout`, Zoho Books, Gainsight, Jira `ITSM-4812`, Drive `INV-4812-northwind.pdf` |
+| `pay_saas_4812` and `pay_saas_4812b` | The duplicate pair. Books stores them unapplied. Chargebee counts both. |
+| `val@acme.example` | Okta `00u-val` and BambooHR employee 101 |
+| `contoso-eu` | Intercom 102, Asana `task-sso`, Gainsight, Jira `ITSM-SSO` |
+
+This invoice is not shop order `10484`. The shop refund lives in
+[Acme Goods Shop](/resources/environments/acme-goods-shop). Gmail is mounted at
+`/gmail/` and Drive at `/drive/` on `www.googleapis.com`, so the inbox and the
+file cabinet both run here.
+
+## Get started
+
+Paste this command to download the manifest and read `INV-4812` from mail,
+Chargebee, Zoho Books, and the service desk, then read Val from Okta. You do
+not need to clone Fabricate.
+
+<CommandOutput id="acme-company-ops-inv-4812" />
+
+`--proxy` keeps each provider’s normal hostname.
+[Acme Billing Ops](/resources/environments/acme-billing-ops) is the smaller
+mail, chat, and CRM slice of the same invoice.

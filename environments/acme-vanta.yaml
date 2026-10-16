@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-vanta
+
+services:
+  vanta:
+    resource: vanta
+    scenario: vanta.acme-compliance.v1

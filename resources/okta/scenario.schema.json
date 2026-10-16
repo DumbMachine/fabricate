@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/okta/scenario-v1.json",
+  "title": "Fabricate Okta scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["users", "groups", "apps", "appUsers"],
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "created", "lastUpdated", "profile"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "DEPROVISIONED", "LOCKED_OUT", "PASSWORD_EXPIRED", "PROVISIONED", "RECOVERY", "STAGED", "SUSPENDED"]
+          },
+          "created": {"type": "string", "minLength": 1},
+          "activated": {"type": "string"},
+          "statusChanged": {"type": "string"},
+          "lastLogin": {"type": "string"},
+          "lastUpdated": {"type": "string", "minLength": 1},
+          "profile": {"$ref": "#/$defs/userProfile"}
+        }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "created", "lastUpdated", "lastMembershipUpdated", "profile", "userIds"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "enum": ["APP_GROUP", "BUILT_IN", "OKTA_GROUP"]},
+          "created": {"type": "string", "minLength": 1},
+          "lastUpdated": {"type": "string", "minLength": 1},
+          "lastMembershipUpdated": {"type": "string", "minLength": 1},
+          "profile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "description": {"type": "string"}
+            }
+          },
+          "userIds": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "label", "status", "signOnMode", "created", "lastUpdated"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "label": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["ACTIVE", "DELETED", "INACTIVE"]},
+          "signOnMode": {
+            "type": "string",
+            "enum": ["AUTO_LOGIN", "BASIC_AUTH", "BOOKMARK", "BROWSER_PLUGIN", "OPENID_CONNECT", "SAML_1_1", "SAML_2_0", "SECURE_PASSWORD_STORE", "WS_FEDERATION"]
+          },
+          "created": {"type": "string", "minLength": 1},
+          "lastUpdated": {"type": "string", "minLength": 1},
+          "settings": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "notes": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "admin": {"type": "string"},
+                  "enduser": {"type": "string"}
+                }
+              },
+              "signOn": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "ssoAcsUrl": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "appUsers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["appId", "userId", "scope", "status"],
+        "properties": {
+          "appId": {"type": "string", "minLength": 1},
+          "userId": {"type": "string", "minLength": 1},
+          "scope": {"type": "string", "enum": ["USER", "GROUP"]},
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "APPROVED", "DEPROVISIONED", "IMPLICIT", "IMPORTED", "INACTIVE", "MATCHED", "PENDING", "PROVISIONED", "REVOKED", "STAGED", "SUSPENDED", "UNASSIGNED"]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "userProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["email", "login"],
+      "properties": {
+        "firstName": {"type": "string", "minLength": 1},
+        "lastName": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "minLength": 5},
+        "login": {"type": "string", "minLength": 5},
+        "primaryPhone": {"type": "string"},
+        "title": {"type": "string"},
+        "department": {"type": "string"}
+      }
+    }
+  }
+}

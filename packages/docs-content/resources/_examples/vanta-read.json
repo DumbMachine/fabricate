@@ -1,0 +1,14 @@
+{
+  "id": "vanta-read",
+  "title": "List seeded tests",
+  "environment": "environments/acme-vanta.yaml",
+  "environmentLabel": "Acme Vanta",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/vanta-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-vanta.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.vanta.com/v1/tests",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.vanta.com/v1/tests"
+  ]
+}

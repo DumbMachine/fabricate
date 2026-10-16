@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -131,20 +132,32 @@ func (r *Runtime) Close(ctx context.Context) error {
 	return first
 }
 
+// hostPrefix returns the path prefix a resource claims on host. The registry
+// rejects non-canonical prefixes, so the value is used as declared.
+func hostPrefix(descriptor httpresource.Descriptor, host string) string {
+	if prefix, ok := descriptor.HostPrefixes[host]; ok {
+		return prefix
+	}
+	return "/"
+}
+
 func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
 	explicit := make(map[string]string, len(r.Spec.Proxy.Hosts))
 	for route, service := range r.Spec.Proxy.Hosts {
 		explicit[normalizeRouteKey(route)] = service
 	}
+	names := make([]string, 0, len(r.Services))
+	for name := range r.Services {
+		names = append(names, name)
+	}
+	sort.Strings(names)
 	claimed := map[string]string{}
 	var routes []proxyengine.Route
-	for name, service := range r.Services {
+	for _, name := range names {
+		service := r.Services[name]
 		descriptor := service.Resource.Descriptor()
 		for _, host := range descriptor.ProviderHosts {
-			prefix := "/"
-			if descriptor.ID == "gmail" && host == "www.googleapis.com" {
-				prefix = "/gmail/"
-			}
+			prefix := hostPrefix(descriptor, host)
 			key := normalizeRouteKey(host + prefix)
 			selected := name
 			if override, ok := explicit[key]; ok {
@@ -159,27 +172,57 @@ func (r *Runtime) proxyRoutes() ([]proxyengine.Route, error) {
 			claimed[key] = name
 			routes = append(routes, proxyengine.Route{Host: host, PathPrefix: prefix, Target: service.URL, Token: service.Token, Service: name})
 		}
-		if descriptor.ID == "gmail" {
-			key := normalizeRouteKey("oauth2.googleapis.com/token")
-			selected := name
-			if override, ok := explicit[key]; ok {
-				selected = override
-			}
-			if selected == name {
-				if previous, exists := claimed[key]; exists && previous != name {
-					return nil, fmt.Errorf("environment: OAuth proxy route is ambiguous between %q and %q", previous, name)
-				}
-				claimed[key] = name
-				routes = append(routes, proxyengine.Route{Host: "oauth2.googleapis.com", PathPrefix: "/token", Token: service.Token, OAuthToken: true, Service: name})
-			}
-		}
 	}
+	tokenRoutes, err := r.tokenRoutes(names, explicit, claimed)
+	if err != nil {
+		return nil, err
+	}
+	routes = append(routes, tokenRoutes...)
 	for route, name := range explicit {
 		if _, ok := claimed[route]; !ok {
 			return nil, fmt.Errorf("environment: explicit proxy route %q for service %q does not match a provider route", route, name)
 		}
 	}
 	return routes, nil
+}
+
+// tokenRoutes installs one synthetic OAuth token route per declared endpoint.
+// Several services sharing an identity provider (Gmail, Drive, and GA4 all
+// refresh at oauth2.googleapis.com/token) is the normal case, not a conflict:
+// the proxy overwrites Authorization on every API route with that route's own
+// service token, so the access token the synthetic endpoint hands out is never
+// presented to a resource. The first declaring service by name serves it
+// unless proxy.hosts selects another declaring service.
+func (r *Runtime) tokenRoutes(names []string, explicit, claimed map[string]string) ([]proxyengine.Route, error) {
+	installed := map[string]bool{}
+	var routes []proxyengine.Route
+	for _, name := range names {
+		for _, token := range r.Services[name].Resource.Descriptor().TokenRoutes {
+			key := normalizeRouteKey(token.Host + token.Path)
+			if installed[key] {
+				continue
+			}
+			if previous, exists := claimed[key]; exists {
+				return nil, fmt.Errorf("environment: OAuth token route %s for %q collides with a provider route of %q", key, name, previous)
+			}
+			selected := name
+			if override, ok := explicit[key]; ok {
+				if !r.declaresTokenRoute(override, token) {
+					continue
+				}
+				selected = override
+			}
+			claimed[key] = selected
+			installed[key] = true
+			routes = append(routes, proxyengine.Route{Host: token.Host, PathPrefix: token.Path, Token: r.Services[selected].Token, OAuthToken: true, Service: selected})
+		}
+	}
+	return routes, nil
+}
+
+func (r *Runtime) declaresTokenRoute(name string, token httpresource.TokenRoute) bool {
+	service, ok := r.Services[name]
+	return ok && slices.Contains(service.Resource.Descriptor().TokenRoutes, token)
 }
 
 func normalizeRouteKey(route string) string {

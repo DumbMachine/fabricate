@@ -1,0 +1,20 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "carta.minimal.v1",
+  "$resource": "carta",
+  "$resourceVersion": "v1",
+  "state": {
+    "issuer": {
+      "id": "issuer-acme",
+      "legalName": "Acme",
+      "doingBusinessAsName": "Acme",
+      "website": "https://acme.example"
+    },
+    "stakeholders": [],
+    "certificates": [],
+    "optionGrants": [],
+    "fairMarketValues": [],
+    "draftOptionGrants": []
+  }
+}

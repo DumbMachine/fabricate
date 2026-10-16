@@ -1,0 +1,9 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-statuspage
+
+services:
+  statuspage:
+    resource: statuspage
+    scenario: statuspage.acme-status.v1

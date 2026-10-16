@@ -1,0 +1,23 @@
+{
+  "integration": "canny",
+  "scenarios": [
+    {
+      "id": "canny.acme-feedback.v1",
+      "counts": {
+        "boards": 1,
+        "posts": 2,
+        "users": 4,
+        "votes": 1
+      }
+    },
+    {
+      "id": "canny.minimal.v1",
+      "counts": {
+        "boards": 0,
+        "posts": 0,
+        "users": 0,
+        "votes": 0
+      }
+    }
+  ]
+}

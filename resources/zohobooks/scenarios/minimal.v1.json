@@ -1,0 +1,23 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "zohobooks.minimal.v1",
+  "$resource": "zohobooks",
+  "$resourceVersion": "v3",
+  "state": {
+    "organization": {
+      "organizationId": "org-acme",
+      "name": "Acme",
+      "contactName": "Aisha Rahman",
+      "email": "aisha@acme.example",
+      "currencyCode": "INR",
+      "currencySymbol": "₹",
+      "timeZone": "Asia/Kolkata",
+      "isOrgActive": true
+    },
+    "contacts": [],
+    "invoices": [],
+    "creditNotes": [],
+    "customerPayments": []
+  }
+}

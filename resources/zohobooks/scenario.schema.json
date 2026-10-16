@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/zohobooks/scenario-v1.json",
+  "title": "Fabricate Zoho Books scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["organization", "contacts", "invoices", "creditNotes", "customerPayments"],
+  "properties": {
+    "organization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["organizationId", "name", "contactName", "email", "currencyCode", "currencySymbol", "timeZone", "isOrgActive"],
+      "properties": {
+        "organizationId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "contactName": {"type": "string", "minLength": 1},
+        "email": {"type": "string", "minLength": 1},
+        "currencyCode": {"type": "string", "enum": ["INR", "USD"]},
+        "currencySymbol": {"type": "string", "minLength": 1},
+        "timeZone": {"type": "string", "minLength": 1},
+        "isOrgActive": {"type": "boolean"}
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contactId", "contactName", "companyName", "contactType", "customerSubType", "email", "phone", "currencyCode", "status"],
+        "properties": {
+          "contactId": {"type": "string", "minLength": 1},
+          "contactName": {"type": "string", "minLength": 1},
+          "companyName": {"type": "string", "minLength": 1},
+          "contactType": {"type": "string", "enum": ["customer", "vendor"]},
+          "customerSubType": {"type": "string", "enum": ["individual", "business"]},
+          "email": {"type": "string", "minLength": 1},
+          "phone": {"type": "string", "minLength": 1},
+          "firstName": {"type": "string", "minLength": 1},
+          "lastName": {"type": "string", "minLength": 1},
+          "currencyCode": {"type": "string", "enum": ["INR", "USD"]},
+          "notes": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["active", "inactive"]},
+          "billingAddress": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["address", "city", "state", "zip", "country"],
+            "properties": {
+              "address": {"type": "string", "minLength": 1},
+              "city": {"type": "string", "minLength": 1},
+              "state": {"type": "string", "minLength": 1},
+              "zip": {"type": "string", "minLength": 1},
+              "country": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "invoices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["invoiceId", "invoiceNumber", "customerId", "status", "date", "dueDate", "currencyCode", "lineItems", "total", "balance"],
+        "properties": {
+          "invoiceId": {"type": "string", "minLength": 1},
+          "invoiceNumber": {"type": "string", "minLength": 1},
+          "customerId": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["draft", "sent", "overdue", "paid", "void", "unpaid", "partially_paid", "viewed"]},
+          "date": {"type": "string", "minLength": 10},
+          "dueDate": {"type": "string", "minLength": 10},
+          "currencyCode": {"type": "string", "enum": ["INR", "USD"]},
+          "referenceNumber": {"type": "string", "minLength": 1},
+          "notes": {"type": "string", "minLength": 1},
+          "lineItems": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "rate", "quantity"],
+              "properties": {
+                "name": {"type": "string", "minLength": 1},
+                "description": {"type": "string", "minLength": 1},
+                "rate": {"type": "number", "minimum": 0},
+                "quantity": {"type": "number", "exclusiveMinimum": 0}
+              }
+            }
+          },
+          "total": {"type": "number", "minimum": 0},
+          "balance": {"type": "number", "minimum": 0}
+        }
+      }
+    },
+    "creditNotes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["creditnoteId", "creditnoteNumber", "customerId", "invoiceId", "status", "date", "currencyCode", "total", "balance"],
+        "properties": {
+          "creditnoteId": {"type": "string", "minLength": 1},
+          "creditnoteNumber": {"type": "string", "minLength": 1},
+          "customerId": {"type": "string", "minLength": 1},
+          "invoiceId": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["draft", "open", "closed", "void"]},
+          "date": {"type": "string", "minLength": 10},
+          "currencyCode": {"type": "string", "enum": ["INR", "USD"]},
+          "referenceNumber": {"type": "string", "minLength": 1},
+          "notes": {"type": "string", "minLength": 1},
+          "total": {"type": "number", "minimum": 0},
+          "balance": {"type": "number", "minimum": 0}
+        }
+      }
+    },
+    "customerPayments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["paymentId", "customerId", "paymentMode", "amount", "date", "currencyCode", "invoices"],
+        "properties": {
+          "paymentId": {"type": "string", "minLength": 1},
+          "customerId": {"type": "string", "minLength": 1},
+          "paymentMode": {"type": "string", "enum": ["check", "cash", "creditcard", "banktransfer", "bankremittance", "autotransaction", "others"]},
+          "amount": {"type": "number", "exclusiveMinimum": 0},
+          "date": {"type": "string", "minLength": 10},
+          "currencyCode": {"type": "string", "enum": ["INR", "USD"]},
+          "referenceNumber": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "invoices": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["invoiceId", "amountApplied"],
+              "properties": {
+                "invoiceId": {"type": "string", "minLength": 1},
+                "amountApplied": {"type": "number", "exclusiveMinimum": 0}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

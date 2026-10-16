@@ -1,0 +1,110 @@
+---
+title: "Acme Commerce Agency"
+description: One Acme operator running four Shopify shops, with shared payments, shipping, books, WhatsApp, and affiliate payouts.
+---
+
+Acme Commerce Agency is a ready-to-run environment for testing software that
+operates more than one Shopify shop. Every run starts from the same four
+storefronts and is removed when the wrapped command exits.
+
+Its manifest identifier is `acme-commerce-agency`.
+
+## Included integrations
+
+<IncludedIntegrations
+  services={[
+    {
+      resource: "shopify",
+      label: "Shopify",
+      href: "/resources/integrations/shopify",
+      service: "shopify",
+      scenario: "shopify.acme-agency.v1",
+      summary: "Acme Goods plus the Northwind, TinyShop, and Fernworks client shops.",
+      data: "The Host header selects the shop. Order 10490 is Northwind. Order 10491 is TinyShop.",
+    },
+    {
+      resource: "razorpay",
+      label: "Razorpay",
+      href: "/resources/integrations/razorpay",
+      service: "razorpay",
+      scenario: "razorpay.acme-payments.v1",
+      summary: "Shop and client-shop payments in one Razorpay account.",
+      data: "pay_Acme10482, pay_NW10490, and pay_TS10491 are captured.",
+    },
+    {
+      resource: "shiprocket",
+      label: "Shiprocket",
+      href: "/resources/integrations/shiprocket",
+      service: "shiprocket",
+      scenario: "shiprocket.acme-shipments.v1",
+      summary: "Shipments for the in-house shop and the Northwind client order.",
+      data: "SR10482AWB is in transit. SR10490AWB is delivered. SR10483AWB is an NDR.",
+    },
+    {
+      resource: "zohobooks",
+      label: "Zoho Books",
+      href: "/resources/integrations/zohobooks",
+      service: "zohobooks",
+      scenario: "zohobooks.acme-ledger.v1",
+      summary: "Shop invoices and the SaaS invoices in one organization.",
+      data: "INV-10482 and INV-10490 are shop invoices. INV-4812 stays a SaaS invoice.",
+    },
+    {
+      resource: "gupshup",
+      label: "Gupshup",
+      href: "/resources/integrations/gupshup",
+      service: "gupshup",
+      scenario: "gupshup.acme-whatsapp.v1",
+      summary: "WhatsApp updates for the Acme Goods orders.",
+      data: "msg_10482 was delivered. Priya's inbound message asks where the tee is.",
+    },
+    {
+      resource: "slack",
+      label: "Slack",
+      href: "/resources/integrations/slack",
+      service: "slack",
+      scenario: "slack.acme-workspace.v1",
+      summary: "Fulfillment and finance channels for the agency operator.",
+      data: "#fulfillment tracks 10482. #finance keeps refund 10484 apart from INV-4812.",
+    },
+    {
+      resource: "impact",
+      label: "impact.com",
+      href: "/resources/integrations/impact",
+      service: "impact",
+      scenario: "impact.acme-partners.v1",
+      summary: "The Acme Goods affiliate program and the pending Northwind payout.",
+      data: "Action act_10482 for partner_northwind is pending ₹150 on order 10482.",
+    },
+  ]}
+/>
+
+## Scenario data
+
+One Shopify service owns all four domains. A request to
+`acme-goods.myshopify.com` sees Priya's order `10482`. A request to
+`northwind-market.myshopify.com` sees Jules Okonkwo's kettle order `10490`.
+A request to `tinyshop.myshopify.com` sees Anita Desai's candle order `10491`.
+Fernworks Studio is the fourth shop and has no order in this seed.
+
+| Shop | Order | Payment | Shipment |
+| --- | --- | --- | --- |
+| Acme Goods | `10482` | `pay_Acme10482` | `SR10482AWB` in transit |
+| Northwind Market | `10490` | `pay_NW10490` | `SR10490AWB` delivered |
+| TinyShop | `10491` | `pay_TS10491` | no Shiprocket row |
+
+impact.com action `act_10482` pays partner `partner_northwind` ₹150 on the
+Acme Goods order, and that payout is still pending. The in-house warehouse
+view, with Zoho Inventory and the Redshift copy, is
+[Acme Goods Shop](/resources/environments/acme-goods-shop).
+
+## Get started
+
+Paste this command to download the manifest and read the three shop orders
+from their own hostnames, plus the Northwind payment and the affiliate action.
+You do not need to clone Fabricate.
+
+<CommandOutput id="acme-commerce-agency-shops" />
+
+`--proxy` keeps each shop hostname. The same Shopify token is injected for
+every domain.

@@ -1,0 +1,8 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-jsm
+services:
+  jsm:
+    resource: jsm
+    scenario: jsm.acme-desk.v1

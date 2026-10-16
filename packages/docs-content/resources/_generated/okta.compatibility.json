@@ -1,0 +1,50 @@
+{
+  "api": "Okta Management API 2024-07",
+  "environment": {
+    "label": "Acme Okta",
+    "manifest": "environments/acme-okta.yaml",
+    "messages": 9
+  },
+  "integration": "okta",
+  "modes": {
+    "direct": {
+      "messagesAfter": 9,
+      "messagesBefore": 8,
+      "operations": {
+        "paginate": "passed",
+        "read": "passed",
+        "directory": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "messagesAfter": 9,
+      "messagesBefore": 8,
+      "operations": {
+        "paginate": "passed",
+        "read": "passed",
+        "directory": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "paginate": "Page through users",
+    "read": "Retrieve user",
+    "directory": "List groups and apps",
+    "write": "Create user",
+    "persistence": "Confirm created user"
+  },
+  "testedAt": "2026-10-16T06:31:56.991Z",
+  "testedCommit": "37c19376da5238321da8c0499f54248912a53db5",
+  "verification": {
+    "client": "@okta/okta-sdk-nodejs@8.2.0",
+    "kind": "official-sdk",
+    "label": "Official SDK",
+    "title": "Official SDK verification"
+  }
+}

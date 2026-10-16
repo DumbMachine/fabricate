@@ -1,0 +1,13 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "canny.minimal.v1",
+  "$resource": "canny",
+  "$resourceVersion": "v1",
+  "state": {
+    "boards": [],
+    "users": [],
+    "posts": [],
+    "votes": []
+  }
+}

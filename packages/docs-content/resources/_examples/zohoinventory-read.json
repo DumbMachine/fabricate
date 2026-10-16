@@ -1,0 +1,14 @@
+{
+  "id": "zohoinventory-read",
+  "title": "List seeded items",
+  "environment": "environments/acme-zohoinventory.yaml",
+  "environmentLabel": "Acme Zoho Inventory",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/zohoinventory-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-zohoinventory.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS \"https://www.zohoapis.com/inventory/v1/items?organization_id=org-acme\"",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://www.zohoapis.com/inventory/v1/items?organization_id=org-acme"
+  ]
+}

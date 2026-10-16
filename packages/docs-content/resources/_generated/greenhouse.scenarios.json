@@ -1,0 +1,35 @@
+{
+  "integration": "greenhouse",
+  "scenarios": [
+    {
+      "id": "greenhouse.acme-pipeline.v1",
+      "counts": {
+        "applications": 2,
+        "candidates": 2,
+        "departments": 1,
+        "jobStages": 4,
+        "jobs": 1,
+        "notes": 0,
+        "offers": 1,
+        "offices": 1,
+        "scorecards": 1,
+        "users": 2
+      }
+    },
+    {
+      "id": "greenhouse.minimal.v1",
+      "counts": {
+        "applications": 0,
+        "candidates": 0,
+        "departments": 0,
+        "jobStages": 0,
+        "jobs": 0,
+        "notes": 0,
+        "offers": 0,
+        "offices": 0,
+        "scorecards": 0,
+        "users": 0
+      }
+    }
+  ]
+}

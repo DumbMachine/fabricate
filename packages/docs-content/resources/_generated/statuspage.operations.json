@@ -1,0 +1,72 @@
+{
+  "integration": "statuspage",
+  "api": "Statuspage v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/v1/pages",
+      "operationId": "ListPages",
+      "summary": "List pages visible to the API key."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pages/{page_id}",
+      "operationId": "GetPage",
+      "summary": "Get one page."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pages/{page_id}/components",
+      "operationId": "ListComponents",
+      "summary": "List components on a page."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/pages/{page_id}/components",
+      "operationId": "CreateComponent",
+      "summary": "Create a component."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pages/{page_id}/components/{component_id}",
+      "operationId": "GetComponent",
+      "summary": "Get a component."
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/pages/{page_id}/components/{component_id}",
+      "operationId": "UpdateComponent",
+      "summary": "Update a component."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pages/{page_id}/incidents",
+      "operationId": "ListIncidents",
+      "summary": "List incidents on a page."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/pages/{page_id}/incidents",
+      "operationId": "CreateIncident",
+      "summary": "Create a realtime incident."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pages/{page_id}/incidents/unresolved",
+      "operationId": "ListUnresolvedIncidents",
+      "summary": "List incidents that are not resolved or completed."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pages/{page_id}/incidents/{incident_id}",
+      "operationId": "GetIncident",
+      "summary": "Get an incident."
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/pages/{page_id}/incidents/{incident_id}",
+      "operationId": "UpdateIncident",
+      "summary": "Update an incident and append an incident update when status or body changes."
+    }
+  ]
+}

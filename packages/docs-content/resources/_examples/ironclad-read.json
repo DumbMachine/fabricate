@@ -1,0 +1,14 @@
+{
+  "id": "ironclad-read",
+  "title": "List seeded workflows",
+  "environment": "environments/acme-ironclad.yaml",
+  "environmentLabel": "Acme's Ironclad",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/ironclad-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-ironclad.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS \"https://na1.ironcladapp.com/public/api/v1/workflows?status=active&status=completed\"",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://na1.ironcladapp.com/public/api/v1/workflows?status=active&status=completed"
+  ]
+}

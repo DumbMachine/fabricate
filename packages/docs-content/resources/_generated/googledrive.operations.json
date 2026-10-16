@@ -1,0 +1,66 @@
+{
+  "integration": "googledrive",
+  "api": "Google Drive v3",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/drive/v3/about",
+      "operationId": "DriveAboutGet",
+      "summary": "Gets information about the user, the user's Drive, and system capabilities."
+    },
+    {
+      "method": "GET",
+      "path": "/drive/v3/files",
+      "operationId": "DriveFilesList",
+      "summary": "Lists the user's files."
+    },
+    {
+      "method": "POST",
+      "path": "/drive/v3/files",
+      "operationId": "DriveFilesCreate",
+      "summary": "Creates a file."
+    },
+    {
+      "method": "GET",
+      "path": "/drive/v3/files/{fileId}",
+      "operationId": "DriveFilesGet",
+      "summary": "Gets a file's metadata by ID."
+    },
+    {
+      "method": "PATCH",
+      "path": "/drive/v3/files/{fileId}",
+      "operationId": "DriveFilesUpdate",
+      "summary": "Updates a file's metadata."
+    },
+    {
+      "method": "DELETE",
+      "path": "/drive/v3/files/{fileId}",
+      "operationId": "DriveFilesDelete",
+      "summary": "Permanently deletes a file owned by the user."
+    },
+    {
+      "method": "POST",
+      "path": "/drive/v3/files/{fileId}/copy",
+      "operationId": "DriveFilesCopy",
+      "summary": "Creates a copy of a file and applies any requested updates with patch semantics."
+    },
+    {
+      "method": "GET",
+      "path": "/drive/v3/files/{fileId}/permissions",
+      "operationId": "DrivePermissionsList",
+      "summary": "Lists a file's permissions."
+    },
+    {
+      "method": "POST",
+      "path": "/drive/v3/files/{fileId}/permissions",
+      "operationId": "DrivePermissionsCreate",
+      "summary": "Creates a permission for a file."
+    },
+    {
+      "method": "GET",
+      "path": "/drive/v3/files/{fileId}/permissions/{permissionId}",
+      "operationId": "DrivePermissionsGet",
+      "summary": "Gets a permission by ID."
+    }
+  ]
+}

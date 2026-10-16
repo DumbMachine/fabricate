@@ -1,0 +1,531 @@
+openapi: 3.0.3
+info:
+  title: Gainsight NXT API
+  version: v1
+  description: >-
+    Curated Gainsight NXT surface for Company, Cockpit call-to-action, Success
+    Plan, and Timeline activity calls. Paths and field names follow the public
+    Gainsight REST articles. Production tenants send an accesskey header; this
+    contract accepts Authorization Bearer.
+servers:
+  - url: https://acme.gainsightcloud.com
+    description: Gainsight tenant domain.
+security:
+  - bearerAuth: []
+tags:
+  - name: Company
+  - name: CTA
+  - name: SuccessPlan
+  - name: Timeline
+paths:
+  /v1/data/objects/query/Company:
+    post:
+      operationId: gainsight.company.query
+      summary: Read Company records.
+      description: >-
+        Lists companies, or returns one company when the where clause matches
+        a single Gsid. This is the published Company Read API.
+      tags: [Company]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ObjectQuery'}
+      responses:
+        '200':
+          description: Matching company records. data is the record array.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordListEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/data/objects/Company:
+    post:
+      operationId: gainsight.company.insert
+      summary: Insert Company records.
+      tags: [Company]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CompanyWriteRequest'}
+      responses:
+        '200':
+          description: Insert result. data.records contains the stored companies.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordBatchEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+    put:
+      operationId: gainsight.company.update
+      summary: Update Company records identified by keys.
+      tags: [Company]
+      parameters:
+        - name: keys
+          in: query
+          required: true
+          description: Comma-separated Company fields that identify the records. Operator between keys is AND.
+          schema: {type: string, minLength: 1}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CompanyWriteRequest'}
+      responses:
+        '200':
+          description: Update result.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordBatchEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/data/objects/Company/{gsid}:
+    delete:
+      operationId: gainsight.company.delete
+      summary: Delete one Company by GSID.
+      tags: [Company]
+      parameters:
+        - $ref: '#/components/parameters/Gsid'
+      responses:
+        '200':
+          description: Delete result. data is a confirmation string.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/DeleteEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v2/cockpit/cta/list:
+    post:
+      operationId: gainsight.cta.list
+      summary: Fetch Call to Action records.
+      tags: [CTA]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CtaListRequest'}
+      responses:
+        '200':
+          description: Matching CTAs. data is the record array.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordListEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v2/cockpit/cta/:
+    post:
+      operationId: gainsight.cta.create
+      summary: Create a Call to Action.
+      tags: [CTA]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CtaWriteRequest'}
+      responses:
+        '200':
+          description: Per-reference success and failure lists.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/BulkResultEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+    put:
+      operationId: gainsight.cta.update
+      summary: Update a Call to Action.
+      tags: [CTA]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CtaWriteRequest'}
+      responses:
+        '200':
+          description: Per-reference success and failure lists.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/BulkResultEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v2/successPlan/list/:
+    post:
+      operationId: gainsight.successPlan.list
+      summary: Fetch Success Plans.
+      tags: [SuccessPlan]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/SuccessPlanListRequest'}
+      responses:
+        '200':
+          description: Matching success plans. data is the record array.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordListEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v2/successPlan/:
+    post:
+      operationId: gainsight.successPlan.create
+      summary: Create a Success Plan.
+      tags: [SuccessPlan]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/SuccessPlanWriteRequest'}
+      responses:
+        '200':
+          description: Per-reference success and failure lists.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/BulkResultEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/ant/es/activity:
+    post:
+      operationId: gainsight.activity.create
+      summary: Save Timeline activities.
+      tags: [Timeline]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ActivitySaveRequest'}
+      responses:
+        '200':
+          description: Activities saved or rejected per ExternalId.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ActivitySaveEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+  /v1/data/objects/query/activity_timeline:
+    post:
+      operationId: gainsight.activity.query
+      summary: Read Timeline activity records.
+      tags: [Timeline]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ObjectQuery'}
+      responses:
+        '200':
+          description: Matching activities. data.records is the record array.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecordBatchEnvelope'}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Synthetic bearer token injected by Fabricate. Production Gainsight uses an accesskey header.
+  parameters:
+    Gsid:
+      name: gsid
+      in: path
+      required: true
+      schema: {type: string, minLength: 1}
+  responses:
+    Error:
+      description: Request rejected before a Gainsight result envelope could be built.
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorEnvelope'}
+  schemas:
+    ErrorEnvelope:
+      type: object
+      required: [result, errorCode, errorDesc, requestId, message]
+      properties:
+        result: {type: boolean}
+        errorCode: {type: string, nullable: true}
+        errorDesc: {type: string, nullable: true}
+        requestId: {type: string}
+        message: {type: string, nullable: true}
+    Record:
+      type: object
+      additionalProperties: true
+      description: One Gainsight record projected to the requested field names.
+    Where:
+      type: object
+      additionalProperties: false
+      properties:
+        expression: {type: string}
+        conditions:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [operator]
+            properties:
+              name: {type: string}
+              fieldName: {type: string}
+              alias: {type: string}
+              operator: {type: string}
+              value:
+                type: array
+                items: {type: string}
+    ObjectQuery:
+      type: object
+      additionalProperties: false
+      required: [select]
+      properties:
+        select:
+          type: array
+          minItems: 1
+          items: {type: string, minLength: 1}
+        where: {$ref: '#/components/schemas/Where'}
+        orderBy:
+          type: object
+          additionalProperties: {type: string}
+        limit: {type: integer, minimum: 0, maximum: 5000}
+        offset: {type: integer, minimum: 0}
+    CtaListRequest:
+      type: object
+      additionalProperties: false
+      required: [select]
+      properties:
+        select:
+          type: array
+          minItems: 1
+          items: {type: string, minLength: 1}
+        where: {$ref: '#/components/schemas/Where'}
+        linkedObject: {type: boolean}
+        pageSize: {type: integer, minimum: 1, maximum: 1000}
+        pageNumber: {type: integer, minimum: 1}
+    SuccessPlanListRequest:
+      type: object
+      additionalProperties: false
+      required: [select]
+      properties:
+        select:
+          type: array
+          minItems: 1
+          items: {type: string, minLength: 1}
+        where: {$ref: '#/components/schemas/Where'}
+        pageSize: {type: integer, minimum: 1, maximum: 1000}
+        pageNumber: {type: integer, minimum: 1}
+    CompanyRecord:
+      type: object
+      additionalProperties: false
+      properties:
+        Gsid: {type: string}
+        Name: {type: string}
+        Industry: {type: string}
+        ARR: {type: number}
+        Employees: {type: number}
+        LifecycleInWeeks: {type: integer}
+        LifeCycleInWeeks: {type: integer}
+        OriginalContractDate: {type: string}
+        RenewalDate: {type: string}
+        Stage: {type: string}
+        Status: {type: string}
+        CSMFirstName: {type: string}
+        CSMLastName: {type: string}
+        Health__gc:
+          type: string
+          enum: [Red, Yellow, Green]
+        Domain__gc: {type: string}
+    CompanyWriteRequest:
+      type: object
+      additionalProperties: false
+      required: [records]
+      properties:
+        records:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items: {$ref: '#/components/schemas/CompanyRecord'}
+        lookups:
+          type: object
+          additionalProperties: true
+    CtaRecord:
+      type: object
+      additionalProperties: false
+      properties:
+        referenceId: {type: string}
+        Gsid: {type: string}
+        Name: {type: string}
+        CompanyId: {type: string}
+        SFDCID: {type: string}
+        OwnerEmail: {type: string}
+        OwnerId: {type: string}
+        DueDate: {type: string}
+        type: {type: string}
+        reason: {type: string}
+        status: {type: string}
+        priority: {type: string}
+        Comments: {type: string}
+        playbook: {type: string}
+        IsClosed: {type: boolean}
+        IsImportant: {type: boolean}
+    CtaWriteRequest:
+      type: object
+      additionalProperties: false
+      required: [requests]
+      properties:
+        requests:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: object
+            additionalProperties: false
+            required: [record]
+            properties:
+              record: {$ref: '#/components/schemas/CtaRecord'}
+        lookups:
+          type: object
+          additionalProperties: true
+    SuccessPlanRecord:
+      type: object
+      additionalProperties: false
+      properties:
+        referenceId: {type: string}
+        Gsid: {type: string}
+        Name: {type: string}
+        CompanyId: {type: string}
+        SFDCID: {type: string}
+        OwnerEmail: {type: string}
+        OwnerId: {type: string}
+        DueDate: {type: string}
+        SuccessPlanType: {type: string}
+        status: {type: string}
+        ActionPlan: {type: string}
+    SuccessPlanWriteRequest:
+      type: object
+      additionalProperties: false
+      required: [requests]
+      properties:
+        requests:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: object
+            additionalProperties: false
+            required: [record]
+            properties:
+              record: {$ref: '#/components/schemas/SuccessPlanRecord'}
+        lookups:
+          type: object
+          additionalProperties: true
+    ActivityRecord:
+      type: object
+      additionalProperties: false
+      required: [ExternalId, ContextName, TypeName, Subject, Notes]
+      properties:
+        ExternalId: {type: string, minLength: 1}
+        ContextName: {type: string, enum: [Company, CTA, SuccessPlan]}
+        Author: {type: string}
+        AuthorId: {type: string}
+        TypeName: {type: string, minLength: 1}
+        Subject: {type: string, minLength: 1, maxLength: 255}
+        Notes: {type: string, minLength: 1}
+        ActivityDate: {type: string}
+        companyName: {type: string}
+        GsCompanyId: {type: string}
+        ContextId: {type: string}
+    ActivitySaveRequest:
+      type: object
+      additionalProperties: false
+      required: [records]
+      properties:
+        records:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items: {$ref: '#/components/schemas/ActivityRecord'}
+        lookups:
+          type: object
+          additionalProperties: true
+    RecordListEnvelope:
+      type: object
+      required: [result, errorCode, errorDesc, requestId, data, message]
+      properties:
+        result: {type: boolean}
+        errorCode: {type: string, nullable: true}
+        errorDesc: {type: string, nullable: true}
+        requestId: {type: string}
+        data:
+          type: array
+          items: {$ref: '#/components/schemas/Record'}
+        message: {type: string, nullable: true}
+    RecordBatchEnvelope:
+      type: object
+      required: [result, errorCode, errorDesc, requestId, data, message]
+      properties:
+        result: {type: boolean}
+        errorCode: {type: string, nullable: true}
+        errorDesc: {type: string, nullable: true}
+        requestId: {type: string}
+        data:
+          type: object
+          required: [records]
+          properties:
+            count: {type: integer}
+            records:
+              type: array
+              items: {$ref: '#/components/schemas/Record'}
+        message: {type: string, nullable: true}
+    DeleteEnvelope:
+      type: object
+      required: [result, errorCode, errorDesc, requestId, data, message]
+      properties:
+        result: {type: boolean}
+        errorCode: {type: string, nullable: true}
+        errorDesc: {type: string, nullable: true}
+        requestId: {type: string}
+        data: {type: string, nullable: true}
+        message: {type: string, nullable: true}
+    StringMap:
+      type: object
+      additionalProperties: {type: string}
+    BulkResult:
+      type: object
+      required: [success, failure]
+      properties:
+        success:
+          type: array
+          items: {$ref: '#/components/schemas/StringMap'}
+        failure:
+          type: array
+          items: {$ref: '#/components/schemas/StringMap'}
+    BulkResultEnvelope:
+      type: object
+      required: [result, errorCode, errorDesc, requestId, data, message]
+      properties:
+        result: {type: boolean}
+        errorCode: {type: string, nullable: true}
+        errorDesc: {type: string, nullable: true}
+        requestId: {type: string}
+        data: {$ref: '#/components/schemas/BulkResult'}
+        message: {type: string, nullable: true}
+    ActivityFailure:
+      type: object
+      required: [errorCode, Message]
+      properties:
+        errorCode: {type: string}
+        Message: {type: string}
+    ActivitySuccess:
+      type: object
+      required: [activityId]
+      properties:
+        activityId: {type: string}
+    ActivitySaveData:
+      type: object
+      required: [failures, success]
+      properties:
+        failures:
+          type: object
+          additionalProperties:
+            type: array
+            items: {$ref: '#/components/schemas/ActivityFailure'}
+        success:
+          type: object
+          additionalProperties:
+            type: array
+            items: {$ref: '#/components/schemas/ActivitySuccess'}
+    ActivitySaveEnvelope:
+      type: object
+      required: [result, data, message, additionalInfo]
+      properties:
+        result: {type: boolean}
+        data: {$ref: '#/components/schemas/ActivitySaveData'}
+        message: {type: string, nullable: true}
+        additionalInfo: {type: string, nullable: true}

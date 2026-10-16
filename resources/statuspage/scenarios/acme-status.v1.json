@@ -1,0 +1,116 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "statuspage.acme-status.v1",
+  "$resource": "statuspage",
+  "$resourceVersion": "v1",
+  "state": {
+    "page": {
+      "id": "page-acme",
+      "name": "Acme Status",
+      "subdomain": "status.acme.example",
+      "domain": "status.acme.example",
+      "url": "https://status.acme.example",
+      "pageDescription": "Status for Acme App checkout and Acme Goods order tracking.",
+      "timeZone": "Asia/Kolkata",
+      "createdAt": "2026-01-15T00:00:00Z",
+      "updatedAt": "2026-08-26T11:40:00Z"
+    },
+    "components": [
+      {
+        "id": "comp-checkout",
+        "pageId": "page-acme",
+        "name": "Checkout",
+        "description": "Acme App checkout.",
+        "status": "degraded_performance",
+        "position": 1,
+        "showcase": true,
+        "group": false,
+        "onlyShowIfDegraded": false,
+        "createdAt": "2026-01-15T00:00:00Z",
+        "updatedAt": "2026-08-26T11:40:00Z"
+      },
+      {
+        "id": "comp-order-tracking",
+        "pageId": "page-acme",
+        "name": "Order tracking",
+        "description": "Acme Goods shipment tracking.",
+        "status": "operational",
+        "position": 2,
+        "showcase": true,
+        "group": false,
+        "onlyShowIfDegraded": false,
+        "createdAt": "2026-01-15T00:00:00Z",
+        "updatedAt": "2026-08-25T18:20:00Z"
+      }
+    ],
+    "incidents": [
+      {
+        "id": "inc-double-charge",
+        "pageId": "page-acme",
+        "name": "Checkout double-charge on INV-4812",
+        "status": "investigating",
+        "impact": "minor",
+        "impactOverride": "",
+        "componentIds": ["comp-checkout"],
+        "createdAt": "2026-08-26T08:15:00Z",
+        "updatedAt": "2026-08-26T11:40:00Z",
+        "resolvedAt": "",
+        "monitoringAt": "",
+        "postmortemBody": "",
+        "updates": [
+          {
+            "id": "upd-double-charge",
+            "status": "investigating",
+            "body": "Northwind Traders was charged twice for invoice INV-4812 (1240 USD). Payments pay_saas_4812 and pay_saas_4812b are the duplicate. Checkout is degraded while finance investigates.",
+            "createdAt": "2026-08-26T08:15:00Z",
+            "updatedAt": "2026-08-26T11:40:00Z",
+            "displayAt": "2026-08-26T11:40:00Z",
+            "deliverNotifications": true,
+            "wantsTwitterUpdate": false,
+            "affected": [
+              {
+                "componentId": "comp-checkout",
+                "oldStatus": "operational",
+                "newStatus": "degraded_performance"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "inc-ndr-10483",
+        "pageId": "page-acme",
+        "name": "NDR notifications delayed",
+        "status": "resolved",
+        "impact": "minor",
+        "impactOverride": "",
+        "componentIds": ["comp-order-tracking"],
+        "createdAt": "2026-08-24T17:10:00Z",
+        "updatedAt": "2026-08-25T18:20:00Z",
+        "resolvedAt": "2026-08-25T18:20:00Z",
+        "monitoringAt": "",
+        "postmortemBody": "",
+        "updates": [
+          {
+            "id": "upd-ndr-10483",
+            "status": "resolved",
+            "body": "NDR notifications for Acme Goods order 10483 are flowing again. Shiprocket AWB SR10483AWB (Bluedart) had reported the customer was not available.",
+            "createdAt": "2026-08-25T18:20:00Z",
+            "updatedAt": "2026-08-25T18:20:00Z",
+            "displayAt": "2026-08-25T18:20:00Z",
+            "deliverNotifications": true,
+            "wantsTwitterUpdate": false,
+            "affected": [
+              {
+                "componentId": "comp-order-tracking",
+                "oldStatus": "degraded_performance",
+                "newStatus": "operational"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

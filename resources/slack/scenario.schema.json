@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/slack/scenario-v1.json",
+  "title": "Fabricate Slack scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["team", "currentUserId", "users", "channels", "messages"],
+  "properties": {
+    "team": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "domain", "url"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^T-[a-z0-9-]+$"},
+        "name": {"type": "string", "minLength": 1},
+        "domain": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "minLength": 1}
+      }
+    },
+    "currentUserId": {"type": "string", "minLength": 1},
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "realName", "email", "phone", "title", "isOwner", "isAdmin", "isBot", "deleted"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^U-[a-z0-9-]+$"},
+          "name": {"type": "string", "pattern": "^[a-z0-9._-]+$"},
+          "realName": {"type": "string", "minLength": 1},
+          "email": {"type": "string", "format": "email"},
+          "phone": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "isOwner": {"type": "boolean"},
+          "isAdmin": {"type": "boolean"},
+          "isBot": {"type": "boolean"},
+          "deleted": {"type": "boolean"}
+        }
+      }
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "creator", "isPrivate", "isArchived", "topic", "purpose", "created", "members"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^C-[a-z0-9-]+$"},
+          "name": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "creator": {"type": "string", "minLength": 1},
+          "isPrivate": {"type": "boolean"},
+          "isArchived": {"type": "boolean"},
+          "topic": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1},
+          "created": {"type": "integer", "minimum": 0},
+          "members": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["channel", "user", "text", "ts", "threadTs"],
+        "properties": {
+          "channel": {"type": "string", "minLength": 1},
+          "user": {"type": "string", "minLength": 1},
+          "text": {"type": "string", "minLength": 1},
+          "ts": {"type": "string", "pattern": "^[0-9]{10}\\.[0-9]{6}$"},
+          "threadTs": {"type": "string"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fabricate.dev/schemas/resources/canny/scenario-v1.json",
+  "title": "Fabricate Canny scenario state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["boards", "users", "posts", "votes"],
+  "properties": {
+    "boards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "created", "isPrivate", "privateComments"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "created": {"type": "string", "minLength": 1},
+          "isPrivate": {"type": "boolean"},
+          "privateComments": {"type": "boolean"}
+        }
+      }
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "email", "isAdmin", "created", "userID"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1, "maxLength": 50},
+          "email": {"type": "string", "minLength": 1},
+          "isAdmin": {"type": "boolean"},
+          "created": {"type": "string", "minLength": 1},
+          "userID": {"type": "string"}
+        }
+      }
+    },
+    "posts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "boardID", "authorID", "title", "details", "status", "created", "statusChangedAt"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "boardID": {"type": "string", "minLength": 1},
+          "authorID": {"type": "string", "minLength": 1},
+          "byID": {"type": "string"},
+          "title": {"type": "string", "minLength": 1},
+          "details": {"type": "string"},
+          "status": {"type": "string", "minLength": 1},
+          "created": {"type": "string", "minLength": 1},
+          "statusChangedAt": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "votes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "postID", "voterID", "created", "votePriority"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "postID": {"type": "string", "minLength": 1},
+          "voterID": {"type": "string", "minLength": 1},
+          "byID": {"type": "string"},
+          "created": {"type": "string", "minLength": 1},
+          "votePriority": {
+            "type": "string",
+            "enum": ["No priority", "Nice to have", "Important", "Must have"]
+          }
+        }
+      }
+    }
+  }
+}

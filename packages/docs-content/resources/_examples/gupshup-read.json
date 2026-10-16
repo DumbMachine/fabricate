@@ -1,0 +1,14 @@
+{
+  "id": "gupshup-read",
+  "title": "List seeded WhatsApp messages",
+  "environment": "environments/acme-gupshup.yaml",
+  "environmentLabel": "Acme's Gupshup",
+  "proxy": true,
+  "outputPath": "packages/docs-content/resources/_generated/gupshup-read.json",
+  "publishedCommand": "curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gupshup.yaml \\\n  | fab run /dev/stdin --proxy -- \\\n    curl -sS https://api.gupshup.io/wa/api/v1/msg",
+  "argv": [
+    "curl",
+    "-sS",
+    "https://api.gupshup.io/wa/api/v1/msg"
+  ]
+}

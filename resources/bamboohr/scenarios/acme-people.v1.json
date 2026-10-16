@@ -1,0 +1,146 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "bamboohr.acme-people.v1",
+  "$resource": "bamboohr",
+  "$resourceVersion": "v1",
+  "state": {
+    "company": {"id": 1, "name": "Acme", "domain": "acme"},
+    "currentUserId": "101",
+    "departments": [
+      {"id": "1", "name": "Engineering"},
+      {"id": "2", "name": "Finance"},
+      {"id": "3", "name": "Legal"},
+      {"id": "4", "name": "Logistics"},
+      {"id": "5", "name": "People"},
+      {"id": "6", "name": "Support"}
+    ],
+    "employees": [
+      {
+        "id": "101",
+        "firstName": "Val",
+        "lastName": "Ortega",
+        "preferredName": "Val",
+        "workEmail": "val@acme.example",
+        "mobilePhone": "+91-80-4123-0101",
+        "jobTitleName": "Operator",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "Bengaluru"
+      },
+      {
+        "id": "102",
+        "firstName": "Aisha",
+        "lastName": "Rahman",
+        "preferredName": "Aisha",
+        "workEmail": "aisha@acme.example",
+        "mobilePhone": "+91-80-4123-0102",
+        "jobTitleName": "Finance",
+        "departmentId": "2",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "Bengaluru"
+      },
+      {
+        "id": "103",
+        "firstName": "Ravi",
+        "lastName": "Mehta",
+        "preferredName": "Ravi",
+        "workEmail": "ravi@acme.example",
+        "mobilePhone": "+91-80-4123-0103",
+        "jobTitleName": "Logistics",
+        "departmentId": "4",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "BLR-1"
+      },
+      {
+        "id": "104",
+        "firstName": "Nina",
+        "lastName": "Kapoor",
+        "preferredName": "Nina",
+        "workEmail": "nina@acme.example",
+        "mobilePhone": "+91-80-4123-0104",
+        "jobTitleName": "HR",
+        "departmentId": "5",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "Bengaluru"
+      },
+      {
+        "id": "105",
+        "firstName": "Leo",
+        "lastName": "Park",
+        "preferredName": "Leo",
+        "workEmail": "leo@acme.example",
+        "mobilePhone": "+91-80-4123-0105",
+        "jobTitleName": "Recruiting",
+        "departmentId": "5",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "Bengaluru"
+      },
+      {
+        "id": "106",
+        "firstName": "Sam",
+        "lastName": "Adeyemi",
+        "preferredName": "Sam",
+        "workEmail": "sam@acme.example",
+        "mobilePhone": "+91-80-4123-0106",
+        "jobTitleName": "Support",
+        "departmentId": "6",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "Bengaluru"
+      },
+      {
+        "id": "107",
+        "firstName": "Iris",
+        "lastName": "Berg",
+        "preferredName": "Iris",
+        "workEmail": "iris@acme.example",
+        "mobilePhone": "+91-80-4123-0107",
+        "jobTitleName": "Legal",
+        "departmentId": "3",
+        "status": "Active",
+        "employmentStatus": "Active",
+        "location": "Bengaluru"
+      },
+      {
+        "id": "190",
+        "firstName": "Jordan",
+        "lastName": "Hale",
+        "preferredName": "Jordan",
+        "workEmail": "jordan.hale@acme.example",
+        "mobilePhone": "+91-80-4123-0190",
+        "jobTitleName": "Support Engineer",
+        "departmentId": "6",
+        "status": "Inactive",
+        "employmentStatus": "Onboarding",
+        "hireDate": "2026-09-08",
+        "location": "Bengaluru"
+      }
+    ],
+    "timeOffTypes": [
+      {"id": "1", "name": "Other", "units": "days", "color": "56afdd", "icon": "calendar", "source": "internal"}
+    ],
+    "timeOffRequests": [
+      {
+        "id": "1",
+        "employeeId": "103",
+        "typeId": "1",
+        "start": "2026-08-28",
+        "end": "2026-08-29",
+        "status": "approved",
+        "amount": 2,
+        "unit": "days",
+        "employeeNote": "warehouse visit",
+        "created": "2026-08-26",
+        "updated": "2026-08-26T12:00:00Z",
+        "lastChanged": "2026-08-26",
+        "lastChangedByUserId": "104",
+        "dates": {"2026-08-28": 1, "2026-08-29": 1}
+      }
+    ]
+  }
+}

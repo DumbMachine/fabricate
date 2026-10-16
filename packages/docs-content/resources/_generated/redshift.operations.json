@@ -1,0 +1,30 @@
+{
+  "integration": "redshift",
+  "api": "Amazon Redshift 2012-12-01",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/DescribeStatement",
+      "operationId": "DescribeStatement",
+      "summary": "Describes one SQL statement."
+    },
+    {
+      "method": "POST",
+      "path": "/ExecuteStatement",
+      "operationId": "ExecuteStatement",
+      "summary": "Runs one SQL statement."
+    },
+    {
+      "method": "POST",
+      "path": "/GetStatementResult",
+      "operationId": "GetStatementResult",
+      "summary": "Fetches JSON results for one statement."
+    },
+    {
+      "method": "POST",
+      "path": "/ListStatements",
+      "operationId": "ListStatements",
+      "summary": "Lists SQL statements."
+    }
+  ]
+}
