@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
 import { ErrorNote, LoadingLine } from "@/components/feedback"
-import { ScenarioChips } from "@/components/scenario-chip"
+import { ScenarioNames } from "@/components/scenario-chip"
 import { StartActions } from "@/components/start-actions"
 import { StatusPill } from "@/components/status-pill"
 import { LinkButton, StatefulButton } from "@/components/ui/button"
@@ -157,7 +157,7 @@ function EnvironmentRow({
         ) : null}
       </td>
       <td className="px-3 py-3">
-        <ScenarioChips services={environment.services} plain />
+        <ScenarioNames services={environment.services} />
       </td>
       <td className="px-3 py-3">
         <EnvironmentStatus known={sessionsKnown} running={running} />

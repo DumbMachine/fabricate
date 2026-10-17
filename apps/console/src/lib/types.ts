@@ -82,6 +82,22 @@ export type ProxyConnection = {
   hosts: string[]
 }
 
+export type RequestLogEntry = {
+  timestamp: string
+  service: string
+  method: string
+  path: string
+  status: number
+  durationMs: number
+  error?: string
+}
+
+export type RequestLogView = {
+  id: string
+  entries: RequestLogEntry[]
+  truncated: boolean
+}
+
 export type Session = {
   id: string
   name: string
@@ -91,6 +107,7 @@ export type Session = {
   proxy: boolean
   startedAt: string
   requestLog: string
+  logs?: string
   services: SessionService[]
   variables: Variable[]
   proxyConnection?: ProxyConnection

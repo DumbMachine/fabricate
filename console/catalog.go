@@ -86,7 +86,7 @@ func buildCatalog(registry *httpresource.Registry) (Catalog, error) {
 		hosts := append([]string(nil), descriptor.ProviderHosts...)
 		sort.Strings(hosts)
 		for _, doc := range docs {
-			description, err := scenarioDescription(doc.State)
+			scalars, collections, err := summarizeState(doc.State)
 			if err != nil {
 				return Catalog{}, fmt.Errorf("catalog: describe scenario %s: %w", doc.ID, err)
 			}
@@ -95,7 +95,7 @@ func buildCatalog(registry *httpresource.Registry) (Catalog, error) {
 				Resource:        doc.Resource,
 				DisplayName:     descriptor.DisplayName,
 				Name:            scenarioName(doc.ID, doc.Resource),
-				Description:     description,
+				Description:     scenarioDescription(scalars, collections),
 				ResourceVersion: doc.ResourceVersion,
 				ProviderHosts:   hosts,
 			})

@@ -23,6 +23,7 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("GET /api/sessions", m.handleList)
 	mux.HandleFunc("POST /api/sessions", m.handleStart)
 	mux.HandleFunc("GET /api/sessions/{id}", m.handleGet)
+	mux.HandleFunc("GET /api/sessions/{id}/logs", m.handleLogs)
 	mux.HandleFunc("DELETE /api/sessions/{id}", m.handleDelete)
 	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
@@ -119,6 +120,20 @@ func (m *Manager) handleGet(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, m.present(session, r))
 }
 
+func (m *Manager) handleLogs(w http.ResponseWriter, r *http.Request) {
+	session, ok := m.Get(r.PathValue("id"))
+	if !ok {
+		writeError(w, http.StatusNotFound, fmt.Errorf("sandbox not running"))
+		return
+	}
+	entries, truncated, err := readSessionLog(session.RequestLog, logEntryLimit)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, RequestLogView{ID: session.ID, Entries: entries, Truncated: truncated})
+}
+
 func (m *Manager) proxyService(w http.ResponseWriter, r *http.Request) {
 	id, name, rest, ok := splitServicePath(r.URL.Path)
 	if !ok {
@@ -179,6 +194,7 @@ func (m *Manager) present(session Session, r *http.Request) Session {
 		}
 		session.Services[i].URL = public
 	}
+	session.Logs = strings.TrimRight(base, "/") + "/api/sessions/" + session.ID + "/logs"
 	session.ConnectShell = connectShell(session)
 	session.AgentPrompt = agentPrompt(session)
 	return session

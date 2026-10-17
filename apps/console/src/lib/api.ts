@@ -1,6 +1,8 @@
+import { publishSession } from "@/lib/publish-session"
 import type {
   Catalog,
   ConsoleConfig,
+  RequestLogView,
   SandboxKind,
   ScenarioView,
   Session,
@@ -19,21 +21,30 @@ export async function getScenario(id: string): Promise<ScenarioView> {
 }
 
 export async function listSessions(): Promise<Session[]> {
-  return request<Session[]>("/api/sessions")
+  const sessions = await request<Session[]>("/api/sessions")
+  return sessions.map(publishSession)
 }
 
 export async function getSession(id: string): Promise<Session> {
-  return request<Session>(`/api/sessions/${encodeURIComponent(id)}`)
+  return publishSession(
+    await request<Session>(`/api/sessions/${encodeURIComponent(id)}`)
+  )
+}
+
+export async function getSessionLogs(id: string): Promise<RequestLogView> {
+  return request<RequestLogView>(`/api/sessions/${encodeURIComponent(id)}/logs`)
 }
 
 export async function startSandbox(
   kind: SandboxKind,
   id: string
 ): Promise<Session> {
-  return request<Session>("/api/sessions", {
-    method: "POST",
-    body: JSON.stringify({ kind, id }),
-  })
+  return publishSession(
+    await request<Session>("/api/sessions", {
+      method: "POST",
+      body: JSON.stringify({ kind, id }),
+    })
+  )
 }
 
 export async function closeSandbox(id: string): Promise<void> {

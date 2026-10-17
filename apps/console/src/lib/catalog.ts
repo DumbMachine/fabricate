@@ -7,30 +7,28 @@ export type ScenarioGroup = {
   scenarios: CatalogScenario[]
 }
 
-export function groupScenarios(scenarios: CatalogScenario[]): ScenarioGroup[] {
-  const groups: ScenarioGroup[] = []
-  for (const scenario of scenarios) {
-    const current = groups[groups.length - 1]
-    if (groups.length > 0 && current.resource === scenario.resource) {
-      current.scenarios.push(scenario)
-    } else {
-      groups.push({
-        resource: scenario.resource,
-        displayName: scenario.displayName,
-        scenarios: [scenario],
-      })
-    }
-  }
-  return groups
-}
-
 export function matchingResources(
   scenarios: CatalogScenario[],
   query: string
 ): ScenarioGroup[] {
-  const matched = groupScenarios(scenarios).flatMap((group) => {
+  const groups = new Map<string, ScenarioGroup>()
+  for (const scenario of scenarios) {
+    const existing = groups.get(scenario.resource)
+    if (existing) {
+      existing.scenarios.push(scenario)
+      continue
+    }
+    groups.set(scenario.resource, {
+      resource: scenario.resource,
+      displayName: scenario.displayName,
+      scenarios: [scenario],
+    })
+  }
+  const matched: ScenarioGroup[] = []
+  for (const group of groups.values()) {
     if (matchesQuery(query, [group.resource, group.displayName])) {
-      return [group]
+      matched.push(group)
+      continue
     }
     const scenariosForResource = group.scenarios.filter((scenario) =>
       matchesQuery(query, [
@@ -41,9 +39,9 @@ export function matchingResources(
         ...scenario.providerHosts,
       ])
     )
-    if (scenariosForResource.length === 0) return []
-    return [{ ...group, scenarios: scenariosForResource }]
-  })
+    if (scenariosForResource.length === 0) continue
+    matched.push({ ...group, scenarios: scenariosForResource })
+  }
   return matched.sort(
     (left, right) =>
       left.displayName.localeCompare(right.displayName) ||

@@ -31,6 +31,7 @@ type Session struct {
 	Proxy           bool             `json:"proxy"`
 	StartedAt       time.Time        `json:"startedAt"`
 	RequestLog      string           `json:"requestLog"`
+	Logs            string           `json:"logs,omitempty"`
 	Services        []SessionService `json:"services"`
 	Variables       []Variable       `json:"variables"`
 	ProxyConnection *ProxyConnection `json:"proxyConnection,omitempty"`

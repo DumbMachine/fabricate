@@ -10,7 +10,7 @@ import {
 } from "@/components/motion/card"
 import { ResourceIcon } from "@/components/resource-icon"
 import { ResourceSheet } from "@/components/resource-sheet"
-import { ScenarioChips } from "@/components/scenario-chip"
+import { ScenarioNames } from "@/components/scenario-chip"
 import { ServiceURLs } from "@/components/service-urls"
 import { StatusPill } from "@/components/status-pill"
 import { StatefulButton } from "@/components/ui/button"
@@ -203,7 +203,7 @@ function RunningRow({
   return (
     <tr className="border-t align-top">
       <td className="px-3 py-3">
-        <ScenarioChips services={session.services} plain />
+        <ScenarioNames services={session.services} />
         {error ? (
           <div className="mt-1">
             <ErrorNote compact>{error}</ErrorNote>

@@ -19,7 +19,6 @@ import {
   DataTable,
 } from "@/components/console-frame"
 import { sessionsForEnvironment } from "@/lib/catalog"
-import { publishSession } from "@/lib/publish-session"
 import { formatTime } from "@/lib/format"
 import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
 import type { Session } from "@/lib/types"
@@ -41,10 +40,9 @@ function EnvironmentPage() {
   async function onStart() {
     const session = await start("environment", name, "stay")
     if (session) {
-      const published = publishSession(session)
       setSessions((current) => [
-        published,
-        ...(current ?? []).filter((item) => item.id !== published.id),
+        session,
+        ...(current ?? []).filter((item) => item.id !== session.id),
       ])
     }
   }

@@ -9,12 +9,13 @@ import {
 } from "@/components/console-frame"
 import { CopyButton } from "@/components/copy-button"
 import { OpenInChat } from "@/components/open-in-chat"
+import { RequestLog } from "@/components/request-log"
 import { ScenarioChips } from "@/components/scenario-chip"
 import { ServiceIdentity } from "@/components/service-identity"
 import { StatusPill } from "@/components/status-pill"
 import { closeSandbox, getSession } from "@/lib/api"
 import { formatTime, kindLabel } from "@/lib/format"
-import { isLoopbackURL, publishSession } from "@/lib/publish-session"
+import { isLoopbackURL } from "@/lib/publish-session"
 import type { Session } from "@/lib/types"
 
 export const Route = createFileRoute("/sandboxes/$id")({
@@ -35,7 +36,7 @@ function SandboxPage() {
       getSession(id)
         .then((next) => {
           if (cancelled) return
-          setSession(publishSession(next))
+          setSession(next)
           setMissing(false)
           setError(null)
         })
@@ -262,7 +263,7 @@ function SandboxDetail({
         </pre>
       </section>
 
-      <section id="log" className="flex scroll-mt-6 flex-col gap-2 text-sm">
+      <section id="log" className="flex scroll-mt-6 flex-col gap-3 text-sm">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-lg font-medium">Log</h2>
           <CopyButton value={session.requestLog} label="Copy log path" />
@@ -270,6 +271,7 @@ function SandboxDetail({
         <p className="font-mono text-xs break-all text-muted-foreground">
           {session.requestLog}
         </p>
+        <RequestLog id={session.id} />
       </section>
     </ConsoleFrame>
   )

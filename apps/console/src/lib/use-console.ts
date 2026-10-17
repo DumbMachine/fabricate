@@ -8,7 +8,6 @@ import {
   startSandbox,
 } from "@/lib/api"
 import { errorText } from "@/lib/format"
-import { publishSession } from "@/lib/publish-session"
 import type { Catalog, ConsoleConfig, SandboxKind, Session } from "@/lib/types"
 
 export type StartDestination = "sandbox" | "environment" | "stay"
@@ -57,7 +56,7 @@ export function useSessions() {
     const tick = () => {
       listSessions()
         .then((next) => {
-          if (!cancelled) setSessions(next.map(publishSession))
+          if (!cancelled) setSessions(next)
         })
         .catch(() => {
           if (!cancelled) setSessions([])

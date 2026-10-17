@@ -5,10 +5,14 @@ import "strings"
 const agentIndexPath = "/.well-known/fabricate"
 
 const agentIndexSummary = "Resources and scenarios this Fabricate console can start, plus the sandboxes that are running. " +
+	"control.start creates a sandbox. control.list and control.read return the running ones. " +
+	"Call a service by appending the provider path to services[].url. When proxy is false, send Authorization: Bearer services[].secret. " +
+	"When proxy is true, store the proxy and ca secrets, keep the provider hostname, and do not send the bearer token. The proxy replaces Authorization. " +
+	"Each sandbox logs URL, and control.logs, returns the redacted request trace while that sandbox is running. " +
+	"control.close stops a sandbox this console started. " +
 	"storeAs is the service name to keep in app config. urlName is the config key for the base URL, and secretName is the config key for the bearer token. " +
 	"When a sandbox is running, services[].url and services[].secret are the values to store under those names. " +
-	"scenarios[].running and environments[].services[].running are the sandbox ids using that scenario. " +
-	"When a sandbox has proxy set, also store its proxy and ca secrets, keep the provider hostname, and do not send the bearer token on those hosts. The proxy replaces Authorization."
+	"scenarios[].running and environments[].services[].running are the sandbox ids using that scenario."
 
 // AgentIndex is the document an agent fetches to onboard this console.
 type AgentIndex struct {
@@ -17,6 +21,7 @@ type AgentIndex struct {
 	URL          string             `json:"url"`
 	Proxy        bool               `json:"proxy"`
 	PublicURL    string             `json:"publicUrl,omitempty"`
+	Control      AgentControl       `json:"control"`
 	Resources    []AgentResource    `json:"resources"`
 	Environments []AgentEnvironment `json:"environments"`
 	Sandboxes    []AgentSandbox     `json:"sandboxes"`
@@ -71,8 +76,33 @@ type AgentSandbox struct {
 	Status   string             `json:"status"`
 	Proxy    bool               `json:"proxy"`
 	Anchored bool               `json:"anchored"`
+	Logs     string             `json:"logs"`
 	Services []AgentLiveService `json:"services"`
 	Secrets  []AgentSecret      `json:"secrets"`
+}
+
+// AgentControl is the console API an agent uses to start, call, and inspect sandboxes.
+type AgentControl struct {
+	Start AgentEndpoint `json:"start"`
+	List  AgentEndpoint `json:"list"`
+	Read  AgentEndpoint `json:"read"`
+	Logs  AgentEndpoint `json:"logs"`
+	Close AgentEndpoint `json:"close"`
+}
+
+// AgentEndpoint is one console request. URL may contain {id} for the sandbox id.
+type AgentEndpoint struct {
+	Method string          `json:"method"`
+	URL    string          `json:"url"`
+	Body   *AgentStartBody `json:"body,omitempty"`
+	Note   string          `json:"note"`
+}
+
+// AgentStartBody is the JSON body for control.start.
+// Kind is "scenario" or "environment". ID is the scenario id or the environment name.
+type AgentStartBody struct {
+	Kind string `json:"kind"`
+	ID   string `json:"id"`
 }
 
 // AgentLiveService is one running service with the values to store.
@@ -156,9 +186,10 @@ func buildAgentIndex(deployment Deployment, catalog Catalog, sessions []Session,
 		})
 	}
 
+	base := strings.TrimSuffix(strings.TrimRight(indexURL, "/"), agentIndexPath)
 	sandboxes := make([]AgentSandbox, 0, len(sessions))
 	for _, session := range sessions {
-		sandboxes = append(sandboxes, sandboxIndex(session))
+		sandboxes = append(sandboxes, sandboxIndex(session, base))
 	}
 
 	return AgentIndex{
@@ -167,13 +198,46 @@ func buildAgentIndex(deployment Deployment, catalog Catalog, sessions []Session,
 		URL:          indexURL,
 		Proxy:        deployment.Proxy,
 		PublicURL:    deployment.PublicURL,
+		Control:      agentControl(base),
 		Resources:    resources,
 		Environments: environments,
 		Sandboxes:    sandboxes,
 	}
 }
 
-func sandboxIndex(session Session) AgentSandbox {
+func agentControl(base string) AgentControl {
+	sessions := strings.TrimRight(base, "/") + "/api/sessions"
+	return AgentControl{
+		Start: AgentEndpoint{
+			Method: "POST",
+			URL:    sessions,
+			Body:   &AgentStartBody{Kind: "scenario", ID: "<scenario id>"},
+			Note:   `kind is "scenario" or "environment". id is a scenario id or an environment name. The response is the sandbox, including each service url and secret.`,
+		},
+		List: AgentEndpoint{
+			Method: "GET",
+			URL:    sessions,
+			Note:   "Sandboxes that are running.",
+		},
+		Read: AgentEndpoint{
+			Method: "GET",
+			URL:    sessions + "/{id}",
+			Note:   "One sandbox, including service urls and secrets. {id} is the sandbox id.",
+		},
+		Logs: AgentEndpoint{
+			Method: "GET",
+			URL:    sessions + "/{id}/logs",
+			Note:   "Redacted request trace while the sandbox is running. truncated is true when older entries were omitted. Authorization, cookies, and secret-shaped fields are [REDACTED].",
+		},
+		Close: AgentEndpoint{
+			Method: "DELETE",
+			URL:    sessions + "/{id}",
+			Note:   "Stops a sandbox this console started. 409 when fab run is holding it. Read the log first; it is not available after close.",
+		},
+	}
+}
+
+func sandboxIndex(session Session, base string) AgentSandbox {
 	services := make([]AgentLiveService, 0, len(session.Services))
 	secrets := make([]AgentSecret, 0, len(session.Variables))
 	seen := map[string]bool{}
@@ -225,6 +289,7 @@ func sandboxIndex(session Session) AgentSandbox {
 		Status:   session.Status,
 		Proxy:    session.Proxy,
 		Anchored: session.Anchored,
+		Logs:     strings.TrimRight(base, "/") + "/api/sessions/" + session.ID + "/logs",
 		Services: services,
 		Secrets:  secrets,
 	}

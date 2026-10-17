@@ -60,13 +60,22 @@ console shows **Running in proxy mode** while that is on.
 `GET /.well-known/fabricate` is a JSON document for an agent that is
 onboarding this console into another app. It lists every resource and
 scenario, every official environment, and the sandboxes that are running.
+`control` gives the requests that start a sandbox, list or read one, fetch
+its redacted request log, and close it.
 
 Each scenario has `name` and `description` for choosing one. Each service has
 `storeAs`, `urlName`, and `secretName`. `storeAs` is the name to keep in app
 config. `urlName` is the key for the base URL, and `secretName` is the key for
 the bearer token. A running sandbox fills in `url` and `secret` with the
-values to store. `running` on a scenario lists the sandbox ids currently
-using it.
+values to store, and `logs` with the URL of its request trace. `running` on a
+scenario lists the sandbox ids currently using it.
+
+Call a service by appending the provider path to its `url`. Without proxy
+mode, send `Authorization: Bearer` and the service secret. In proxy mode, use
+the proxy and CA secrets and keep the provider hostname.
+`GET /api/sessions/{id}/logs` returns that sandbox's redacted trace while it
+is running. Authorization, cookies, and secret-shaped fields are `[REDACTED]`.
+Read the log before closing the sandbox.
 
 ```bash
 curl -sS https://console.example.com/.well-known/fabricate

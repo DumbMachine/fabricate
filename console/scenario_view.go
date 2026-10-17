@@ -69,16 +69,12 @@ func (m *Manager) Scenario(id string) (ScenarioView, error) {
 	if err != nil {
 		return ScenarioView{}, err
 	}
-	description, err := scenarioDescription(doc.State)
-	if err != nil {
-		return ScenarioView{}, err
-	}
 	return ScenarioView{
 		ID:              doc.ID,
 		Resource:        doc.Resource,
 		DisplayName:     resourceDisplayName(m.registry, doc.Resource),
 		Name:            scenarioName(doc.ID, doc.Resource),
-		Description:     description,
+		Description:     scenarioDescription(scalars, collections),
 		ResourceVersion: doc.ResourceVersion,
 		ProviderHosts:   providerHosts(m.registry, doc.Resource),
 		Scalars:         scalars,

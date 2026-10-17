@@ -155,6 +155,10 @@ func TestServePublishesServicesOnTheRequestHost(t *testing.T) {
 	if session.Services[0].URL != want {
 		t.Fatalf("published url %q", session.Services[0].URL)
 	}
+	wantLogs := "https://p-4173-pod.example/api/sessions/" + session.ID + "/logs"
+	if session.Logs != wantLogs || !strings.Contains(session.AgentPrompt, "GET "+wantLogs) || !strings.Contains(session.AgentPrompt, "DELETE "+strings.TrimSuffix(wantLogs, "/logs")) {
+		t.Fatalf("log instructions:\nlogs %s\nprompt %s", session.Logs, session.AgentPrompt)
+	}
 	if !strings.Contains(session.ConnectShell, want) || !strings.Contains(session.AgentPrompt, "console host") {
 		t.Fatalf("instructions missing published url:\n%s\n%s", session.ConnectShell, session.AgentPrompt)
 	}
@@ -177,6 +181,34 @@ func TestServePublishesServicesOnTheRequestHost(t *testing.T) {
 		t.Fatalf("unknown service status %d", missing.StatusCode)
 	}
 	missing.Body.Close()
+
+	logs := get(t, server.URL+"/api/sessions/"+session.ID+"/logs")
+	raw := readBody(t, logs)
+	if logs.StatusCode != http.StatusOK {
+		t.Fatalf("logs status %d: %s", logs.StatusCode, raw)
+	}
+	if strings.Contains(raw, session.Services[0].Token) {
+		t.Fatal("log published the bearer token")
+	}
+	var view RequestLogView
+	if err := json.Unmarshal([]byte(raw), &view); err != nil {
+		t.Fatal(err)
+	}
+	if view.ID != session.ID || view.Truncated || len(view.Entries) != 1 {
+		t.Fatalf("log view: %#v", view)
+	}
+	entry := view.Entries[0]
+	if entry.Method != http.MethodGet || entry.Status != http.StatusOK || !strings.Contains(entry.Path, "/gmail/v1/users/me/profile") {
+		t.Fatalf("log entry: %#v", entry)
+	}
+	if got := entry.Request.Headers["Authorization"]; len(got) != 1 || got[0] != "[REDACTED]" {
+		t.Fatalf("authorization header %#v", entry.Request.Headers)
+	}
+	unknownLogs := get(t, server.URL+"/api/sessions/missing/logs")
+	if unknownLogs.StatusCode != http.StatusNotFound {
+		t.Fatalf("missing logs status %d", unknownLogs.StatusCode)
+	}
+	unknownLogs.Body.Close()
 }
 
 func TestServeProxyInstructions(t *testing.T) {
@@ -376,6 +408,12 @@ func TestAgentIndexPublishesNamesAndSecrets(t *testing.T) {
 	if idle.Kind != "fabricate.agent-index" || idle.URL != "https://console.example.com/fab/.well-known/fabricate" || idle.Proxy || len(idle.Sandboxes) != 0 {
 		t.Fatalf("idle index: kind %s url %s proxy %v sandboxes %d", idle.Kind, idle.URL, idle.Proxy, len(idle.Sandboxes))
 	}
+	if idle.Control.Start.Method != http.MethodPost || idle.Control.Start.URL != "https://console.example.com/fab/api/sessions" || idle.Control.Start.Body == nil || idle.Control.Start.Body.Kind != "scenario" {
+		t.Fatalf("start control: %#v", idle.Control.Start)
+	}
+	if idle.Control.Logs.Method != http.MethodGet || idle.Control.Logs.URL != "https://console.example.com/fab/api/sessions/{id}/logs" || idle.Control.Close.URL != "https://console.example.com/fab/api/sessions/{id}" {
+		t.Fatalf("log control: %#v close %#v", idle.Control.Logs, idle.Control.Close)
+	}
 	scenario := findAgentScenario(t, idle, "gmail", "gmail.minimal.v1")
 	if scenario.StoreAs != "gmail" || scenario.URLName != "FAB_GMAIL_URL" || scenario.SecretName != "FAB_GMAIL_TOKEN" || len(scenario.Running) != 0 {
 		t.Fatalf("scenario names: %#v", scenario)
@@ -411,7 +449,7 @@ func TestAgentIndexPublishesNamesAndSecrets(t *testing.T) {
 		t.Fatalf("sandboxes: %#v", live.Sandboxes)
 	}
 	sandbox := live.Sandboxes[0]
-	if sandbox.ID != session.ID || sandbox.Kind != "scenario" || len(sandbox.Services) != 1 {
+	if sandbox.ID != session.ID || sandbox.Kind != "scenario" || len(sandbox.Services) != 1 || sandbox.Logs != "https://console.example.com/fab/api/sessions/"+session.ID+"/logs" {
 		t.Fatalf("sandbox: %#v", sandbox)
 	}
 	service := sandbox.Services[0]

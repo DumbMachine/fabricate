@@ -1,7 +1,6 @@
 package console
 
 import (
-	"encoding/json"
 	"fmt"
 	"sort"
 	"strings"
@@ -25,11 +24,7 @@ func scenarioName(id, resource string) string {
 	return humanize(slug)
 }
 
-func scenarioDescription(raw json.RawMessage) (string, error) {
-	scalars, collections, err := summarizeState(raw)
-	if err != nil {
-		return "", err
-	}
+func scenarioDescription(scalars []ScenarioScalar, collections []ScenarioCollection) string {
 	counts := make([]countedCollection, 0, len(collections))
 	for _, collection := range collections {
 		if collection.Total == 0 {
@@ -60,7 +55,7 @@ func scenarioDescription(raw json.RawMessage) (string, error) {
 	case identity != "":
 		phrase = phrase + " · " + identity
 	}
-	return truncate(phrase, scenarioDescriptionLimit), nil
+	return truncate(phrase, scenarioDescriptionLimit)
 }
 
 type countedCollection struct {
