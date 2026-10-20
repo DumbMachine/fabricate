@@ -1,15 +1,18 @@
 import { useEffect, useRef } from "react"
 import { X } from "lucide-react"
+import { AgentCopy } from "@/components/agent-copy"
 import { ErrorNote } from "@/components/feedback"
 import { Drawer } from "@/components/motion/drawer"
 import { ResourceIcon } from "@/components/resource-icon"
 import { StartActions } from "@/components/start-actions"
 import { Button, LinkButton } from "@/components/ui/button"
+import { resourceAgentBrief } from "@/lib/agent-brief"
 import type { ScenarioGroup } from "@/lib/catalog"
-import type { CatalogScenario } from "@/lib/types"
+import type { CatalogScenario, Session } from "@/lib/types"
 
 export function ResourceSheet({
   resource,
+  sessions,
   open,
   pending,
   errors,
@@ -17,6 +20,7 @@ export function ResourceSheet({
   onStart,
 }: {
   resource: ScenarioGroup | null
+  sessions: Session[] | null
   open: boolean
   pending: string | null
   errors: Record<string, string>
@@ -55,6 +59,9 @@ export function ResourceSheet({
                 <p className="mt-2 text-sm text-muted-foreground">
                   Choose the scenario this sandbox loads.
                 </p>
+                <div className="mt-3">
+                  <AgentCopy brief={resourceAgentBrief(resource, sessions)} />
+                </div>
               </div>
             </div>
             <Button

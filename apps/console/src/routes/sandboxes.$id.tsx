@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect, useState, type ReactNode } from "react"
+import { AgentCopy } from "@/components/agent-copy"
 import { ErrorNote, LoadingLine } from "@/components/feedback"
 import { LinkButton, StatefulButton } from "@/components/ui/button"
 import {
@@ -13,6 +14,7 @@ import { RequestLog } from "@/components/request-log"
 import { ScenarioChips } from "@/components/scenario-chip"
 import { ServiceIdentity } from "@/components/service-identity"
 import { StatusPill } from "@/components/status-pill"
+import { sandboxAgentBrief } from "@/lib/agent-brief"
 import { closeSandbox, getSession } from "@/lib/api"
 import { formatTime, kindLabel } from "@/lib/format"
 import { isLoopbackURL } from "@/lib/publish-session"
@@ -153,7 +155,8 @@ function SandboxDetail({
       heading={session.label}
       description={`${session.name} · ${kindLabel(session.kind)} · session ${session.id}. Started ${formatTime(session.startedAt)}. ${reachability(session)}`}
       actions={
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-end gap-2">
+          <AgentCopy brief={sandboxAgentBrief(session)} />
           <OpenInChat
             query={session.agentPrompt}
             subject={`Fabricate sandbox ${session.label}`}

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
+import { AgentCopy } from "@/components/agent-copy"
 import { ErrorNote, LoadingLine } from "@/components/feedback"
 import { ResourceIcon } from "@/components/resource-icon"
 import { StartActions } from "@/components/start-actions"
@@ -9,9 +10,10 @@ import {
   DataTable,
   type FrameSection,
 } from "@/components/console-frame"
+import { scenarioAgentBrief } from "@/lib/agent-brief"
 import { getScenario } from "@/lib/api"
 import { collectionSectionId, collectionTitle, errorText } from "@/lib/format"
-import { useSandboxActions } from "@/lib/use-console"
+import { useSandboxActions, useSessions } from "@/lib/use-console"
 import type { ScenarioCollection, ScenarioView } from "@/lib/types"
 
 export const Route = createFileRoute("/scenarios/$id")({
@@ -23,6 +25,7 @@ function ScenarioPage() {
   const [view, setView] = useState<ScenarioView | null>(null)
   const [error, setError] = useState<string | null>(null)
   const { pending, errors, start } = useSandboxActions()
+  const [sessions] = useSessions()
 
   useEffect(() => {
     let cancelled = false
@@ -82,12 +85,15 @@ function ScenarioPage() {
         view.providerHosts.join(", ") || "No production hostnames"
       }. This is the seeded state a sandbox loads for this scenario.`}
       actions={
-        <StartActions
-          pending={pending}
-          actionKey={key}
-          onStart={() => void onStart()}
-          label="Start scenario"
-        />
+        <div className="flex flex-wrap items-end gap-2">
+          <AgentCopy brief={scenarioAgentBrief(view, sessions)} />
+          <StartActions
+            pending={pending}
+            actionKey={key}
+            onStart={() => void onStart()}
+            label="Start scenario"
+          />
+        </div>
       }
       sections={sections}
     >

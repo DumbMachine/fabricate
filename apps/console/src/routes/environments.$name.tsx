@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { AgentCopy } from "@/components/agent-copy"
 import { ErrorNote, LoadingLine } from "@/components/feedback"
 import {
   Card,
@@ -18,6 +19,7 @@ import {
   ConsoleFrame,
   DataTable,
 } from "@/components/console-frame"
+import { environmentAgentBrief } from "@/lib/agent-brief"
 import { sessionsForEnvironment } from "@/lib/catalog"
 import { formatTime } from "@/lib/format"
 import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
@@ -100,20 +102,23 @@ function EnvironmentPage() {
       heading={environment.label}
       description={`${environment.name} starts ${joinNames(serviceNames)} together. Each service loads the scenario listed below.`}
       actions={
-        sessions === null ? null : only ? (
-          <RunningActions
-            session={only}
-            pending={pending}
-            onClose={() => void onClose(only.id)}
-          />
-        ) : running.length > 1 ? null : (
-          <StartActions
-            pending={pending}
-            actionKey={key}
-            onStart={() => void onStart()}
-            label="Start environment"
-          />
-        )
+        <div className="flex flex-wrap items-end gap-2">
+          <AgentCopy brief={environmentAgentBrief(environment, sessions)} />
+          {sessions === null ? null : only ? (
+            <RunningActions
+              session={only}
+              pending={pending}
+              onClose={() => void onClose(only.id)}
+            />
+          ) : running.length > 1 ? null : (
+            <StartActions
+              pending={pending}
+              actionKey={key}
+              onStart={() => void onStart()}
+              label="Start environment"
+            />
+          )}
+        </div>
       }
       sections={[
         { id: "running", label: "Running" },

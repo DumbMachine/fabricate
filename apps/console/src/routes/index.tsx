@@ -173,6 +173,7 @@ function SandboxesPage() {
       </section>
       <ResourceSheet
         resource={selected}
+        sessions={sessions}
         open={selected !== null}
         pending={pending}
         errors={errors}

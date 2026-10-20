@@ -94,6 +94,10 @@ The sandbox page shows two ways to use a running sandbox:
   ChatGPT, or an email draft. The prompt carries the sandbox connection for
   this machine. It is not a production credential, and it should not be
   committed.
+- **Copy for agent.** The scenario, resource, environment, and running sandbox
+  pages copy the ids, seed, and how to start or call what is running. **Include
+  secrets** sits above that button and is checked. Uncheck it to leave bearer
+  tokens, proxy URLs, and CA paths out.
 
 Ports and tokens change every time a sandbox starts. Sandbox processes stay
 on loopback. The console publishes them on its own host, so a client that
