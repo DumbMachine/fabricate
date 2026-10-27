@@ -286,7 +286,7 @@ func validateEnvironmentDefinition(spec environment.Spec, registry *httpresource
 		if !ok {
 			return fmt.Errorf("environment %q service %q: unknown resource %q", spec.Metadata.Name, name, serviceSpec.Resource)
 		}
-		doc, err := resource.Scenario(serviceSpec.Scenario)
+		doc, err := environment.ResolveScenario(resource, serviceSpec)
 		if err != nil {
 			return fmt.Errorf("environment %q service %q: %w", spec.Metadata.Name, name, err)
 		}

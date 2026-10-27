@@ -1,0 +1,15 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "linkedin.acme-social.v1",
+  "$resource": "linkedin",
+  "$resourceVersion": "v1",
+  "state": {
+    "account": {
+      "id": "urn:li:organization:104812345",
+      "name": "Acme",
+      "username": "acme"
+    },
+    "objects": []
+  }
+}

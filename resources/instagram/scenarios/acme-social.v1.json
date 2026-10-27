@@ -1,0 +1,15 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "instagram.acme-social.v1",
+  "$resource": "instagram",
+  "$resourceVersion": "v1",
+  "state": {
+    "account": {
+      "id": "17841400000000001",
+      "name": "Acme",
+      "username": "acmehq"
+    },
+    "objects": []
+  }
+}

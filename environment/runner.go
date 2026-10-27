@@ -3,6 +3,7 @@ package environment
 import (
 	"context"
 	"fmt"
+	"github.com/dumbmachine/fabricate/scenario"
 	"os"
 	"path/filepath"
 	"sort"
@@ -57,7 +58,7 @@ func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enab
 		if !ok {
 			return nil, fmt.Errorf("environment: service %q uses unknown resource %q", name, serviceSpec.Resource)
 		}
-		doc, err := resource.Scenario(serviceSpec.Scenario)
+		doc, err := ResolveScenario(resource, serviceSpec)
 		if err != nil {
 			return nil, fmt.Errorf("environment: service %q: %w", name, err)
 		}
@@ -196,4 +197,26 @@ func normalizeRouteKey(route string) string {
 
 func CloseTimeout() (context.Context, context.CancelFunc) {
 	return context.WithTimeout(context.Background(), 5*time.Second)
+}
+
+// ResolveScenario supports an exported immutable baseline without changing a provider.
+func ResolveScenario(resource httpresource.Resource, s ServiceSpec) (scenario.Document, error) {
+	if s.ScenarioFile == "" {
+		return resource.Scenario(s.Scenario)
+	}
+	raw, err := os.ReadFile(s.ScenarioFile)
+	if err != nil {
+		return scenario.Document{}, err
+	}
+	doc, err := scenario.Parse(raw)
+	if err != nil {
+		return doc, err
+	}
+	if doc.ID != s.Scenario || doc.Resource != s.Resource {
+		return doc, fmt.Errorf("scenario file identity does not match service")
+	}
+	if err = resource.Scenarios().Validate(context.Background(), doc); err != nil {
+		return doc, err
+	}
+	return doc, nil
 }

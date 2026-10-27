@@ -4,6 +4,9 @@ package all
 
 import (
 	"fmt"
+	"github.com/dumbmachine/fabricate/resources/instagram"
+	"github.com/dumbmachine/fabricate/resources/linkedin"
+	"github.com/dumbmachine/fabricate/resources/x"
 
 	"github.com/dumbmachine/fabricate/httpresource"
 	"github.com/dumbmachine/fabricate/resources/airbyte"
@@ -48,6 +51,9 @@ import (
 
 func Registry() *httpresource.Registry {
 	registry, err := httpresource.NewRegistry(
+		instagram.NewResource(),
+		x.NewResource(),
+		linkedin.NewResource(),
 		airbyte.NewResource(),
 		asana.NewResource(),
 		attio.NewResource(),
