@@ -135,6 +135,9 @@ func (m *Manager) start(ctx context.Context, request StartRequest) (_ Session, e
 	if err != nil {
 		return Session{}, invalidStartError{err}
 	}
+	if len(spec.Services) > m.serviceLimit {
+		return Session{}, problem(400, fmt.Sprintf("sandbox service limit exceeded: requested %d; deployment allows %d", len(spec.Services), m.serviceLimit))
+	}
 	if _, err = m.startDocuments(ctx, request, spec); err != nil {
 		return Session{}, invalidStartError{err}
 	}

@@ -188,3 +188,13 @@ checks the container's configured public origin before stopping it. This option
 interrupts every sandbox on that deployment, so use a dedicated test deployment.
 It verifies project authentication and exact service URLs/tokens, data and
 creation-key recovery after restart. It does not test disk-loss recovery.
+
+
+`FAB_MAX_SERVICES_PER_SANDBOX` / `--max-services-per-sandbox` bounds service
+fan-out in each newly created sandbox (default 16, configurable 1–256). It covers
+catalog environments and custom compositions. Oversized requests fail before
+provider validation or storage publication, without consuming a creation key.
+Existing ready worlds and ready-key replays are retained when admission limits
+change. The configured bound appears in Deployment and HTTP/MCP discovery.
+This complements the sandbox-count quota; size both for host memory/disk and
+the selected datasets. Raising limits does not allocate additional capacity.

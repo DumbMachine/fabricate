@@ -40,6 +40,7 @@ function DeploymentPage() {
     ["Connection", error ? "Last check failed" : "Reachable"],
     ["Advertised origin", origin],
     ["Sandbox capacity", String(config?.maxSandboxes ?? "…")],
+    ["Services per sandbox", String(config?.maxServicesPerSandbox ?? "…")],
     [
       "Service routing",
       config?.proxy ? "Provider hostname proxy" : "Direct service URLs",

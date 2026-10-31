@@ -6,6 +6,7 @@ export type ConsoleConfig = {
   proxy: boolean
   durable: boolean
   maxSandboxes: number
+  maxServicesPerSandbox: number
   operator: boolean
   project: {
     id: string

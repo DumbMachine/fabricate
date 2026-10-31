@@ -26,6 +26,7 @@ var (
 	serveUI           bool
 	serveStateDir     string
 	serveMaxSandboxes int
+	serveMaxServices  int
 )
 
 var serveCmd = &cobra.Command{
@@ -90,6 +91,19 @@ same console beside a wrapped command, in proxy mode when that run used
 				settings.MaxSandboxes = n
 			}
 		}
+		settings.MaxServicesPerSandbox = serveMaxServices
+		if !cmd.Flags().Changed("max-services-per-sandbox") {
+			if value := strings.TrimSpace(os.Getenv("FAB_MAX_SERVICES_PER_SANDBOX")); value != "" {
+				n, e := strconv.Atoi(value)
+				if e != nil || n < 1 {
+					return fmt.Errorf("FAB_MAX_SERVICES_PER_SANDBOX must be a positive integer")
+				}
+				settings.MaxServicesPerSandbox = n
+			}
+		}
+		if settings.MaxServicesPerSandbox < 1 || settings.MaxServicesPerSandbox > 256 {
+			return fmt.Errorf("max services per sandbox must be 1 to 256")
+		}
 		return serveConsole(cmd.Context(), settings)
 	},
 }
@@ -101,17 +115,19 @@ func init() {
 	serveCmd.Flags().BoolVar(&serveUI, "ui", false, "Open the console in a local browser")
 	serveCmd.Flags().StringVar(&serveStateDir, "state-dir", "", "Persistent sandbox storage directory (FAB_STATE_DIR)")
 	serveCmd.Flags().IntVar(&serveMaxSandboxes, "max-sandboxes", 64, "Maximum managed sandboxes (FAB_MAX_SANDBOXES)")
+	serveCmd.Flags().IntVar(&serveMaxServices, "max-services-per-sandbox", 16, "Maximum services in one managed sandbox (FAB_MAX_SERVICES_PER_SANDBOX)")
 	rootCmd.AddCommand(serveCmd)
 }
 
 type consoleSettings struct {
-	ListenAddr   string
-	PublicURL    string
-	Proxy        bool
-	Open         bool
-	Widened      bool
-	StateDir     string
-	MaxSandboxes int
+	MaxServicesPerSandbox int
+	ListenAddr            string
+	PublicURL             string
+	Proxy                 bool
+	Open                  bool
+	Widened               bool
+	StateDir              string
+	MaxSandboxes          int
 }
 
 func resolveConsoleSettings(addr string, addrSet bool, publicURL string, publicSet bool, proxy bool, proxySet bool, open bool) (consoleSettings, error) {
@@ -218,7 +234,7 @@ func serveConsole(ctx context.Context, settings consoleSettings) error {
 	}
 
 	manager := console.New(all.Registry())
-	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL, StateDir: settings.StateDir, MaxSandboxes: settings.MaxSandboxes}); err != nil {
+	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL, StateDir: settings.StateDir, MaxSandboxes: settings.MaxSandboxes, MaxServicesPerSandbox: settings.MaxServicesPerSandbox}); err != nil {
 		return fmt.Errorf("serve: %w", err)
 	}
 	defer manager.Shutdown()

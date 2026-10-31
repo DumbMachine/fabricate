@@ -101,6 +101,11 @@ project used by the operator UI retains sandboxes until explicit close unless a
 TTL is requested. New named projects default to eight sandboxes, a one-day TTL
 and a seven-day maximum. Global capacity defaults to 64 and is configurable with
 `--max-sandboxes` / `FAB_MAX_SANDBOXES` (1–4096); size it for the host and datasets.
+New sandboxes admit at most 16 services by default, configurable from 1 to 256
+with `--max-services-per-sandbox` / `FAB_MAX_SERVICES_PER_SANDBOX`. Discovery and
+`deployment_get` publish `maxServicesPerSandbox`. Oversized compositions fail
+before codec work, registry publication or provisioning. The limit applies to
+new admissions; existing ready sandboxes and same-key ready replays are retained.
 Expiry denies service access immediately; the cleanup sweep runs every second.
 Renewal persists before success and cannot resurrect an expired/deleted sandbox.
 

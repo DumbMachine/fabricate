@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -449,6 +450,67 @@ func TestRequestCancellationPreventsDelayedCreationAndSurvivesRestart(t *testing
 	for _, token := range []string{alpha, beta} {
 		if w := controlJSON(t, m2.Handler(), token, "POST", "/api/sessions", request); w.Code != 410 {
 			t.Fatal("cancelled key lost after restart", w.Code)
+		}
+	}
+}
+
+func TestCompositionServiceLimitBeforeProvisioning(t *testing.T) {
+	for _, durable := range []bool{false, true} {
+		t.Run(map[bool]string{false: "disposable", true: "mounted"}[durable], func(t *testing.T) {
+			t.Setenv("FAB_LOG_DIR", t.TempDir())
+			m := New(durableRegistry(t))
+			config := Config{PublicURL: "http://console.example", MaxServicesPerSandbox: 2}
+			if durable {
+				config.StateDir = t.TempDir()
+			}
+			if err := m.Configure(config); err != nil {
+				t.Fatal(err)
+			}
+			t.Cleanup(func() { _ = m.Shutdown() })
+			services := map[string]ServiceRequest{"east": {Resource: "asana", Scenario: "asana.acme-sprint.v1"}, "west": {Resource: "asana", Scenario: "asana.acme-sprint.v1"}}
+			request := StartRequest{Kind: "composition", ID: "bounded-services", Services: services}
+			if durable {
+				request.IdempotencyKey = "admitted"
+			}
+			session, err := m.Start(context.Background(), request)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(session.Services) != 2 || m.Deployment().MaxServicesPerSandbox != 2 {
+				t.Fatal("configured limit unavailable or positive composition failed")
+			}
+			// Oversized admission must win before codec/resource work and any registry write.
+			services["overflow"] = ServiceRequest{Resource: "unsupported", Scenario: "unsupported.minimal.v1"}
+			if durable {
+				request.IdempotencyKey = "rejected"
+			}
+			_, err = m.Start(context.Background(), request)
+			if errorStatus(err) != 400 || !strings.Contains(err.Error(), "service limit exceeded") {
+				t.Fatal("oversized composition reached resource validation/provisioning", err)
+			}
+			if len(m.List()) != 1 {
+				t.Fatal("oversized composition changed running worlds")
+			}
+			if durable {
+				if _, status, err := m.storage.lookupRequest("default", "rejected", ""); err != nil || status != "" {
+					t.Fatal("rejected creation persisted a pending request", status, err)
+				}
+			}
+			// A fresh supported request still works after rejection.
+			next := StartRequest{Kind: "scenario", ID: "gmail.minimal.v1"}
+			if durable {
+				next.IdempotencyKey = "after-rejection"
+			}
+			if _, err = m.Start(context.Background(), next); err != nil {
+				t.Fatal("rejected fan-out poisoned later admission", err)
+			}
+		})
+	}
+	for _, limit := range []int{-1, 257} {
+		m := New(durableRegistry(t))
+		if err := m.Configure(Config{MaxServicesPerSandbox: limit}); err == nil {
+			_ = m.Shutdown()
+			t.Fatal("invalid service limit accepted")
 		}
 	}
 }

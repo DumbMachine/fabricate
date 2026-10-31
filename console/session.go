@@ -18,6 +18,7 @@ import (
 )
 
 const defaultMaxSessions = 64
+const defaultMaxServicesPerSandbox = 16
 
 type StartRequest struct {
 	Kind           string                    `json:"kind"`
@@ -105,6 +106,7 @@ type Manager struct {
 	shutdownErr  error
 	startMu      sync.Mutex
 	capacity     int
+	serviceLimit int
 	sweepStop    chan struct{}
 	sweepDone    chan struct{}
 
@@ -118,9 +120,10 @@ type Manager struct {
 
 func New(registry *httpresource.Registry) *Manager {
 	return &Manager{
-		registry: registry,
-		sessions: map[string]*runningSession{},
-		capacity: defaultMaxSessions,
+		registry:     registry,
+		sessions:     map[string]*runningSession{},
+		capacity:     defaultMaxSessions,
+		serviceLimit: defaultMaxServicesPerSandbox,
 	}
 }
 

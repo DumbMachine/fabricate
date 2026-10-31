@@ -161,3 +161,27 @@ Access recovered the identical sandbox and installed its workspace once. Existin
 Access connections completed another audit after the final Fabricate restart,
 and the real Access UI completed a further read-only audit through both resource
 instances. All detailed receipts and captures remain in private customer storage.
+
+
+## Bounded composition admission
+
+A subsequent admission audit found that sandbox-count quotas did not bound one
+composition's service count. New managed creations now enforce a configurable
+service limit before codecs, registry writes and provisioning. Default 16 admits
+the complete shipped environment catalog (largest: 12 services). Mounted and
+disposable tests prove valid independent instances work, oversized/unsupported
+fan-out fails before resource validation, rejected keys are not persisted and
+subsequent valid admission still works. Limits are visible through config,
+HTTP/MCP discovery and the Deployment overview.
+
+The retained large publisher demo also passed SIGKILL/restart with complete
+Meta/GA4/Impact state equality and identical service URLs/tokens. Its original
+Access vault connections completed the full publisher audit after recovery.
+
+
+The final bounded-admission image passed a live 17-service rejection with no
+pending request publication, followed by valid two-service MCP creation,
+mutation/readback, comparison isolation and keyed cancellation. Full Go checks,
+CLI lifecycle tests, focused race checks, console checks and Docker build passed;
+invalid CLI zero limits and malformed environment values failed before serving.
+Image replacement preserved every existing sandbox connection and full export.

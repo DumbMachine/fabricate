@@ -21,18 +21,19 @@ type AgentMCP struct {
 	Authentication string `json:"authentication"`
 }
 type AgentIndex struct {
-	MCP          AgentMCP           `json:"mcp"`
-	Durable      bool               `json:"durable"`
-	MaxSandboxes int                `json:"maxSandboxes"`
-	Kind         string             `json:"kind"`
-	Summary      string             `json:"summary"`
-	URL          string             `json:"url"`
-	Proxy        bool               `json:"proxy"`
-	PublicURL    string             `json:"publicUrl,omitempty"`
-	Control      AgentControl       `json:"control"`
-	Resources    []AgentResource    `json:"resources"`
-	Environments []AgentEnvironment `json:"environments"`
-	Sandboxes    []AgentSandbox     `json:"sandboxes"`
+	MCP                   AgentMCP           `json:"mcp"`
+	Durable               bool               `json:"durable"`
+	MaxSandboxes          int                `json:"maxSandboxes"`
+	MaxServicesPerSandbox int                `json:"maxServicesPerSandbox"`
+	Kind                  string             `json:"kind"`
+	Summary               string             `json:"summary"`
+	URL                   string             `json:"url"`
+	Proxy                 bool               `json:"proxy"`
+	PublicURL             string             `json:"publicUrl,omitempty"`
+	Control               AgentControl       `json:"control"`
+	Resources             []AgentResource    `json:"resources"`
+	Environments          []AgentEnvironment `json:"environments"`
+	Sandboxes             []AgentSandbox     `json:"sandboxes"`
 }
 
 // AgentResource is one provider and the scenarios it can load.
@@ -211,7 +212,7 @@ func buildAgentIndex(deployment Deployment, catalog Catalog, sessions []Session,
 		Proxy:     deployment.Proxy,
 		PublicURL: deployment.PublicURL,
 		Control:   agentControl(base, deployment.Durable),
-		MCP:       AgentMCP{URL: base + "/mcp", Transport: "streamable-http", Authentication: "bearer operator or project credential"}, Durable: deployment.Durable, MaxSandboxes: deployment.MaxSandboxes,
+		MCP:       AgentMCP{URL: base + "/mcp", Transport: "streamable-http", Authentication: "bearer operator or project credential"}, Durable: deployment.Durable, MaxSandboxes: deployment.MaxSandboxes, MaxServicesPerSandbox: deployment.MaxServicesPerSandbox,
 		Resources:    resources,
 		Environments: environments,
 		Sandboxes:    sandboxes,
