@@ -1,3 +1,4 @@
+import { PageTabs, TabPanel } from "@/components/page-tabs"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { AgentCopy } from "@/components/agent-copy"
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/scenarios/$id")({
 })
 
 function ScenarioPage() {
+  const [activeCollection, setActiveCollection] = useState("")
   const { id } = Route.useParams()
   const [view, setView] = useState<ScenarioView | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -28,6 +30,9 @@ function ScenarioPage() {
   const [sessions] = useSessions()
 
   useEffect(() => {
+    setView(null)
+    setError(null)
+    setActiveCollection("")
     let cancelled = false
     setView(null)
     setError(null)
@@ -95,7 +100,15 @@ function ScenarioPage() {
           />
         </div>
       }
-      sections={sections}
+      tabs={
+        <PageTabs
+          id="scenario"
+          label="Scenario data"
+          value={activeCollection || sections[0]?.id || "empty"}
+          onChange={setActiveCollection}
+          items={sections}
+        />
+      }
     >
       <div className="flex items-center gap-3">
         <ResourceIcon id={view.resource} size="md" />
@@ -106,31 +119,40 @@ function ScenarioPage() {
       </div>
       {errors[key] ? <ErrorNote>{errors[key]}</ErrorNote> : null}
 
-      {view.scalars.length > 0 ? (
-        <section id="summary" className="flex scroll-mt-6 flex-col gap-3">
-          <h2 className="text-lg font-medium">Summary</h2>
-          <dl className="grid gap-3 sm:grid-cols-2">
-            {view.scalars.map((scalar) => (
-              <div key={scalar.key} className="border bg-card px-3 py-2">
-                <dt className="text-[11px] font-medium tracking-wider text-faint uppercase">
-                  {scalar.key}
-                </dt>
-                <dd className="mt-1 font-mono text-sm break-all">
-                  {scalar.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      ) : null}
+      <TabPanel
+        id="scenario"
+        value={activeCollection || sections[0]?.id || "empty"}
+      >
+        {view.scalars.length > 0 &&
+        (!activeCollection || activeCollection === "summary") ? (
+          <section id="summary" className="flex scroll-mt-6 flex-col gap-3">
+            <h2 className="text-sm font-medium">Summary</h2>
+            <dl className="grid gap-3 sm:grid-cols-2">
+              {view.scalars.map((scalar) => (
+                <div key={scalar.key} className="border-b py-3">
+                  <dt className="text-[11px] font-medium tracking-wider text-faint uppercase">
+                    {scalar.key}
+                  </dt>
+                  <dd className="mt-1 font-mono text-sm break-all">
+                    {scalar.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ) : null}
 
-      {view.collections.map((collection, index) => (
-        <CollectionSection
-          key={collection.key}
-          collection={collection}
-          index={index}
-        />
-      ))}
+        {view.collections.map((collection, index) =>
+          (activeCollection || sections[0]?.id) ===
+          collectionSectionId(collection.key, index) ? (
+            <CollectionSection
+              key={collection.key}
+              collection={collection}
+              index={index}
+            />
+          ) : null
+        )}
+      </TabPanel>
     </ConsoleFrame>
   )
 }
@@ -148,7 +170,7 @@ function CollectionSection({
       className="flex scroll-mt-6 flex-col gap-3"
     >
       <div className="flex items-baseline justify-between gap-3">
-        <h2 className="text-lg font-medium">
+        <h2 className="text-sm font-medium">
           {collectionTitle(collection.key)}
         </h2>
         <p className="text-xs text-muted-foreground">

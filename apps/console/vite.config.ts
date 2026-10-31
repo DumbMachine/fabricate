@@ -3,13 +3,19 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import viteReact from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
 
+const apiTarget = process.env.FAB_CONSOLE_DEV_API || "http://127.0.0.1:4173"
+
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   server: {
     proxy: {
-      "/api": "http://127.0.0.1:4173",
+      "/api": apiTarget,
+      "/healthz": apiTarget,
+      "/.well-known": apiTarget,
+      "/s/": apiTarget,
     },
   },
+  preview: { host: "127.0.0.1" },
   plugins: [
     tailwindcss(),
     tanstackStart({

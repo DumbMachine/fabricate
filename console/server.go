@@ -1,7 +1,6 @@
 package console
 
 import (
-	"crypto/subtle"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,7 +10,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"path"
 	"strings"
 )
@@ -33,17 +31,7 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("DELETE /api/sessions/{id}", m.handleDelete)
 	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
-	token := os.Getenv("FAB_CONSOLE_TOKEN")
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if token != "" && (strings.HasPrefix(r.URL.Path, "/api/") || r.URL.Path == "/.well-known/fabricate") {
-			if subtle.ConstantTimeCompare([]byte(r.Header.Get("Authorization")), []byte("Bearer "+token)) != 1 {
-				w.Header().Set("WWW-Authenticate", "Bearer")
-				http.Error(w, "control credential required", http.StatusUnauthorized)
-				return
-			}
-		}
-		mux.ServeHTTP(w, r)
-	})
+	return m.consoleAuth(mux)
 }
 
 func (m *Manager) handleAgentIndex(w http.ResponseWriter, r *http.Request) {
@@ -176,6 +164,20 @@ func (m *Manager) proxyService(w http.ResponseWriter, r *http.Request) {
 			request.Out.URL.Path = rest
 			request.Out.URL.RawPath = ""
 			request.Out.Host = upstream.Host
+			// The operator session belongs only to the control plane.
+			cookies := request.Out.Cookies()
+			request.Out.Header.Del("Cookie")
+			for _, cookie := range cookies {
+				if cookie.Name != consoleCookie {
+					request.Out.AddCookie(cookie)
+				}
+			}
+		},
+		ModifyResponse: func(response *http.Response) error {
+			// Provider responses are untrusted API data, not console pages.
+			response.Header.Set("Content-Security-Policy", "sandbox; default-src 'none'; frame-ancestors 'none'")
+			response.Header.Set("X-Content-Type-Options", "nosniff")
+			return nil
 		},
 		ErrorHandler: func(w http.ResponseWriter, _ *http.Request, _ error) {
 			http.Error(w, "sandbox service unavailable", http.StatusBadGateway)

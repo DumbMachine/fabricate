@@ -87,9 +87,23 @@ func TestServeStartsScenarioAndClosesIt(t *testing.T) {
 		t.Fatal(err)
 	}
 	profile.Header.Set("Authorization", "Bearer "+service.Token)
+	profile.AddCookie(&http.Cookie{Name: consoleCookie, Value: "test-browser-session"})
 	profileResponse, err := http.DefaultClient.Do(profile)
 	if err != nil {
 		t.Fatal(err)
+	}
+
+	if profileResponse.Header.Get("X-Content-Type-Options") != "nosniff" || !strings.Contains(profileResponse.Header.Get("Content-Security-Policy"), "sandbox") {
+		t.Fatal("provider responses can execute as console pages")
+	}
+	var trace RequestLogView
+	traceResponse := get(t, server.URL+"/api/sessions/"+session.ID+"/logs")
+	decodeJSON(t, traceResponse, &trace)
+	if len(trace.Entries) != 1 {
+		t.Fatal("missing provider trace")
+	}
+	if _, present := trace.Entries[0].Request.Headers["Cookie"]; present {
+		t.Fatal("operator browser cookie reached provider")
 	}
 	body := readBody(t, profileResponse)
 	if profileResponse.StatusCode != http.StatusOK || !strings.Contains(body, "emailAddress") {

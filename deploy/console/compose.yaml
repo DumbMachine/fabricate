@@ -1,0 +1,53 @@
+services:
+  fabricate:
+    build:
+      context: ../..
+      dockerfile: deploy/console/Dockerfile
+    image: fabricate-console:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${FABRICATE_PORT:-4173}:4173"
+    environment:
+      FAB_CONSOLE_PUBLIC_URL: ${FAB_CONSOLE_PUBLIC_URL:?Set the URL clients use to reach this console}
+      FAB_CONSOLE_TOKEN_FILE: /run/secrets/operator_token
+      FAB_LOG_DIR: /var/lib/fabricate/logs
+    secrets:
+      - operator_token
+    volumes:
+      - request_logs:/var/lib/fabricate/logs
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,noexec,size=1g,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 2g
+    cpus: 2
+    stop_grace_period: 30s
+
+  ingress:
+    image: caddy:2-alpine
+    profiles: [hosted]
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      FABRICATE_DOMAIN: ${FABRICATE_DOMAIN:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ingress_data:/data
+      - ingress_config:/config
+    depends_on:
+      fabricate:
+        condition: service_healthy
+
+secrets:
+  operator_token:
+    file: ${FAB_CONSOLE_TOKEN_PATH:-./secrets/operator-token}
+volumes:
+  request_logs:
+  ingress_data:
+  ingress_config:

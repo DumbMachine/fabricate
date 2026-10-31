@@ -7,9 +7,13 @@ Fabricate packages, read its checkout, or start its process as part of app start
 `fab serve --addr 127.0.0.1:4183` serves the API locally. For an operator-managed
 deployment set `FAB_CONSOLE_TOKEN` and use HTTPS ingress with `--public-url`.
 The token protects `/api/*` and `/.well-known/fabricate`; send it as a bearer
-credential. The current static console UI does not supply that credential, so
-token-protected deployments are operated through HTTP clients. This is operator
-authentication, not multi-tenant account isolation or a complete SaaS release.
+credential. The console supports operator sign-in using that token, exchanged for an
+eight-hour HttpOnly browser session. `FAB_CONSOLE_TOKEN_FILE` supports mounted
+secrets; use it instead of `FAB_CONSOLE_TOKEN`, not together. API clients retain
+bearer authentication. Browser sessions require same-origin mutations and do
+not grant access to provider endpoints, which still require service tokens.
+This is operator authentication, not multi-tenant account isolation or a complete
+SaaS release. See [the deployment guide](../deploy/console/README.md).
 
 ## Contracts and datasets
 

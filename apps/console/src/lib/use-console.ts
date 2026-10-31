@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   closeSandbox,
   getCatalog,
@@ -8,7 +8,7 @@ import {
   startSandbox,
 } from "@/lib/api"
 import { errorText } from "@/lib/format"
-import type { Catalog, ConsoleConfig, SandboxKind, Session } from "@/lib/types"
+import type { Catalog, ConsoleConfig, StartKind, Session } from "@/lib/types"
 
 export type StartDestination = "sandbox" | "environment" | "stay"
 
@@ -51,15 +51,19 @@ export function useConsoleConfig() {
 
 export function useSessions() {
   const [sessions, setSessions] = useState<Session[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
   useEffect(() => {
     let cancelled = false
     const tick = () => {
       listSessions()
         .then((next) => {
-          if (!cancelled) setSessions(next)
+          if (!cancelled) {
+            setSessions(next)
+            setError(null)
+          }
         })
-        .catch(() => {
-          if (!cancelled) setSessions([])
+        .catch((error: unknown) => {
+          if (!cancelled) setError(errorText(error))
         })
     }
     tick()
@@ -69,19 +73,22 @@ export function useSessions() {
       window.clearInterval(timer)
     }
   }, [])
-  return [sessions, setSessions] as const
+  return [sessions, setSessions, error] as const
 }
 
 export function useSandboxActions() {
   const navigate = useNavigate()
+  const pendingRef = useRef(false)
   const [pending, setPending] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   async function start(
-    kind: SandboxKind,
+    kind: StartKind,
     id: string,
     destination: StartDestination
   ): Promise<Session | null> {
+    if (pendingRef.current) return null
+    pendingRef.current = true
     const key = `${kind}:${id}`
     setPending(key)
     setErrors((current) => ({ ...current, [key]: "" }))
@@ -109,11 +116,14 @@ export function useSandboxActions() {
       setErrors((current) => ({ ...current, [key]: errorText(startError) }))
       return null
     } finally {
+      pendingRef.current = false
       setPending(null)
     }
   }
 
   async function close(id: string): Promise<boolean> {
+    if (pendingRef.current) return false
+    pendingRef.current = true
     setPending(`close:${id}`)
     try {
       await closeSandbox(id)
@@ -125,6 +135,7 @@ export function useSandboxActions() {
       }))
       return false
     } finally {
+      pendingRef.current = false
       setPending(null)
     }
   }

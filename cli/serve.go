@@ -189,6 +189,10 @@ func (c *consoleListener) close() error {
 }
 
 func serveConsole(ctx context.Context, settings consoleSettings) error {
+	if _, err := console.ControlTokenFromEnvironment(); err != nil {
+		return err
+	}
+
 	manager := console.New(all.Registry())
 	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL}); err != nil {
 		return fmt.Errorf("serve: %w", err)

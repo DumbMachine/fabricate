@@ -1,29 +1,15 @@
-import {
-  Alert,
-  AlertContent,
-  AlertDescription,
-  AlertIcon,
-} from "@/components/motion/alert"
-import { Loader, type LoaderVariant } from "@/components/motion/loader"
-import { cn } from "cn"
-
-export function LoadingLine({
-  children,
-  variant = "dots",
-}: {
-  children: string
-  variant?: LoaderVariant
-}) {
+import { Loader2, AlertCircle } from "lucide-react"
+export function LoadingLine({ children }: { children: string }) {
   return (
-    <p className="flex items-center gap-2 text-sm text-muted-foreground">
-      <span aria-hidden="true">
-        <Loader variant={variant} size={16} label="" />
-      </span>
-      <span>{children}</span>
+    <p
+      role="status"
+      className="flex items-center gap-2 text-[13px] text-muted-foreground"
+    >
+      <Loader2 aria-hidden className="size-3.5 animate-spin" />
+      {children}
     </p>
   )
 }
-
 export function ErrorNote({
   children,
   compact = false,
@@ -32,17 +18,12 @@ export function ErrorNote({
   compact?: boolean
 }) {
   return (
-    <Alert
-      variant="destructive"
-      className={cn(compact && "p-2")}
-      contentClassName={cn(compact && "gap-2")}
+    <div
+      role="alert"
+      className={`flex items-start gap-2 rounded-lg bg-destructive/10 text-[13px] leading-5 text-destructive ${compact ? "p-2" : "px-3 py-2.5"}`}
     >
-      <AlertIcon />
-      <AlertContent>
-        <AlertDescription className="text-destructive">
-          {children}
-        </AlertDescription>
-      </AlertContent>
-    </Alert>
+      <AlertCircle aria-hidden className="mt-0.5 size-3.5 shrink-0" />
+      <p>{children}</p>
+    </div>
   )
 }

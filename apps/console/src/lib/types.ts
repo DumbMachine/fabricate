@@ -1,4 +1,6 @@
-export type SandboxKind = "environment" | "scenario"
+export type StartKind = "environment" | "scenario"
+export type SandboxKind = StartKind | "composition"
+export type AuthSession = { required: boolean; authenticated: boolean }
 
 export type ConsoleConfig = {
   proxy: boolean

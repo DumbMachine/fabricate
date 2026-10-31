@@ -115,6 +115,8 @@ fab run acme-gmail --proxy --ui -- npm test
 ```
 
 `fab serve` is the console on its own, including as a deployed service.
+For an authenticated container with HTTPS ingress and health checks, use
+[the console deployment guide](deploy/console/README.md).
 `fab serve --ui` also opens it in a browser. Start follows that process:
 `--proxy` starts every sandbox through the transparent proxy, and without it
 Start publishes the service URL on the console host. `--addr` is the listen

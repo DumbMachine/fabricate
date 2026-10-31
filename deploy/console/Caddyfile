@@ -1,0 +1,4 @@
+{$FABRICATE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy fabricate:4173
+}

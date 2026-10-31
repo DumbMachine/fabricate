@@ -21,12 +21,6 @@ func connectShell(session Session) string {
 	for _, variable := range session.Variables {
 		fmt.Fprintf(&builder, "export %s=%s\n", variable.Name, shellQuote(variable.Value))
 	}
-	if !session.Proxy {
-		builder.WriteString("\n")
-		for _, service := range session.Services {
-			fmt.Fprintf(&builder, "curl -sS -H \"Authorization: Bearer $%s\" \"$%s\"\n", service.TokenVariable, service.URLVariable)
-		}
-	}
 	return builder.String()
 }
 

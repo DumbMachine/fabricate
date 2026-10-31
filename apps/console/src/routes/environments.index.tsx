@@ -1,10 +1,11 @@
+import { CloseSandboxButton } from "@/components/close-sandbox"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
 import { ErrorNote, LoadingLine } from "@/components/feedback"
 import { ScenarioNames } from "@/components/scenario-chip"
 import { StartActions } from "@/components/start-actions"
 import { StatusPill } from "@/components/status-pill"
-import { LinkButton, StatefulButton } from "@/components/ui/button"
+import { LinkButton } from "@/components/ui/button"
 import {
   ColumnHeading,
   ConsoleFrame,
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/environments/")({
 
 function EnvironmentsPage() {
   const { catalog, error } = useCatalog()
-  const [sessions, setSessions] = useSessions()
+  const [sessions, setSessions, sessionsError] = useSessions()
   const { pending, errors, start, close } = useSandboxActions()
   const [query, setQuery] = useState("")
   const loaded = sessions ?? []
@@ -60,7 +61,7 @@ function EnvironmentsPage() {
     <ConsoleFrame
       crumbs={[{ label: "Environments" }]}
       heading="Environments"
-      description="An environment packages resources and scenarios. Start brings every service in it up together."
+      description="Start a complete set of services with a shared starting dataset."
       search={{
         value: query,
         onChange: setQuery,
@@ -68,6 +69,7 @@ function EnvironmentsPage() {
       }}
     >
       {error ? <ErrorNote>{error}</ErrorNote> : null}
+      {sessionsError ? <ErrorNote>{sessionsError}</ErrorNote> : null}
       {catalog === null && !error ? (
         <LoadingLine>Loading environments…</LoadingLine>
       ) : null}
@@ -181,16 +183,12 @@ function EnvironmentRow({
               Manage
             </LinkButton>
             {only && !only.anchored ? (
-              <StatefulButton
-                size="sm"
-                variant="outline"
-                state={pending === `close:${only.id}` ? "loading" : "idle"}
-                loadingText="Closing…"
-                disabled={pending !== null && pending !== `close:${only.id}`}
-                onClick={() => onClose(only.id)}
-              >
-                Close
-              </StatefulButton>
+              <CloseSandboxButton
+                pending={pending === `close:${only.id}`}
+                disabled={pending !== null}
+                onClose={() => onClose(only.id)}
+                label="Close"
+              />
             ) : null}
           </div>
         )}

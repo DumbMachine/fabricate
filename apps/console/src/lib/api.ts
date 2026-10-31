@@ -1,12 +1,13 @@
-import { publishSession } from "@/lib/publish-session"
+import { publishSession } from "./publish-session.ts"
 import type {
   Catalog,
   ConsoleConfig,
   RequestLogView,
-  SandboxKind,
+  StartKind,
+  AuthSession,
   ScenarioView,
   Session,
-} from "@/lib/types"
+} from "./types.ts"
 
 export async function getConfig(): Promise<ConsoleConfig> {
   return request<ConsoleConfig>("/api/config")
@@ -36,7 +37,7 @@ export async function getSessionLogs(id: string): Promise<RequestLogView> {
 }
 
 export async function startSandbox(
-  kind: SandboxKind,
+  kind: StartKind,
   id: string
 ): Promise<Session> {
   return publishSession(
@@ -53,8 +54,26 @@ export async function closeSandbox(id: string): Promise<void> {
   })
 }
 
+export class ApiError extends Error {
+  status: number
+  constructor(message: string, status: number) {
+    super(message)
+    this.status = status
+    this.name = "ApiError"
+  }
+}
+export const getAuthSession = () => request<AuthSession>("/api/auth/session")
+export const signIn = (token: string) =>
+  request<AuthSession>("/api/auth/session", {
+    method: "POST",
+    body: JSON.stringify({ token }),
+  })
+export const signOut = () =>
+  request<void>("/api/auth/session", { method: "DELETE" })
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
+    credentials: "same-origin",
     ...init,
     headers: {
       accept: "application/json",
@@ -66,9 +85,24 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     return undefined as T
   }
   const text = await response.text()
-  const payload: unknown = text ? JSON.parse(text) : null
+  let payload: unknown = null
+  try {
+    payload = text ? JSON.parse(text) : null
+  } catch {
+    if (response.ok) throw new Error("Fabricate returned an invalid response")
+  }
   if (!response.ok) {
-    throw new Error(errorMessage(payload, response.statusText))
+    if (response.status === 401 && path !== "/api/auth/session")
+      window.dispatchEvent(new Event("fabricate:unauthorized"))
+    throw new ApiError(
+      errorMessage(
+        payload,
+        response.status === 401
+          ? "Sign in to continue"
+          : response.statusText || "Request failed"
+      ),
+      response.status
+    )
   }
   return payload as T
 }
@@ -84,3 +118,8 @@ function errorMessage(payload: unknown, fallback: string): string {
   }
   return fallback
 }
+
+export const getResourceContract = (resource: string) =>
+  request<{ basePath: string; openapi: Record<string, unknown> }>(
+    `/api/resources/${encodeURIComponent(resource)}/contract`
+  )

@@ -4,6 +4,8 @@ export function kindLabel(kind: SandboxKind): string {
   switch (kind) {
     case "environment":
       return "Environment"
+    case "composition":
+      return "Composition"
     case "scenario":
       return "Scenario"
     default: {

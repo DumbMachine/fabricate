@@ -1,6 +1,4 @@
 import type { ReactNode } from "react"
-import { AnimatedBadge } from "@/components/motion/animated-badge"
-
 export function StatusPill({
   tone,
   children,
@@ -9,28 +7,12 @@ export function StatusPill({
   children: ReactNode
 }) {
   return (
-    <AnimatedBadge
-      status={badgeStatus(tone)}
-      size="sm"
-      pulse={tone === "ready"}
-      className="w-fit self-start"
-    >
+    <span className="inline-flex w-fit items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground">
+      <span
+        aria-hidden
+        className={`size-1.5 rounded-full ${tone === "ready" ? "bg-success" : tone === "held" ? "bg-amber-400" : "bg-faint"}`}
+      />
       {children}
-    </AnimatedBadge>
+    </span>
   )
-}
-
-function badgeStatus(tone: "ready" | "held" | "neutral") {
-  switch (tone) {
-    case "ready":
-      return "success" as const
-    case "held":
-      return "neutral" as const
-    case "neutral":
-      return "neutral" as const
-    default: {
-      const neverTone: never = tone
-      return neverTone
-    }
-  }
 }

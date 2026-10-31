@@ -1,62 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { AgentCopy } from "@/components/agent-copy"
-import { ErrorNote, LoadingLine } from "@/components/feedback"
+import { useState } from "react"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/motion/card"
-import { ScenarioChips } from "@/components/scenario-chip"
-import { ServiceURLs } from "@/components/service-urls"
-import { LinkButton, StatefulButton } from "@/components/ui/button"
-import { ServiceIdentity } from "@/components/service-identity"
-import { StartActions } from "@/components/start-actions"
-import { StatusPill } from "@/components/status-pill"
-import {
-  ColumnHeading,
   ConsoleFrame,
+  ColumnHeading,
   DataTable,
 } from "@/components/console-frame"
+import { PageTabs, TabPanel } from "@/components/page-tabs"
+import { AgentCopy } from "@/components/agent-copy"
+import { CloseSandboxButton } from "@/components/close-sandbox"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
+import { LinkButton } from "@/components/ui/button"
+import { StartActions } from "@/components/start-actions"
+import { ServiceIdentity } from "@/components/service-identity"
+import { StatusPill } from "@/components/status-pill"
 import { environmentAgentBrief } from "@/lib/agent-brief"
 import { sessionsForEnvironment } from "@/lib/catalog"
 import { formatTime } from "@/lib/format"
-import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
-import type { Session } from "@/lib/types"
-
+import { useCatalog, useSessions, useSandboxActions } from "@/lib/use-console"
 export const Route = createFileRoute("/environments/$name")({
   component: EnvironmentPage,
 })
-
 function EnvironmentPage() {
   const { name } = Route.useParams()
-  const { catalog, error: catalogError } = useCatalog()
-  const [sessions, setSessions] = useSessions()
+  const { catalog, error } = useCatalog()
+  const [sessions, setSessions, sessionsError] = useSessions()
   const { pending, errors, start, close } = useSandboxActions()
-  const environment =
-    catalog?.environments.find((item) => item.name === name) ?? null
-  const running = sessionsForEnvironment(sessions ?? [], name)
-  const key = `environment:${name}`
-
+  const [tab, setTab] = useState("services")
+  const environment = catalog?.environments.find((item) => item.name === name)
+  const running = sessionsForEnvironment(sessions || [], name)
   async function onStart() {
     const session = await start("environment", name, "stay")
-    if (session) {
+    if (session)
       setSessions((current) => [
         session,
-        ...(current ?? []).filter((item) => item.id !== session.id),
+        ...(current || []).filter((s) => s.id !== session.id),
       ])
-    }
   }
-
   async function onClose(id: string) {
-    const ok = await close(id)
-    if (ok) {
-      setSessions((current) => (current ?? []).filter((item) => item.id !== id))
-    }
+    if (await close(id))
+      setSessions((current) => (current || []).filter((s) => s.id !== id))
   }
-
-  if (catalog === null && !catalogError) {
+  if (!environment)
     return (
       <ConsoleFrame
         crumbs={[
@@ -64,208 +48,154 @@ function EnvironmentPage() {
           { label: name },
         ]}
       >
-        <LoadingLine>Loading environment…</LoadingLine>
+        {error ? (
+          <ErrorNote>{error}</ErrorNote>
+        ) : catalog ? (
+          <p className="text-sm text-muted-foreground">
+            This environment is not in the catalog.
+          </p>
+        ) : (
+          <LoadingLine>Loading environment…</LoadingLine>
+        )}
       </ConsoleFrame>
     )
-  }
-  if (!environment) {
-    return (
-      <ConsoleFrame
-        crumbs={[
-          { label: "Environments", to: "/environments" },
-          { label: "Unknown" },
-        ]}
-        eyebrow="Environment"
-        heading="Environment not found"
-        description={catalogError ?? `${name} is not an official environment.`}
-        actions={
-          <LinkButton to="/environments">Back to environments</LinkButton>
-        }
-      >
-        {null}
-      </ConsoleFrame>
-    )
-  }
-
-  const only = running.length === 1 ? running[0] : undefined
-  const serviceNames = environment.services.map(
-    (service) => service.displayName
-  )
-
   return (
     <ConsoleFrame
       crumbs={[
         { label: "Environments", to: "/environments" },
         { label: environment.label },
       ]}
-      eyebrow="Environment"
-      heading={environment.label}
-      description={`${environment.name} starts ${joinNames(serviceNames)} together. Each service loads the scenario listed below.`}
       actions={
-        <div className="flex flex-wrap items-end gap-2">
-          <AgentCopy brief={environmentAgentBrief(environment, sessions)} />
-          {sessions === null ? null : only ? (
-            <RunningActions
-              session={only}
-              pending={pending}
-              onClose={() => void onClose(only.id)}
-            />
-          ) : running.length > 1 ? null : (
-            <StartActions
-              pending={pending}
-              actionKey={key}
-              onStart={() => void onStart()}
-              label="Start environment"
-            />
-          )}
-        </div>
+        <StartActions
+          pending={pending}
+          actionKey={`environment:${name}`}
+          onStart={() => void onStart()}
+          label={running.length ? "New sandbox" : "Start environment"}
+        />
       }
-      sections={[
-        { id: "running", label: "Running" },
-        { id: "services", label: "Services" },
-      ]}
+      tabs={
+        <PageTabs
+          id="environment"
+          label="Environment views"
+          value={tab}
+          onChange={setTab}
+          items={[
+            {
+              id: "services",
+              label: "Services",
+              count: environment.services.length,
+            },
+            {
+              id: "sandboxes",
+              label: "Sandboxes",
+              count: sessions ? running.length : undefined,
+            },
+          ]}
+        />
+      }
     >
-      {errors[key] ? <ErrorNote>{errors[key]}</ErrorNote> : null}
-      <section id="running" className="flex scroll-mt-6 flex-col gap-3">
-        <h2 className="text-lg font-medium">Running</h2>
-        {sessions === null ? (
-          <LoadingLine>Checking sandboxes…</LoadingLine>
+      {errors[`environment:${name}`] ? (
+        <ErrorNote>{errors[`environment:${name}`]}</ErrorNote>
+      ) : null}
+      {sessionsError ? <ErrorNote>{sessionsError}</ErrorNote> : null}
+      <TabPanel id="environment" value={tab}>
+        {tab === "services" ? (
+          <>
+            <p className="text-[13px] leading-6 text-muted-foreground">
+              Start these services together in an isolated sandbox. Each loads
+              the starting data listed below.
+            </p>
+            <DataTable>
+              <thead>
+                <tr>
+                  <ColumnHeading>Service and scenario</ColumnHeading>
+                  <ColumnHeading>Provider hostnames</ColumnHeading>
+                </tr>
+              </thead>
+              <tbody>
+                {environment.services.map((service) => (
+                  <tr key={service.name} className="border-b align-top">
+                    <td className="px-3 py-4">
+                      <ServiceIdentity
+                        resource={service.resource}
+                        displayName={service.displayName}
+                        scenario={service.scenario}
+                        detail={service.name}
+                      />
+                    </td>
+                    <td className="px-3 py-4 text-xs text-muted-foreground">
+                      {service.providerHosts.join(", ") || "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </DataTable>
+            <div className="pt-3">
+              <AgentCopy brief={environmentAgentBrief(environment, sessions)} />
+            </div>
+          </>
+        ) : sessions === null ? (
+          <LoadingLine>Loading sandboxes…</LoadingLine>
         ) : running.length === 0 ? (
-          <Card variant="muted" size="compact">
-            <CardHeader>
-              <CardTitle as="h3">Stopped</CardTitle>
-              <CardDescription>
-                Start environment brings up all {environment.services.length}{" "}
-                {environment.services.length === 1 ? "service" : "services"} in
-                one sandbox.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {running.map((session) => (
-              <RunningSession
-                key={session.id}
-                session={session}
-                pending={pending}
-                error={errors[`close:${session.id}`]}
-                onClose={() => void onClose(session.id)}
-              />
-            ))}
+          <div className="py-16 text-center">
+            <h2 className="text-sm font-medium">No sandboxes running</h2>
+            <p className="mt-2 text-[13px] text-muted-foreground">
+              Start this environment to get service endpoints and credentials.
+            </p>
           </div>
-        )}
-      </section>
-
-      <section id="services" className="flex scroll-mt-6 flex-col gap-3">
-        <h2 className="text-lg font-medium">Services</h2>
-        <DataTable>
-          <thead>
-            <tr>
-              <ColumnHeading>Service</ColumnHeading>
-              <ColumnHeading>Production hostnames</ColumnHeading>
-            </tr>
-          </thead>
-          <tbody>
-            {environment.services.map((service) => (
-              <tr key={service.name} className="border-t align-top">
-                <td className="px-3 py-3">
-                  <ServiceIdentity
-                    resource={service.resource}
-                    displayName={service.displayName}
-                    scenario={service.scenario}
-                    detail={service.name}
-                  />
-                </td>
-                <td className="px-3 py-3 text-muted-foreground">
-                  {service.providerHosts.join(", ") || "None"}
-                </td>
+        ) : (
+          <DataTable>
+            <thead>
+              <tr>
+                <ColumnHeading>Sandbox</ColumnHeading>
+                <ColumnHeading>Status</ColumnHeading>
+                <ColumnHeading>Started</ColumnHeading>
+                <ColumnHeading>Actions</ColumnHeading>
               </tr>
-            ))}
-          </tbody>
-        </DataTable>
-      </section>
+            </thead>
+            <tbody>
+              {running.map((session) => (
+                <tr key={session.id} className="border-b">
+                  <td className="px-3 py-4 font-mono text-xs">
+                    {session.id}
+                    {errors[`close:${session.id}`] ? (
+                      <ErrorNote compact>
+                        {errors[`close:${session.id}`]}
+                      </ErrorNote>
+                    ) : null}
+                  </td>
+                  <td className="px-3 py-4">
+                    <StatusPill tone={session.anchored ? "held" : "ready"}>
+                      {session.anchored ? "Held by command" : "Running"}
+                    </StatusPill>
+                  </td>
+                  <td className="px-3 py-4 text-xs text-muted-foreground">
+                    {formatTime(session.startedAt)}
+                  </td>
+                  <td className="px-3 py-4">
+                    <div className="flex justify-end gap-2">
+                      <LinkButton
+                        to="/sandboxes/$id"
+                        params={{ id: session.id }}
+                      >
+                        Open
+                      </LinkButton>
+                      {!session.anchored ? (
+                        <CloseSandboxButton
+                          label="Close"
+                          pending={pending === `close:${session.id}`}
+                          disabled={pending !== null}
+                          onClose={() => void onClose(session.id)}
+                        />
+                      ) : null}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </DataTable>
+        )}
+      </TabPanel>
     </ConsoleFrame>
   )
-}
-
-function RunningActions({
-  session,
-  pending,
-  onClose,
-}: {
-  session: Session
-  pending: string | null
-  onClose: () => void
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      <LinkButton
-        variant="primary"
-        to="/sandboxes/$id"
-        params={{ id: session.id }}
-      >
-        Open sandbox
-      </LinkButton>
-      {session.anchored ? null : (
-        <StatefulButton
-          size="sm"
-          variant="outline"
-          state={pending === `close:${session.id}` ? "loading" : "idle"}
-          loadingText="Closing…"
-          disabled={pending !== null && pending !== `close:${session.id}`}
-          onClick={onClose}
-        >
-          Close
-        </StatefulButton>
-      )}
-    </div>
-  )
-}
-
-function RunningSession({
-  session,
-  pending,
-  error,
-  onClose,
-}: {
-  session: Session
-  pending: string | null
-  error?: string
-  onClose: () => void
-}) {
-  return (
-    <Card size="compact">
-      <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex flex-col gap-2">
-          {session.anchored ? (
-            <StatusPill tone="held">Held by fab run</StatusPill>
-          ) : (
-            <StatusPill tone="ready">Ready</StatusPill>
-          )}
-          <p className="font-mono text-xs text-muted-foreground">
-            {session.id}
-          </p>
-          <ServiceURLs services={session.services} />
-          <p className="text-sm text-muted-foreground">
-            Started {formatTime(session.startedAt)}
-          </p>
-          <ScenarioChips services={session.services} />
-          {session.anchored ? (
-            <p className="max-w-xl text-sm text-muted-foreground">
-              Held by fab run. It stays up until that command exits.
-            </p>
-          ) : null}
-          {error ? <ErrorNote compact>{error}</ErrorNote> : null}
-        </div>
-        <RunningActions session={session} pending={pending} onClose={onClose} />
-      </CardContent>
-    </Card>
-  )
-}
-
-function joinNames(names: string[]): string {
-  if (names.length === 0) return "its services"
-  if (names.length === 1) return names[0]
-  if (names.length === 2) return `${names[0]} and ${names[1]}`
-  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`
 }

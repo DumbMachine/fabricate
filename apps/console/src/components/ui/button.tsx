@@ -4,24 +4,24 @@ import {
   buttonClassName,
   type ButtonSize,
   type ButtonVariant,
-} from "@/components/motion/button/base"
+} from "@/components/ui/button-base"
 
 export {
   Button,
   ButtonLink,
   buttonClassName,
-} from "@/components/motion/button/base"
+} from "@/components/ui/button-base"
 export type {
   ButtonLinkProps,
   ButtonProps,
   ButtonSize,
   ButtonVariant,
-} from "@/components/motion/button/base"
-export { StatefulButton } from "@/components/motion/button/stateful"
+} from "@/components/ui/button-base"
+export { StatefulButton } from "@/components/ui/stateful-button"
 export type {
   ButtonState,
   StatefulButtonProps,
-} from "@/components/motion/button/stateful"
+} from "@/components/ui/stateful-button"
 
 type LinkButtonOwn = {
   variant?: ButtonVariant

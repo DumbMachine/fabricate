@@ -6,6 +6,8 @@ import {
 } from "@tanstack/react-router"
 import { useEffect, useState, type ReactNode } from "react"
 
+import { AuthGate } from "@/components/auth-gate"
+
 import appCss from "../styles.css?url"
 
 export const Route = createRootRoute({
@@ -35,7 +37,11 @@ function RootComponent() {
     setReady(true)
   }, [])
   if (!ready) return null
-  return <Outlet />
+  return (
+    <AuthGate>
+      <Outlet />
+    </AuthGate>
+  )
 }
 
 function RootDocument({ children }: { children: ReactNode }) {

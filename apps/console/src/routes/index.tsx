@@ -1,252 +1,260 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
-import { cn } from "cn"
-import { ErrorNote, LoadingLine } from "@/components/feedback"
+import { Boxes, ChevronRight, Plus } from "lucide-react"
 import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/motion/card"
-import { ResourceIcon } from "@/components/resource-icon"
-import { ResourceSheet } from "@/components/resource-sheet"
-import { ScenarioNames } from "@/components/scenario-chip"
-import { ServiceURLs } from "@/components/service-urls"
-import { StatusPill } from "@/components/status-pill"
-import { StatefulButton } from "@/components/ui/button"
-import {
-  ColumnHeading,
   ConsoleFrame,
+  ColumnHeading,
   DataTable,
 } from "@/components/console-frame"
+import { ErrorNote, LoadingLine } from "@/components/feedback"
+import { ResourceIcon } from "@/components/resource-icon"
+import { ResourceSheet } from "@/components/resource-sheet"
+import { StatusPill } from "@/components/status-pill"
+import { Button, LinkButton } from "@/components/ui/button"
+import { CloseSandboxButton } from "@/components/close-sandbox"
+import { PageTabs, TabPanel } from "@/components/page-tabs"
 import { matchingResources } from "@/lib/catalog"
 import { formatTime, matchesQuery } from "@/lib/format"
-import { useCatalog, useSandboxActions, useSessions } from "@/lib/use-console"
-import type { Session } from "@/lib/types"
-
-export const Route = createFileRoute("/")({ component: SandboxesPage })
-
+import { useCatalog, useSessions, useSandboxActions } from "@/lib/use-console"
+export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>): { tab?: "resources" } =>
+    search.tab === "resources" ? { tab: "resources" } : {},
+  component: SandboxesPage,
+})
 function SandboxesPage() {
   const { catalog, error: catalogError } = useCatalog()
-  const [sessions, setSessions] = useSessions()
+  const [sessions, setSessions, sessionsError] = useSessions()
   const { pending, errors, start, close } = useSandboxActions()
   const [query, setQuery] = useState("")
   const [resourceId, setResourceId] = useState<string | null>(null)
-  const visibleSessions = useMemo(() => {
-    const loaded = sessions ?? []
-    return loaded.filter((session) =>
-      matchesQuery(query, [
-        session.name,
-        session.label,
-        session.kind,
-        session.id,
-        ...session.services.flatMap((service) => [
-          service.name,
-          service.resource,
-          service.displayName,
-          service.scenario,
-          service.url,
-        ]),
-      ])
-    )
-  }, [sessions, query])
+  const { tab } = Route.useSearch()
+  const navigate = useNavigate()
+  const active = tab || "running"
+  const changeTab = (next: string) => {
+    setQuery("")
+    void navigate({
+      to: "/",
+      search: next === "resources" ? { tab: "resources" } : {},
+    })
+  }
+  const visible = useMemo(
+    () =>
+      (sessions || []).filter((s) =>
+        matchesQuery(query, [
+          s.label,
+          s.name,
+          s.id,
+          ...s.services.flatMap((v) => [v.displayName, v.name, v.scenario]),
+        ])
+      ),
+    [sessions, query]
+  )
   const resources = useMemo(
-    () => matchingResources(catalog?.scenarios ?? [], query),
+    () => matchingResources(catalog?.scenarios || [], query),
     [catalog, query]
   )
-  const selected =
-    resources.find((resource) => resource.resource === resourceId) ?? null
-
-  async function onStart(id: string) {
-    await start("scenario", id, "sandbox")
-  }
-
+  const allResources = useMemo(
+    () => matchingResources(catalog?.scenarios || [], ""),
+    [catalog]
+  )
+  const selected = resources.find((v) => v.resource === resourceId) || null
   async function onClose(id: string) {
-    const ok = await close(id)
-    if (ok) {
-      setSessions((current) =>
-        (current ?? []).filter((session) => session.id !== id)
-      )
-    }
+    if (await close(id))
+      setSessions((current) => (current || []).filter((s) => s.id !== id))
   }
-
   return (
     <ConsoleFrame
       crumbs={[{ label: "Sandboxes" }]}
-      heading="Sandboxes"
-      description="A running sandbox shows the scenario that is active. Open a resource to choose a scenario, or start every service in an environment together."
+      actions={
+        <Button size="sm" onClick={() => changeTab("resources")}>
+          <Plus />
+          New sandbox
+        </Button>
+      }
+      tabs={
+        <PageTabs
+          id="sandboxes"
+          label="Sandbox views"
+          value={active}
+          onChange={changeTab}
+          items={[
+            { id: "running", label: "Running", count: sessions?.length },
+            {
+              id: "resources",
+              label: "Resource catalog",
+              count: catalog ? allResources.length : undefined,
+            },
+          ]}
+        />
+      }
       search={{
         value: query,
         onChange: setQuery,
-        label: "Search sandboxes and resources",
+        label:
+          active === "running"
+            ? "Search sandboxes"
+            : "Search resources and scenarios",
       }}
     >
-      <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-medium">Running</h2>
-        {sessions === null ? (
-          <LoadingLine>Loading sandboxes…</LoadingLine>
-        ) : visibleSessions.length === 0 ? (
-          <Card variant="muted" size="compact">
-            <CardHeader>
-              <CardTitle as="h3">Nothing is running</CardTitle>
-              <CardDescription>
-                Open a resource below, or open{" "}
-                <Link
-                  to="/environments"
-                  className="underline decoration-muted-foreground/50 underline-offset-2"
+      <TabPanel id="sandboxes" value={active}>
+        {active === "running" ? (
+          <>
+            {sessionsError ? <ErrorNote>{sessionsError}</ErrorNote> : null}
+            {sessions === null && !sessionsError ? (
+              <LoadingLine>Loading sandboxes…</LoadingLine>
+            ) : null}
+            {sessions && visible.length === 0 ? (
+              <div className="flex min-h-72 flex-col items-center justify-center gap-3 text-center">
+                <Boxes className="mb-1 size-8 text-faint" />
+                <h2 className="text-base font-medium">
+                  {query
+                    ? "No matching sandboxes"
+                    : "Your sandboxes will appear here"}
+                </h2>
+                <p className="max-w-sm text-[13px] leading-6 text-muted-foreground">
+                  {query
+                    ? "Try a resource name, scenario or sandbox ID."
+                    : "Choose a resource and its starting data, or bring up a complete environment."}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="mt-2"
+                  onClick={() => changeTab("resources")}
                 >
-                  Environments
-                </Link>{" "}
-                to bring up a whole set of services with one button.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+                  Browse resources
+                </Button>
+              </div>
+            ) : null}
+            {visible.length ? (
+              <DataTable>
+                <thead>
+                  <tr>
+                    <ColumnHeading>Sandbox</ColumnHeading>
+                    <ColumnHeading>Services</ColumnHeading>
+                    <ColumnHeading>Status</ColumnHeading>
+                    <ColumnHeading>Started</ColumnHeading>
+                    <ColumnHeading>Actions</ColumnHeading>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.map((s) => (
+                    <tr key={s.id} className="border-b align-middle">
+                      <td className="px-3 py-4">
+                        <Link
+                          to="/sandboxes/$id"
+                          params={{ id: s.id }}
+                          className="font-medium hover:underline"
+                        >
+                          {s.label}
+                        </Link>
+                        <p className="mt-1 font-mono text-[10px] text-faint">
+                          {s.id}
+                        </p>
+                        {errors[`close:${s.id}`] ? (
+                          <ErrorNote compact>
+                            {errors[`close:${s.id}`]}
+                          </ErrorNote>
+                        ) : null}
+                      </td>
+                      <td className="px-3 py-4">
+                        <div className="flex items-center gap-2">
+                          {s.services.slice(0, 4).map((service) => (
+                            <ResourceIcon
+                              key={service.name}
+                              id={service.resource}
+                            />
+                          ))}
+                          <span className="text-xs text-muted-foreground">
+                            {s.services.length}{" "}
+                            {s.services.length === 1 ? "service" : "services"}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-4">
+                        <StatusPill tone={s.anchored ? "held" : "ready"}>
+                          {s.anchored ? "Held by command" : "Running"}
+                        </StatusPill>
+                      </td>
+                      <td className="px-3 py-4 text-xs text-muted-foreground">
+                        {formatTime(s.startedAt)}
+                      </td>
+                      <td className="px-3 py-4">
+                        <div className="flex justify-end gap-2">
+                          <LinkButton to="/sandboxes/$id" params={{ id: s.id }}>
+                            Open
+                          </LinkButton>
+                          {!s.anchored ? (
+                            <CloseSandboxButton
+                              label="Close"
+                              onClose={() => void onClose(s.id)}
+                              pending={pending === `close:${s.id}`}
+                              disabled={pending !== null}
+                            />
+                          ) : null}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </DataTable>
+            ) : null}
+          </>
         ) : (
-          <DataTable className="min-w-[980px]">
-            <thead>
-              <tr>
-                <ColumnHeading>Scenario</ColumnHeading>
-                <ColumnHeading>UID</ColumnHeading>
-                <ColumnHeading>URL</ColumnHeading>
-                <ColumnHeading>Status</ColumnHeading>
-                <ColumnHeading>Started</ColumnHeading>
-                <ColumnHeading> </ColumnHeading>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleSessions.map((session) => (
-                <RunningRow
-                  key={session.id}
-                  session={session}
-                  pending={pending}
-                  error={errors[`close:${session.id}`]}
-                  onClose={() => void onClose(session.id)}
-                />
+          <>
+            {catalogError ? <ErrorNote>{catalogError}</ErrorNote> : null}
+            {!catalog && !catalogError ? (
+              <LoadingLine>Loading resources…</LoadingLine>
+            ) : null}
+            <p className="text-[13px] text-muted-foreground">
+              Choose a service to explore its data and start an isolated
+              sandbox.
+            </p>
+            {catalog && !resources.length ? (
+              <p className="py-12 text-center text-sm text-muted-foreground">
+                No resources match your search.
+              </p>
+            ) : null}
+            <div className="grid grid-cols-1 gap-x-7 sm:grid-cols-2 xl:grid-cols-3">
+              {resources.map((resource) => (
+                <button
+                  type="button"
+                  key={resource.resource}
+                  aria-haspopup="dialog"
+                  aria-expanded={selected?.resource === resource.resource}
+                  onClick={() => setResourceId(resource.resource)}
+                  className="group flex min-h-20 items-center gap-3 border-b border-border px-2 py-4 text-left outline-none hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                >
+                  <ResourceIcon id={resource.resource} size="md" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[13px] font-medium">
+                      {resource.displayName}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      {resource.scenarios.length}{" "}
+                      {resource.scenarios.length === 1
+                        ? "scenario"
+                        : "scenarios"}
+                    </span>
+                  </span>
+                  <ChevronRight className="size-3.5 text-faint" />
+                </button>
               ))}
-            </tbody>
-          </DataTable>
+            </div>
+          </>
         )}
-      </section>
-
-      <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-medium">
-          Resources{catalog ? ` (${resources.length})` : ""}
-        </h2>
-        {catalogError ? <ErrorNote>{catalogError}</ErrorNote> : null}
-        {catalog === null && !catalogError ? (
-          <LoadingLine>Loading resources…</LoadingLine>
-        ) : null}
-        {catalog !== null && resources.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No resources match that search.
-          </p>
-        ) : null}
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {resources.map((resource) => {
-            const selectedResource = resource.resource === resourceId
-            const count = scenarioCount(resource.scenarios.length)
-            return (
-              <button
-                key={resource.resource}
-                type="button"
-                aria-haspopup="dialog"
-                aria-expanded={selectedResource}
-                onClick={() => setResourceId(resource.resource)}
-                className={cn(
-                  "flex items-center gap-3 rounded-2xl border bg-background px-4 py-4 text-left hover:bg-muted/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground",
-                  selectedResource ? "border-foreground" : "border-border"
-                )}
-              >
-                <ResourceIcon id={resource.resource} size="md" />
-                <span className="min-w-0">
-                  <span className="block text-[15px] font-semibold">
-                    {resource.displayName}
-                  </span>
-                  <span className="mt-0.5 block text-sm text-muted-foreground">
-                    {count}
-                  </span>
-                </span>
-              </button>
-            )
-          })}
-        </div>
-      </section>
+      </TabPanel>
       <ResourceSheet
         resource={selected}
         sessions={sessions}
         open={selected !== null}
         pending={pending}
         errors={errors}
-        onOpenChange={(next) => {
-          if (!next) setResourceId(null)
+        onOpenChange={(open) => {
+          if (!open) setResourceId(null)
         }}
-        onStart={(id) => void onStart(id)}
+        onStart={(id) => void start("scenario", id, "sandbox")}
       />
     </ConsoleFrame>
-  )
-}
-
-function scenarioCount(count: number): string {
-  return count === 1 ? "1 scenario" : `${count} scenarios`
-}
-
-function RunningRow({
-  session,
-  pending,
-  error,
-  onClose,
-}: {
-  session: Session
-  pending: string | null
-  error?: string
-  onClose: () => void
-}) {
-  return (
-    <tr className="border-t align-top">
-      <td className="px-3 py-3">
-        <ScenarioNames services={session.services} />
-        {error ? (
-          <div className="mt-1">
-            <ErrorNote compact>{error}</ErrorNote>
-          </div>
-        ) : null}
-      </td>
-      <td className="px-3 py-3">
-        <Link
-          to="/sandboxes/$id"
-          params={{ id: session.id }}
-          className="font-mono text-xs underline decoration-muted-foreground/50 underline-offset-2"
-        >
-          {session.id}
-        </Link>
-      </td>
-      <td className="px-3 py-3">
-        <ServiceURLs services={session.services} />
-      </td>
-      <td className="px-3 py-3">
-        {session.anchored ? (
-          <StatusPill tone="held">Held by fab run</StatusPill>
-        ) : (
-          <StatusPill tone="ready">Ready</StatusPill>
-        )}
-      </td>
-      <td className="px-3 py-3 text-muted-foreground">
-        {formatTime(session.startedAt)}
-      </td>
-      <td className="px-3 py-3 text-right">
-        {session.anchored ? null : (
-          <StatefulButton
-            variant="outline"
-            size="sm"
-            state={pending === `close:${session.id}` ? "loading" : "idle"}
-            loadingText="Closing…"
-            disabled={pending !== null && pending !== `close:${session.id}`}
-            onClick={onClose}
-          >
-            Close
-          </StatefulButton>
-        )}
-      </td>
-    </tr>
   )
 }

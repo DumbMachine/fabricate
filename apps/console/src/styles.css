@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
-@import "@fontsource/teko/600.css";
+
 @import "@fontsource/ibm-plex-mono/400.css";
 @import "@fontsource/ibm-plex-mono/500.css";
 
@@ -11,9 +11,9 @@
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: "Inter Variable", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas,
-    monospace;
-  --font-brand: "Teko", "Arial Narrow", Impact, sans-serif;
+  --font-mono:
+    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
   --color-faint: var(--faint);
   --color-code: var(--code);
   --color-success-foreground: var(--success-foreground);
@@ -58,50 +58,74 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/*
- * Same product palette as the docs theme (dark is the docs default) and the
- * landing page's shared vocabulary: canvas #1b1b1b, green action #33c482,
- * Teko wordmark. Selection is a raised surface, not a separate brand color.
- */
 :root,
 .dark {
-  --background: #1b1b1b;
-  --foreground: #f0f0f0;
-  --card: #292929;
-  --card-foreground: #f0f0f0;
-  --popover: #292929;
-  --popover-foreground: #f0f0f0;
-  --primary: #33c482;
-  --primary-hover: #2dac72;
-  --primary-foreground: #171717;
-  --secondary: #292929;
-  --secondary-foreground: #f0f0f0;
-  --muted: #2c2c2c;
-  --muted-foreground: #dedede;
-  --faint: #6e6e6e;
-  --code: #1f1f1f;
-  --accent: #2c2c2c;
-  --accent-foreground: #f0f0f0;
-  --destructive: #ff5c35;
-  --border: #444;
-  --input: #444;
-  --ring: #33c482;
-  --chart-1: #33c482;
-  --chart-2: #ff5c35;
-  --chart-3: #dedede;
-  --chart-4: #6e6e6e;
-  --chart-5: #292929;
+  --background: #141414;
+  --foreground: #ededed;
+  --card: #181818;
+  --card-foreground: #ededed;
+  --popover: #1e1e1e;
+  --popover-foreground: #ededed;
+  --primary: #f4f4f5;
+  --primary-hover: #dedee0;
+  --primary-foreground: #181818;
+  --secondary: #252525;
+  --secondary-foreground: #e3e3e3;
+  --muted: #252525;
+  --muted-foreground: #a1a1aa;
+  --faint: #77777f;
+  --code: #181818;
+  --accent: #252525;
+  --accent-foreground: #ededed;
+  --destructive: #e18a83;
+  --border: #2b2b2d;
+  --input: #333335;
+  --ring: #8a8a92;
+  --chart-1: #4b9e77;
+  --chart-2: #a5762f;
+  --chart-3: #a1a1aa;
+  --chart-4: #77777f;
+  --chart-5: #252525;
   --radius: 0.5rem;
-  --sidebar: #1b1b1b;
-  --sidebar-foreground: #f0f0f0;
-  --sidebar-primary: #2c2c2c;
-  --sidebar-primary-foreground: #f0f0f0;
-  --sidebar-accent: #292929;
-  --sidebar-accent-foreground: #f0f0f0;
-  --sidebar-border: #444;
-  --sidebar-ring: #33c482;
-  --success: #33c482;
-  --success-foreground: #171717;
+  --sidebar: #181818;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #ededed;
+  --sidebar-primary-foreground: #181818;
+  --sidebar-accent: #242426;
+  --sidebar-accent-foreground: #ededed;
+  --sidebar-border: #252527;
+  --sidebar-ring: #8a8a92;
+  --success: #4b9e77;
+  --success-foreground: #141414;
+}
+@layer components {
+  .console-input {
+    height: 34px;
+    border: 1px solid var(--input);
+    border-radius: 7px;
+    background: transparent;
+    padding: 0 10px;
+    font-size: 13px;
+    outline: none;
+  }
+  .console-input:focus-visible {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 1px var(--ring);
+  }
+  .console-input:disabled {
+    opacity: 0.5;
+  }
+}
+::selection {
+  background: #3d4a43;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @layer base {
