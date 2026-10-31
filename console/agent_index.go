@@ -97,6 +97,7 @@ type AgentControl struct {
 	State         AgentEndpoint `json:"state"`
 	Renew         AgentEndpoint `json:"renew"`
 	RequestStatus AgentEndpoint `json:"requestStatus"`
+	RequestCancel AgentEndpoint `json:"requestCancel"`
 	Start         AgentEndpoint `json:"start"`
 	List          AgentEndpoint `json:"list"`
 	Read          AgentEndpoint `json:"read"`
@@ -230,6 +231,7 @@ func agentControl(base string, durable bool) AgentControl {
 		State:         AgentEndpoint{Method: "GET", URL: sessions + "/{id}/state", Note: "Current per-service state documents, not an atomic cross-service snapshot."},
 		Renew:         AgentEndpoint{Method: "POST", URL: sessions + "/{id}/renew", Note: "Body {ttlSeconds:positive integer}; policy bounded. Cannot resurrect an expired sandbox."},
 		RequestStatus: AgentEndpoint{Method: "GET", URL: base + "/api/requests/{key}", Note: "Recover a durable creation result by project-scoped idempotency key. Retry identical creation arguments/key to resume."},
+		RequestCancel: AgentEndpoint{Method: "DELETE", URL: base + "/api/requests/{key}", Note: "Cancel by project-scoped creation key without recreating a sandbox. Unknown keys become closed tombstones to block delayed creation."},
 		Start: AgentEndpoint{
 			Method: "POST",
 			URL:    sessions,

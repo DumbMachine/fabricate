@@ -134,7 +134,16 @@ func (m *Manager) scopeControl(next http.Handler) http.Handler {
 		}
 		if strings.HasPrefix(r.URL.Path, "/api/sessions/") {
 			id, _, _ := strings.Cut(strings.TrimPrefix(r.URL.Path, "/api/sessions/"), "/")
-			if _, ok := m.GetFor(r.Context(), id); !ok {
+			_, visible := m.GetFor(r.Context(), id)
+			if !visible && r.Method == "DELETE" && m.storage != nil {
+				record, status, err := m.storage.session(id)
+				if err != nil {
+					writeError(w, 500, fmt.Errorf("sandbox lifecycle unavailable"))
+					return
+				}
+				visible = status != "" && (p.Admin || record.Project == p.Project)
+			}
+			if !visible {
 				// Repeated delete is idempotent, including expired/deleted resources; it
 				// never operates on an existing sandbox in another project.
 				if r.Method == "DELETE" {

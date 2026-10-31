@@ -36,6 +36,7 @@ func (m *Manager) controlRoutes() http.Handler {
 	mux.HandleFunc("POST /api/sessions/{id}/renew", m.handleRenew)
 	mux.HandleFunc("POST /api/sessions/{id}/services/{service}/request", m.handleServiceRequest)
 	mux.HandleFunc("GET /api/requests/{key}", m.handleRequestStatus)
+	mux.HandleFunc("DELETE /api/requests/{key}", m.handleRequestCancel)
 	mux.HandleFunc("GET /api/projects", m.handleProjects)
 	mux.HandleFunc("POST /api/projects", m.handleProjects)
 	mux.HandleFunc("PATCH /api/projects/{project}", m.handleProjectUpdate)
@@ -46,6 +47,7 @@ func (m *Manager) controlRoutes() http.Handler {
 	mux.HandleFunc("GET /api/sessions/{id}/logs", m.handleLogs)
 	mux.HandleFunc("DELETE /api/sessions/{id}", m.handleDelete)
 	mux.HandleFunc("/s/", m.proxyService)
+	mux.Handle("/api/", http.NotFoundHandler())
 	mux.Handle("/", spaHandler(uiSub()))
 	return m.scopeControl(mux)
 }

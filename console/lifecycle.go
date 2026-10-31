@@ -3,7 +3,9 @@ package console
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
@@ -113,6 +115,9 @@ func (m *Manager) start(ctx context.Context, request StartRequest) (_ Session, e
 			return Session{}, e
 		}
 		if status != "" {
+			if expired(saved.Expires, time.Now()) {
+				return Session{}, problem(410, "idempotent sandbox expired; use a new key for a new sandbox")
+			}
 			if status == "ready" {
 				if result, ok := m.GetFor(ctx, saved.ID); ok {
 					return result, nil
@@ -172,8 +177,9 @@ func (m *Manager) start(ctx context.Context, request StartRequest) (_ Session, e
 	}
 	running := &runningSession{id: ready.ID, kind: ready.Kind, spec: ready.Spec, runtime: runtime, started: ready.Started, proxy: m.proxy, project: ready.Project, expires: ready.Expires}
 	m.sessions[ready.ID] = running
+	result := running.view(m.registry)
 	m.mu.Unlock()
-	return running.view(m.registry), nil
+	return result, nil
 }
 
 // provision is shared by initial creation, same-key retry, and restart recovery.
@@ -310,7 +316,9 @@ func (m *Manager) startSweeper() {
 			case <-m.sweepStop:
 				return
 			case now := <-timer.C:
-				_ = m.expireSandboxes(now)
+				if err := m.expireSandboxes(now); err != nil {
+					log.Printf("sandbox cleanup: %v", err)
+				}
 			}
 		}
 	}()
@@ -318,18 +326,89 @@ func (m *Manager) startSweeper() {
 func (m *Manager) expireSandboxes(now time.Time) error {
 	// Close and renewal share the manager lock; an expired decision is checked
 	// again under that lock, so a successful renewal cannot be deleted by a stale sweep.
+	// Never remove an incomplete database while creation/retry is using it.
+	m.startMu.Lock()
+	defer m.startMu.Unlock()
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.closing {
 		return nil
 	}
+	var failures error
 	for id, s := range m.sessions {
-		if !expired(s.expires, now) {
+		if !s.retiring && !expired(s.expires, now) {
 			continue
 		}
-		if err := m.closeLocked(id); err != nil {
-			return err
+		failures = errors.Join(failures, m.closeLocked(id))
+	}
+	if m.storage != nil {
+		rows, err := m.storage.db.Query("SELECT id,record,status FROM sessions WHERE status IN ('creating','deleting')")
+		if err != nil {
+			return errors.Join(failures, err)
+		}
+		var retired []string
+		for rows.Next() {
+			var id, status string
+			var raw []byte
+			var record storedSession
+			if err = rows.Scan(&id, &raw, &status); err != nil {
+				break
+			}
+			if err = json.Unmarshal(raw, &record); err != nil {
+				break
+			}
+			if !sandboxID.MatchString(id) || record.ID != id {
+				err = fmt.Errorf("invalid stored sandbox identity")
+				break
+			}
+			if m.sessions[id] == nil && (status == "deleting" || expired(record.Expires, now)) {
+				retired = append(retired, id)
+			}
+		}
+		failures = errors.Join(failures, err, rows.Err(), rows.Close())
+		for _, id := range retired {
+			failures = errors.Join(failures, m.closeLocked(id))
 		}
 	}
-	return nil
+	return failures
+}
+
+// Cancellation is serialized with creation, including requests whose response
+// was lost or which have not reached admission yet. An unknown key is reserved
+// as a tombstone so a delayed creation can never recreate it.
+func (m *Manager) handleRequestCancel(w http.ResponseWriter, r *http.Request) {
+	if m.storage == nil {
+		writeError(w, 400, fmt.Errorf("request cancellation requires mounted storage"))
+		return
+	}
+	key := r.PathValue("key")
+	if !requestKeyPattern.MatchString(key) {
+		writeError(w, 400, fmt.Errorf("invalid idempotency key"))
+		return
+	}
+	project, err := m.project(r.Context(), r.URL.Query().Get("project"))
+	if err != nil {
+		writeError(w, errorStatus(err), err)
+		return
+	}
+	m.startMu.Lock()
+	defer m.startMu.Unlock()
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.closing {
+		writeError(w, 503, fmt.Errorf("console is shutting down"))
+		return
+	}
+	record, status, err := m.storage.lookupRequest(project.ID, key, "")
+	if err == nil && status != "" && status != "closed" {
+		err = m.closeLocked(record.ID)
+	}
+	if err == nil && status == "" {
+		_, err = m.storage.db.Exec("INSERT INTO requests(project,key,digest,id,status) VALUES(?,?,'','','closed')", project.ID, key)
+	}
+	if err != nil {
+		writeError(w, 500, fmt.Errorf("request cancellation could not be completed"))
+		return
+	}
+	w.WriteHeader(204)
 }

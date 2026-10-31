@@ -147,7 +147,7 @@ def main():
         verify('after-SIGKILL')
     assert tool('sandbox_logs', {'id': session['id']})['entries']
     if not args.keep:
-        tool('sandbox_close', {'id': session['id']}, expected=204)
+        tool('sandbox_request_cancel', {'key': key}, expected=204)
         tool('sandbox_close', {'id': session['id']}, expected=204)
         tool('sandbox_create', creation, expected=410, failed=True)
         tool('sandbox_get', {'id': session['id']}, expected=404, failed=True)

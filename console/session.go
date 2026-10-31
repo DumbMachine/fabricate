@@ -89,6 +89,7 @@ type runningSession struct {
 	anchored bool
 	project  string
 	expires  *time.Time
+	retiring bool
 }
 
 type Manager struct {
@@ -229,6 +230,9 @@ func (m *Manager) List() []Session {
 	m.mu.Lock()
 	running := make([]*runningSession, 0, len(m.sessions))
 	for _, session := range m.sessions {
+		if session.retiring {
+			continue
+		}
 		snapshot := *session
 		running = append(running, &snapshot)
 	}
@@ -250,7 +254,7 @@ func (m *Manager) serviceURL(id, name string) (string, bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	session, ok := m.sessions[id]
-	if !ok || expired(session.expires, time.Now()) {
+	if !ok || session.retiring || expired(session.expires, time.Now()) {
 		return "", false
 	}
 	service := session.runtime.Services[name]
@@ -263,7 +267,7 @@ func (m *Manager) serviceURL(id, name string) (string, bool) {
 func (m *Manager) Get(id string) (Session, bool) {
 	m.mu.Lock()
 	session, ok := m.sessions[id]
-	if !ok {
+	if !ok || session.retiring {
 		m.mu.Unlock()
 		return Session{}, false
 	}
@@ -274,11 +278,33 @@ func (m *Manager) Get(id string) (Session, bool) {
 
 var errAnchored = errors.New("this sandbox is held by fab run and stays up until that command exits")
 
-func (m *Manager) Close(id string) error { m.mu.Lock(); defer m.mu.Unlock(); return m.closeLocked(id) }
+func (m *Manager) Close(id string) error {
+	m.startMu.Lock()
+	defer m.startMu.Unlock()
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.closeLocked(id)
+}
 func (m *Manager) closeLocked(id string) error {
 	session, ok := m.sessions[id]
 	if !ok {
-		return nil
+		if m.storage == nil {
+			return nil
+		}
+		_, status, err := m.storage.session(id)
+		if err != nil {
+			return err
+		}
+		if status == "" {
+			return nil
+		}
+		if status == "ready" {
+			return fmt.Errorf("sandbox runtime is unavailable; retry after recovery")
+		}
+		if err := m.storage.markDeleting(id); err != nil {
+			return err
+		}
+		return m.storage.discard(id)
 	}
 	if session.anchored {
 		return errAnchored
@@ -288,15 +314,18 @@ func (m *Manager) closeLocked(id string) error {
 			return fmt.Errorf("storage: mark deletion: %w", err)
 		}
 	}
-	delete(m.sessions, id)
+	session.retiring = true
 	ctx, cancel := environment.CloseTimeout()
 	defer cancel()
 	if err := session.runtime.Close(ctx); err != nil {
 		return err
 	}
 	if m.storage != nil {
-		return m.storage.discard(id)
+		if err := m.storage.discard(id); err != nil {
+			return err
+		}
 	}
+	delete(m.sessions, id)
 	return nil
 }
 

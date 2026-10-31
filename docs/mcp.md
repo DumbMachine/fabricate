@@ -76,6 +76,10 @@ can follow this sequence without checkout access or repository-specific setup:
    Truncated logs and oversized outputs fail or identify their bounds explicitly.
 9. `sandbox_renew` extends lifetime within project policy. `sandbox_close`
    permanently deletes this synthetic sandbox; repeated close is idempotent.
+   `sandbox_request_cancel` closes by creation key, including uncertain or
+   interrupted setup. Cancelling an unknown key reserves a durable closed
+   tombstone, so a delayed creation cannot resurrect it. Never replay creation
+   merely to discover an ID for cleanup.
 
 Connection details work with Access/Krucible's generic HTTP resource: service URL
 plus contract `basePath`, the provider's bare OpenAPI document, and that service's

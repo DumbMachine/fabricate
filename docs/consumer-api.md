@@ -94,6 +94,12 @@ Mounted `POST /api/sessions` accepts `project`, `ttlSeconds` and
 `idempotencyKey` (or the `Idempotency-Key` header). Repeat identical arguments/key
 to recover the original sandbox; different arguments return 409, and a closed
 key returns 410. `GET /api/requests/{key}` inspects the current project request.
+`DELETE /api/requests/{key}` cancels setup and closes its sandbox, including a
+lost creation response. An unknown key is durably reserved as closed, preventing
+late creation; repeated cancellation is safe. Operators may supply `?project=ID`;
+project credentials cannot change scope. Unpublished expired creations are
+cleaned by the same sweep as live sandboxes. Failed deletion remains revoked
+and is retried, with cleanup errors reported to server logs.
 `POST /api/sessions/{id}/renew` accepts `{ "ttlSeconds": 3600 }`. Expired service
 routes stop working immediately and cleanup follows; renewal cannot resurrect
 an expired sandbox. Legacy keyless creation remains supported for existing API

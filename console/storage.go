@@ -211,8 +211,18 @@ func (s *storage) ready(record storedSession) error {
 	return tx.Commit()
 }
 func (s *storage) markDeleting(id string) error {
-	_, err := s.db.Exec("UPDATE sessions SET status='deleting' WHERE id=?", id)
-	return err
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	if _, err = tx.Exec("UPDATE sessions SET status='deleting' WHERE id=?", id); err != nil {
+		return err
+	}
+	if _, err = tx.Exec("UPDATE requests SET status='deleting' WHERE id=?", id); err != nil {
+		return err
+	}
+	return tx.Commit()
 }
 func (s *storage) discard(id string) error {
 	if !sandboxID.MatchString(id) {
@@ -373,6 +383,9 @@ func (s *storage) lookupRequest(project, key, digest string) (storedSession, str
 	if err != nil {
 		return storedSession{}, "", err
 	}
+	if status == "closed" {
+		return storedSession{ID: id, Project: project}, status, nil
+	}
 	if digest != "" && saved != digest {
 		return storedSession{}, "", problem(409, "idempotency key already used for different arguments")
 	}
@@ -403,4 +416,25 @@ func (s *storage) renew(id string, expiry *time.Time) error {
 	raw, _ = json.Marshal(record)
 	_, err := s.db.Exec("UPDATE sessions SET record=? WHERE id=?", raw, id)
 	return err
+}
+
+// session reads unpublished lifecycle metadata without exposing connection data.
+func (s *storage) session(id string) (storedSession, string, error) {
+	var raw []byte
+	var status string
+	var record storedSession
+	err := s.db.QueryRow("SELECT record,status FROM sessions WHERE id=?", id).Scan(&raw, &status)
+	if err == sql.ErrNoRows {
+		return record, "", nil
+	}
+	if err != nil {
+		return record, "", err
+	}
+	if err = json.Unmarshal(raw, &record); err != nil {
+		return record, "", err
+	}
+	if record.ID != id || !sandboxID.MatchString(id) {
+		return record, "", fmt.Errorf("invalid stored sandbox identity")
+	}
+	return record, status, nil
 }

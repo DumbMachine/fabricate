@@ -121,3 +121,31 @@ These checks establish local deployment and agent self-service behavior. Public
 TLS/DNS, OAuth login, hosted tenant accounts, capacity/load limits and disk-loss
 restore remain outside this verification. Access connection handoff is unchanged.
 The hosted reusable dataset registry is deferred to GitHub issue #20.
+
+
+## External customer failure-path follow-up
+
+Additional verification on 2026-10-31 covered lifecycle failures discovered
+while consuming Fabricate from Access as an independent vendor:
+
+- Expired unpublished creation records release their database files and quota
+  without a deployment restart. Replaying an expired unpublished key returns
+  410. Nonexpired requests in another project remain intact.
+- Cancellation by creation key is durable even before a delayed request reaches
+  admission. It closes live and unpublished sandboxes, is project-scoped and
+  idempotent, and cancelled keys remain closed after restart. HTTP discovery and
+  the actual SDK MCP tools expose the same cancellation handler.
+- A fault injected into registry deletion caused close to fail visibly while
+  revoking provider routing and removing the retiring sandbox from ready lists.
+  The cleanup sweep completed deletion after the fault was removed. This was
+  exercised with separate Asana and Gmail instances.
+- Unknown control API routes return 404 instead of the console HTML. Snapshot
+  creation now occurs under the same lock as expiry renewal.
+- Full `make check`, real CLI `make e2e`, and focused race checks for expiry,
+  cancellation, failed deletion, renewal and shutdown passed. The hardened Docker
+  image built successfully, including console checks.
+
+Access's customer verifier uses only public HTTP APIs and scoped credentials;
+its build/runtime does not import or start Fabricate. Its private receipts and
+provider snapshots remain outside this repository. The hosted dataset registry
+remains deferred under issue #20.

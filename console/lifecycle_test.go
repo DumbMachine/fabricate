@@ -289,3 +289,166 @@ func TestProjectPolicyUpdatesAreOperatorScoped(t *testing.T) {
 		t.Fatal("policy update changed existing sandbox")
 	}
 }
+
+// Interrupted creations own disk and quota even before they have a runtime.
+// Their expiry/cancellation must work without restarting the deployment.
+func TestUnpublishedCreationExpiryAndScopedCancellation(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	t.Setenv("FAB_CONSOLE_TOKEN", testOperator)
+	t.Setenv("FAB_CONSOLE_TOKEN_FILE", "")
+	m := durableManager(t, t.TempDir())
+	h := m.Handler()
+	alpha, _ := testProjectToken(t, h, "orphan-alpha", 1)
+	beta, _ := testProjectToken(t, h, "orphan-beta", 1)
+	for i, project := range []string{"orphan-alpha", "orphan-beta"} {
+		request := StartRequest{Kind: "scenario", ID: "asana.acme-sprint.v1", Project: project, IdempotencyKey: "interrupted"}
+		spec, kind, err := m.resolve(request)
+		if err != nil {
+			t.Fatal(err)
+		}
+		hashInput := request
+		hashInput.IdempotencyKey = ""
+		raw, _ := json.Marshal(hashInput)
+		expiry := time.Now().Add(time.Hour)
+		if i == 0 {
+			expiry = time.Now().Add(-time.Second)
+		}
+		id := []string{"ab12cd34", "ef56ab78"}[i]
+		record := storedSession{ID: id, Kind: kind, Spec: spec, Project: project, Expires: &expiry, Request: &request, RequestKey: request.IdempotencyKey, RequestDigest: tokenDigest(string(raw))}
+		if err := m.storage.create(record); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.MkdirAll(m.storage.directory(id), 0700); err != nil {
+			t.Fatal(err)
+		}
+		if i == 0 {
+			if w := controlJSON(t, h, alpha, "POST", "/api/sessions", request); w.Code != 410 {
+				t.Fatalf("expired pending key resumed: %d", w.Code)
+			}
+		}
+	}
+	if err := m.expireSandboxes(time.Now()); err != nil {
+		t.Fatal(err)
+	}
+	if _, status, err := m.storage.session("ab12cd34"); err != nil || status != "" {
+		t.Fatal("expired unpublished row retained", status, err)
+	}
+	if _, err := os.Stat(m.storage.directory("ab12cd34")); !os.IsNotExist(err) {
+		t.Fatal("expired unpublished files retained")
+	}
+	fresh := StartRequest{Kind: "scenario", ID: "asana.acme-sprint.v1", IdempotencyKey: "new-after-expiry"}
+	if w := controlJSON(t, h, alpha, "POST", "/api/sessions", fresh); w.Code != 201 {
+		t.Fatalf("expired creation still consumes quota: %d", w.Code)
+	}
+	// Another project's nonexpired pending creation must stay private and intact.
+	if w := controlJSON(t, h, alpha, "DELETE", "/api/sessions/ef56ab78", nil); w.Code != 204 {
+		t.Fatal(w.Code)
+	}
+	if _, status, _ := m.storage.session("ef56ab78"); status != "creating" {
+		t.Fatal("cross-project cancellation changed pending creation")
+	}
+	if w := controlJSON(t, h, beta, "DELETE", "/api/sessions/ef56ab78", nil); w.Code != 204 {
+		t.Fatal(w.Code)
+	}
+	if _, status, _ := m.storage.session("ef56ab78"); status != "" {
+		t.Fatal("authorized pending cancellation was a no-op")
+	}
+	request := StartRequest{Kind: "scenario", ID: "asana.acme-sprint.v1", IdempotencyKey: "interrupted"}
+	if w := controlJSON(t, h, beta, "POST", "/api/sessions", request); w.Code != 410 {
+		t.Fatal("cancelled key resurrected", w.Code)
+	}
+}
+
+func TestFailedDeletionStaysRevokedAndRetries(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	m := durableManager(t, t.TempDir())
+	for _, id := range []string{"asana.acme-sprint.v1", "gmail.minimal.v1"} {
+		session, err := m.Start(context.Background(), StartRequest{Kind: "scenario", ID: id})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := m.storage.db.Exec("CREATE TRIGGER reject_removal BEFORE DELETE ON sessions BEGIN SELECT RAISE(FAIL,'fixture deletion blocked'); END"); err != nil {
+			t.Fatal(err)
+		}
+		if err := m.Close(session.ID); err == nil {
+			t.Fatal("failed deletion reported success")
+		}
+		if _, ok := m.Get(session.ID); ok {
+			t.Fatal("retiring sandbox remains visible")
+		}
+		if _, ok := m.serviceURL(session.ID, session.Services[0].Name); ok {
+			t.Fatal("failed cleanup kept provider access alive")
+		}
+		if len(m.List()) != 0 {
+			t.Fatal("retiring sandbox advertised as ready")
+		}
+		if _, err := m.storage.db.Exec("DROP TRIGGER reject_removal"); err != nil {
+			t.Fatal(err)
+		}
+		if err := m.expireSandboxes(time.Now()); err != nil {
+			t.Fatal(err)
+		}
+		if _, status, err := m.storage.session(session.ID); err != nil || status != "" {
+			t.Fatal("deletion was not retried", status, err)
+		}
+	}
+}
+
+func TestUnsupportedControlRoutesDoNotServeConsole(t *testing.T) {
+	m := New(durableRegistry(t))
+	for _, path := range []string{"/api/unsupported", "/api/projects/unknown/nothing"} {
+		w := controlJSON(t, m.Handler(), "", "GET", path, nil)
+		if w.Code != 404 {
+			t.Fatalf("unsupported control route %s returned %d", path, w.Code)
+		}
+	}
+}
+
+func TestRequestCancellationPreventsDelayedCreationAndSurvivesRestart(t *testing.T) {
+	t.Setenv("FAB_LOG_DIR", t.TempDir())
+	t.Setenv("FAB_CONSOLE_TOKEN", testOperator)
+	t.Setenv("FAB_CONSOLE_TOKEN_FILE", "")
+	root := t.TempDir()
+	m := durableManager(t, root)
+	h := m.Handler()
+	alpha, _ := testProjectToken(t, h, "cancel-alpha", 2)
+	beta, _ := testProjectToken(t, h, "cancel-beta", 2)
+	request := StartRequest{Kind: "scenario", ID: "asana.acme-sprint.v1", IdempotencyKey: "lost-or-delayed"}
+	// Cancel before creation has reached admission. Repeated cancellation is safe.
+	for i := 0; i < 2; i++ {
+		if w := controlJSON(t, h, alpha, "DELETE", "/api/requests/lost-or-delayed", nil); w.Code != 204 {
+			t.Fatal(w.Code)
+		}
+	}
+	if w := controlJSON(t, h, alpha, "POST", "/api/sessions", request); w.Code != 410 {
+		t.Fatal("late request resurrected cancelled key", w.Code)
+	}
+	// Same key in another project still works and cannot be cancelled by alpha.
+	w := controlJSON(t, h, beta, "POST", "/api/sessions", request)
+	if w.Code != 201 {
+		t.Fatal(w.Code)
+	}
+	var session Session
+	json.Unmarshal(w.Body.Bytes(), &session)
+	if w := controlJSON(t, h, alpha, "DELETE", "/api/requests/lost-or-delayed?project=cancel-beta", nil); w.Code != 403 {
+		t.Fatal("scope override", w.Code)
+	}
+	if _, ok := m.Get(session.ID); !ok {
+		t.Fatal("cross-project cancellation deleted session")
+	}
+	if w := controlJSON(t, h, beta, "DELETE", "/api/requests/lost-or-delayed", nil); w.Code != 204 {
+		t.Fatal(w.Code)
+	}
+	if _, ok := m.Get(session.ID); ok {
+		t.Fatal("key cancellation did not close live sandbox")
+	}
+	if err := m.Shutdown(); err != nil {
+		t.Fatal(err)
+	}
+	m2 := durableManager(t, root)
+	for _, token := range []string{alpha, beta} {
+		if w := controlJSON(t, m2.Handler(), token, "POST", "/api/sessions", request); w.Code != 410 {
+			t.Fatal("cancelled key lost after restart", w.Code)
+		}
+	}
+}

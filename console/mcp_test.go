@@ -106,7 +106,7 @@ func TestMCPRealClientAndProjectBoundary(t *testing.T) {
 			t.Fatal("tool missing input schema")
 		}
 	}
-	for _, name := range []string{"catalog_list", "resource_contract", "scenario_document", "scenario_validate", "sandbox_create", "sandbox_request_status", "sandbox_list", "sandbox_get", "sandbox_renew", "sandbox_close", "sandbox_logs", "sandbox_state", "service_read", "service_request"} {
+	for _, name := range []string{"catalog_list", "resource_contract", "scenario_document", "scenario_validate", "sandbox_create", "sandbox_request_status", "sandbox_request_cancel", "sandbox_list", "sandbox_get", "sandbox_renew", "sandbox_close", "sandbox_logs", "sandbox_state", "service_read", "service_request"} {
 		if !names[name] {
 			t.Fatal("missing tool", name)
 		}
@@ -164,6 +164,7 @@ func TestMCPRealClientAndProjectBoundary(t *testing.T) {
 	sdkCall(t, client, "sandbox_renew", map[string]any{"id": session.ID, "ttlSeconds": 1200}, false)
 	sdkCall(t, client, "sandbox_state", map[string]string{"id": session.ID}, false)
 	sdkCall(t, client, "sandbox_logs", map[string]string{"id": session.ID}, false)
+	sdkCall(t, client, "sandbox_request_cancel", map[string]string{"key": "agent-creation-1"}, false)
 	sdkCall(t, client, "sandbox_close", map[string]string{"id": session.ID}, false)
 	sdkCall(t, client, "sandbox_create", args, true)
 	if w := controlJSON(t, h, alpha, "GET", "/api/projects", nil); w.Code != 403 {
