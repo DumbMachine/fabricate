@@ -18,7 +18,7 @@ COPY --from=console /src/console/ui console/ui
 RUN --mount=type=cache,target=/root/.cache/go-build CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/fab ./cmd/fab
 
 FROM debian:bookworm-slim
-RUN apt-get update && apt-get install --no-install-recommends -y ca-certificates curl && rm -rf /var/lib/apt/lists/* && useradd --uid 10001 --create-home fabricate && install -d -o fabricate -g fabricate /var/lib/fabricate/logs
+RUN apt-get update && apt-get install --no-install-recommends -y ca-certificates curl && rm -rf /var/lib/apt/lists/* && useradd --uid 10001 --create-home fabricate && install -d -o fabricate -g fabricate /var/lib/fabricate/logs /var/lib/fabricate/state
 COPY --from=binary /out/fab /usr/local/bin/fab
 USER 10001:10001
 ENV FAB_LOG_DIR=/var/lib/fabricate/logs

@@ -60,6 +60,21 @@ func StartService(ctx context.Context, name, serviceDir string, resource httpres
 	if err != nil {
 		return nil, fmt.Errorf("http service %q: prepare state: %w", name, err)
 	}
+	return serveState(ctx, name, resource, state, "", requests)
+}
+
+func OpenService(ctx context.Context, name, serviceDir string, resource httpresource.Resource, token string, requests *requestlog.Log) (*Service, error) {
+	if len(token) < 32 {
+		return nil, fmt.Errorf("http service: missing persisted token")
+	}
+	state, err := (StateManager{}).Open(serviceDir)
+	if err != nil {
+		return nil, err
+	}
+	return serveState(ctx, name, resource, state, token, requests)
+}
+
+func serveState(ctx context.Context, name string, resource httpresource.Resource, state *ServiceState, token string, requests *requestlog.Log) (*Service, error) {
 	cleanupState := true
 	defer func() {
 		if cleanupState {
@@ -67,11 +82,14 @@ func StartService(ctx context.Context, name, serviceDir string, resource httpres
 		}
 	}()
 
-	token, err := randomSecret(24)
-	if err != nil {
-		return nil, fmt.Errorf("http service %q: token: %w", name, err)
+	var err error
+	if token == "" {
+		token, err = randomSecret(24)
+		if err != nil {
+			return nil, fmt.Errorf("http service %q: token: %w", name, err)
+		}
 	}
-	idPrefix, err := randomSecret(5)
+	idPrefix, err := randomSecret(16)
 	if err != nil {
 		return nil, fmt.Errorf("http service %q: id prefix: %w", name, err)
 	}

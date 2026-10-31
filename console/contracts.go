@@ -136,13 +136,7 @@ func (m *Manager) handleState(w http.ResponseWriter, r *http.Request) {
 	}
 	documents := map[string]scenario.Document{}
 	for name, service := range session.runtime.Services {
-		spec := session.spec.Services[name]
-		baseline, err := service.Resource.Scenario(spec.Scenario)
-		if err != nil {
-			writeError(w, 500, err)
-			return
-		}
-		doc, err := service.Resource.Scenarios().Dump(r.Context(), service.State.DB(), baseline.Metadata())
+		doc, err := service.Resource.Scenarios().Dump(r.Context(), service.State.DB(), session.runtime.Metadata[name])
 		if err != nil {
 			writeError(w, 500, err)
 			return

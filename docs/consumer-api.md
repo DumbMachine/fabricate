@@ -65,7 +65,18 @@ retain their normal supported paths and request/response shapes.
 
 State export is a per-service observation, not an atomic cross-service snapshot.
 Quiesce writes when comparing a whole world. Capture logs/state before closing.
-Use a fresh session for each test attempt. This API does not yet provide durable
-session recovery, idempotent create, TTL/renewal, a dataset publication registry,
-or coordinated reset; callers must retain creation receipts and avoid replaying
-an uncertain creation/mutation. Provider state is ephemeral on service shutdown.
+Use a fresh session for each test attempt. Mounted storage supports session
+recovery as described below. Idempotent create, TTL/renewal, a dataset publication
+registry and coordinated reset are not yet provided; callers must retain
+creation receipts and avoid replaying an uncertain creation/mutation.
+
+## Mounted storage
+
+Hosted `fab serve` can use `FAB_STATE_DIR` (or `--state-dir`) on a persistent
+mount. With a stable `FAB_CONSOLE_PUBLIC_URL`, direct service URLs, service
+tokens, sandbox identities and committed database mutations survive restart.
+`GET /api/config` reports `durable: true`. Existing API clients do not need to
+recreate connections after recovery. `DELETE /api/sessions/{id}` still deletes
+the sandbox and its stored state. Without a state directory, runtime state is
+disposable. See [deployment lifecycle](../deploy/console/README.md#lifecycle-and-data)
+for storage ownership, recovery failures and backup requirements.

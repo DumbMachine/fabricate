@@ -25,3 +25,6 @@ node_modules/
 
 # Example app build output
 examples/**/target/
+
+# Local mounted sandbox storage contains service credentials.
+/.fabricate-state/

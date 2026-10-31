@@ -17,11 +17,13 @@ import (
 )
 
 type Runtime struct {
-	Spec     Spec
-	StateDir string
-	Services map[string]*httpengine.Service
-	Proxy    *proxyengine.Proxy
-	Requests *requestlog.Log
+	Spec       Spec
+	StateDir   string
+	Services   map[string]*httpengine.Service
+	Proxy      *proxyengine.Proxy
+	Requests   *requestlog.Log
+	Persistent bool
+	Metadata   map[string]scenario.Metadata
 }
 
 func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enableProxy bool) (*Runtime, error) {
@@ -31,6 +33,22 @@ func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enab
 // StartWithDocuments loads caller-supplied baselines through the same codec and
 // supervisor as catalog scenarios. It never evaluates code or reads caller paths.
 func StartWithDocuments(ctx context.Context, spec Spec, registry *httpresource.Registry, enableProxy bool, documents map[string]scenario.Document) (_ *Runtime, err error) {
+	return startWithStorage(ctx, spec, registry, enableProxy, documents, StorageOptions{})
+}
+
+// StorageOptions is owned by the supervisor, never accepted from an API caller.
+type StorageOptions struct {
+	Directory string
+	Reopen    bool
+	Tokens    map[string]string
+	Metadata  map[string]scenario.Metadata
+	LogRunID  string
+}
+
+func StartWithStorage(ctx context.Context, spec Spec, registry *httpresource.Registry, documents map[string]scenario.Document, storage StorageOptions) (*Runtime, error) {
+	return startWithStorage(ctx, spec, registry, false, documents, storage)
+}
+func startWithStorage(ctx context.Context, spec Spec, registry *httpresource.Registry, enableProxy bool, documents map[string]scenario.Document, storage StorageOptions) (_ *Runtime, err error) {
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
@@ -48,6 +66,9 @@ func StartWithDocuments(ctx context.Context, spec Spec, registry *httpresource.R
 		if !ok {
 			return nil, fmt.Errorf("environment: unknown resource %q", service.Resource)
 		}
+		if storage.Reopen {
+			continue
+		}
 		doc, supplied := documents[name]
 		if !supplied {
 			doc, err = ResolveScenario(resource, service)
@@ -63,18 +84,27 @@ func StartWithDocuments(ctx context.Context, spec Spec, registry *httpresource.R
 		}
 		resolved[name] = doc
 	}
-	stateDir, err := os.MkdirTemp("", "fab-"+spec.Metadata.Name+"-")
+	stateDir := storage.Directory
+	if stateDir == "" {
+		stateDir, err = os.MkdirTemp("", "fab-"+spec.Metadata.Name+"-")
+	} else if !storage.Reopen {
+		err = os.Mkdir(stateDir, 0o700)
+	}
 	if err != nil {
 		return nil, fmt.Errorf("environment: create state directory: %w", err)
 	}
-	runtime := &Runtime{Spec: spec, StateDir: stateDir, Services: make(map[string]*httpengine.Service)}
+	runtime := &Runtime{Spec: spec, StateDir: stateDir, Services: make(map[string]*httpengine.Service), Persistent: storage.Directory != "", Metadata: map[string]scenario.Metadata{}}
 	committed := false
 	defer func() {
 		if !committed {
 			_ = runtime.Close(context.Background())
 		}
 	}()
-	runtime.Requests, err = requestlog.New(spec.Metadata.Name)
+	if storage.Reopen {
+		runtime.Requests, err = requestlog.Resume(spec.Metadata.Name, storage.LogRunID)
+	} else {
+		runtime.Requests, err = requestlog.New(spec.Metadata.Name)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +121,14 @@ func StartWithDocuments(ctx context.Context, spec Spec, registry *httpresource.R
 			return nil, fmt.Errorf("environment: service %q uses unknown resource %q", name, serviceSpec.Resource)
 		}
 		doc := resolved[name]
-		service, err := httpengine.StartService(ctx, name, filepath.Join(stateDir, "services", name), resource, doc, runtime.Requests)
+		var service *httpengine.Service
+		if storage.Reopen {
+			runtime.Metadata[name] = storage.Metadata[name]
+			service, err = httpengine.OpenService(ctx, name, filepath.Join(stateDir, "services", name), resource, storage.Tokens[name], runtime.Requests)
+		} else {
+			runtime.Metadata[name] = doc.Metadata()
+			service, err = httpengine.StartService(ctx, name, filepath.Join(stateDir, "services", name), resource, doc, runtime.Requests)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -147,8 +184,10 @@ func (r *Runtime) Close(ctx context.Context) error {
 			first = err
 		}
 	}
-	if err := os.RemoveAll(r.StateDir); first == nil && err != nil {
-		first = err
+	if !r.Persistent {
+		if err := os.RemoveAll(r.StateDir); first == nil && err != nil {
+			first = err
+		}
 	}
 	if r.Requests != nil {
 		if err := r.Requests.Close(); first == nil && err != nil {

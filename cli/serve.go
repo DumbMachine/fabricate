@@ -24,6 +24,7 @@ var (
 	servePublicURL string
 	serveProxy     bool
 	serveUI        bool
+	serveStateDir  string
 )
 
 var serveCmd = &cobra.Command{
@@ -33,8 +34,12 @@ var serveCmd = &cobra.Command{
 
 Open the printed URL to browse official environments and scenarios, start a
 sandbox, and copy the connection steps for an app or a coding agent. Sandboxes
-keep running until you close them in the console or stop this command. This is
-the form to run as a deployed service.
+keep running until you close them in the console or stop this command. With
+--state-dir (FAB_STATE_DIR), sandboxes recover after restart using the same public
+URLs, service tokens and databases. Keep this directory on a persistent mount and
+keep --public-url unchanged. Mounted storage requires direct mode (no --proxy).
+Without a state directory, sandboxes remain disposable. This is the form to run
+as a deployed service.
 
 Start follows how this process was launched. Without --proxy, a sandbox
 publishes its service URL on the console host. With --proxy, every sandbox
@@ -70,6 +75,10 @@ same console beside a wrapped command, in proxy mode when that run used
 		if err != nil {
 			return fmt.Errorf("serve: %w", err)
 		}
+		settings.StateDir = serveStateDir
+		if !cmd.Flags().Changed("state-dir") {
+			settings.StateDir = strings.TrimSpace(os.Getenv("FAB_STATE_DIR"))
+		}
 		return serveConsole(cmd.Context(), settings)
 	},
 }
@@ -79,6 +88,7 @@ func init() {
 	serveCmd.Flags().StringVar(&servePublicURL, "public-url", "", "Public base URL clients use to reach this console")
 	serveCmd.Flags().BoolVar(&serveProxy, "proxy", false, "Start every sandbox with the transparent proxy")
 	serveCmd.Flags().BoolVar(&serveUI, "ui", false, "Open the console in a local browser")
+	serveCmd.Flags().StringVar(&serveStateDir, "state-dir", "", "Persistent sandbox storage directory (FAB_STATE_DIR)")
 	rootCmd.AddCommand(serveCmd)
 }
 
@@ -88,6 +98,7 @@ type consoleSettings struct {
 	Proxy      bool
 	Open       bool
 	Widened    bool
+	StateDir   string
 }
 
 func resolveConsoleSettings(addr string, addrSet bool, publicURL string, publicSet bool, proxy bool, proxySet bool, open bool) (consoleSettings, error) {
@@ -194,9 +205,10 @@ func serveConsole(ctx context.Context, settings consoleSettings) error {
 	}
 
 	manager := console.New(all.Registry())
-	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL}); err != nil {
+	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL, StateDir: settings.StateDir}); err != nil {
 		return fmt.Errorf("serve: %w", err)
 	}
+	defer manager.Shutdown()
 	listener, err := listenConsole(settings.ListenAddr, manager.Handler())
 	if err != nil {
 		return fmt.Errorf("serve: %w", err)

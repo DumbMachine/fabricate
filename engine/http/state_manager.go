@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
 	"sync"
@@ -129,8 +130,30 @@ func (s *ServiceState) Close() error {
 	return err
 }
 
-func openSQLite(path string) (*sql.DB, error) {
-	db, err := sql.Open("sqlite", "file:"+filepath.ToSlash(path)+"?_pragma=foreign_keys(1)&_pragma=busy_timeout(5000)")
+// Open never creates missing files or replays the baseline over live data.
+func (StateManager) Open(serviceDir string) (*ServiceState, error) {
+	for _, name := range []string{baselineFilename, liveFilename} {
+		info, err := os.Lstat(filepath.Join(serviceDir, name))
+		if err != nil || !info.Mode().IsRegular() || info.Size() < 512 {
+			return nil, fmt.Errorf("http state: missing or invalid %s", name)
+		}
+	}
+	db, err := openSQLiteMode(filepath.Join(serviceDir, liveFilename), "rw")
+	if err != nil {
+		return nil, err
+	}
+	var result string
+	if err = db.QueryRow("PRAGMA quick_check").Scan(&result); err != nil || result != "ok" {
+		db.Close()
+		return nil, fmt.Errorf("http state: database integrity check failed")
+	}
+	return &ServiceState{dir: serviceDir, baseline: filepath.Join(serviceDir, baselineFilename), live: filepath.Join(serviceDir, liveFilename), db: db}, nil
+}
+
+func openSQLite(path string) (*sql.DB, error) { return openSQLiteMode(path, "rwc") }
+func openSQLiteMode(path, mode string) (*sql.DB, error) {
+	u := url.URL{Scheme: "file", Path: filepath.ToSlash(path)}
+	db, err := sql.Open("sqlite", u.String()+"?mode="+mode+"&_pragma=foreign_keys(1)&_pragma=busy_timeout(5000)&_pragma=journal_mode(WAL)&_pragma=synchronous(FULL)")
 	if err != nil {
 		return nil, fmt.Errorf("http state: open SQLite: %w", err)
 	}
@@ -138,6 +161,10 @@ func openSQLite(path string) (*sql.DB, error) {
 	if err := db.Ping(); err != nil {
 		_ = db.Close()
 		return nil, fmt.Errorf("http state: ping SQLite: %w", err)
+	}
+	if err := os.Chmod(path, 0o600); err != nil {
+		db.Close()
+		return nil, err
 	}
 	return db, nil
 }

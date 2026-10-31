@@ -1,9 +1,13 @@
 package console
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/url"
 	"strings"
+
+	"github.com/dumbmachine/fabricate/environment"
 )
 
 // Config is how this console process is hosted. Sandboxes started from the
@@ -14,12 +18,15 @@ type Config struct {
 	// PublicURL is the base clients use to reach this console. Empty means
 	// derive that base from the incoming request.
 	PublicURL string
+	// StateDir enables mounted storage; empty preserves disposable mode.
+	StateDir string
 }
 
 // Deployment is the hosting setup the console reports to its UI.
 type Deployment struct {
 	Proxy     bool   `json:"proxy"`
 	PublicURL string `json:"publicUrl,omitempty"`
+	Durable   bool   `json:"durable"`
 }
 
 // Configure stores the hosting setup. Call it before serving.
@@ -29,16 +36,43 @@ func (m *Manager) Configure(config Config) error {
 		return err
 	}
 	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.storage != nil || len(m.sessions) > 0 || m.inflight > 0 || m.closing {
+		return fmt.Errorf("configure before starting sandboxes")
+	}
 	m.proxy = config.Proxy
 	m.publicURL = publicURL
-	m.mu.Unlock()
+	if strings.TrimSpace(config.StateDir) == "" {
+		return nil
+	}
+	if config.Proxy {
+		return fmt.Errorf("mounted storage requires direct service URLs; transparent proxy connections are process-scoped")
+	}
+	if publicURL == "" {
+		return fmt.Errorf("mounted storage requires a stable public URL")
+	}
+	store, err := openStorage(config.StateDir, publicURL)
+	if err != nil {
+		return err
+	}
+	m.storage = store
+	if err = m.recoverStorage(context.Background()); err != nil {
+		for _, session := range m.sessions {
+			ctx, cancel := environment.CloseTimeout()
+			_ = session.runtime.Close(ctx)
+			cancel()
+		}
+		m.sessions = map[string]*runningSession{}
+		m.storage = nil
+		return errors.Join(err, store.close())
+	}
 	return nil
 }
 
 func (m *Manager) Deployment() Deployment {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return Deployment{Proxy: m.proxy, PublicURL: m.publicURL}
+	return Deployment{Proxy: m.proxy, PublicURL: m.publicURL, Durable: m.storage != nil}
 }
 
 func (m *Manager) proxyEnabled() bool {

@@ -87,10 +87,14 @@ type runningSession struct {
 type Manager struct {
 	registry *httpresource.Registry
 
-	mu       sync.Mutex
-	closing  bool
-	inflight int
-	sessions map[string]*runningSession
+	mu           sync.Mutex
+	closing      bool
+	inflight     int
+	sessions     map[string]*runningSession
+	storage      *storage
+	starts       sync.WaitGroup
+	shutdownOnce sync.Once
+	shutdownErr  error
 
 	catalogOnce sync.Once
 	catalog     Catalog
@@ -114,7 +118,7 @@ func (m *Manager) Catalog() (Catalog, error) {
 	return m.catalog, m.catalogErr
 }
 
-func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, error) {
+func (m *Manager) Start(ctx context.Context, request StartRequest) (_ Session, err error) {
 	spec, kind, err := m.resolve(request)
 	if err != nil {
 		return Session{}, invalidStartError{err}
@@ -124,49 +128,66 @@ func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, err
 		return Session{}, invalidStartError{err}
 	}
 	proxy := m.proxyEnabled()
-	if err := m.reserve(); err != nil {
+	if err = m.reserve(); err != nil {
 		return Session{}, err
 	}
-	runtime, err := environment.StartWithDocuments(ctx, spec, m.registry, proxy, documents)
-	if err != nil {
-		m.releaseReservation()
-		return Session{}, err
-	}
+	defer m.releaseReservation()
 	id, err := newID()
 	if err != nil {
-		_ = runtime.Close(context.Background())
-		m.releaseReservation()
 		return Session{}, err
 	}
-	running := &runningSession{
-		id: id, kind: kind, spec: spec, runtime: runtime,
-		started: time.Now().UTC(), proxy: proxy,
-	}
-	m.mu.Lock()
-	m.inflight--
-	reason := ""
-	switch {
-	case m.closing:
-		reason = "shutdown"
-	case len(m.sessions) >= maxSessions:
-		reason = "full"
-	case m.sessions[id] != nil:
-		reason = "collision"
-	default:
-		m.sessions[id] = running
-	}
-	m.mu.Unlock()
-	if reason != "" {
-		_ = runtime.Close(context.Background())
-		switch reason {
-		case "shutdown":
-			return Session{}, fmt.Errorf("console is shutting down")
-		case "collision":
-			return Session{}, fmt.Errorf("sandbox id collision")
-		default:
-			return Session{}, fmt.Errorf("too many running sandboxes; close one first")
+	record := storedSession{ID: id, Kind: kind, Spec: spec, Started: time.Now().UTC()}
+	var runtime *environment.Runtime
+	published := false
+	if m.storage != nil {
+		if err = m.storage.create(record); err != nil {
+			return Session{}, fmt.Errorf("storage: reserve sandbox: %w", err)
 		}
 	}
+	defer func() {
+		if !published {
+			if runtime != nil {
+				_ = runtime.Close(context.Background())
+			}
+			if m.storage != nil {
+				if e := m.storage.discard(id); e != nil {
+					err = errors.Join(err, fmt.Errorf("storage: cleanup pending: %w", e))
+				}
+			}
+		}
+	}()
+	if m.storage != nil {
+		runtime, err = environment.StartWithStorage(ctx, spec, m.registry, documents, environment.StorageOptions{Directory: m.storage.directory(id)})
+	} else {
+		runtime, err = environment.StartWithDocuments(ctx, spec, m.registry, proxy, documents)
+	}
+	if err != nil {
+		return Session{}, err
+	}
+	running := &runningSession{id: id, kind: kind, spec: spec, runtime: runtime, started: record.Started, proxy: proxy}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if m.closing {
+		return Session{}, fmt.Errorf("console is shutting down")
+	}
+	if m.sessions[id] != nil {
+		return Session{}, fmt.Errorf("sandbox id collision")
+	}
+	if m.storage != nil {
+		record.Tokens = map[string]string{}
+		record.Contracts = map[string]string{}
+		record.Metadata = runtime.Metadata
+		record.LogRunID = runtime.Requests.RunID
+		for name, service := range runtime.Services {
+			record.Tokens[name] = service.Token
+			record.Contracts[name] = resourceContract(service.Resource)
+		}
+		if err = m.storage.ready(record); err != nil {
+			return Session{}, fmt.Errorf("storage: publish sandbox: %w", err)
+		}
+	}
+	m.sessions[id] = running
+	published = true
 	return running.view(m.registry), nil
 }
 
@@ -213,6 +234,7 @@ func (m *Manager) reserve() error {
 		return fmt.Errorf("too many running sandboxes; close one first")
 	}
 	m.inflight++
+	m.starts.Add(1)
 	return nil
 }
 
@@ -220,6 +242,7 @@ func (m *Manager) releaseReservation() {
 	m.mu.Lock()
 	m.inflight--
 	m.mu.Unlock()
+	m.starts.Done()
 }
 
 func (m *Manager) resolve(request StartRequest) (environment.Spec, string, error) {
@@ -307,38 +330,54 @@ var errAnchored = errors.New("this sandbox is held by fab run and stays up until
 
 func (m *Manager) Close(id string) error {
 	m.mu.Lock()
+	defer m.mu.Unlock()
 	session, ok := m.sessions[id]
 	if !ok {
-		m.mu.Unlock()
 		return nil
 	}
 	if session.anchored {
-		m.mu.Unlock()
 		return errAnchored
 	}
+	if m.storage != nil {
+		if err := m.storage.markDeleting(id); err != nil {
+			return fmt.Errorf("storage: mark deletion: %w", err)
+		}
+	}
 	delete(m.sessions, id)
-	m.mu.Unlock()
 	ctx, cancel := environment.CloseTimeout()
 	defer cancel()
-	return session.runtime.Close(ctx)
+	if err := session.runtime.Close(ctx); err != nil {
+		return err
+	}
+	if m.storage != nil {
+		return m.storage.discard(id)
+	}
+	return nil
 }
 
 func (m *Manager) Shutdown() error {
-	m.mu.Lock()
-	m.closing = true
-	sessions := m.sessions
-	m.sessions = map[string]*runningSession{}
-	m.mu.Unlock()
-	var first error
-	for _, session := range sessions {
-		ctx, cancel := environment.CloseTimeout()
-		err := session.runtime.Close(ctx)
-		cancel()
-		if first == nil && err != nil {
-			first = err
+	m.shutdownOnce.Do(func() {
+		m.mu.Lock()
+		m.closing = true
+		m.mu.Unlock()
+		// Keep the directory lock until every in-flight creation has either been
+		// published or cleaned up. A second owner must never race these writes.
+		m.starts.Wait()
+		m.mu.Lock()
+		sessions := m.sessions
+		m.sessions = map[string]*runningSession{}
+		m.mu.Unlock()
+		for _, session := range sessions {
+			ctx, cancel := environment.CloseTimeout()
+			err := session.runtime.Close(ctx)
+			cancel()
+			m.shutdownErr = errors.Join(m.shutdownErr, err)
 		}
-	}
-	return first
+		if m.storage != nil {
+			m.shutdownErr = errors.Join(m.shutdownErr, m.storage.close())
+		}
+	})
+	return m.shutdownErr
 }
 
 func (s *runningSession) view(registry *httpresource.Registry) Session {

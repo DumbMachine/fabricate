@@ -25,3 +25,9 @@ state.json
 .github
 .dockerignore
 deploy
+
+.fabricate-state
+**/control.db*
+**/owner.lock
+**/live.db*
+**/baseline.db*

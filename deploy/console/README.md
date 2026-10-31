@@ -72,15 +72,72 @@ proxy URL or file path is not a remote client connection.
 
 ## Lifecycle and data
 
-Operator token rotation takes effect on process restart and invalidates existing
-browser sessions. Save or close active sandboxes before a restart.
+Compose enables `FAB_STATE_DIR=/var/lib/fabricate/state` on the named
+`sandbox_state` volume. It stores the session registry, baseline and live SQLite
+databases, and service credentials. Sandbox IDs, externally advertised service
+URLs, service tokens, creation times and mutated data survive process restarts
+and replacement containers using the same volume and public URL. Request logs
+use their own retained volume and continue under the same run identity.
 
-Sandbox state is ephemeral. Closing a sandbox or restarting the process discards
-its data; the request-log volume is retained. This is an operator deployment,
-not a multi-tenant SaaS account system. Durable sessions, tenant isolation,
-quotas/TTL and dataset publishing remain separate work.
+Outside Compose, opt in explicitly:
 
-Stopping the Compose project retains named volumes. Export results before
-restarting a deployment that has active sandboxes. Configure log retention for
-your environment. The UI's Activity view explicitly identifies a truncated recent
-trace; it is not an exhaustive history endpoint.
+```sh
+fab serve --state-dir .fabricate-state --public-url http://localhost:4173
+```
+
+`FAB_STATE_DIR` provides the same setting. Without it, `fab serve` and `fab run`
+remain disposable. Mounted mode requires a stable public URL and direct service
+routing; process-scoped transparent proxy URLs/CA files are not supported.
+Changing the advertised public URL is rejected when opening an existing store.
+
+The entire storage directory must be on a local filesystem or attached block
+volume with working SQLite locking and sync semantics. Mount the directory,
+not individual `.db` files: WAL/journal files must remain beside their databases.
+One process owns a store, enforced by an exclusive nonblocking filesystem lock.
+Do not share a writable store between workers over NFS/SMB. Keep volume deletion
+separate from compute replacement; `docker compose down -v` deletes the data.
+
+Startup reopens existing databases without replaying seed data. It fails before
+serving traffic if a ready sandbox has missing files, a corrupt live database or incompatible
+resource contracts. Keep the previous image and back up the whole store before
+upgrading resource contracts: automatic schema migration is not implemented.
+Interrupted creation is removed because it was never acknowledged; interrupted
+deletion is completed. Normal shutdown preserves all ready sandboxes. The Close
+sandbox action remains an explicit destructive deletion, including on disk.
+
+The registry is a secret-bearing file with mode 0600 inside a mode 0700 store;
+service credentials are retained there, not encrypted by Fabricate. Protect
+host/volume and backup access and use infrastructure encryption at rest as needed.
+Operator token rotation takes effect on restart and invalidates browser sessions;
+it does not rotate sandbox service tokens. Keep the operator secret mounted.
+
+This protects committed transactions against process/container restarts when
+the same healthy storage is retained. It is not a backup or multi-node failover
+system. Disk loss requires separate SQLite-aware backups and a tested restore
+procedure. Use SQLite's backup API or a coordinated quiesced backup, not an
+uncoordinated copy of live database files. Registry and service snapshots must
+belong to the same consistent sandbox set. Multi-tenant accounts, quotas/TTL,
+snapshot/fork APIs and automatic migrations remain separate work.
+
+Configure log retention for your environment. The UI's Activity view identifies
+a truncated recent trace; it is not an exhaustive history endpoint.
+
+## Repeat the container recovery check
+
+Build the image, then run the isolated verifier with a private directory outside
+this checkout:
+
+```sh
+docker build -t fabricate-console:durable -f deploy/console/Dockerfile .
+python3 deploy/console/verify-durability.py --work-dir /tmp/fabricate-durability-check
+```
+
+The verifier uses a fresh operator secret, a loopback port and its own named
+volumes. It creates a composition with two independent Asana services and Gmail,
+mutates provider state, checks recovery after SIGKILL, replaces the container
+using the same volumes, and checks graceful restart. It compares service URLs
+and tokens exactly and verifies data, isolation, export and non-resurrection of
+a deleted sandbox. It never restarts an existing deployment. Use `--port` to
+choose an unused port and `--keep` to retain its final sandbox for inspection.
+Choose a fresh work directory for each run. Credentials and receipts are written
+only to that private directory.

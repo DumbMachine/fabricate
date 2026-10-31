@@ -82,6 +82,26 @@ func New(environment string) (*Log, error) {
 	return &Log{Environment: environment, RunID: runID, path: path, file: file}, nil
 }
 
+// Resume appends to the same sandbox trace after process recovery.
+func Resume(environment, runID string) (*Log, error) {
+	if !environmentPattern.MatchString(environment) || !regexp.MustCompile(`^[0-9]{8}T[0-9]{6}\.[0-9]{9}Z-[a-f0-9]{8}$`).MatchString(runID) {
+		return nil, fmt.Errorf("request log: invalid persisted identity")
+	}
+	root, err := Root()
+	if err != nil {
+		return nil, err
+	}
+	dir := filepath.Join(root, environment, runID)
+	if err = os.MkdirAll(dir, 0o700); err != nil {
+		return nil, err
+	}
+	path := filepath.Join(dir, "requests.jsonl")
+	file, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o600)
+	if err != nil {
+		return nil, err
+	}
+	return &Log{Environment: environment, RunID: runID, path: path, file: file}, nil
+}
 func Root() (string, error) {
 	if root := strings.TrimSpace(os.Getenv("FAB_LOG_DIR")); root != "" {
 		return filepath.Abs(root)

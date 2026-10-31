@@ -40,7 +40,7 @@ export function useConsoleConfig() {
         if (!cancelled) setConfig(next)
       })
       .catch(() => {
-        if (!cancelled) setConfig({ proxy: false })
+        if (!cancelled) setConfig(null)
       })
     return () => {
       cancelled = true

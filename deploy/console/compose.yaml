@@ -12,10 +12,12 @@ services:
       FAB_CONSOLE_PUBLIC_URL: ${FAB_CONSOLE_PUBLIC_URL:?Set the URL clients use to reach this console}
       FAB_CONSOLE_TOKEN_FILE: /run/secrets/operator_token
       FAB_LOG_DIR: /var/lib/fabricate/logs
+      FAB_STATE_DIR: /var/lib/fabricate/state
     secrets:
       - operator_token
     volumes:
       - request_logs:/var/lib/fabricate/logs
+      - sandbox_state:/var/lib/fabricate/state
     read_only: true
     tmpfs:
       - /tmp:rw,nosuid,noexec,size=1g,mode=1777
@@ -49,5 +51,6 @@ secrets:
     file: ${FAB_CONSOLE_TOKEN_PATH:-./secrets/operator-token}
 volumes:
   request_logs:
+  sandbox_state:
   ingress_data:
   ingress_config:

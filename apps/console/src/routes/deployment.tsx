@@ -49,7 +49,12 @@ function DeploymentPage() {
         ? "Token protected · 8-hour browser sessions"
         : "Not protected",
     ],
-    ["Sandbox lifetime", "Until closed or this process stops"],
+    [
+      "Sandbox storage",
+      config?.durable
+        ? "Persistent · recovers after restart"
+        : "Disposable · until this process stops",
+    ],
   ]
   const example = `curl -H "Authorization: Bearer $FABRICATE_TOKEN" \
   ${origin}/.well-known/fabricate`
@@ -113,8 +118,9 @@ function DeploymentPage() {
               ))}
             </dl>
             <p className="max-w-2xl text-xs leading-6 text-muted-foreground">
-              Request logs are retained by the deployment. Running sandbox data
-              is ephemeral and is discarded when its process stops.
+              {config.durable
+                ? "Sandbox URLs, service tokens and data survive deployment restarts. Closing a sandbox deletes its stored data."
+                : "Request logs are retained by the deployment. Sandbox data is discarded when this process stops."}
             </p>
             {auth?.required ? (
               <div className="pt-3">
