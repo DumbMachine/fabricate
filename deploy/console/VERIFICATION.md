@@ -149,3 +149,15 @@ Access's customer verifier uses only public HTTP APIs and scoped credentials;
 its build/runtime does not import or start Fabricate. Its private receipts and
 provider snapshots remain outside this repository. The hosted dataset registry
 remains deferred under issue #20.
+
+
+The final hardened image also passed the live MCP verifier after SIGKILL/restart,
+including cancellation by the original creation key and a 410 on attempted
+resurrection. Access's independent HTTP customer loop passed two fresh large
+publisher worlds (138 ad sets, 1,411 daily rows, 3,605 affiliate actions per audit),
+exact state equality through reads/renewal, negative auth/scope/contract checks,
+and repeated verified teardown. A real committed creation response was dropped;
+Access recovered the identical sandbox and installed its workspace once. Existing
+Access connections completed another audit after the final Fabricate restart,
+and the real Access UI completed a further read-only audit through both resource
+instances. All detailed receipts and captures remain in private customer storage.
