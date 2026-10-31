@@ -1,0 +1,8 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: acme-meta-ads
+services:
+  meta-ads:
+    resource: meta-ads
+    scenario: meta-ads.food-publisher.v1

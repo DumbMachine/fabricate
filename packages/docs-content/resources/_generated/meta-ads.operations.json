@@ -1,0 +1,31 @@
+{
+  "integration": "meta-ads",
+  "api": "Meta Ads v1",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/{account_id}/adsets",
+      "operationId": "ListAdSets"
+    },
+    {
+      "method": "GET",
+      "path": "/{account_id}/campaigns",
+      "operationId": "ListCampaigns"
+    },
+    {
+      "method": "GET",
+      "path": "/{account_id}/insights",
+      "operationId": "GetInsights"
+    },
+    {
+      "method": "GET",
+      "path": "/{node_id}",
+      "operationId": "GetNode"
+    },
+    {
+      "method": "POST",
+      "path": "/{node_id}",
+      "operationId": "UpdateAdSet"
+    }
+  ]
+}

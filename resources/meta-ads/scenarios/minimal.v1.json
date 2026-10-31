@@ -1,0 +1,35 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "meta-ads.minimal.v1",
+  "$resource": "meta-ads",
+  "$resourceVersion": "v1",
+  "state": {
+    "accounts": [
+      {
+        "id": "act_20002",
+        "name": "Independent shop",
+        "currency": "USD"
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "220001",
+        "account_id": "act_20002",
+        "name": "Local products",
+        "status": "ACTIVE"
+      }
+    ],
+    "adsets": [
+      {
+        "id": "230001",
+        "account_id": "act_20002",
+        "campaign_id": "220001",
+        "name": "New readers",
+        "status": "ACTIVE",
+        "daily_budget": "2500"
+      }
+    ],
+    "insights": []
+  }
+}

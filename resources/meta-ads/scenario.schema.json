@@ -1,0 +1,171 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "accounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "INR",
+              "EUR",
+              "GBP"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "currency"
+        ]
+      }
+    },
+    "campaigns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PAUSED",
+              "ARCHIVED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "account_id",
+          "name",
+          "status"
+        ]
+      }
+    },
+    "adsets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "account_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "campaign_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PAUSED",
+              "ARCHIVED"
+            ]
+          },
+          "daily_budget": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          }
+        },
+        "required": [
+          "id",
+          "account_id",
+          "campaign_id",
+          "name",
+          "status",
+          "daily_budget"
+        ]
+      }
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "campaign_id": {
+            "type": "string"
+          },
+          "adset_id": {
+            "type": "string"
+          },
+          "date_start": {
+            "type": "string"
+          },
+          "date_stop": {
+            "type": "string"
+          },
+          "impressions": {
+            "type": "string"
+          },
+          "clicks": {
+            "type": "string"
+          },
+          "spend": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "account_id",
+          "campaign_id",
+          "adset_id",
+          "date_start",
+          "date_stop",
+          "impressions",
+          "clicks",
+          "spend",
+          "frequency"
+        ]
+      }
+    }
+  },
+  "required": [
+    "accounts",
+    "campaigns",
+    "adsets",
+    "insights"
+  ]
+}

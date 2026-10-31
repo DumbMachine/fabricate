@@ -1,0 +1,23 @@
+{
+  "integration": "meta-ads",
+  "scenarios": [
+    {
+      "id": "meta-ads.food-publisher.v1",
+      "counts": {
+        "accounts": 1,
+        "adsets": 3,
+        "campaigns": 3,
+        "insights": 42
+      }
+    },
+    {
+      "id": "meta-ads.minimal.v1",
+      "counts": {
+        "accounts": 1,
+        "adsets": 1,
+        "campaigns": 1,
+        "insights": 0
+      }
+    }
+  ]
+}

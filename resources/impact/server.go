@@ -20,7 +20,6 @@ import (
 )
 
 const (
-	accountSID      = "acct-acme"
 	defaultPageSize = 100
 	noteCreator     = "Val Ortega"
 )

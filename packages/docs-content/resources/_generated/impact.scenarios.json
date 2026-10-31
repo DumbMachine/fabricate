@@ -11,6 +11,15 @@
       }
     },
     {
+      "id": "impact.food-publisher.v1",
+      "counts": {
+        "actions": 5,
+        "notes": 0,
+        "partners": 1,
+        "programs": 1
+      }
+    },
+    {
       "id": "impact.minimal.v1",
       "counts": {
         "actions": 0,

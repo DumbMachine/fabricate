@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["accountSid", "programs", "partners", "actions", "notes"],
   "properties": {
-    "accountSid": {"type": "string", "const": "acct-acme"},
+    "accountSid": {"type": "string", "minLength": 1},
     "programs": {
       "type": "array",
       "items": {

@@ -250,7 +250,7 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := strings.Join(scenario.IDs(docs), ","), "ga4.acme-properties.v1,ga4.minimal.v1"; got != want {
+	if got, want := strings.Join(scenario.IDs(docs), ","), "ga4.acme-properties.v1,ga4.food-publisher.v1,ga4.minimal.v1"; got != want {
 		t.Fatalf("scenarios = %s", got)
 	}
 }

@@ -1,0 +1,14 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: food-publisher
+services:
+  ads:
+    resource: meta-ads
+    scenario: meta-ads.food-publisher.v1
+  analytics:
+    resource: ga4
+    scenario: ga4.food-publisher.v1
+  affiliate:
+    resource: impact
+    scenario: impact.food-publisher.v1

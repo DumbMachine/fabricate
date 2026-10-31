@@ -1,0 +1,40 @@
+{
+  "api": "Meta Marketing API v23.0 curated subset",
+  "environment": {
+    "label": "Food publisher",
+    "manifest": "environments/acme-meta-ads.yaml",
+    "messages": 3
+  },
+  "integration": "meta-ads",
+  "modes": {
+    "direct": {
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    },
+    "proxy": {
+      "operations": {
+        "read": "passed",
+        "write": "passed",
+        "persistence": "passed"
+      },
+      "status": "passed"
+    }
+  },
+  "operationLabels": {
+    "read": "Read ad-set budget",
+    "write": "Set absolute daily budget",
+    "persistence": "Read back stored budget"
+  },
+  "verification": {
+    "kind": "curl",
+    "label": "HTTP client",
+    "client": "curl@8",
+    "title": "HTTP API verification"
+  },
+  "testedAt": "2026-10-31T13:27:33.922238Z",
+  "testedCommit": "11382481f13f0b488f7dbcc0371d60a1bb20bd33"
+}

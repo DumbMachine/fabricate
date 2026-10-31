@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/dumbmachine/fabricate/resources/instagram"
 	"github.com/dumbmachine/fabricate/resources/linkedin"
+	"github.com/dumbmachine/fabricate/resources/meta-ads"
 	"github.com/dumbmachine/fabricate/resources/x"
 
 	"github.com/dumbmachine/fabricate/httpresource"
@@ -51,6 +52,7 @@ import (
 
 func Registry() *httpresource.Registry {
 	registry, err := httpresource.NewRegistry(
+		metaads.NewResource(),
 		instagram.NewResource(),
 		x.NewResource(),
 		linkedin.NewResource(),

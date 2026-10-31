@@ -128,8 +128,8 @@ func (scenarioCodec) Validate(_ context.Context, doc scenario.Document) error {
 }
 
 func validateState(state fixtureState) error {
-	if state.AccountSID != accountSID {
-		return fmt.Errorf("impact scenario: accountSid must be %s", accountSID)
+	if state.AccountSID == "" {
+		return fmt.Errorf("impact scenario: accountSid is required")
 	}
 	programs := map[int]struct{}{}
 	for _, program := range state.Programs {

@@ -1,0 +1,124 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "impact.food-publisher.v1",
+  "$resource": "impact",
+  "$resourceVersion": "v1",
+  "state": {
+    "accountSid": "acct-publisher",
+    "programs": [
+      {
+        "id": 4101,
+        "name": "Kitchen essentials partner program",
+        "state": "ACTIVE",
+        "type": "Performance",
+        "shortDescription": "Synthetic affiliate observations, not attribution to Meta clicks."
+      }
+    ],
+    "partners": [
+      {
+        "id": "publisher-1",
+        "campaignId": 4101,
+        "name": "Hearth & Harvest",
+        "state": "ACTIVE",
+        "currency": "USD",
+        "website": "https://hearth-harvest.example",
+        "description": "Fictional recipe publisher",
+        "dateCreated": "2026-10-01T00:00:00Z"
+      }
+    ],
+    "actions": [
+      {
+        "id": "affiliate-1",
+        "campaignId": 4101,
+        "partnerId": "publisher-1",
+        "oid": "order-1",
+        "state": "APPROVED",
+        "payoutPaise": 12500,
+        "amountPaise": 125000,
+        "currency": "USD",
+        "eventDate": "2026-10-05T12:00:00Z",
+        "creationDate": "2026-10-05T12:00:00Z",
+        "customerCity": "",
+        "customerRegion": "",
+        "customerCountry": "US",
+        "customerPostCode": "",
+        "note": "",
+        "items": []
+      },
+      {
+        "id": "affiliate-2",
+        "campaignId": 4101,
+        "partnerId": "publisher-1",
+        "oid": "order-2",
+        "state": "APPROVED",
+        "payoutPaise": 8000,
+        "amountPaise": 80000,
+        "currency": "USD",
+        "eventDate": "2026-10-06T12:00:00Z",
+        "creationDate": "2026-10-06T12:00:00Z",
+        "customerCity": "",
+        "customerRegion": "",
+        "customerCountry": "US",
+        "customerPostCode": "",
+        "note": "",
+        "items": []
+      },
+      {
+        "id": "affiliate-3",
+        "campaignId": 4101,
+        "partnerId": "publisher-1",
+        "oid": "order-3",
+        "state": "APPROVED",
+        "payoutPaise": 6500,
+        "amountPaise": 65000,
+        "currency": "USD",
+        "eventDate": "2026-10-07T12:00:00Z",
+        "creationDate": "2026-10-07T12:00:00Z",
+        "customerCity": "",
+        "customerRegion": "",
+        "customerCountry": "US",
+        "customerPostCode": "",
+        "note": "",
+        "items": []
+      },
+      {
+        "id": "affiliate-4",
+        "campaignId": 4101,
+        "partnerId": "publisher-1",
+        "oid": "order-4",
+        "state": "PENDING",
+        "payoutPaise": 9000,
+        "amountPaise": 90000,
+        "currency": "USD",
+        "eventDate": "2026-10-08T12:00:00Z",
+        "creationDate": "2026-10-08T12:00:00Z",
+        "customerCity": "",
+        "customerRegion": "",
+        "customerCountry": "US",
+        "customerPostCode": "",
+        "note": "",
+        "items": []
+      },
+      {
+        "id": "affiliate-5",
+        "campaignId": 4101,
+        "partnerId": "publisher-1",
+        "oid": "order-5",
+        "state": "REVERSED",
+        "payoutPaise": 4500,
+        "amountPaise": 45000,
+        "currency": "USD",
+        "eventDate": "2026-10-09T12:00:00Z",
+        "creationDate": "2026-10-09T12:00:00Z",
+        "customerCity": "",
+        "customerRegion": "",
+        "customerCountry": "US",
+        "customerPostCode": "",
+        "note": "",
+        "items": []
+      }
+    ],
+    "notes": []
+  }
+}
