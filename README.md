@@ -164,3 +164,8 @@ MIT
 
 External applications and agents can use the [consumer HTTP API](docs/consumer-api.md)
 for contract discovery, custom state validation, composed sessions and state export.
+
+Agents can connect directly to the [MCP endpoint](docs/mcp.md) for discovery,
+project-scoped sandbox creation, provider calls, verification, renewal and cleanup.
+The UI and MCP share the HTTP lifecycle; mounted storage preserves credentials,
+URLs, data and creation keys across restart.

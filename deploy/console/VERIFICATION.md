@@ -67,3 +67,57 @@ The repeatable black-box verifier is `deploy/console/verify-durability.py`.
 These checks establish restart recovery with retained healthy storage. They do
 not establish recovery from disk loss, multi-writer failover, backup RPO, public
 TLS/DNS operation or automatic schema migration.
+
+
+## Scoped MCP and lifecycle follow-up
+
+Verification on 2026-10-31 for the MCP/lifecycle changes included:
+
+- `make check` passed after the final Go changes; `make e2e` passed the CLI
+  integration suite. Console typecheck, request-wrapper tests and production
+  build passed, as did the multi-stage Docker build.
+- Official Go MCP SDK client tests exercise real Streamable HTTP initialization,
+  schemas, tools, current/legacy protocol negotiation, notifications, expected
+  unsupported transport methods, unauthorized requests and rejected origins.
+- Positive creation/mutation/readback works with independent service instances.
+  Project tests cover cross-project reads/state/logs/deletes, credential expiry
+  and revocation, operator-only administration, quotas and policy updates.
+  Unsupported provider operations, external URLs and invalid custom state fail.
+- Lifecycle tests cover concurrent same-key starts, mismatched requests,
+  interrupted creation/recovery, retry at capacity, closed-key tombstones,
+  durable renewal, expiry routing/cleanup and retained credential digests.
+  Focused race checks passed for MCP, mounted recovery, lifecycle, compact
+  contracts and concurrent renewal/read access. Compact projected OpenAPI was
+  parsed and validated with the real OpenAPI validator.
+- A fresh Codex CLI process, in an empty directory without checkout context, was
+  registered against the actual local MCP deployment with a project credential.
+  It completed 23 MCP calls using only Fabricate: discovery, typed contracts,
+  two-service creation, same-key replay/status, provider mutation and independent
+  readback, unchanged comparison, unsupported method, logs/state and renewal.
+  The transcript contains no shell/file tools or other MCP servers.
+- The first Codex run's `approval_policy="never"` blocked the conservatively
+  destructive provider tool before dispatch. A dedicated read-only `service_read`
+  tool was added. The authorized mutation then passed using per-action automatic
+  approval review, without disabling the filesystem sandbox or changing mutation
+  annotations. Two invalid JSON-string request bodies failed before the agent
+  supplied the correct structured object; only one successful write was made.
+- The existing version-1 mounted deployment was backed up while stopped, then
+  upgraded to registry version 2. Existing service URLs/tokens and complete
+  exported state were compared before/after replacement and remained identical.
+- `deploy/console/verify-mcp.py` passed against the final image, before and after
+  SIGKILL (exit 137) and container restart. The same project credential, service
+  URLs/tokens, mutation, untouched comparison, creation key and request status
+  survived. Repeated close succeeded; retrying the closed key returned 410 and
+  sandbox lookup returned 404. Its temporary sandbox was removed.
+- After that final forced restart, independent HTTP reads also confirmed that
+  the Codex-created sandbox retained its mutation with its comparison unchanged,
+  and that the older pre-MCP sandbox retained its original persisted mutation.
+- Browser verification covered the Deployment / API access page: the actual MCP
+  URL, copy action, Codex registration command and project credential guidance.
+  Operator browser login survived the container replacement. Private tokens,
+  transcripts, receipts, backups and screenshots are excluded from this repo.
+
+These checks establish local deployment and agent self-service behavior. Public
+TLS/DNS, OAuth login, hosted tenant accounts, capacity/load limits and disk-loss
+restore remain outside this verification. Access connection handoff is unchanged.
+The hosted reusable dataset registry is deferred to GitHub issue #20.

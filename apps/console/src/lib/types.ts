@@ -5,6 +5,14 @@ export type AuthSession = { required: boolean; authenticated: boolean }
 export type ConsoleConfig = {
   proxy: boolean
   durable: boolean
+  maxSandboxes: number
+  operator: boolean
+  project: {
+    id: string
+    maxSandboxes: number
+    defaultTTLSeconds: number
+    maxTTLSeconds: number
+  }
   publicUrl?: string
 }
 
@@ -103,6 +111,8 @@ export type RequestLogView = {
 
 export type Session = {
   id: string
+  project: string
+  expiresAt?: string
   name: string
   label: string
   kind: SandboxKind

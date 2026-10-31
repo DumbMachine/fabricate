@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
 import {
+  ApiError,
   closeSandbox,
   getCatalog,
   getConfig,
@@ -79,6 +80,7 @@ export function useSessions() {
 export function useSandboxActions() {
   const navigate = useNavigate()
   const pendingRef = useRef(false)
+  const createdRef = useRef<Record<string, Session>>({})
   const [pending, setPending] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -90,10 +92,23 @@ export function useSandboxActions() {
     if (pendingRef.current) return null
     pendingRef.current = true
     const key = `${kind}:${id}`
+    const storageKey = `fabricate:creation:${key}`
     setPending(key)
     setErrors((current) => ({ ...current, [key]: "" }))
     try {
-      const session = await startSandbox(kind, id)
+      let session = createdRef.current[key]
+      if (!session) {
+        const config = await getConfig()
+        let creationKey: string | undefined
+        if (config.durable) {
+          creationKey =
+            sessionStorage.getItem(storageKey) || crypto.randomUUID()
+          sessionStorage.setItem(storageKey, creationKey)
+        }
+        session = await startSandbox(kind, id, creationKey)
+        createdRef.current[key] = session
+        sessionStorage.removeItem(storageKey)
+      }
       switch (destination) {
         case "sandbox":
           await navigate({ to: "/sandboxes/$id", params: { id: session.id } })
@@ -111,8 +126,11 @@ export function useSandboxActions() {
           throw new Error(neverDestination)
         }
       }
+      delete createdRef.current[key]
       return session
     } catch (startError: unknown) {
+      if (startError instanceof ApiError && startError.status === 410)
+        sessionStorage.removeItem(storageKey)
       setErrors((current) => ({ ...current, [key]: errorText(startError) }))
       return null
     } finally {

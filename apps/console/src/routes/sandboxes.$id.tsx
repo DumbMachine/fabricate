@@ -141,7 +141,13 @@ function SandboxPage() {
         </StatusPill>
         <span>{kindLabel(session.kind)}</span>
         <span className="font-mono text-[11px]">{session.id}</span>
+        <span>Project {session.project}</span>
         <span>Started {formatTime(session.startedAt)}</span>
+        <span>
+          {session.expiresAt
+            ? `Expires ${formatTime(session.expiresAt)}`
+            : "Retained until closed"}
+        </span>
         {session.kind === "environment" ? (
           <LinkButton to="/environments/$name" params={{ name: session.name }}>
             View environment

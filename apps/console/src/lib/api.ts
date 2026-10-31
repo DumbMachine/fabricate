@@ -38,12 +38,13 @@ export async function getSessionLogs(id: string): Promise<RequestLogView> {
 
 export async function startSandbox(
   kind: StartKind,
-  id: string
+  id: string,
+  idempotencyKey?: string
 ): Promise<Session> {
   return publishSession(
     await request<Session>("/api/sessions", {
       method: "POST",
-      body: JSON.stringify({ kind, id }),
+      body: JSON.stringify({ kind, id, idempotencyKey }),
     })
   )
 }

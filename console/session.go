@@ -17,12 +17,15 @@ import (
 	"github.com/dumbmachine/fabricate/httpresource"
 )
 
-const maxSessions = 16
+const defaultMaxSessions = 64
 
 type StartRequest struct {
-	Kind     string                    `json:"kind"`
-	ID       string                    `json:"id"`
-	Services map[string]ServiceRequest `json:"services,omitempty"`
+	Kind           string                    `json:"kind"`
+	ID             string                    `json:"id"`
+	Services       map[string]ServiceRequest `json:"services,omitempty"`
+	Project        string                    `json:"project,omitempty" jsonschema:"Optional project; scoped credentials cannot change project"`
+	IdempotencyKey string                    `json:"idempotencyKey,omitempty" jsonschema:"Stable unique key for this creation; retry with identical arguments to recover the same sandbox"`
+	TTLSeconds     *int64                    `json:"ttlSeconds,omitempty" jsonschema:"Lifetime in seconds; absent uses project policy"`
 }
 
 // ServiceRequest composes existing provider behavior with a catalog baseline or
@@ -35,6 +38,8 @@ type ServiceRequest struct {
 
 type Session struct {
 	ID              string           `json:"id"`
+	Project         string           `json:"project"`
+	ExpiresAt       *time.Time       `json:"expiresAt,omitempty"`
 	Name            string           `json:"name"`
 	Label           string           `json:"label"`
 	Kind            string           `json:"kind"`
@@ -82,6 +87,8 @@ type runningSession struct {
 	started  time.Time
 	proxy    bool
 	anchored bool
+	project  string
+	expires  *time.Time
 }
 
 type Manager struct {
@@ -95,6 +102,10 @@ type Manager struct {
 	starts       sync.WaitGroup
 	shutdownOnce sync.Once
 	shutdownErr  error
+	startMu      sync.Mutex
+	capacity     int
+	sweepStop    chan struct{}
+	sweepDone    chan struct{}
 
 	catalogOnce sync.Once
 	catalog     Catalog
@@ -108,6 +119,7 @@ func New(registry *httpresource.Registry) *Manager {
 	return &Manager{
 		registry: registry,
 		sessions: map[string]*runningSession{},
+		capacity: defaultMaxSessions,
 	}
 }
 
@@ -118,77 +130,8 @@ func (m *Manager) Catalog() (Catalog, error) {
 	return m.catalog, m.catalogErr
 }
 
-func (m *Manager) Start(ctx context.Context, request StartRequest) (_ Session, err error) {
-	spec, kind, err := m.resolve(request)
-	if err != nil {
-		return Session{}, invalidStartError{err}
-	}
-	documents, err := m.startDocuments(ctx, request, spec)
-	if err != nil {
-		return Session{}, invalidStartError{err}
-	}
-	proxy := m.proxyEnabled()
-	if err = m.reserve(); err != nil {
-		return Session{}, err
-	}
-	defer m.releaseReservation()
-	id, err := newID()
-	if err != nil {
-		return Session{}, err
-	}
-	record := storedSession{ID: id, Kind: kind, Spec: spec, Started: time.Now().UTC()}
-	var runtime *environment.Runtime
-	published := false
-	if m.storage != nil {
-		if err = m.storage.create(record); err != nil {
-			return Session{}, fmt.Errorf("storage: reserve sandbox: %w", err)
-		}
-	}
-	defer func() {
-		if !published {
-			if runtime != nil {
-				_ = runtime.Close(context.Background())
-			}
-			if m.storage != nil {
-				if e := m.storage.discard(id); e != nil {
-					err = errors.Join(err, fmt.Errorf("storage: cleanup pending: %w", e))
-				}
-			}
-		}
-	}()
-	if m.storage != nil {
-		runtime, err = environment.StartWithStorage(ctx, spec, m.registry, documents, environment.StorageOptions{Directory: m.storage.directory(id)})
-	} else {
-		runtime, err = environment.StartWithDocuments(ctx, spec, m.registry, proxy, documents)
-	}
-	if err != nil {
-		return Session{}, err
-	}
-	running := &runningSession{id: id, kind: kind, spec: spec, runtime: runtime, started: record.Started, proxy: proxy}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if m.closing {
-		return Session{}, fmt.Errorf("console is shutting down")
-	}
-	if m.sessions[id] != nil {
-		return Session{}, fmt.Errorf("sandbox id collision")
-	}
-	if m.storage != nil {
-		record.Tokens = map[string]string{}
-		record.Contracts = map[string]string{}
-		record.Metadata = runtime.Metadata
-		record.LogRunID = runtime.Requests.RunID
-		for name, service := range runtime.Services {
-			record.Tokens[name] = service.Token
-			record.Contracts[name] = resourceContract(service.Resource)
-		}
-		if err = m.storage.ready(record); err != nil {
-			return Session{}, fmt.Errorf("storage: publish sandbox: %w", err)
-		}
-	}
-	m.sessions[id] = running
-	published = true
-	return running.view(m.registry), nil
+func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, error) {
+	return m.start(ctx, request)
 }
 
 // Adopt registers a runtime this process already started. The console can
@@ -207,14 +150,17 @@ func (m *Manager) Adopt(spec environment.Spec, runtime *environment.Runtime, pro
 	}
 	running := &runningSession{
 		id: id, kind: kind, spec: spec, runtime: runtime,
-		started: time.Now().UTC(), proxy: proxy, anchored: true,
+		started: time.Now().UTC(), proxy: proxy, anchored: true, project: "default",
 	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
+	if m.storage != nil {
+		return Session{}, fmt.Errorf("adoption is unavailable in mounted mode; create through the managed lifecycle")
+	}
 	if m.closing {
 		return Session{}, fmt.Errorf("console is shutting down")
 	}
-	if len(m.sessions)+m.inflight >= maxSessions {
+	if len(m.sessions)+m.inflight >= m.capacity {
 		return Session{}, fmt.Errorf("too many running sandboxes; close one first")
 	}
 	if m.sessions[id] != nil {
@@ -229,9 +175,6 @@ func (m *Manager) reserve() error {
 	defer m.mu.Unlock()
 	if m.closing {
 		return fmt.Errorf("console is shutting down")
-	}
-	if len(m.sessions)+m.inflight >= maxSessions {
-		return fmt.Errorf("too many running sandboxes; close one first")
 	}
 	m.inflight++
 	m.starts.Add(1)
@@ -258,7 +201,7 @@ func (m *Manager) resolve(request StartRequest) (environment.Spec, string, error
 		if err := spec.Validate(); err != nil {
 			return environment.Spec{}, "", err
 		}
-		return spec, "environment", nil
+		return spec, "composition", nil
 	case "environment":
 		if strings.TrimSpace(request.ID) == "" {
 			return environment.Spec{}, "", fmt.Errorf("environment id is required")
@@ -286,7 +229,8 @@ func (m *Manager) List() []Session {
 	m.mu.Lock()
 	running := make([]*runningSession, 0, len(m.sessions))
 	for _, session := range m.sessions {
-		running = append(running, session)
+		snapshot := *session
+		running = append(running, &snapshot)
 	}
 	m.mu.Unlock()
 	sort.Slice(running, func(i, j int) bool {
@@ -306,7 +250,7 @@ func (m *Manager) serviceURL(id, name string) (string, bool) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	session, ok := m.sessions[id]
-	if !ok {
+	if !ok || expired(session.expires, time.Now()) {
 		return "", false
 	}
 	service := session.runtime.Services[name]
@@ -319,18 +263,19 @@ func (m *Manager) serviceURL(id, name string) (string, bool) {
 func (m *Manager) Get(id string) (Session, bool) {
 	m.mu.Lock()
 	session, ok := m.sessions[id]
-	m.mu.Unlock()
 	if !ok {
+		m.mu.Unlock()
 		return Session{}, false
 	}
-	return session.view(m.registry), true
+	snapshot := *session
+	m.mu.Unlock()
+	return snapshot.view(m.registry), true
 }
 
 var errAnchored = errors.New("this sandbox is held by fab run and stays up until that command exits")
 
-func (m *Manager) Close(id string) error {
-	m.mu.Lock()
-	defer m.mu.Unlock()
+func (m *Manager) Close(id string) error { m.mu.Lock(); defer m.mu.Unlock(); return m.closeLocked(id) }
+func (m *Manager) closeLocked(id string) error {
 	session, ok := m.sessions[id]
 	if !ok {
 		return nil
@@ -362,6 +307,10 @@ func (m *Manager) Shutdown() error {
 		m.mu.Unlock()
 		// Keep the directory lock until every in-flight creation has either been
 		// published or cleaned up. A second owner must never race these writes.
+		if m.sweepStop != nil {
+			close(m.sweepStop)
+			<-m.sweepDone
+		}
 		m.starts.Wait()
 		m.mu.Lock()
 		sessions := m.sessions
@@ -412,7 +361,7 @@ func (s *runningSession) view(registry *httpresource.Registry) Session {
 		services = append(services, view)
 	}
 	session := Session{
-		ID:         s.id,
+		ID: s.id, Project: s.project, ExpiresAt: s.expires,
 		Name:       s.spec.Metadata.Name,
 		Label:      sessionLabel(s.kind, s.spec, registry),
 		Kind:       s.kind,

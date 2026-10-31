@@ -19,14 +19,16 @@ type Config struct {
 	// derive that base from the incoming request.
 	PublicURL string
 	// StateDir enables mounted storage; empty preserves disposable mode.
-	StateDir string
+	StateDir     string
+	MaxSandboxes int
 }
 
 // Deployment is the hosting setup the console reports to its UI.
 type Deployment struct {
-	Proxy     bool   `json:"proxy"`
-	PublicURL string `json:"publicUrl,omitempty"`
-	Durable   bool   `json:"durable"`
+	Proxy        bool   `json:"proxy"`
+	PublicURL    string `json:"publicUrl,omitempty"`
+	Durable      bool   `json:"durable"`
+	MaxSandboxes int    `json:"maxSandboxes"`
 }
 
 // Configure stores the hosting setup. Call it before serving.
@@ -40,9 +42,18 @@ func (m *Manager) Configure(config Config) error {
 	if m.storage != nil || len(m.sessions) > 0 || m.inflight > 0 || m.closing {
 		return fmt.Errorf("configure before starting sandboxes")
 	}
+	if config.MaxSandboxes < 0 || config.MaxSandboxes > 4096 {
+		return fmt.Errorf("max sandboxes must be 1 to 4096")
+	}
+	if config.MaxSandboxes > 0 {
+		m.capacity = config.MaxSandboxes
+	}
 	m.proxy = config.Proxy
 	m.publicURL = publicURL
 	if strings.TrimSpace(config.StateDir) == "" {
+		if m.sweepStop == nil {
+			m.startSweeper()
+		}
 		return nil
 	}
 	if config.Proxy {
@@ -66,13 +77,16 @@ func (m *Manager) Configure(config Config) error {
 		m.storage = nil
 		return errors.Join(err, store.close())
 	}
+	if m.sweepStop == nil {
+		m.startSweeper()
+	}
 	return nil
 }
 
 func (m *Manager) Deployment() Deployment {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return Deployment{Proxy: m.proxy, PublicURL: m.publicURL, Durable: m.storage != nil}
+	return Deployment{Proxy: m.proxy, PublicURL: m.publicURL, Durable: m.storage != nil, MaxSandboxes: m.capacity}
 }
 
 func (m *Manager) proxyEnabled() bool {

@@ -39,6 +39,7 @@ function DeploymentPage() {
   const fields = [
     ["Connection", error ? "Last check failed" : "Reachable"],
     ["Advertised origin", origin],
+    ["Sandbox capacity", String(config?.maxSandboxes ?? "…")],
     [
       "Service routing",
       config?.proxy ? "Provider hostname proxy" : "Direct service URLs",
@@ -144,17 +145,28 @@ function DeploymentPage() {
               Connect Access or another client
             </h2>
             <p className="max-w-2xl text-[13px] leading-6 text-muted-foreground">
-              Use your operator token for environment creation and discovery.
-              Use each sandbox’s service token for provider calls. The console’s
-              browser session stays in this browser.
+              Give agents a project-scoped control credential for sandbox
+              creation and lifecycle operations. Use service tokens for provider
+              calls. The console’s browser session stays in this browser.
             </p>
             <div className="flex items-center justify-between gap-3 border-b pb-3 text-[13px]">
-              <span>Discovery endpoint</span>
-              <CopyButton
-                value={`${origin}/.well-known/fabricate`}
-                label="Copy URL"
-              />
+              <div className="min-w-0 space-y-1">
+                <span className="block">MCP endpoint</span>
+                <code className="block text-xs break-all text-muted-foreground">
+                  {`${origin}/mcp`}
+                </code>
+              </div>
+              <CopyButton value={`${origin}/mcp`} label="Copy URL" />
             </div>
+            <pre className="overflow-auto rounded-lg border bg-code p-4 text-xs leading-6">
+              {`codex mcp add fabricate --url ${origin}/mcp --bearer-token-env-var FABRICATE_MCP_TOKEN`}
+            </pre>
+            <p className="max-w-2xl text-[13px] leading-6 text-muted-foreground">
+              Set FABRICATE_MCP_TOKEN in the agent process environment. The MCP
+              tools discover contracts and datasets, create and renew sandboxes,
+              inspect state and logs, call provider APIs, and close sandboxes.
+              HTTP discovery remains available for other clients.
+            </p>
             <pre className="overflow-auto rounded-lg border bg-code p-4 text-xs leading-6">
               {example}
             </pre>

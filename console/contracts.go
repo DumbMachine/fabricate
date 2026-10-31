@@ -70,7 +70,26 @@ func (m *Manager) handleContract(w http.ResponseWriter, r *http.Request) {
 		}
 		spec["paths"] = selected
 	}
-	writeJSON(w, 200, map[string]any{"resource": resource.Descriptor(), "basePath": basePath, "openapi": spec, "stateSchema": json.RawMessage(contract.ScenarioJSON)})
+	switch r.URL.Query().Get("view") {
+	case "operations":
+		view, err := operationView(spec, r.URL.Query())
+		if err != nil {
+			writeError(w, 400, err)
+			return
+		}
+		view["resource"] = resource.Descriptor()
+		view["basePath"] = basePath
+		if r.URL.Query().Get("stateSchema") == "true" {
+			view["stateSchema"] = json.RawMessage(contract.ScenarioJSON)
+		}
+		writeJSON(w, 200, view)
+	case "compact":
+		writeJSON(w, 200, map[string]any{"resource": resource.Descriptor(), "basePath": basePath, "openapi": compactOpenAPI(spec), "stateSchema": json.RawMessage(contract.ScenarioJSON)})
+	case "":
+		writeJSON(w, 200, map[string]any{"resource": resource.Descriptor(), "basePath": basePath, "openapi": spec, "stateSchema": json.RawMessage(contract.ScenarioJSON)})
+	default:
+		writeError(w, 400, fmt.Errorf("unknown contract view"))
+	}
 }
 
 func (m *Manager) handleDocument(w http.ResponseWriter, r *http.Request) {

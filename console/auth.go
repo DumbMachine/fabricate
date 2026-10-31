@@ -161,21 +161,37 @@ func (m *Manager) consoleAuth(next http.Handler) http.Handler {
 			}
 			return
 		}
-		protected := strings.HasPrefix(r.URL.Path, "/api/") || r.URL.Path == "/.well-known/fabricate"
+		protected := strings.HasPrefix(r.URL.Path, "/api/") || r.URL.Path == "/.well-known/fabricate" || r.URL.Path == "/mcp"
 		if protected {
 			w.Header().Set("Cache-Control", "no-store")
 		}
+		if r.URL.Path == "/mcp" && r.Header.Get("Origin") != "" && !m.sameConsoleOrigin(r) {
+			writeError(w, 403, fmt.Errorf("untrusted MCP origin"))
+			return
+		}
+		p := principal{Admin: true, Project: "default"}
 		if token != "" && protected && !validConsoleBearer(r, token) {
-			if !validConsoleSession(r, token, m.consoleOrigin(r), time.Now()) {
-				w.Header().Set("WWW-Authenticate", "Bearer")
-				writeError(w, 401, fmt.Errorf("sign in to the Fabricate console"))
-				return
-			}
-			if r.Method != "GET" && r.Method != "HEAD" && !m.sameConsoleOrigin(r) {
-				writeError(w, 403, fmt.Errorf("same-origin request required"))
-				return
+			if r.Header.Get("Authorization") != "" {
+				var ok bool
+				p, ok = m.authenticateProject(strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer "))
+				if !ok || !strings.HasPrefix(r.Header.Get("Authorization"), "Bearer ") {
+					w.Header().Set("WWW-Authenticate", "Bearer")
+					writeError(w, 401, fmt.Errorf("invalid or expired control credential"))
+					return
+				}
+			} else {
+				if r.URL.Path == "/mcp" || !validConsoleSession(r, token, m.consoleOrigin(r), time.Now()) {
+					w.Header().Set("WWW-Authenticate", "Bearer")
+					writeError(w, 401, fmt.Errorf("sign in to the Fabricate console"))
+					return
+				}
+				if r.Method != "GET" && r.Method != "HEAD" && !m.sameConsoleOrigin(r) {
+					writeError(w, 403, fmt.Errorf("same-origin request required"))
+					return
+				}
 			}
 		}
+		r = r.WithContext(withActor(r.Context(), p))
 		next.ServeHTTP(w, r)
 	})
 }

@@ -65,10 +65,10 @@ retain their normal supported paths and request/response shapes.
 
 State export is a per-service observation, not an atomic cross-service snapshot.
 Quiesce writes when comparing a whole world. Capture logs/state before closing.
-Use a fresh session for each test attempt. Mounted storage supports session
-recovery as described below. Idempotent create, TTL/renewal, a dataset publication
-registry and coordinated reset are not yet provided; callers must retain
-creation receipts and avoid replaying an uncertain creation/mutation.
+Use a fresh session for each test attempt. Mounted storage supports session recovery, idempotent creation and TTL/renewal
+as described below. A dataset publication registry and coordinated reset are not
+yet provided. Retain creation keys/receipts; provider writes are not automatically
+idempotent and must not be blindly replayed.
 
 ## Mounted storage
 
@@ -80,3 +80,27 @@ recreate connections after recovery. `DELETE /api/sessions/{id}` still deletes
 the sandbox and its stored state. Without a state directory, runtime state is
 disposable. See [deployment lifecycle](../deploy/console/README.md#lifecycle-and-data)
 for storage ownership, recovery failures and backup requirements.
+
+
+## Agent control and retry safety
+
+The deployment also exposes [Streamable HTTP MCP](mcp.md) at `/mcp`, with typed
+tools over the same handlers as this API. Project bearer credentials restrict
+list/read/create/provider-call/renew/close to their project. Only the operator
+can manage `/api/projects` and their credentials. The browser remains an operator
+console. Discovery includes the MCP endpoint and complete HTTP lifecycle links.
+
+Mounted `POST /api/sessions` accepts `project`, `ttlSeconds` and
+`idempotencyKey` (or the `Idempotency-Key` header). Repeat identical arguments/key
+to recover the original sandbox; different arguments return 409, and a closed
+key returns 410. `GET /api/requests/{key}` inspects the current project request.
+`POST /api/sessions/{id}/renew` accepts `{ "ttlSeconds": 3600 }`. Expired service
+routes stop working immediately and cleanup follows; renewal cannot resurrect
+an expired sandbox. Legacy keyless creation remains supported for existing API
+clients. New clients should always supply a key in mounted mode.
+
+`GET /api/resources/{resource}/contract?view=operations&offset=0&limit=50` returns
+an operation catalog. Add `stateSchema=true` to include the real state schema.
+`?operations=GetTask,UpdateTask&view=compact` retains the selected OpenAPI paths
+and transitively referenced definitions. Without `view`, existing consumers
+continue receiving the full contract. Unsupported operation IDs still fail.

@@ -13,6 +13,7 @@ services:
       FAB_CONSOLE_TOKEN_FILE: /run/secrets/operator_token
       FAB_LOG_DIR: /var/lib/fabricate/logs
       FAB_STATE_DIR: /var/lib/fabricate/state
+      FAB_MAX_SANDBOXES: ${FAB_MAX_SANDBOXES:-64}
     secrets:
       - operator_token
     volumes:

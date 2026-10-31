@@ -20,11 +20,12 @@ import (
 )
 
 var (
-	serveAddr      string
-	servePublicURL string
-	serveProxy     bool
-	serveUI        bool
-	serveStateDir  string
+	serveAddr         string
+	servePublicURL    string
+	serveProxy        bool
+	serveUI           bool
+	serveStateDir     string
+	serveMaxSandboxes int
 )
 
 var serveCmd = &cobra.Command{
@@ -79,6 +80,16 @@ same console beside a wrapped command, in proxy mode when that run used
 		if !cmd.Flags().Changed("state-dir") {
 			settings.StateDir = strings.TrimSpace(os.Getenv("FAB_STATE_DIR"))
 		}
+		settings.MaxSandboxes = serveMaxSandboxes
+		if !cmd.Flags().Changed("max-sandboxes") {
+			if value := strings.TrimSpace(os.Getenv("FAB_MAX_SANDBOXES")); value != "" {
+				n, e := strconv.Atoi(value)
+				if e != nil || n < 1 {
+					return fmt.Errorf("FAB_MAX_SANDBOXES must be a positive integer")
+				}
+				settings.MaxSandboxes = n
+			}
+		}
 		return serveConsole(cmd.Context(), settings)
 	},
 }
@@ -89,16 +100,18 @@ func init() {
 	serveCmd.Flags().BoolVar(&serveProxy, "proxy", false, "Start every sandbox with the transparent proxy")
 	serveCmd.Flags().BoolVar(&serveUI, "ui", false, "Open the console in a local browser")
 	serveCmd.Flags().StringVar(&serveStateDir, "state-dir", "", "Persistent sandbox storage directory (FAB_STATE_DIR)")
+	serveCmd.Flags().IntVar(&serveMaxSandboxes, "max-sandboxes", 64, "Maximum managed sandboxes (FAB_MAX_SANDBOXES)")
 	rootCmd.AddCommand(serveCmd)
 }
 
 type consoleSettings struct {
-	ListenAddr string
-	PublicURL  string
-	Proxy      bool
-	Open       bool
-	Widened    bool
-	StateDir   string
+	ListenAddr   string
+	PublicURL    string
+	Proxy        bool
+	Open         bool
+	Widened      bool
+	StateDir     string
+	MaxSandboxes int
 }
 
 func resolveConsoleSettings(addr string, addrSet bool, publicURL string, publicSet bool, proxy bool, proxySet bool, open bool) (consoleSettings, error) {
@@ -205,7 +218,7 @@ func serveConsole(ctx context.Context, settings consoleSettings) error {
 	}
 
 	manager := console.New(all.Registry())
-	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL, StateDir: settings.StateDir}); err != nil {
+	if err := manager.Configure(console.Config{Proxy: settings.Proxy, PublicURL: settings.PublicURL, StateDir: settings.StateDir, MaxSandboxes: settings.MaxSandboxes}); err != nil {
 		return fmt.Errorf("serve: %w", err)
 	}
 	defer manager.Shutdown()

@@ -40,7 +40,7 @@ docker compose --env-file deploy/console/.env -f deploy/console/compose.yaml --p
 ```
 
 The optional Caddy ingress terminates HTTPS on ports 80/443 and forwards all
-paths, including `/api/`, `/s/`, and SPA deep links, to the console. If you already
+paths, including `/mcp`, `/api/`, `/s/`, and SPA deep links, to the console. If you already
 have ingress, keep the hosted profile off and forward to the loopback-published
 port. Set the public URL accurately: it controls advertised service URLs, secure
 cookies and browser origin checks. Do not enable permissive CORS as a workaround.
@@ -101,8 +101,9 @@ Startup reopens existing databases without replaying seed data. It fails before
 serving traffic if a ready sandbox has missing files, a corrupt live database or incompatible
 resource contracts. Keep the previous image and back up the whole store before
 upgrading resource contracts: automatic schema migration is not implemented.
-Interrupted creation is removed because it was never acknowledged; interrupted
-deletion is completed. Normal shutdown preserves all ready sandboxes. The Close
+Creation requests and keys are persisted before provisioning. Interrupted
+keyed creation resumes using the same sandbox identity; incomplete private
+initialization is rebuilt before publication. Interrupted deletion is completed. Normal shutdown preserves all ready sandboxes. The Close
 sandbox action remains an explicit destructive deletion, including on disk.
 
 The registry is a secret-bearing file with mode 0600 inside a mode 0700 store;
@@ -116,8 +117,8 @@ the same healthy storage is retained. It is not a backup or multi-node failover
 system. Disk loss requires separate SQLite-aware backups and a tested restore
 procedure. Use SQLite's backup API or a coordinated quiesced backup, not an
 uncoordinated copy of live database files. Registry and service snapshots must
-belong to the same consistent sandbox set. Multi-tenant accounts, quotas/TTL,
-snapshot/fork APIs and automatic migrations remain separate work.
+belong to the same consistent sandbox set. Full multi-tenant accounts,
+snapshot/fork APIs and provider-schema migrations remain separate work.
 
 Configure log retention for your environment. The UI's Activity view identifies
 a truncated recent trace; it is not an exhaustive history endpoint.
@@ -141,3 +142,49 @@ a deleted sandbox. It never restarts an existing deployment. Use `--port` to
 choose an unused port and `--keep` to retain its final sandbox for inspection.
 Choose a fresh work directory for each run. Credentials and receipts are written
 only to that private directory.
+
+
+## MCP and scoped agents
+
+The same deployment serves Streamable HTTP MCP at `/mcp`. Configure a project
+credential for agents; keep the operator credential for administration. See
+[agent access](../../docs/mcp.md) for real tool names, policy and client setup.
+The reverse proxy must forward MCP POST bodies and normal authorization headers.
+No separate MCP process, database, provider implementation or public port is used.
+
+`FAB_MAX_SANDBOXES` sets the global capacity (default 64, maximum 4096). Project
+policies impose their own quotas and default/maximum TTL. The operator UI's
+default project retains sandboxes until explicit close. Agent project sandboxes
+expire under their policy unless renewed. Capacity is a count limit, not a
+promise that every dataset size fits the configured memory/disk budget.
+
+Registry version 1 is upgraded transactionally to version 2 for projects, hashed
+control credentials and durable creation keys. Back up the complete stopped
+store before upgrading; the older binary cannot open a version-2 registry.
+Provider databases are not migrated or reseeded by this registry upgrade.
+
+
+### Repeat the scoped MCP recovery check
+
+Issue a project credential using the operator setup above and supply it to the
+verifier process as `FABRICATE_MCP_TOKEN`. Use a fresh private directory outside
+this checkout; its receipt contains sandbox service credentials.
+
+```sh
+python3 deploy/console/verify-mcp.py \
+  --url http://127.0.0.1:4173 \
+  --work-dir /tmp/fabricate-mcp-check
+```
+
+This creates two independent synthetic services through MCP, retries the same
+creation key, mutates and reads one service, checks its untouched comparison,
+renews its lifetime, checks unsupported operations and reads logs/state. It
+closes its sandbox and checks that the closed creation key cannot resurrect it.
+Add `--keep` to retain the resulting sandbox for inspection.
+
+For an isolated local test deployment only, add `--restart-container NAME` to
+SIGKILL and restart that container between verification passes. The verifier
+checks the container's configured public origin before stopping it. This option
+interrupts every sandbox on that deployment, so use a dedicated test deployment.
+It verifies project authentication and exact service URLs/tokens, data and
+creation-key recovery after restart. It does not test disk-loss recovery.

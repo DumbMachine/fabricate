@@ -9,13 +9,21 @@ const agentIndexSummary = "Resources and scenarios this Fabricate console can st
 	"Call a service by appending the provider path to services[].url. When proxy is false, send Authorization: Bearer services[].secret. " +
 	"When proxy is true, store the proxy and ca secrets, keep the provider hostname, and do not send the bearer token. The proxy replaces Authorization. " +
 	"Each sandbox logs URL, and control.logs, returns the redacted request trace while that sandbox is running. " +
-	"control.close stops a sandbox this console started. " +
+	"control.close permanently deletes a sandbox this console started. Prefer the standards-based MCP endpoint in mcp.url for typed agent tools. Mounted creation is recoverable with an idempotency key. Project credentials see only their own sandboxes. " +
 	"storeAs is the service name to keep in app config. urlName is the config key for the base URL, and secretName is the config key for the bearer token. " +
 	"When a sandbox is running, services[].url and services[].secret are the values to store under those names. " +
 	"scenarios[].running and environments[].services[].running are the sandbox ids using that scenario."
 
 // AgentIndex is the document an agent fetches to onboard this console.
+type AgentMCP struct {
+	URL            string `json:"url"`
+	Transport      string `json:"transport"`
+	Authentication string `json:"authentication"`
+}
 type AgentIndex struct {
+	MCP          AgentMCP           `json:"mcp"`
+	Durable      bool               `json:"durable"`
+	MaxSandboxes int                `json:"maxSandboxes"`
 	Kind         string             `json:"kind"`
 	Summary      string             `json:"summary"`
 	URL          string             `json:"url"`
@@ -83,11 +91,17 @@ type AgentSandbox struct {
 
 // AgentControl is the console API an agent uses to start, call, and inspect sandboxes.
 type AgentControl struct {
-	Start AgentEndpoint `json:"start"`
-	List  AgentEndpoint `json:"list"`
-	Read  AgentEndpoint `json:"read"`
-	Logs  AgentEndpoint `json:"logs"`
-	Close AgentEndpoint `json:"close"`
+	Contract      AgentEndpoint `json:"contract"`
+	Document      AgentEndpoint `json:"document"`
+	Validate      AgentEndpoint `json:"validate"`
+	State         AgentEndpoint `json:"state"`
+	Renew         AgentEndpoint `json:"renew"`
+	RequestStatus AgentEndpoint `json:"requestStatus"`
+	Start         AgentEndpoint `json:"start"`
+	List          AgentEndpoint `json:"list"`
+	Read          AgentEndpoint `json:"read"`
+	Logs          AgentEndpoint `json:"logs"`
+	Close         AgentEndpoint `json:"close"`
 }
 
 // AgentEndpoint is one console request. URL may contain {id} for the sandbox id.
@@ -100,10 +114,7 @@ type AgentEndpoint struct {
 
 // AgentStartBody is the JSON body for control.start.
 // Kind is "scenario" or "environment". ID is the scenario id or the environment name.
-type AgentStartBody struct {
-	Kind string `json:"kind"`
-	ID   string `json:"id"`
-}
+type AgentStartBody = StartRequest
 
 // AgentLiveService is one running service with the values to store.
 type AgentLiveService struct {
@@ -193,26 +204,37 @@ func buildAgentIndex(deployment Deployment, catalog Catalog, sessions []Session,
 	}
 
 	return AgentIndex{
-		Kind:         "fabricate.agent-index",
-		Summary:      agentIndexSummary,
-		URL:          indexURL,
-		Proxy:        deployment.Proxy,
-		PublicURL:    deployment.PublicURL,
-		Control:      agentControl(base),
+		Kind:      "fabricate.agent-index",
+		Summary:   agentIndexSummary,
+		URL:       indexURL,
+		Proxy:     deployment.Proxy,
+		PublicURL: deployment.PublicURL,
+		Control:   agentControl(base, deployment.Durable),
+		MCP:       AgentMCP{URL: base + "/mcp", Transport: "streamable-http", Authentication: "bearer operator or project credential"}, Durable: deployment.Durable, MaxSandboxes: deployment.MaxSandboxes,
 		Resources:    resources,
 		Environments: environments,
 		Sandboxes:    sandboxes,
 	}
 }
 
-func agentControl(base string) AgentControl {
+func agentControl(base string, durable bool) AgentControl {
 	sessions := strings.TrimRight(base, "/") + "/api/sessions"
+	key := ""
+	if durable {
+		key = "<stable unique creation key>"
+	}
 	return AgentControl{
+		Contract:      AgentEndpoint{Method: "GET", URL: base + "/api/resources/{resource}/contract", Note: "Compiled OpenAPI, basePath and state schema. Optional ?operations=... selects exact published operation IDs."},
+		Document:      AgentEndpoint{Method: "GET", URL: base + "/api/scenarios/{id}/document", Note: "Full immutable baseline document and canonical digest."},
+		Validate:      AgentEndpoint{Method: "POST", URL: base + "/api/resources/{resource}/validate", Note: "Body is the complete scenario document. Validation does not publish or start anything."},
+		State:         AgentEndpoint{Method: "GET", URL: sessions + "/{id}/state", Note: "Current per-service state documents, not an atomic cross-service snapshot."},
+		Renew:         AgentEndpoint{Method: "POST", URL: sessions + "/{id}/renew", Note: "Body {ttlSeconds:positive integer}; policy bounded. Cannot resurrect an expired sandbox."},
+		RequestStatus: AgentEndpoint{Method: "GET", URL: base + "/api/requests/{key}", Note: "Recover a durable creation result by project-scoped idempotency key. Retry identical creation arguments/key to resume."},
 		Start: AgentEndpoint{
 			Method: "POST",
 			URL:    sessions,
-			Body:   &AgentStartBody{Kind: "scenario", ID: "<scenario id>"},
-			Note:   `kind is "scenario" or "environment". id is a scenario id or an environment name. The response is the sandbox, including each service url and secret.`,
+			Body:   &AgentStartBody{Kind: "scenario", ID: "<scenario id>", IdempotencyKey: key},
+			Note:   `kind is scenario, environment or composition. Composition services map names to {resource,scenario,state?}. Optional project, ttlSeconds and idempotencyKey follow project policy. Use a stable key in mounted mode and retry identical arguments to recover the same sandbox; key reuse with a different body fails. Response services use url and token; the legacy discovery view uses url and secret. MCP sandbox_create exposes the full typed schema.`,
 		},
 		List: AgentEndpoint{
 			Method: "GET",

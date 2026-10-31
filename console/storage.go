@@ -28,14 +28,19 @@ type storage struct {
 	unlock func() error
 }
 type storedSession struct {
-	ID        string                       `json:"id"`
-	Kind      string                       `json:"kind"`
-	Spec      environment.Spec             `json:"spec"`
-	Started   time.Time                    `json:"started"`
-	Tokens    map[string]string            `json:"tokens,omitempty"`
-	Metadata  map[string]scenario.Metadata `json:"metadata,omitempty"`
-	Contracts map[string]string            `json:"contracts,omitempty"`
-	LogRunID  string                       `json:"logRunId,omitempty"`
+	Project       string                       `json:"project,omitempty"`
+	Expires       *time.Time                   `json:"expiresAt,omitempty"`
+	Request       *StartRequest                `json:"request,omitempty"`
+	RequestKey    string                       `json:"requestKey,omitempty"`
+	RequestDigest string                       `json:"requestDigest,omitempty"`
+	ID            string                       `json:"id"`
+	Kind          string                       `json:"kind"`
+	Spec          environment.Spec             `json:"spec"`
+	Started       time.Time                    `json:"started"`
+	Tokens        map[string]string            `json:"tokens,omitempty"`
+	Metadata      map[string]scenario.Metadata `json:"metadata,omitempty"`
+	Contracts     map[string]string            `json:"contracts,omitempty"`
+	LogRunID      string                       `json:"logRunId,omitempty"`
 }
 
 var sandboxID = regexp.MustCompile(`^[a-f0-9]{8}$`)
@@ -98,7 +103,7 @@ func openStorage(root, origin string) (_ *storage, err error) {
 	if err = s.db.QueryRow("PRAGMA user_version").Scan(&version); err != nil {
 		return nil, fmt.Errorf("storage: read registry: %w", err)
 	}
-	if version != 0 && version != 1 {
+	if version < 0 || version > 2 {
 		return nil, fmt.Errorf("storage: unsupported registry version %d", version)
 	}
 	if version == 0 {
@@ -124,6 +129,12 @@ func openStorage(root, origin string) (_ *storage, err error) {
 	if saved != origin {
 		return nil, fmt.Errorf("storage: public URL differs from stored deployment; restore the original public URL")
 	}
+	if version < 2 {
+		_, err = s.db.Exec(`BEGIN; CREATE TABLE projects (id TEXT PRIMARY KEY,record BLOB NOT NULL); CREATE TABLE project_tokens (id TEXT PRIMARY KEY,project TEXT NOT NULL,name TEXT NOT NULL,digest TEXT NOT NULL UNIQUE,expires INTEGER NOT NULL,revoked INTEGER NOT NULL); CREATE TABLE requests (project TEXT NOT NULL,key TEXT NOT NULL,digest TEXT NOT NULL,id TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(project,key)); PRAGMA user_version=2; COMMIT;`)
+		if err != nil {
+			return nil, err
+		}
+	}
 	if err = os.MkdirAll(filepath.Join(root, "sandboxes"), 0o700); err != nil {
 		return nil, err
 	}
@@ -142,7 +153,6 @@ func (s *storage) close() error {
 	var err error
 	if s.db != nil {
 		err = s.db.Close()
-		s.db = nil
 	}
 	if s.unlock != nil {
 		e := s.unlock()
@@ -159,8 +169,20 @@ func (s *storage) create(record storedSession) error {
 	if err != nil {
 		return err
 	}
-	_, err = s.db.Exec("INSERT INTO sessions(id,status,record) VALUES(?,'creating',?)", record.ID, raw)
-	return err
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	if _, err = tx.Exec("INSERT INTO sessions(id,status,record) VALUES(?,'creating',?)", record.ID, raw); err != nil {
+		return err
+	}
+	if record.RequestKey != "" {
+		if _, err = tx.Exec("INSERT INTO requests(project,key,digest,id,status) VALUES(?,?,?,?,'creating')", record.Project, record.RequestKey, record.RequestDigest, record.ID); err != nil {
+			return err
+		}
+	}
+	return tx.Commit()
 }
 func (s *storage) ready(record storedSession) error {
 	// SQLite syncs file contents; directory syncs persist their names before the
@@ -175,8 +197,18 @@ func (s *storage) ready(record storedSession) error {
 	if err != nil {
 		return err
 	}
-	_, err = s.db.Exec("UPDATE sessions SET status='ready',record=? WHERE id=?", raw, record.ID)
-	return err
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	if _, err = tx.Exec("UPDATE sessions SET status='ready',record=? WHERE id=?", raw, record.ID); err != nil {
+		return err
+	}
+	if _, err = tx.Exec("UPDATE requests SET status='ready' WHERE id=?", record.ID); err != nil {
+		return err
+	}
+	return tx.Commit()
 }
 func (s *storage) markDeleting(id string) error {
 	_, err := s.db.Exec("UPDATE sessions SET status='deleting' WHERE id=?", id)
@@ -192,8 +224,18 @@ func (s *storage) discard(id string) error {
 	if err := syncDirectory(filepath.Join(s.root, "sandboxes")); err != nil {
 		return err
 	}
-	_, err := s.db.Exec("DELETE FROM sessions WHERE id=?", id)
-	return err
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	if _, err = tx.Exec("UPDATE requests SET status='closed' WHERE id=?", id); err != nil {
+		return err
+	}
+	if _, err = tx.Exec("DELETE FROM sessions WHERE id=?", id); err != nil {
+		return err
+	}
+	return tx.Commit()
 }
 func resourceContract(resource httpresource.Resource) string {
 	d := resource.Descriptor()
@@ -236,11 +278,25 @@ func (m *Manager) recoverStorage(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if len(entries) > maxSessions {
-		return fmt.Errorf("storage: too many stored sandboxes")
+	active := 0
+	for _, e := range entries {
+		if (e.status == "ready" || e.status == "creating") && !expired(e.record.Expires, time.Now()) {
+			active++
+		}
+	}
+	if active > m.capacity {
+		return fmt.Errorf("storage: active sandboxes exceed configured capacity")
 	}
 	for _, e := range entries {
-		if e.status == "creating" || e.status == "deleting" {
+		if e.status == "creating" && e.record.Request != nil && !expired(e.record.Expires, time.Now()) {
+			runtime, record, createErr := m.provision(ctx, e.record)
+			if createErr != nil {
+				return fmt.Errorf("storage: resume sandbox %s: %w", e.id, createErr)
+			}
+			m.sessions[e.id] = &runningSession{id: e.id, kind: record.Kind, spec: record.Spec, runtime: runtime, started: record.Started, project: record.Project, expires: record.Expires}
+			continue
+		}
+		if e.status == "creating" || e.status == "deleting" || expired(e.record.Expires, time.Now()) {
 			if err = m.storage.discard(e.id); err != nil {
 				return err
 			}
@@ -250,6 +306,9 @@ func (m *Manager) recoverStorage(ctx context.Context) error {
 			return fmt.Errorf("storage: unknown sandbox status")
 		}
 		r := e.record
+		if r.Project == "" {
+			r.Project = "default"
+		}
 		if err = r.Spec.Validate(); err != nil {
 			return fmt.Errorf("storage: invalid spec for %s", e.id)
 		}
@@ -270,7 +329,7 @@ func (m *Manager) recoverStorage(ctx context.Context) error {
 		if e2 != nil {
 			return fmt.Errorf("storage: recover sandbox %s: %w", e.id, e2)
 		}
-		m.sessions[e.id] = &runningSession{id: e.id, kind: r.Kind, spec: r.Spec, runtime: runtime, started: r.Started}
+		m.sessions[e.id] = &runningSession{id: e.id, kind: r.Kind, spec: r.Spec, runtime: runtime, started: r.Started, project: r.Project, expires: r.Expires}
 	}
 	return nil
 }
@@ -303,4 +362,45 @@ func syncTreeDirectories(root string) error {
 		}
 	}
 	return nil
+}
+
+func (s *storage) lookupRequest(project, key, digest string) (storedSession, string, error) {
+	var id, saved, status string
+	err := s.db.QueryRow("SELECT id,digest,status FROM requests WHERE project=? AND key=?", project, key).Scan(&id, &saved, &status)
+	if err == sql.ErrNoRows {
+		return storedSession{}, "", nil
+	}
+	if err != nil {
+		return storedSession{}, "", err
+	}
+	if digest != "" && saved != digest {
+		return storedSession{}, "", problem(409, "idempotency key already used for different arguments")
+	}
+	record := storedSession{ID: id, Project: project}
+	var raw []byte
+	err = s.db.QueryRow("SELECT record FROM sessions WHERE id=?", id).Scan(&raw)
+	if err == sql.ErrNoRows {
+		return record, "closed", nil
+	}
+	if err != nil {
+		return record, "", err
+	}
+	if err = json.Unmarshal(raw, &record); err != nil {
+		return record, "", err
+	}
+	return record, status, nil
+}
+func (s *storage) renew(id string, expiry *time.Time) error {
+	var raw []byte
+	if err := s.db.QueryRow("SELECT record FROM sessions WHERE id=?", id).Scan(&raw); err != nil {
+		return err
+	}
+	var record storedSession
+	if err := json.Unmarshal(raw, &record); err != nil {
+		return err
+	}
+	record.Expires = expiry
+	raw, _ = json.Marshal(record)
+	_, err := s.db.Exec("UPDATE sessions SET record=? WHERE id=?", raw, id)
+	return err
 }

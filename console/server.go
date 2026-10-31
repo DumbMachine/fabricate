@@ -15,6 +15,13 @@ import (
 )
 
 func (m *Manager) Handler() http.Handler {
+	routes := m.controlRoutes()
+	mux := http.NewServeMux()
+	mux.Handle("/mcp", m.mcpHandler(routes))
+	mux.Handle("/", routes)
+	return m.consoleAuth(mux)
+}
+func (m *Manager) controlRoutes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /.well-known/fabricate", m.handleAgentIndex)
 	mux.HandleFunc("GET /api/resources/{id}/contract", m.handleContract)
@@ -26,12 +33,21 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("GET /api/scenarios/{id}", m.handleScenario)
 	mux.HandleFunc("GET /api/sessions", m.handleList)
 	mux.HandleFunc("POST /api/sessions", m.handleStart)
+	mux.HandleFunc("POST /api/sessions/{id}/renew", m.handleRenew)
+	mux.HandleFunc("POST /api/sessions/{id}/services/{service}/request", m.handleServiceRequest)
+	mux.HandleFunc("GET /api/requests/{key}", m.handleRequestStatus)
+	mux.HandleFunc("GET /api/projects", m.handleProjects)
+	mux.HandleFunc("POST /api/projects", m.handleProjects)
+	mux.HandleFunc("PATCH /api/projects/{project}", m.handleProjectUpdate)
+	mux.HandleFunc("GET /api/projects/{project}/tokens", m.handleProjectTokens)
+	mux.HandleFunc("POST /api/projects/{project}/tokens", m.handleProjectTokens)
+	mux.HandleFunc("DELETE /api/projects/{project}/tokens/{token}", m.handleProjectTokens)
 	mux.HandleFunc("GET /api/sessions/{id}", m.handleGet)
 	mux.HandleFunc("GET /api/sessions/{id}/logs", m.handleLogs)
 	mux.HandleFunc("DELETE /api/sessions/{id}", m.handleDelete)
 	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
-	return m.consoleAuth(mux)
+	return m.scopeControl(mux)
 }
 
 func (m *Manager) handleAgentIndex(w http.ResponseWriter, r *http.Request) {
@@ -40,15 +56,25 @@ func (m *Manager) handleAgentIndex(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, err)
 		return
 	}
-	sessions := m.List()
+	sessions := m.ListFor(r.Context())
 	for i := range sessions {
 		sessions[i] = m.present(sessions[i], r)
 	}
 	writeJSON(w, http.StatusOK, buildAgentIndex(m.Deployment(), catalog, sessions, joinIndexURL(m.publicBase(r))))
 }
 
-func (m *Manager) handleConfig(w http.ResponseWriter, _ *http.Request) {
-	writeJSON(w, http.StatusOK, m.Deployment())
+func (m *Manager) handleConfig(w http.ResponseWriter, r *http.Request) {
+	p := actor(r.Context())
+	project, err := m.project(r.Context(), p.Project)
+	if err != nil {
+		writeError(w, errorStatus(err), err)
+		return
+	}
+	writeJSON(w, 200, struct {
+		Deployment
+		Operator bool    `json:"operator"`
+		Project  Project `json:"project"`
+	}{m.Deployment(), p.Admin, project})
 }
 
 func (m *Manager) handleCatalog(w http.ResponseWriter, _ *http.Request) {
@@ -75,7 +101,7 @@ func (m *Manager) handleScenario(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Manager) handleList(w http.ResponseWriter, r *http.Request) {
-	sessions := m.List()
+	sessions := m.ListFor(r.Context())
 	for i := range sessions {
 		sessions[i] = m.present(sessions[i], r)
 	}
@@ -84,7 +110,7 @@ func (m *Manager) handleList(w http.ResponseWriter, r *http.Request) {
 
 func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
 	var request StartRequest
-	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<20))
+	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, 8<<20))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(&request); err != nil {
 		writeError(w, http.StatusBadRequest, fmt.Errorf("invalid start request"))
@@ -94,6 +120,13 @@ func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, fmt.Errorf("invalid start request"))
 		return
 	}
+	if key := r.Header.Get("Idempotency-Key"); key != "" {
+		if request.IdempotencyKey != "" && request.IdempotencyKey != key {
+			writeError(w, 400, fmt.Errorf("conflicting idempotency keys"))
+			return
+		}
+		request.IdempotencyKey = key
+	}
 	session, err := m.Start(r.Context(), request)
 	if err != nil {
 		status := http.StatusBadRequest
@@ -101,6 +134,10 @@ func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
 		var unknownScenario unknownScenarioError
 		if !errors.As(err, &unknownEnv) && !errors.As(err, &unknownScenario) && !isClientStartError(err) {
 			status = http.StatusInternalServerError
+		}
+		var coded apiError
+		if errors.As(err, &coded) {
+			status = coded.Status
 		}
 		writeError(w, status, err)
 		return
@@ -218,7 +255,7 @@ func (m *Manager) present(session Session, r *http.Request) Session {
 	}
 	session.Logs = strings.TrimRight(base, "/") + "/api/sessions/" + session.ID + "/logs"
 	session.ConnectShell = connectShell(session)
-	session.AgentPrompt = agentPrompt(session)
+	session.AgentPrompt = agentPrompt(session) + "\nFor lifecycle control, configure the Streamable HTTP MCP endpoint " + strings.TrimRight(base, "/") + "/mcp with a project control credential. This prompt does not include a control credential.\n"
 	return session
 }
 
