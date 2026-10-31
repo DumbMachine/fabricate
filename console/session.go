@@ -4,8 +4,10 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/dumbmachine/fabricate/scenario"
 	"sort"
 	"strings"
 	"sync"
@@ -18,8 +20,17 @@ import (
 const maxSessions = 16
 
 type StartRequest struct {
-	Kind string `json:"kind"`
-	ID   string `json:"id"`
+	Kind     string                    `json:"kind"`
+	ID       string                    `json:"id"`
+	Services map[string]ServiceRequest `json:"services,omitempty"`
+}
+
+// ServiceRequest composes existing provider behavior with a catalog baseline or
+// explicit state. No local filename, executable code or upstream credential.
+type ServiceRequest struct {
+	Resource string          `json:"resource"`
+	Scenario string          `json:"scenario"`
+	State    json.RawMessage `json:"state,omitempty"`
 }
 
 type Session struct {
@@ -106,13 +117,17 @@ func (m *Manager) Catalog() (Catalog, error) {
 func (m *Manager) Start(ctx context.Context, request StartRequest) (Session, error) {
 	spec, kind, err := m.resolve(request)
 	if err != nil {
-		return Session{}, err
+		return Session{}, invalidStartError{err}
+	}
+	documents, err := m.startDocuments(ctx, request, spec)
+	if err != nil {
+		return Session{}, invalidStartError{err}
 	}
 	proxy := m.proxyEnabled()
 	if err := m.reserve(); err != nil {
 		return Session{}, err
 	}
-	runtime, err := environment.Start(ctx, spec, m.registry, proxy)
+	runtime, err := environment.StartWithDocuments(ctx, spec, m.registry, proxy, documents)
 	if err != nil {
 		m.releaseReservation()
 		return Session{}, err
@@ -208,7 +223,19 @@ func (m *Manager) releaseReservation() {
 }
 
 func (m *Manager) resolve(request StartRequest) (environment.Spec, string, error) {
+	if request.Kind != "composition" && len(request.Services) != 0 {
+		return environment.Spec{}, "", fmt.Errorf("services require composition kind")
+	}
 	switch request.Kind {
+	case "composition":
+		spec := environment.Spec{APIVersion: environment.APIVersion, Kind: "Environment", Metadata: environment.Metadata{Name: request.ID}, Services: map[string]environment.ServiceSpec{}}
+		for name, service := range request.Services {
+			spec.Services[name] = environment.ServiceSpec{Resource: service.Resource, Scenario: service.Scenario}
+		}
+		if err := spec.Validate(); err != nil {
+			return environment.Spec{}, "", err
+		}
+		return spec, "environment", nil
 	case "environment":
 		if strings.TrimSpace(request.ID) == "" {
 			return environment.Spec{}, "", fmt.Errorf("environment id is required")
@@ -228,7 +255,7 @@ func (m *Manager) resolve(request StartRequest) (environment.Spec, string, error
 		}
 		return spec, "scenario", nil
 	default:
-		return environment.Spec{}, "", fmt.Errorf("kind must be \"environment\" or \"scenario\"")
+		return environment.Spec{}, "", fmt.Errorf("kind must be \"environment\", \"scenario\" or \"composition\"")
 	}
 }
 
@@ -390,3 +417,28 @@ func newID() (string, error) {
 	}
 	return hex.EncodeToString(buf[:]), nil
 }
+
+func (m *Manager) startDocuments(ctx context.Context, request StartRequest, spec environment.Spec) (map[string]scenario.Document, error) {
+	documents := map[string]scenario.Document{}
+	for name, service := range spec.Services {
+		resource, ok := m.registry.Get(service.Resource)
+		if !ok {
+			return nil, fmt.Errorf("unknown resource %q", service.Resource)
+		}
+		doc, err := resource.Scenario(service.Scenario)
+		if err != nil {
+			return nil, err
+		}
+		if state := request.Services[name].State; len(state) != 0 {
+			doc.State = state
+		}
+		if err := resource.Scenarios().Validate(ctx, doc); err != nil {
+			return nil, fmt.Errorf("service %q: %w", name, err)
+		}
+		documents[name] = doc
+	}
+	return documents, nil
+}
+
+// invalidStartError separates caller validation from provisioning failures.
+type invalidStartError struct{ error }

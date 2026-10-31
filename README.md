@@ -159,3 +159,6 @@ contributors. Public docs and the installer use `fab`.
 ## License
 
 MIT
+
+External applications and agents can use the [consumer HTTP API](docs/consumer-api.md)
+for contract discovery, custom state validation, composed sessions and state export.

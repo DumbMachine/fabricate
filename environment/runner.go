@@ -24,12 +24,44 @@ type Runtime struct {
 	Requests *requestlog.Log
 }
 
-func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enableProxy bool) (_ *Runtime, err error) {
+func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enableProxy bool) (*Runtime, error) {
+	return StartWithDocuments(ctx, spec, registry, enableProxy, nil)
+}
+
+// StartWithDocuments loads caller-supplied baselines through the same codec and
+// supervisor as catalog scenarios. It never evaluates code or reads caller paths.
+func StartWithDocuments(ctx context.Context, spec Spec, registry *httpresource.Registry, enableProxy bool, documents map[string]scenario.Document) (_ *Runtime, err error) {
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
 	if registry == nil {
 		return nil, fmt.Errorf("environment: resource registry is required")
+	}
+	resolved := map[string]scenario.Document{}
+	for name := range documents {
+		if _, ok := spec.Services[name]; !ok {
+			return nil, fmt.Errorf("environment: unknown baseline service %q", name)
+		}
+	}
+	for name, service := range spec.Services {
+		resource, ok := registry.Get(service.Resource)
+		if !ok {
+			return nil, fmt.Errorf("environment: unknown resource %q", service.Resource)
+		}
+		doc, supplied := documents[name]
+		if !supplied {
+			doc, err = ResolveScenario(resource, service)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if doc.ID != service.Scenario || doc.Resource != service.Resource {
+			return nil, fmt.Errorf("environment: baseline identity mismatch for %q", name)
+		}
+		if err := resource.Scenarios().Validate(ctx, doc); err != nil {
+			return nil, fmt.Errorf("environment: service %q: %w", name, err)
+		}
+		resolved[name] = doc
 	}
 	stateDir, err := os.MkdirTemp("", "fab-"+spec.Metadata.Name+"-")
 	if err != nil {
@@ -58,13 +90,7 @@ func Start(ctx context.Context, spec Spec, registry *httpresource.Registry, enab
 		if !ok {
 			return nil, fmt.Errorf("environment: service %q uses unknown resource %q", name, serviceSpec.Resource)
 		}
-		doc, err := ResolveScenario(resource, serviceSpec)
-		if err != nil {
-			return nil, fmt.Errorf("environment: service %q: %w", name, err)
-		}
-		if doc.Resource != resource.Descriptor().ID {
-			return nil, fmt.Errorf("environment: service %q scenario %q belongs to resource %q", name, doc.ID, doc.Resource)
-		}
+		doc := resolved[name]
 		service, err := httpengine.StartService(ctx, name, filepath.Join(stateDir, "services", name), resource, doc, runtime.Requests)
 		if err != nil {
 			return nil, err

@@ -1,6 +1,7 @@
 package console
 
 import (
+	"crypto/subtle"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 	"path"
 	"strings"
 )
@@ -17,6 +19,10 @@ import (
 func (m *Manager) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /.well-known/fabricate", m.handleAgentIndex)
+	mux.HandleFunc("GET /api/resources/{id}/contract", m.handleContract)
+	mux.HandleFunc("GET /api/scenarios/{id}/document", m.handleDocument)
+	mux.HandleFunc("POST /api/resources/{id}/validate", m.handleValidateState)
+	mux.HandleFunc("GET /api/sessions/{id}/state", m.handleState)
 	mux.HandleFunc("GET /api/config", m.handleConfig)
 	mux.HandleFunc("GET /api/catalog", m.handleCatalog)
 	mux.HandleFunc("GET /api/scenarios/{id}", m.handleScenario)
@@ -27,7 +33,17 @@ func (m *Manager) Handler() http.Handler {
 	mux.HandleFunc("DELETE /api/sessions/{id}", m.handleDelete)
 	mux.HandleFunc("/s/", m.proxyService)
 	mux.Handle("/", spaHandler(uiSub()))
-	return mux
+	token := os.Getenv("FAB_CONSOLE_TOKEN")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if token != "" && (strings.HasPrefix(r.URL.Path, "/api/") || r.URL.Path == "/.well-known/fabricate") {
+			if subtle.ConstantTimeCompare([]byte(r.Header.Get("Authorization")), []byte("Bearer "+token)) != 1 {
+				w.Header().Set("WWW-Authenticate", "Bearer")
+				http.Error(w, "control credential required", http.StatusUnauthorized)
+				return
+			}
+		}
+		mux.ServeHTTP(w, r)
+	})
 }
 
 func (m *Manager) handleAgentIndex(w http.ResponseWriter, r *http.Request) {
@@ -105,6 +121,10 @@ func (m *Manager) handleStart(w http.ResponseWriter, r *http.Request) {
 }
 
 func isClientStartError(err error) bool {
+	var invalid invalidStartError
+	if errors.As(err, &invalid) {
+		return true
+	}
 	message := err.Error()
 	return strings.Contains(message, "kind must be") ||
 		strings.Contains(message, "id is required") ||
