@@ -2,11 +2,14 @@ package metaads
 
 import (
 	"context"
+	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -55,13 +58,13 @@ func newServer(ctx context.Context, d httpresource.ServerDependencies) (*server,
 	s.handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		for key := range r.URL.Query() {
 			switch key {
-			case "fields", "level", "time_range", "access_token", "appsecret_proof":
+			case "fields", "level", "time_range", "access_token", "appsecret_proof", "limit", "after", "summary":
 			default:
 				writeGraphError(w, 400, "unsupported query parameter")
 				return
 			}
 		}
-		copy := r.Clone(r.Context())
+		copy := r.Clone(context.WithValue(r.Context(), pageRequestKey{}, r))
 		path := r.URL.Path
 		if strings.HasPrefix(path, "/v23.0/") {
 			path = strings.TrimPrefix(path, "/v23.0")
@@ -162,7 +165,14 @@ func (s *server) ListCampaigns(ctx context.Context, r generated.ListCampaignsReq
 		return convert[generated.ListCampaignsdefaultJSONResponse](providerError(400, "unsupported field")), nil
 	}
 	rows, err := s.list(ctx, "campaigns", r.AccountId)
-	return convert[generated.ListCampaigns200JSONResponse](map[string]any{"data": rows}), err
+	if err != nil {
+		return nil, err
+	}
+	page, err := pageRows(ctx, rows, r.Params.Limit, r.Params.After, "campaigns:"+r.AccountId)
+	if err != nil {
+		return convert[generated.ListCampaignsdefaultJSONResponse](providerError(400, "invalid pagination cursor")), nil
+	}
+	return convert[generated.ListCampaigns200JSONResponse](page), nil
 }
 func (s *server) ListAdSets(ctx context.Context, r generated.ListAdSetsRequestObject) (generated.ListAdSetsResponseObject, error) {
 	if _, err := s.get(ctx, "accounts", r.AccountId); errors.Is(err, sql.ErrNoRows) {
@@ -174,7 +184,14 @@ func (s *server) ListAdSets(ctx context.Context, r generated.ListAdSetsRequestOb
 		return convert[generated.ListAdSetsdefaultJSONResponse](providerError(400, "unsupported field")), nil
 	}
 	rows, err := s.list(ctx, "adsets", r.AccountId)
-	return convert[generated.ListAdSets200JSONResponse](map[string]any{"data": rows}), err
+	if err != nil {
+		return nil, err
+	}
+	page, err := pageRows(ctx, rows, r.Params.Limit, r.Params.After, "adsets:"+r.AccountId)
+	if err != nil {
+		return convert[generated.ListAdSetsdefaultJSONResponse](providerError(400, "invalid pagination cursor")), nil
+	}
+	return convert[generated.ListAdSets200JSONResponse](page), nil
 }
 func (s *server) GetInsights(ctx context.Context, r generated.GetInsightsRequestObject) (generated.GetInsightsResponseObject, error) {
 	if _, err := s.get(ctx, "accounts", r.AccountId); errors.Is(err, sql.ErrNoRows) {
@@ -205,7 +222,11 @@ func (s *server) GetInsights(ctx context.Context, r generated.GetInsightsRequest
 			selected = append(selected, row)
 		}
 	}
-	return convert[generated.GetInsights200JSONResponse](map[string]any{"data": selected}), nil
+	page, err := pageRows(ctx, selected, r.Params.Limit, r.Params.After, "insights:"+r.AccountId+":"+window.Since+":"+window.Until)
+	if err != nil {
+		return convert[generated.GetInsightsdefaultJSONResponse](providerError(400, "invalid pagination cursor")), nil
+	}
+	return convert[generated.GetInsights200JSONResponse](page), nil
 }
 func (s *server) UpdateAdSet(ctx context.Context, r generated.UpdateAdSetRequestObject) (generated.UpdateAdSetResponseObject, error) {
 	var budget int
@@ -235,4 +256,67 @@ func writeGraphError(w http.ResponseWriter, status int, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(map[string]any{"error": map[string]any{"message": message, "code": 100}})
+}
+
+// Cursors are opaque keyset positions bound to the account, edge and report
+// window. They are not credentials or cross-request snapshot guarantees.
+type pageRequestKey struct{}
+type pageCursor struct {
+	Scope string `json:"s"`
+	Last  string `json:"l"`
+}
+
+func pageRows(ctx context.Context, rows []map[string]any, requested *int, after *string, scope string) (map[string]any, error) {
+	limit := 100
+	if requested != nil {
+		limit = *requested
+	}
+	if limit < 1 || limit > 100 {
+		return nil, errors.New("invalid limit")
+	}
+	digest := sha256.Sum256([]byte(scope))
+	signature := base64.RawURLEncoding.EncodeToString(digest[:12])
+	start := 0
+	if after != nil && *after != "" {
+		raw, err := base64.RawURLEncoding.DecodeString(*after)
+		if err != nil {
+			return nil, err
+		}
+		var cursor pageCursor
+		if json.Unmarshal(raw, &cursor) != nil || cursor.Scope != signature || cursor.Last == "" {
+			return nil, errors.New("invalid cursor scope")
+		}
+		found := false
+		for i, row := range rows {
+			if row["id"] == cursor.Last {
+				start = i + 1
+				found = true
+				break
+			}
+		}
+		if !found {
+			return nil, errors.New("cursor position absent")
+		}
+	}
+	end := min(start+limit, len(rows))
+	next := ""
+	paging := map[string]any{}
+	if end < len(rows) {
+		raw, _ := json.Marshal(pageCursor{signature, rows[end-1]["id"].(string)})
+		next = base64.RawURLEncoding.EncodeToString(raw)
+		if request, ok := ctx.Value(pageRequestKey{}).(*http.Request); ok {
+			query := request.URL.Query()
+			query.Set("after", next)
+			query.Set("limit", strconv.Itoa(limit))
+			query.Del("access_token")
+			query.Del("appsecret_proof")
+			scheme := "http"
+			if request.TLS != nil {
+				scheme = "https"
+			}
+			paging["next"] = (&url.URL{Scheme: scheme, Host: request.Host, Path: request.URL.Path, RawQuery: query.Encode()}).String()
+		}
+	}
+	paging["cursors"] = map[string]any{"after": next}
+	return map[string]any{"data": rows[start:end], "paging": paging}, nil
 }

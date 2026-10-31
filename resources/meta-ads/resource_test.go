@@ -91,6 +91,8 @@ func TestBaselinesReadWriteIsolationAndProxy(t *testing.T) {
 				{"POST", "/" + account, `{"daily_budget":6400}`, 404},
 				{"GET", "/" + account + "/ads", "", 404},
 				{"GET", "/" + account + "/adsets?fields=targeting", "", 400},
+				{"GET", "/" + account + "/adsets?after=bad", "", 400},
+				{"GET", "/" + account + "/adsets?limit=101", "", 400},
 				{"GET", "/" + account + "/insights?level=campaign&time_range=%7B%7D", "", 400},
 				{"GET", "/" + account + "/insights?level=adset&time_range=%7B%7D", "", 400},
 			} {
@@ -103,6 +105,58 @@ func TestBaselinesReadWriteIsolationAndProxy(t *testing.T) {
 				t.Fatal(status, value)
 			} else if doc.ID == "meta-ads.food-publisher.v1" && len(value["data"].([]any)) != 3 {
 				t.Fatal("date filtering failed", value)
+			}
+			// Traverse every bounded page and prove no duplicates/skips for
+			// both unrelated and large account fixtures.
+			seen := map[string]bool{}
+			after := ""
+			for page := 0; ; page++ {
+				if page > 1000 {
+					t.Fatal("pagination did not terminate")
+				}
+				path := "/" + account + "/adsets?limit=2&summary=true"
+				if after != "" {
+					path += "&after=" + url.QueryEscape(after)
+				}
+				status, result := call(a, "GET", path, "", a.Token)
+				if status != 200 {
+					t.Fatal(status, result)
+				}
+				for _, item := range result["data"].([]any) {
+					id := item.(map[string]any)["id"].(string)
+					if seen[id] {
+						t.Fatal("duplicate across pages", id)
+					}
+					seen[id] = true
+				}
+				after = result["paging"].(map[string]any)["cursors"].(map[string]any)["after"].(string)
+				if after == "" {
+					break
+				}
+				if status, _ := call(a, "GET", "/"+account+"/campaigns?after="+url.QueryEscape(after), "", a.Token); status != 400 {
+					t.Fatal("cursor crossed edge", status)
+				}
+			}
+			var complete struct {
+				Adsets []struct {
+					ID      string `json:"id"`
+					Account string `json:"account_id"`
+				} `json:"adsets"`
+			}
+			if err = json.Unmarshal(doc.State, &complete); err != nil {
+				t.Fatal(err)
+			}
+			expected := 0
+			for _, row := range complete.Adsets {
+				if row.Account == account {
+					expected++
+					if !seen[row.ID] {
+						t.Fatal("skipped record", row.ID)
+					}
+				}
+			}
+			if len(seen) != expected {
+				t.Fatal("wrong account scope", len(seen), expected)
 			}
 			dumped, err := resource.Scenarios().Dump(ctx, a.State.DB(), doc.Metadata())
 			if err != nil {

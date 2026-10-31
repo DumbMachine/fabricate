@@ -140,6 +140,30 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1024
+            }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -156,10 +180,14 @@
                       "items": {
                         "$ref": "#/components/schemas/Campaign"
                       }
+                    },
+                    "paging": {
+                      "$ref": "#/components/schemas/Paging"
                     }
                   },
                   "required": [
-                    "data"
+                    "data",
+                    "paging"
                   ]
                 }
               }
@@ -197,6 +225,30 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1024
+            }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -213,10 +265,14 @@
                       "items": {
                         "$ref": "#/components/schemas/AdSet"
                       }
+                    },
+                    "paging": {
+                      "$ref": "#/components/schemas/Paging"
                     }
                   },
                   "required": [
-                    "data"
+                    "data",
+                    "paging"
                   ]
                 }
               }
@@ -273,6 +329,30 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 1024
+            }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -289,10 +369,14 @@
                       "items": {
                         "$ref": "#/components/schemas/Insight"
                       }
+                    },
+                    "paging": {
+                      "$ref": "#/components/schemas/Paging"
                     }
                   },
                   "required": [
-                    "data"
+                    "data",
+                    "paging"
                   ]
                 }
               }
@@ -518,6 +602,30 @@
         },
         "required": [
           "error"
+        ]
+      },
+      "Paging": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cursors": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "after"
+            ]
+          },
+          "next": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cursors"
         ]
       }
     }

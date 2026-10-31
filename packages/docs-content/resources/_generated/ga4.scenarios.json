@@ -10,6 +10,14 @@
       }
     },
     {
+      "id": "ga4.food-publisher-scale.v1",
+      "counts": {
+        "audienceExports": 0,
+        "events": 21899,
+        "properties": 3
+      }
+    },
+    {
       "id": "ga4.food-publisher.v1",
       "counts": {
         "audienceExports": 0,

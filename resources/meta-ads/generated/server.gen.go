@@ -191,14 +191,28 @@ type NodeCurrency string
 // NodeStatus defines model for Node.Status.
 type NodeStatus string
 
+// Paging defines model for Paging.
+type Paging struct {
+	Cursors struct {
+		After string `json:"after"`
+	} `json:"cursors"`
+	Next *string `json:"next,omitempty"`
+}
+
 // ListAdSetsParams defines parameters for ListAdSets.
 type ListAdSetsParams struct {
-	Fields *string `form:"fields,omitempty" json:"fields,omitempty"`
+	Fields  *string `form:"fields,omitempty" json:"fields,omitempty"`
+	Limit   *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	After   *string `form:"after,omitempty" json:"after,omitempty"`
+	Summary *bool   `form:"summary,omitempty" json:"summary,omitempty"`
 }
 
 // ListCampaignsParams defines parameters for ListCampaigns.
 type ListCampaignsParams struct {
-	Fields *string `form:"fields,omitempty" json:"fields,omitempty"`
+	Fields  *string `form:"fields,omitempty" json:"fields,omitempty"`
+	Limit   *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	After   *string `form:"after,omitempty" json:"after,omitempty"`
+	Summary *bool   `form:"summary,omitempty" json:"summary,omitempty"`
 }
 
 // GetInsightsParams defines parameters for GetInsights.
@@ -206,6 +220,9 @@ type GetInsightsParams struct {
 	Fields    *string                `form:"fields,omitempty" json:"fields,omitempty"`
 	Level     GetInsightsParamsLevel `form:"level" json:"level"`
 	TimeRange string                 `form:"time_range" json:"time_range"`
+	Limit     *int                   `form:"limit,omitempty" json:"limit,omitempty"`
+	After     *string                `form:"after,omitempty" json:"after,omitempty"`
+	Summary   *bool                  `form:"summary,omitempty" json:"summary,omitempty"`
 }
 
 // GetInsightsParamsLevel defines parameters for GetInsights.
@@ -281,6 +298,45 @@ func (siw *ServerInterfaceWrapper) ListAdSets(w http.ResponseWriter, r *http.Req
 		return
 	}
 
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "after" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "after", r.URL.Query(), &params.After, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "after"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "after", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "summary" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "summary", r.URL.Query(), &params.Summary, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "summary"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "summary", Err: err})
+		}
+		return
+	}
+
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListAdSets(w, r, accountId, params)
 	}))
@@ -319,6 +375,45 @@ func (siw *ServerInterfaceWrapper) ListCampaigns(w http.ResponseWriter, r *http.
 			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "fields"})
 		} else {
 			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "fields", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "after" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "after", r.URL.Query(), &params.After, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "after"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "after", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "summary" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "summary", r.URL.Query(), &params.Summary, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "summary"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "summary", Err: err})
 		}
 		return
 	}
@@ -387,6 +482,45 @@ func (siw *ServerInterfaceWrapper) GetInsights(w http.ResponseWriter, r *http.Re
 			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "time_range"})
 		} else {
 			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "time_range", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "after" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "after", r.URL.Query(), &params.After, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "after"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "after", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "summary" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "summary", r.URL.Query(), &params.Summary, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "summary"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "summary", Err: err})
 		}
 		return
 	}
@@ -609,7 +743,8 @@ type ListAdSetsResponseObject interface {
 }
 
 type ListAdSets200JSONResponse struct {
-	Data []AdSet `json:"data"`
+	Data   []AdSet `json:"data"`
+	Paging Paging  `json:"paging"`
 }
 
 func (response ListAdSets200JSONResponse) VisitListAdSetsResponse(w http.ResponseWriter) error {
@@ -651,7 +786,8 @@ type ListCampaignsResponseObject interface {
 }
 
 type ListCampaigns200JSONResponse struct {
-	Data []Campaign `json:"data"`
+	Data   []Campaign `json:"data"`
+	Paging Paging     `json:"paging"`
 }
 
 func (response ListCampaigns200JSONResponse) VisitListCampaignsResponse(w http.ResponseWriter) error {
@@ -693,7 +829,8 @@ type GetInsightsResponseObject interface {
 }
 
 type GetInsights200JSONResponse struct {
-	Data []Insight `json:"data"`
+	Data   []Insight `json:"data"`
+	Paging Paging    `json:"paging"`
 }
 
 func (response GetInsights200JSONResponse) VisitGetInsightsResponse(w http.ResponseWriter) error {
@@ -1027,24 +1164,26 @@ func (sh *strictHandler) UpdateAdSet(w http.ResponseWriter, r *http.Request, nod
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"7Fjbbhs3E36Vxfy5+1eHxlfZXsmOkQpoXCOuc1FDNShyJDHeJZkhKVs19O4FuQedVkrlBmnt1BfGmuSc",
-	"vvlmOPQjcF0YrVA5C9kjWD7DgsXPgbhCFz6YENJJrVh+SdogOYkWsgnLLaZg1pYegXGuvXK3UoS/DHMO",
-	"SUEGv98MOr+xzh/9zpvbzuj/ryAFtzAIGVhHUk1hmQJnhWFyqp4kLJjMF7djL6alz+vS/c6bPVJPsaRY",
-	"gUFqZ8M65nxEAZUvILuBwdmvw4/nkMLl4Prq/C2kMPhw9tPw4/lbGO1oXqZA+NlLQhFkpYB0Hc5NfCo3",
-	"GqNbAKy06/En5C64d9pgc0Q+t2Et2IMsQnA/9KufFAqpmrXGrlQOp0g7YX3RzbMqym9IvGfFgs28tyF4",
-	"TqTpSPjwCTJci3UImoynUKC1bNqGz1Z49cG0VLYbzdb50s22oIfKyuns77WrnVwyYXHv5la72t3PJb+z",
-	"rVuCOby1jpE7tK1N6+4kAIKKL1p3ZWEIrZVatZu2BpX4cmIONJ4GlI041r3e9KJBoja+HkJbKi8qXv1L",
-	"bhbuiWq465K+vgplPLz4ACmcX4ff704vW6r5pd5L0VZrtVrknqRbXIU5oszcGBkhDbybNQNGECqXV5HM",
-	"nDOwDDqkmuh4+aDlJE2oZchgUBIgTepspgkTHYsuYUokgX2iXpBlM7AJIRP2x4SNrc69wyRmo1NmI/Em",
-	"CNlucqETJhKBuZwjLdLEMZqik2qaJmOZ5/Hjl+B/mjDnSI59cCnhLOc+Z/FbU+KV9cZoCn6gmKLthtik",
-	"y0Nw79Gx5D2ju6g3GVwOE+4p+myZEmP9ACnMkWwZ6/z1SbcfcqcNKmYkZHDS7XdPIA2kmEVYe4+rklj2",
-	"YlXG9YpooXaib0MBGfwsrYvznI0qiBXokCxkN48gg8Wgtk5stln+q+w78phWI+KxBF2mlaXPHmmxMjWR",
-	"mIvYHBq125Kj4IM1WtmSUK/7/fL+UQ5V2fKNySWP4fY+Wa1Wk+zR846LItJhERdeEU4gg//1VmNyr5qR",
-	"e+WAvGxCZURs0TLxONZWK6E5bBD8qqGPIT2XAimpw46dBCfM5+6oyA95X44Jx/oRz29Sr67Hw+w7a079",
-	"R8CvRcBmVv7uOVh3/L0UfIduWJ95fgTcI5njHPOD/tU3frweWi/3ds1OFnhLTMXZfL/651Io9evgu6wT",
-	"pQWGIjlUG3Hm/it1USl7CV35EOARj+eb9xSMti2Zvo4jbzm3/CPZHpWa0LpTLRZfDafqf1sh8HUlD537",
-	"+/vORFPR8ZSj4lqgeILW5Xb8y2/X56znHO36Y36sdY5M7TSv+uRL6l9rL8rI0fW35M0o0MkizWsGe8qr",
-	"h6TNer0pMTPrThjHsdZ3Xa6LXvWuGi3/DAAA//8=",
+	"7FhLbxs3EP4ri2luXT1i9xL1JDtGKiBxjbjOoYZqUMvRivEuyQxJ2aqh/16Q+9BKWsuWU+Rh2AdjRXKG",
+	"M9/MfBzyDhKVayVRWgODOzDJDHMWPof8HK3/YJwLK5Rk2RkpjWQFGhhMWWYwBt0YugOWJMpJeyW4/6WZ",
+	"tUgSBvDP5bDzN+v82++8ueqMf30FMdiFRhiAsSRkCssYEpZrJlL5JGHORLa4mjieFjY3pfudN/dIPWUn",
+	"yXL0UlsTxjLrAgooXQ6DSxge/zX6dAIxnA0vzk/eQgzDj8d/jD6dvIXxluZlDIRfnCDkXlZwiJtwruNT",
+	"mlFvugHASruafMbEevOOamz2iOcmrDm7Fbl37nW//IshF7Ieq/cV0mKKtOXWg2Yel15+w8T7qbJgPe5t",
+	"CJ4QKdoTPnyCTKJ4E4I64jHkaAxL2/DZcK9aGBfKtr3ZWF+Y2eb0SBqRzr6OrrZiybjBeyc36Gp7PhPJ",
+	"tWmd4szilbGM7K5ppVtnpx4QlMmidVbkmtAYoWT71kaj5A8HZgfx1KCs+dG0et2KGolq86YLbaE8LfPq",
+	"BzlZEkdUwV2V9MW5L+PR6UeI4eTC/393dNZSzc/1XAp7tcXujKVeaE8icWQUmX1rd2qRHpHJYVmbrRJv",
+	"7cPylXGt3GQwcSTs4tx3TYVZE2SENHR2VrdTXqgYXsVtZq2Gpdch5FSFoxZNQkJ772EAwyLd46jK3Thi",
+	"vGPQRkzyyNcarwZEQX0mImTc/B6xiVGZsxiF3OsUuRc57YVMNzpVEeMRx0zMkRZxZBmlaIVM42gisix8",
+	"/OntjyNmLYmJ8yZFCcsSl7HwrShy0jitFXk7kKdout43YTPv3Ae0LPrA6DrojYZnoyhxFGw2TPKJuoUY",
+	"5kim8HV+cNjt+4gojZJpAQM47Pa7hxD7EpgFWHt3KwJY9gIHhfGyrHxiBNtGHAbwXhgbulcTVBDL0aJP",
+	"sMs7EH5Hr7ZK48E62a1ib8lhXDbE+5bjMi53+uKQFqutpgIzHqiwVvtIyUzkwq4JNnuxZhfW1oO16yxq",
+	"Y0Pne5SpT97X/YPfHu2XcXnOwsCWYxOlMmQSlsuxR9doJU1RKgf9ftFHSIuyOLq1zkQSAtn7bJRc3Uj2",
+	"7lttEBEW8zDwinAKA/ilt7ru9Mq7Tq+46CxrZxkRW/jfumazXeIl5213upZBraOFPvzpsFbz53VFaVJz",
+	"wZGiCq9wlOCUuczuBdkuu4s+cV87wvr1aqwoandBHterXmrypSYfSs76GvhSlk8ty6ovuLcq36EdVWue",
+	"T03iHLOd9lVdcGgiWhveds1W5HhFTIb76v3qX7jje3NH9RbwQh37UIdUHD1v7KKLcDV/DFWUyn4Envja",
+	"LN0FeMDj5417DFqZlkhfhLti0RZ/l2iPC01o7JHii/8Np/IJ3DveVHLbubm56UwV5R1HGcpEceRP0Lrc",
+	"9H/57QjSuCRBY1p5ep3FqpXPib8aTzEhR5uPMJdjn04GaV5lsKOsfIExg14vJaZn3SlLcKLUdTdRea98",
+	"kBgv/wsAAP//",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

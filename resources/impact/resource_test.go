@@ -108,7 +108,7 @@ func request(t *testing.T, handler http.Handler, method, path, body, token strin
 
 func TestScenariosValidateAndRoundTrip(t *testing.T) {
 	codec := scenarioCodec{}
-	for _, name := range []string{"minimal.v1.json", "acme-partners.v1.json", "food-publisher.v1.json"} {
+	for _, name := range []string{"minimal.v1.json", "acme-partners.v1.json", "food-publisher.v1.json", "food-publisher-scale.v1.json"} {
 		t.Run(name, func(t *testing.T) {
 			doc := loadScenario(t, name)
 			if err := codec.Validate(context.Background(), doc); err != nil {

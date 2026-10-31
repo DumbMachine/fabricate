@@ -13,8 +13,12 @@ authentication are supported; JSON and form budget bodies use account minor
 units. Writes change stored configuration only. Insights are seeded observations
 and do not change when a budget is saved. No real ad delivery or money movement.
 
+Lists support bounded `limit` (1–100) and opaque forward `after` cursors, in
+the `paging.cursors.after` / `paging.next` shape used by the official SDK.
+An empty terminal cursor means complete. Cursors bind the account, edge and
+report window; writes between pages do not provide snapshot isolation.
+
 Only the declared fields, adset insight level and explicit time_range are
 supported. Reads return the curated record shape. Unknown query parameters,
-fields, endpoints, accounts and malformed writes fail. OAuth, pagination,
-targeting, ad creation, billing, attribution calculations and rate limits are not
+fields, endpoints, accounts and malformed writes fail. OAuth, targeting, ad creation, billing, attribution calculations and rate limits are not
 implemented. Scenario account/campaign/ad-set IDs are data, never dispatch rules.

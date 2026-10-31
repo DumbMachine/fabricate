@@ -5,10 +5,10 @@ metadata:
 services:
   ads:
     resource: meta-ads
-    scenario: meta-ads.food-publisher.v1
+    scenario: meta-ads.food-publisher-scale.v1
   analytics:
     resource: ga4
-    scenario: ga4.food-publisher.v1
+    scenario: ga4.food-publisher-scale.v1
   affiliate:
     resource: impact
-    scenario: impact.food-publisher.v1
+    scenario: impact.food-publisher-scale.v1

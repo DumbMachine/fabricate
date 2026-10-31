@@ -2,6 +2,15 @@
   "integration": "meta-ads",
   "scenarios": [
     {
+      "id": "meta-ads.food-publisher-scale.v1",
+      "counts": {
+        "accounts": 3,
+        "adsets": 210,
+        "campaigns": 72,
+        "insights": 24631
+      }
+    },
+    {
       "id": "meta-ads.food-publisher.v1",
       "counts": {
         "accounts": 1,
