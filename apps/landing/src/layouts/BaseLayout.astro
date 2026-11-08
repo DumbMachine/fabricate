@@ -8,10 +8,10 @@ interface Props {
 
 const {
   title = "Fabricate - API sandboxes for your agents and integrations",
-  description = "Reproducible environments with real, stateful data for testing APIs and agents.",
+  description = "You build agents. We fabricate their world. Open-source, stateful API sandboxes for testing agents and integrations, reset to the same baseline on every run.",
 } = Astro.props;
 const isDevelopment = import.meta.env.PUBLIC_FABRICATE_SITE_MODE === "development";
-const mark = isDevelopment ? "/fabricate-mark-dev.svg" : "/fabricate-mark.svg";
+const favicon = isDevelopment ? "/fabricate-favicon-dev.svg" : "/fabricate-favicon.svg";
 ---
 
 <!doctype html>
@@ -21,7 +21,7 @@ const mark = isDevelopment ? "/fabricate-mark-dev.svg" : "/fabricate-mark.svg";
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#e8ff6a" />
-    <link rel="icon" href={mark} type="image/svg+xml" />
+    <link rel="icon" href={favicon} type="image/svg+xml" />
     <title>{title}</title>
   </head>
   <body>
