@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "search-console.minimal.v1",
+  "$resource": "search-console",
+  "$resourceVersion": "v1",
+  "state": {
+    "rows": []
+  }
+}

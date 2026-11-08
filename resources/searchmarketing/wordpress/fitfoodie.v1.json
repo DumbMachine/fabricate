@@ -1,0 +1,107 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "wordpress.fitfoodie.v1",
+  "$resource": "wordpress",
+  "$resourceVersion": "v1",
+  "state": {
+    "posts": [
+      {
+        "id": 1,
+        "slug": "beef-chili",
+        "link": "https://fitfoodiefinds.com/beef-chili/",
+        "status": "publish",
+        "title": {
+          "raw": "5-Star, Award-Winning Beef Chili",
+          "rendered": "5-Star, Award-Winning Beef Chili"
+        },
+        "content": {
+          "raw": "<h1>5-Star, Award-Winning Beef Chili</h1><p>A tested recipe from our kitchen. Follow the recipe card for ingredients and cooking instructions.</p>",
+          "rendered": "<h1>5-Star, Award-Winning Beef Chili</h1><p>A tested recipe from our kitchen.</p>"
+        },
+        "modified_gmt": "2026-09-15T12:00:00",
+        "meta": {}
+      },
+      {
+        "id": 2,
+        "slug": "overnight-oats",
+        "link": "https://fitfoodiefinds.com/overnight-oats/",
+        "status": "publish",
+        "title": {
+          "raw": "Easy Overnight Oats",
+          "rendered": "Easy Overnight Oats"
+        },
+        "content": {
+          "raw": "<h1>Easy Overnight Oats</h1><p>A tested recipe from our kitchen. Follow the recipe card for ingredients and cooking instructions.</p>",
+          "rendered": "<h1>Easy Overnight Oats</h1><p>A tested recipe from our kitchen.</p>"
+        },
+        "modified_gmt": "2026-09-15T12:00:00",
+        "meta": {}
+      },
+      {
+        "id": 3,
+        "slug": "protein-pancakes",
+        "link": "https://fitfoodiefinds.com/protein-pancakes/",
+        "status": "publish",
+        "title": {
+          "raw": "Fluffy Protein Pancakes",
+          "rendered": "Fluffy Protein Pancakes"
+        },
+        "content": {
+          "raw": "<h1>Fluffy Protein Pancakes</h1><p>A tested recipe from our kitchen. Follow the recipe card for ingredients and cooking instructions.</p>",
+          "rendered": "<h1>Fluffy Protein Pancakes</h1><p>A tested recipe from our kitchen.</p>"
+        },
+        "modified_gmt": "2026-09-15T12:00:00",
+        "meta": {}
+      },
+      {
+        "id": 4,
+        "slug": "chicken-meal-prep",
+        "link": "https://fitfoodiefinds.com/chicken-meal-prep/",
+        "status": "publish",
+        "title": {
+          "raw": "Chicken Meal Prep Bowls",
+          "rendered": "Chicken Meal Prep Bowls"
+        },
+        "content": {
+          "raw": "<h1>Chicken Meal Prep Bowls</h1><p>A tested recipe from our kitchen. Follow the recipe card for ingredients and cooking instructions.</p>",
+          "rendered": "<h1>Chicken Meal Prep Bowls</h1><p>A tested recipe from our kitchen.</p>"
+        },
+        "modified_gmt": "2026-09-15T12:00:00",
+        "meta": {}
+      },
+      {
+        "id": 5,
+        "slug": "banana-bread",
+        "link": "https://fitfoodiefinds.com/banana-bread/",
+        "status": "publish",
+        "title": {
+          "raw": "Healthy Banana Bread",
+          "rendered": "Healthy Banana Bread"
+        },
+        "content": {
+          "raw": "<h1>Healthy Banana Bread</h1><p>A tested recipe from our kitchen. Follow the recipe card for ingredients and cooking instructions.</p>",
+          "rendered": "<h1>Healthy Banana Bread</h1><p>A tested recipe from our kitchen.</p>"
+        },
+        "modified_gmt": "2026-09-15T12:00:00",
+        "meta": {}
+      },
+      {
+        "id": 6,
+        "slug": "pumpkin-muffins",
+        "link": "https://fitfoodiefinds.com/pumpkin-muffins/",
+        "status": "publish",
+        "title": {
+          "raw": "Healthy Pumpkin Muffins",
+          "rendered": "Healthy Pumpkin Muffins"
+        },
+        "content": {
+          "raw": "<h1>Healthy Pumpkin Muffins</h1><p>A tested recipe from our kitchen. Follow the recipe card for ingredients and cooking instructions.</p>",
+          "rendered": "<h1>Healthy Pumpkin Muffins</h1><p>A tested recipe from our kitchen.</p>"
+        },
+        "modified_gmt": "2026-09-15T12:00:00",
+        "meta": {}
+      }
+    ]
+  }
+}

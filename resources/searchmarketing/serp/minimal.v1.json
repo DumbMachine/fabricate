@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "serp.minimal.v1",
+  "$resource": "serp",
+  "$resourceVersion": "v1",
+  "state": {
+    "results": []
+  }
+}

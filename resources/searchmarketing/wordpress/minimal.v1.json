@@ -1,0 +1,10 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "wordpress.minimal.v1",
+  "$resource": "wordpress",
+  "$resourceVersion": "v1",
+  "state": {
+    "posts": []
+  }
+}

@@ -1,0 +1,41 @@
+apiVersion: fabricate.dev/v1alpha1
+kind: Environment
+metadata:
+  name: fitfoodie-backends
+services:
+  ga4:
+    resource: ga4
+    scenario: ga4.acme-properties.v1
+  shopify:
+    resource: shopify
+    scenario: shopify.acme-goods.v1
+  impact:
+    resource: impact
+    scenario: impact.acme-partners.v1
+  inbox:
+    resource: intercom
+    scenario: intercom.acme-inbox.v1
+  board:
+    resource: asana
+    scenario: asana.acme-sprint.v1
+  crm:
+    resource: hubspot
+    scenario: hubspot.acme-pipeline.v1
+  drive:
+    resource: googledrive
+    scenario: googledrive.acme-drive.v1
+  vanta:
+    resource: vanta
+    scenario: vanta.acme-compliance.v1
+  ironclad:
+    resource: ironclad
+    scenario: ironclad.acme-contracts.v1
+  search-console:
+    resource: search-console
+    scenario: search-console.fitfoodie.v1
+  serp:
+    resource: serp
+    scenario: serp.fitfoodie.v1
+  wordpress:
+    resource: wordpress
+    scenario: wordpress.fitfoodie.v1
