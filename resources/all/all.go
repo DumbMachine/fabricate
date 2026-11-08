@@ -40,6 +40,7 @@ import (
 	"github.com/dumbmachine/fabricate/resources/razorpay"
 	"github.com/dumbmachine/fabricate/resources/redshift"
 	"github.com/dumbmachine/fabricate/resources/resend"
+	"github.com/dumbmachine/fabricate/resources/searchmarketing"
 	"github.com/dumbmachine/fabricate/resources/sendgrid"
 	"github.com/dumbmachine/fabricate/resources/shiprocket"
 	"github.com/dumbmachine/fabricate/resources/shopify"
@@ -86,6 +87,9 @@ func Registry() *httpresource.Registry {
 		razorpay.NewResource(),
 		redshift.NewResource(),
 		resend.NewResource(),
+		searchmarketing.New("search-console"),
+		searchmarketing.New("serp"),
+		searchmarketing.New("wordpress"),
 		sendgrid.NewResource(),
 		shiprocket.NewResource(),
 		shopify.NewResource(),

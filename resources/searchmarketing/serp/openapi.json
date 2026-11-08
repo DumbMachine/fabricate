@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Google organic SERP bounded sandbox",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.dataforseo.com"
+    }
+  ],
+  "paths": {
+    "/v3/serp/google/organic/live/advanced": {
+      "post": {
+        "operationId": "serp.google.organic.live.advanced",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 10,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "keyword",
+                    "location_code",
+                    "language_code"
+                  ],
+                  "properties": {
+                    "keyword": {
+                      "type": "string"
+                    },
+                    "location_code": {
+                      "type": "integer"
+                    },
+                    "language_code": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access-readonly": true
+      }
+    }
+  }
+}

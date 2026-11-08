@@ -1,0 +1,350 @@
+{
+  "$contract": "fabricate.scenario",
+  "$contractVersion": 1,
+  "$id": "serp.fitfoodie.v1",
+  "$resource": "serp",
+  "$resourceVersion": "v1",
+  "state": {
+    "results": [
+      {
+        "keyword": "best beef chili recipe",
+        "location_code": 2840,
+        "language_code": "en",
+        "datetime": "2026-10-09 12:00:00 +00:00",
+        "items_count": 4,
+        "items": [
+          {
+            "type": "organic",
+            "rank_group": 1,
+            "rank_absolute": 1,
+            "domain": "www.wellplated.com",
+            "url": "https://www.wellplated.com/beef-chili/",
+            "title": "Best Beef Chili Recipe",
+            "description": "Recipe guide with tested ingredients, clear steps and FAQs."
+          },
+          {
+            "type": "organic",
+            "rank_group": 2,
+            "rank_absolute": 2,
+            "domain": "www.ambitiouskitchen.com",
+            "url": "https://www.ambitiouskitchen.com/beef-chili/",
+            "title": "Best Beef Chili Recipe (easy & healthy)",
+            "description": "Step-by-step recipe with substitutions."
+          },
+          {
+            "type": "organic",
+            "rank_group": 9,
+            "rank_absolute": 10,
+            "domain": "fitfoodiefinds.com",
+            "url": "https://fitfoodiefinds.com/beef-chili/",
+            "title": "5-Star, Award-Winning Beef Chili",
+            "description": "A recipe from Fit Foodie Finds."
+          },
+          {
+            "type": "ai_overview",
+            "rank_group": 1,
+            "rank_absolute": 0,
+            "text": "Recipe answers emphasize tested methods, practical ingredient substitutions, and clear cooking instructions.",
+            "references": [
+              {
+                "title": "Best Beef Chili Recipe",
+                "url": "https://www.wellplated.com/beef-chili/",
+                "domain": "www.wellplated.com"
+              },
+              {
+                "title": "Best Beef Chili Recipe",
+                "url": "https://www.ambitiouskitchen.com/beef-chili/",
+                "domain": "www.ambitiouskitchen.com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "keyword": "overnight oats",
+        "location_code": 2840,
+        "language_code": "en",
+        "datetime": "2026-10-09 12:00:00 +00:00",
+        "items_count": 4,
+        "items": [
+          {
+            "type": "organic",
+            "rank_group": 1,
+            "rank_absolute": 1,
+            "domain": "www.wellplated.com",
+            "url": "https://www.wellplated.com/overnight-oats/",
+            "title": "Easy Overnight Oats",
+            "description": "Recipe guide with tested ingredients, clear steps and FAQs."
+          },
+          {
+            "type": "organic",
+            "rank_group": 2,
+            "rank_absolute": 2,
+            "domain": "www.ambitiouskitchen.com",
+            "url": "https://www.ambitiouskitchen.com/overnight-oats/",
+            "title": "Easy Overnight Oats (easy & healthy)",
+            "description": "Step-by-step recipe with substitutions."
+          },
+          {
+            "type": "organic",
+            "rank_group": 6,
+            "rank_absolute": 7,
+            "domain": "fitfoodiefinds.com",
+            "url": "https://fitfoodiefinds.com/overnight-oats/",
+            "title": "Easy Overnight Oats",
+            "description": "A recipe from Fit Foodie Finds."
+          },
+          {
+            "type": "ai_overview",
+            "rank_group": 1,
+            "rank_absolute": 0,
+            "text": "Recipe answers emphasize tested methods, practical ingredient substitutions, and clear cooking instructions.",
+            "references": [
+              {
+                "title": "Easy Overnight Oats",
+                "url": "https://www.wellplated.com/overnight-oats/",
+                "domain": "www.wellplated.com"
+              },
+              {
+                "title": "Easy Overnight Oats",
+                "url": "https://www.ambitiouskitchen.com/overnight-oats/",
+                "domain": "www.ambitiouskitchen.com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "keyword": "protein pancakes",
+        "location_code": 2840,
+        "language_code": "en",
+        "datetime": "2026-10-09 12:00:00 +00:00",
+        "items_count": 4,
+        "items": [
+          {
+            "type": "organic",
+            "rank_group": 1,
+            "rank_absolute": 1,
+            "domain": "www.wellplated.com",
+            "url": "https://www.wellplated.com/protein-pancakes/",
+            "title": "Fluffy Protein Pancakes",
+            "description": "Recipe guide with tested ingredients, clear steps and FAQs."
+          },
+          {
+            "type": "organic",
+            "rank_group": 2,
+            "rank_absolute": 2,
+            "domain": "www.ambitiouskitchen.com",
+            "url": "https://www.ambitiouskitchen.com/protein-pancakes/",
+            "title": "Fluffy Protein Pancakes (easy & healthy)",
+            "description": "Step-by-step recipe with substitutions."
+          },
+          {
+            "type": "organic",
+            "rank_group": 5,
+            "rank_absolute": 6,
+            "domain": "fitfoodiefinds.com",
+            "url": "https://fitfoodiefinds.com/protein-pancakes/",
+            "title": "Fluffy Protein Pancakes",
+            "description": "A recipe from Fit Foodie Finds."
+          },
+          {
+            "type": "ai_overview",
+            "rank_group": 1,
+            "rank_absolute": 0,
+            "text": "Recipe answers emphasize tested methods, practical ingredient substitutions, and clear cooking instructions.",
+            "references": [
+              {
+                "title": "Fluffy Protein Pancakes",
+                "url": "https://www.wellplated.com/protein-pancakes/",
+                "domain": "www.wellplated.com"
+              },
+              {
+                "title": "Fluffy Protein Pancakes",
+                "url": "https://www.ambitiouskitchen.com/protein-pancakes/",
+                "domain": "www.ambitiouskitchen.com"
+              },
+              {
+                "title": "Fluffy Protein Pancakes",
+                "url": "https://fitfoodiefinds.com/protein-pancakes/",
+                "domain": "fitfoodiefinds.com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "keyword": "healthy chicken meal prep",
+        "location_code": 2840,
+        "language_code": "en",
+        "datetime": "2026-10-09 12:00:00 +00:00",
+        "items_count": 4,
+        "items": [
+          {
+            "type": "organic",
+            "rank_group": 1,
+            "rank_absolute": 1,
+            "domain": "www.wellplated.com",
+            "url": "https://www.wellplated.com/chicken-meal-prep/",
+            "title": "Chicken Meal Prep Bowls",
+            "description": "Recipe guide with tested ingredients, clear steps and FAQs."
+          },
+          {
+            "type": "organic",
+            "rank_group": 2,
+            "rank_absolute": 2,
+            "domain": "www.ambitiouskitchen.com",
+            "url": "https://www.ambitiouskitchen.com/chicken-meal-prep/",
+            "title": "Chicken Meal Prep Bowls (easy & healthy)",
+            "description": "Step-by-step recipe with substitutions."
+          },
+          {
+            "type": "organic",
+            "rank_group": 10,
+            "rank_absolute": 11,
+            "domain": "fitfoodiefinds.com",
+            "url": "https://fitfoodiefinds.com/chicken-meal-prep/",
+            "title": "Chicken Meal Prep Bowls",
+            "description": "A recipe from Fit Foodie Finds."
+          },
+          {
+            "type": "ai_overview",
+            "rank_group": 1,
+            "rank_absolute": 0,
+            "text": "Recipe answers emphasize tested methods, practical ingredient substitutions, and clear cooking instructions.",
+            "references": [
+              {
+                "title": "Chicken Meal Prep Bowls",
+                "url": "https://www.wellplated.com/chicken-meal-prep/",
+                "domain": "www.wellplated.com"
+              },
+              {
+                "title": "Chicken Meal Prep Bowls",
+                "url": "https://www.ambitiouskitchen.com/chicken-meal-prep/",
+                "domain": "www.ambitiouskitchen.com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "keyword": "healthy banana bread",
+        "location_code": 2840,
+        "language_code": "en",
+        "datetime": "2026-10-09 12:00:00 +00:00",
+        "items_count": 4,
+        "items": [
+          {
+            "type": "organic",
+            "rank_group": 1,
+            "rank_absolute": 1,
+            "domain": "www.wellplated.com",
+            "url": "https://www.wellplated.com/banana-bread/",
+            "title": "Healthy Banana Bread",
+            "description": "Recipe guide with tested ingredients, clear steps and FAQs."
+          },
+          {
+            "type": "organic",
+            "rank_group": 2,
+            "rank_absolute": 2,
+            "domain": "www.ambitiouskitchen.com",
+            "url": "https://www.ambitiouskitchen.com/banana-bread/",
+            "title": "Healthy Banana Bread (easy & healthy)",
+            "description": "Step-by-step recipe with substitutions."
+          },
+          {
+            "type": "organic",
+            "rank_group": 4,
+            "rank_absolute": 5,
+            "domain": "fitfoodiefinds.com",
+            "url": "https://fitfoodiefinds.com/banana-bread/",
+            "title": "Healthy Banana Bread",
+            "description": "A recipe from Fit Foodie Finds."
+          },
+          {
+            "type": "ai_overview",
+            "rank_group": 1,
+            "rank_absolute": 0,
+            "text": "Recipe answers emphasize tested methods, practical ingredient substitutions, and clear cooking instructions.",
+            "references": [
+              {
+                "title": "Healthy Banana Bread",
+                "url": "https://www.wellplated.com/banana-bread/",
+                "domain": "www.wellplated.com"
+              },
+              {
+                "title": "Healthy Banana Bread",
+                "url": "https://www.ambitiouskitchen.com/banana-bread/",
+                "domain": "www.ambitiouskitchen.com"
+              },
+              {
+                "title": "Healthy Banana Bread",
+                "url": "https://fitfoodiefinds.com/banana-bread/",
+                "domain": "fitfoodiefinds.com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "keyword": "healthy pumpkin muffins",
+        "location_code": 2840,
+        "language_code": "en",
+        "datetime": "2026-10-09 12:00:00 +00:00",
+        "items_count": 4,
+        "items": [
+          {
+            "type": "organic",
+            "rank_group": 1,
+            "rank_absolute": 1,
+            "domain": "www.wellplated.com",
+            "url": "https://www.wellplated.com/pumpkin-muffins/",
+            "title": "Healthy Pumpkin Muffins",
+            "description": "Recipe guide with tested ingredients, clear steps and FAQs."
+          },
+          {
+            "type": "organic",
+            "rank_group": 2,
+            "rank_absolute": 2,
+            "domain": "www.ambitiouskitchen.com",
+            "url": "https://www.ambitiouskitchen.com/pumpkin-muffins/",
+            "title": "Healthy Pumpkin Muffins (easy & healthy)",
+            "description": "Step-by-step recipe with substitutions."
+          },
+          {
+            "type": "organic",
+            "rank_group": 5,
+            "rank_absolute": 6,
+            "domain": "fitfoodiefinds.com",
+            "url": "https://fitfoodiefinds.com/pumpkin-muffins/",
+            "title": "Healthy Pumpkin Muffins",
+            "description": "A recipe from Fit Foodie Finds."
+          },
+          {
+            "type": "ai_overview",
+            "rank_group": 1,
+            "rank_absolute": 0,
+            "text": "Recipe answers emphasize tested methods, practical ingredient substitutions, and clear cooking instructions.",
+            "references": [
+              {
+                "title": "Healthy Pumpkin Muffins",
+                "url": "https://www.wellplated.com/pumpkin-muffins/",
+                "domain": "www.wellplated.com"
+              },
+              {
+                "title": "Healthy Pumpkin Muffins",
+                "url": "https://www.ambitiouskitchen.com/pumpkin-muffins/",
+                "domain": "www.ambitiouskitchen.com"
+              },
+              {
+                "title": "Healthy Pumpkin Muffins",
+                "url": "https://fitfoodiefinds.com/pumpkin-muffins/",
+                "domain": "fitfoodiefinds.com"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
