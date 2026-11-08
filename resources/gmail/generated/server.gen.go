@@ -65,6 +65,24 @@ func (e Format) Valid() bool {
 	}
 }
 
+// Defines values for GmailUsersMessagesInsertParamsInternalDateSource.
+const (
+	DateHeader   GmailUsersMessagesInsertParamsInternalDateSource = "dateHeader"
+	ReceivedTime GmailUsersMessagesInsertParamsInternalDateSource = "receivedTime"
+)
+
+// Valid indicates whether the value is a known member of the GmailUsersMessagesInsertParamsInternalDateSource enum.
+func (e GmailUsersMessagesInsertParamsInternalDateSource) Valid() bool {
+	switch e {
+	case DateHeader:
+		return true
+	case ReceivedTime:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GmailUsersMessagesGetParamsFormat.
 const (
 	GmailUsersMessagesGetParamsFormatFull     GmailUsersMessagesGetParamsFormat = "full"
@@ -131,6 +149,15 @@ type ErrorDetail struct {
 // ErrorEnvelope defines model for ErrorEnvelope.
 type ErrorEnvelope struct {
 	Error ErrorBody `json:"error"`
+}
+
+// InsertMessageRequest defines model for InsertMessageRequest.
+type InsertMessageRequest struct {
+	LabelIds *[]string `json:"labelIds,omitempty"`
+
+	// Raw Base64url-encoded RFC 2822 message.
+	Raw      string  `json:"raw"`
+	ThreadId *string `json:"threadId,omitempty"`
 }
 
 // Label defines model for Label.
@@ -283,6 +310,15 @@ type GmailUsersMessagesListParams struct {
 	LabelIds *[]string `form:"labelIds,omitempty" json:"labelIds,omitempty"`
 }
 
+// GmailUsersMessagesInsertParams defines parameters for GmailUsersMessagesInsert.
+type GmailUsersMessagesInsertParams struct {
+	// InternalDateSource Source for the message's internal date.
+	InternalDateSource *GmailUsersMessagesInsertParamsInternalDateSource `form:"internalDateSource,omitempty" json:"internalDateSource,omitempty"`
+}
+
+// GmailUsersMessagesInsertParamsInternalDateSource defines parameters for GmailUsersMessagesInsert.
+type GmailUsersMessagesInsertParamsInternalDateSource string
+
 // GmailUsersMessagesGetParams defines parameters for GmailUsersMessagesGet.
 type GmailUsersMessagesGetParams struct {
 	Format          *GmailUsersMessagesGetParamsFormat `form:"format,omitempty" json:"format,omitempty"`
@@ -312,6 +348,9 @@ type GmailUsersThreadsGetParams struct {
 // GmailUsersThreadsGetParamsFormat defines parameters for GmailUsersThreadsGet.
 type GmailUsersThreadsGetParamsFormat string
 
+// GmailUsersMessagesInsertJSONRequestBody defines body for GmailUsersMessagesInsert for application/json ContentType.
+type GmailUsersMessagesInsertJSONRequestBody = InsertMessageRequest
+
 // GmailUsersMessagesSendJSONRequestBody defines body for GmailUsersMessagesSend for application/json ContentType.
 type GmailUsersMessagesSendJSONRequestBody = SendMessageRequest
 
@@ -329,6 +368,9 @@ type ServerInterface interface {
 	// GmailUsersMessagesList Lists messages, optionally filtered by Gmail search syntax and labels.
 	// (GET /gmail/v1/users/{userId}/messages)
 	GmailUsersMessagesList(w http.ResponseWriter, r *http.Request, userId UserId, params GmailUsersMessagesListParams)
+	// GmailUsersMessagesInsert Inserts a message directly into the mailbox, like IMAP APPEND, without sending it.
+	// (POST /gmail/v1/users/{userId}/messages)
+	GmailUsersMessagesInsert(w http.ResponseWriter, r *http.Request, userId UserId, params GmailUsersMessagesInsertParams)
 	// GmailUsersMessagesSend Sends an RFC 2822 message encoded as base64url.
 	// (POST /gmail/v1/users/{userId}/messages/send)
 	GmailUsersMessagesSend(w http.ResponseWriter, r *http.Request, userId UserId)
@@ -507,6 +549,48 @@ func (siw *ServerInterfaceWrapper) GmailUsersMessagesList(w http.ResponseWriter,
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GmailUsersMessagesList(w, r, userId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GmailUsersMessagesInsert operation middleware
+func (siw *ServerInterfaceWrapper) GmailUsersMessagesInsert(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "userId" -------------
+	var userId UserId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GmailUsersMessagesInsertParams
+
+	// ------------- Optional query parameter "internalDateSource" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "internalDateSource", r.URL.Query(), &params.InternalDateSource, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "internalDateSource"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "internalDateSource", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GmailUsersMessagesInsert(w, r, userId, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -984,6 +1068,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/gmail/v1/users/{userId}/labels", wrapper.GmailUsersLabelsList)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/gmail/v1/users/{userId}/labels/{id}", wrapper.GmailUsersLabelsGet)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/gmail/v1/users/{userId}/messages", wrapper.GmailUsersMessagesList)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/gmail/v1/users/{userId}/messages", wrapper.GmailUsersMessagesInsert)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/gmail/v1/users/{userId}/messages/{id}", wrapper.GmailUsersMessagesGet)
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/gmail/v1/users/{userId}/messages/{id}/modify", wrapper.GmailUsersMessagesModify)
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/gmail/v1/users/{userId}/messages/{id}/trash", wrapper.GmailUsersMessagesTrash)
@@ -1104,6 +1189,47 @@ type GmailUsersMessagesListdefaultJSONResponse struct {
 }
 
 func (response GmailUsersMessagesListdefaultJSONResponse) VisitGmailUsersMessagesListResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response.Body); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(response.StatusCode)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GmailUsersMessagesInsertRequestObject struct {
+	UserId UserId `json:"userId"`
+	Params GmailUsersMessagesInsertParams
+	Body   *GmailUsersMessagesInsertJSONRequestBody
+}
+
+type GmailUsersMessagesInsertResponseObject interface {
+	VisitGmailUsersMessagesInsertResponse(w http.ResponseWriter) error
+}
+
+type GmailUsersMessagesInsert200JSONResponse Message
+
+func (response GmailUsersMessagesInsert200JSONResponse) VisitGmailUsersMessagesInsertResponse(w http.ResponseWriter) error {
+
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(response); err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	_, err := buf.WriteTo(w)
+	return err
+}
+
+type GmailUsersMessagesInsertdefaultJSONResponse struct {
+	Body       ErrorEnvelope
+	StatusCode int
+}
+
+func (response GmailUsersMessagesInsertdefaultJSONResponse) VisitGmailUsersMessagesInsertResponse(w http.ResponseWriter) error {
 
 	var buf bytes.Buffer
 	if err := json.NewEncoder(&buf).Encode(response.Body); err != nil {
@@ -1408,6 +1534,9 @@ type StrictServerInterface interface {
 	// GmailUsersMessagesList Lists messages, optionally filtered by Gmail search syntax and labels.
 	// (GET /gmail/v1/users/{userId}/messages)
 	GmailUsersMessagesList(ctx context.Context, request GmailUsersMessagesListRequestObject) (GmailUsersMessagesListResponseObject, error)
+	// GmailUsersMessagesInsert Inserts a message directly into the mailbox, like IMAP APPEND, without sending it.
+	// (POST /gmail/v1/users/{userId}/messages)
+	GmailUsersMessagesInsert(ctx context.Context, request GmailUsersMessagesInsertRequestObject) (GmailUsersMessagesInsertResponseObject, error)
 	// GmailUsersMessagesSend Sends an RFC 2822 message encoded as base64url.
 	// (POST /gmail/v1/users/{userId}/messages/send)
 	GmailUsersMessagesSend(ctx context.Context, request GmailUsersMessagesSendRequestObject) (GmailUsersMessagesSendResponseObject, error)
@@ -1543,6 +1672,40 @@ func (sh *strictHandler) GmailUsersMessagesList(w http.ResponseWriter, r *http.R
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(GmailUsersMessagesListResponseObject); ok {
 		if err := validResponse.VisitGmailUsersMessagesListResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GmailUsersMessagesInsert operation middleware
+func (sh *strictHandler) GmailUsersMessagesInsert(w http.ResponseWriter, r *http.Request, userId UserId, params GmailUsersMessagesInsertParams) {
+	var request GmailUsersMessagesInsertRequestObject
+
+	request.UserId = userId
+	request.Params = params
+
+	var body GmailUsersMessagesInsertJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GmailUsersMessagesInsert(ctx, request.(GmailUsersMessagesInsertRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GmailUsersMessagesInsert")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GmailUsersMessagesInsertResponseObject); ok {
+		if err := validResponse.VisitGmailUsersMessagesInsertResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {
@@ -1758,43 +1921,47 @@ func (sh *strictHandler) GmailUsersThreadsGet(w http.ResponseWriter, r *http.Req
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
+	"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",
+	"UHL+MP9PAAAA//8=",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

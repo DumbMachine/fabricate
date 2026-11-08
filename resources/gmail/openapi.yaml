@@ -87,6 +87,29 @@ paths:
               schema: {$ref: '#/components/schemas/ListMessagesResponse'}
               example: {messages: [{id: msg-0001, threadId: thr-billing}], resultSizeEstimate: 1}
         default: {$ref: '#/components/responses/Error'}
+    post:
+      operationId: gmail.users.messages.insert
+      summary: Inserts a message directly into the mailbox, like IMAP APPEND, without sending it.
+      tags: [Messages]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - name: internalDateSource
+          in: query
+          description: Source for the message's internal date.
+          schema: {type: string, enum: [receivedTime, dateHeader], default: receivedTime}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/InsertMessageRequest'}
+            example: {labelIds: [INBOX, UNREAD], raw: RnJvbTogZGFuYUBub3J0aHdpbmQuZXhhbXBsZQ0KU3ViamVjdDogSGVsbG8NCg0KSGk}
+      responses:
+        '200':
+          description: Inserted message.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Message'}
+        default: {$ref: '#/components/responses/Error'}
   /gmail/v1/users/{userId}/messages/{id}:
     get:
       operationId: gmail.users.messages.get
@@ -337,6 +360,14 @@ components:
       properties:
         addLabelIds: {type: array, items: {type: string}, maxItems: 100}
         removeLabelIds: {type: array, items: {type: string}, maxItems: 100}
+    InsertMessageRequest:
+      type: object
+      additionalProperties: false
+      required: [raw]
+      properties:
+        raw: {type: string, minLength: 1, description: Base64url-encoded RFC 2822 message.}
+        labelIds: {type: array, items: {type: string}}
+        threadId: {type: string}
     SendMessageRequest:
       type: object
       additionalProperties: false

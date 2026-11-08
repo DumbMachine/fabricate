@@ -61,8 +61,26 @@ const sent = await gmail.users.messages.send({userId: "me", requestBody: {raw}})
 assert.ok(sent.data.id, "send should return a Gmail message ID");
 operations.send = "passed";
 
+// Mail that arrives during a run: insert it, then find it with the grouped,
+// time-windowed search a poller sends.
+const windowStart = Math.floor(Date.now() / 1000) - 300;
+const arriving = Buffer.from(
+  [
+    "From: Quinn Park <quinn@contoso.example>",
+    "To: support@acme.test",
+    "Subject: SDK conformance arrival",
+    "",
+    "Inserted through the official Google APIs Node client.",
+  ].join("\r\n"),
+).toString("base64url");
+const inserted = await gmail.users.messages.insert({userId: "me", requestBody: {raw: arriving, labelIds: ["INBOX", "UNREAD"]}});
+assert.ok(inserted.data.id, "insert should return a Gmail message ID");
+const arrived = await gmail.users.messages.list({userId: "me", q: `(in:inbox from:quinn@contoso.example) after:${windowStart}`});
+assert.deepEqual(arrived.data.messages?.map((message) => message.id), [inserted.data.id], "windowed search should find only the inserted message");
+operations.insert = "passed";
+
 const afterProfile = await gmail.users.getProfile({userId: "me"});
-assert.equal(afterProfile.data.messagesTotal, 29, "sent message should persist");
+assert.equal(afterProfile.data.messagesTotal, 30, "sent and inserted messages should persist");
 operations.persistence = "passed";
 
 const modeReport = {
@@ -79,6 +97,7 @@ if (reportPath) {
     integration: "gmail",
     modes: {},
     operationLabels: {
+      insert: "Deliver and search new mail",
       persistence: "Confirm persistence",
       read: "Read mailbox",
       send: "Send message",
