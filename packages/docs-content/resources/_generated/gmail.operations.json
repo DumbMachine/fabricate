@@ -22,6 +22,12 @@
     },
     {
       "method": "POST",
+      "path": "/gmail/v1/users/{userId}/messages",
+      "operationId": "GmailUsersMessagesInsert",
+      "summary": "Inserts a message directly into the mailbox, like IMAP APPEND, without sending it."
+    },
+    {
+      "method": "POST",
       "path": "/gmail/v1/users/{userId}/messages/send",
       "operationId": "GmailUsersMessagesSend",
       "summary": "Sends an RFC 2822 message encoded as base64url."

@@ -1,14 +1,14 @@
 ---
 title: Gmail
-description: Messages, threads, labels, profile, and send.
+description: Messages, threads, labels, profile, search, send, and insert.
 sidebar:
   icon: /integrations/gmail.svg
 ---
 
 <ResourceCoverage resource="gmail" />
 
-Messages, threads, labels, profile, and send. Local Gmail v1 that keeps
-mailbox state across requests.
+Messages, threads, labels, profile, search, send, and insert. Local Gmail v1
+that keeps mailbox state across requests.
 
 ## Integration
 
@@ -69,6 +69,36 @@ other providers.
 
 The proxy will not help an application that pins certificates or ignores proxy
 settings. In that case, use the direct URL.
+
+### Search and new mail
+
+`messages.list` and `threads.list` take Gmail search syntax: adjacent terms
+must all match, `OR` and `{braces}` alternate, parentheses group, `-` negates,
+and quotes keep a phrase together. Supported operators are `from:`, `to:`,
+`subject:`, `in:`, `label:`, `is:` (`unread`, `read`, `starred`, `important`),
+`after:` and `before:` (epoch seconds or `YYYY/MM/DD`, dates in UTC), and
+`newer_than:`/`older_than:` (`d`, `m`, `y`). Other operators, such as
+`has:attachment`, match every message.
+
+To simulate mail arriving while a test runs, call `messages.insert`. It adds
+the message to the mailbox without sending it and keeps the message's own
+`From`. This example delivers one message and finds it with a search
+limited to the last five minutes:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DumbMachine/fabricate/main/environments/acme-gmail.yaml | \
+  fab run /dev/stdin -- sh -c '
+    auth="Authorization: Bearer $FAB_SUPPORT_MAIL_TOKEN"
+    mail="$FAB_SUPPORT_MAIL_URL/gmail/v1/users/me/messages"
+    raw=$(printf "From: quinn@contoso.example\r\nSubject: Renewal\r\n\r\nCan we talk terms?" | base64 | tr "+/" "-_" | tr -d "=\n")
+    curl -sS -H "$auth" -H "Content-Type: application/json" -X POST "$mail" \
+      -d "{\"raw\":\"$raw\",\"labelIds\":[\"INBOX\",\"UNREAD\"]}"
+    echo
+    curl -sS -G -H "$auth" "$mail" \
+      --data-urlencode "q=(in:inbox from:quinn@contoso.example) after:$(($(date +%s) - 300))"
+    echo
+  '
+```
 
 ## Scenarios
 

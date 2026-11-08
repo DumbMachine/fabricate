@@ -146,7 +146,7 @@ func (s *server) GmailUsersMessagesList(ctx context.Context, request generated.G
 	includeTrash := boolValue(request.Params.IncludeSpamTrash) || contains(labels, "TRASH") || query.wantsTrash()
 	filtered := make([]mailMessage, 0, len(messages))
 	for _, message := range messages {
-		if (!includeTrash && (message.hasLabel("TRASH") || message.hasLabel("SPAM"))) || !matchesLabels(message, labels) || !query.matches(message) {
+		if (!includeTrash && (message.hasLabel("TRASH") || message.hasLabel("SPAM"))) || !matchesLabels(message, labels) || !query.matches(message, s.clock.Now()) {
 			continue
 		}
 		filtered = append(filtered, message)
@@ -228,25 +228,70 @@ func (s *server) GmailUsersMessagesSend(ctx context.Context, request generated.G
 	if err := s.db.QueryRowContext(ctx, "SELECT value FROM metadata WHERE key='emailAddress'").Scan(&from); err != nil {
 		return nil, err
 	}
+	message := mailMessage{From: from, To: parsed.Header.Get("To"), Subject: parsed.Header.Get("Subject"), Body: string(body), InternalDate: s.clock.Now().UnixMilli(), LabelIDs: []string{"SENT"}}
+	if err := s.storeMessage(ctx, &message, value(request.Body.ThreadId)); err != nil {
+		return nil, err
+	}
+	return generated.GmailUsersMessagesSend200JSONResponse(message.full()), nil
+}
+
+// GmailUsersMessagesInsert places a message directly in this mailbox, like
+// IMAP APPEND: no sending, and the sender comes from the message itself. It
+// is how a scenario delivers mail that arrives while a test runs.
+func (s *server) GmailUsersMessagesInsert(ctx context.Context, request generated.GmailUsersMessagesInsertRequestObject) (generated.GmailUsersMessagesInsertResponseObject, error) {
+	invalid := func(message string) (generated.GmailUsersMessagesInsertResponseObject, error) {
+		return generated.GmailUsersMessagesInsertdefaultJSONResponse{Body: errorEnvelope(400, "INVALID_ARGUMENT", message), StatusCode: 400}, nil
+	}
+	if request.Body == nil || request.Body.Raw == "" {
+		return invalid("raw is required")
+	}
+	raw, err := base64.RawURLEncoding.DecodeString(strings.TrimRight(request.Body.Raw, "="))
+	if err != nil {
+		return invalid("raw is not valid base64url")
+	}
+	parsed, err := mail.ReadMessage(strings.NewReader(string(raw)))
+	if err != nil {
+		return invalid("raw is not a valid RFC 2822 message")
+	}
+	body, err := io.ReadAll(io.LimitReader(parsed.Body, 10<<20))
+	if err != nil {
+		return nil, err
+	}
+	received := s.clock.Now()
+	if request.Params.InternalDateSource != nil && *request.Params.InternalDateSource == generated.DateHeader {
+		date, err := parsed.Header.Date()
+		if err != nil {
+			return invalid("internalDateSource=dateHeader needs a valid Date header")
+		}
+		received = date
+	}
+	labels := sliceValue(request.Body.LabelIds)
+	if labels == nil {
+		labels = []string{}
+	}
+	message := mailMessage{From: parsed.Header.Get("From"), To: parsed.Header.Get("To"), Subject: parsed.Header.Get("Subject"), Body: string(body), InternalDate: received.UnixMilli(), LabelIDs: labels}
+	if err := s.storeMessage(ctx, &message, value(request.Body.ThreadId)); err != nil {
+		return nil, err
+	}
+	return generated.GmailUsersMessagesInsert200JSONResponse(message.full()), nil
+}
+
+// storeMessage assigns an ID (and a thread, unless one is given) and persists.
+func (s *server) storeMessage(ctx context.Context, message *mailMessage, threadID string) error {
 	id, err := s.ids.Next(ctx, "gmail.message")
 	if err != nil {
-		return nil, fmt.Errorf("gmail: allocate message ID: %w", err)
+		return fmt.Errorf("gmail: allocate message ID: %w", err)
 	}
-	threadID := id
-	if request.Body.ThreadId != nil && *request.Body.ThreadId != "" {
-		threadID = *request.Body.ThreadId
+	message.ID, message.ThreadID = id, id
+	if threadID != "" {
+		message.ThreadID = threadID
 	}
-	labels := []string{"SENT"}
-	encodedLabels, _ := json.Marshal(labels)
-	message := mailMessage{ID: id, ThreadID: threadID, From: from, To: parsed.Header.Get("To"), Subject: parsed.Header.Get("Subject"), Body: string(body), InternalDate: s.clock.Now().UnixMilli(), LabelIDs: labels}
+	encodedLabels, _ := json.Marshal(message.LabelIDs)
 	_, err = s.db.ExecContext(ctx, `INSERT INTO messages
 		(id, thread_id, from_addr, to_addr, subject, body, internal_date, label_ids)
 		VALUES(?, ?, ?, ?, ?, ?, ?, ?)`, message.ID, message.ThreadID, message.From, message.To,
 		message.Subject, message.Body, message.InternalDate, string(encodedLabels))
-	if err != nil {
-		return nil, err
-	}
-	return generated.GmailUsersMessagesSend200JSONResponse(message.full()), nil
+	return err
 }
 
 func (s *server) GmailUsersThreadsList(ctx context.Context, request generated.GmailUsersThreadsListRequestObject) (generated.GmailUsersThreadsListResponseObject, error) {
@@ -263,7 +308,7 @@ func (s *server) GmailUsersThreadsList(ctx context.Context, request generated.Gm
 		if _, exists := seen[message.ThreadID]; exists {
 			continue
 		}
-		if (!includeTrash && (message.hasLabel("TRASH") || message.hasLabel("SPAM"))) || !matchesLabels(message, labels) || !query.matches(message) {
+		if (!includeTrash && (message.hasLabel("TRASH") || message.hasLabel("SPAM"))) || !matchesLabels(message, labels) || !query.matches(message, s.clock.Now()) {
 			continue
 		}
 		seen[message.ThreadID] = struct{}{}
@@ -396,78 +441,6 @@ func (m mailMessage) snippet() string {
 }
 
 func (m mailMessage) hasLabel(id string) bool { return contains(m.LabelIDs, id) }
-
-type searchQuery struct {
-	unread, starred                  bool
-	labels, from, to, subject, words []string
-}
-
-func parseQuery(raw string) searchQuery {
-	var query searchQuery
-	for _, token := range strings.Fields(raw) {
-		lower := strings.ToLower(token)
-		switch {
-		case lower == "is:unread":
-			query.unread = true
-		case lower == "is:starred":
-			query.starred = true
-		case strings.HasPrefix(lower, "in:"), strings.HasPrefix(lower, "label:"):
-			query.labels = append(query.labels, strings.SplitN(token, ":", 2)[1])
-		case strings.HasPrefix(lower, "from:"):
-			query.from = append(query.from, strings.TrimPrefix(lower, "from:"))
-		case strings.HasPrefix(lower, "to:"):
-			query.to = append(query.to, strings.TrimPrefix(lower, "to:"))
-		case strings.HasPrefix(lower, "subject:"):
-			query.subject = append(query.subject, strings.TrimPrefix(lower, "subject:"))
-		case strings.Contains(lower, ":"):
-		default:
-			query.words = append(query.words, lower)
-		}
-	}
-	return query
-}
-
-func (q searchQuery) wantsTrash() bool {
-	for _, label := range q.labels {
-		if strings.EqualFold(label, "trash") || strings.EqualFold(label, "spam") {
-			return true
-		}
-	}
-	return false
-}
-
-func (q searchQuery) matches(message mailMessage) bool {
-	if q.unread && !message.hasLabel("UNREAD") || q.starred && !message.hasLabel("STARRED") {
-		return false
-	}
-	for _, label := range q.labels {
-		if !hasLabelFold(message, label) {
-			return false
-		}
-	}
-	for _, from := range q.from {
-		if !strings.Contains(strings.ToLower(message.From), from) {
-			return false
-		}
-	}
-	for _, to := range q.to {
-		if !strings.Contains(strings.ToLower(message.To), to) {
-			return false
-		}
-	}
-	for _, subject := range q.subject {
-		if !strings.Contains(strings.ToLower(message.Subject), subject) {
-			return false
-		}
-	}
-	haystack := strings.ToLower(message.Subject + " " + message.Body)
-	for _, word := range q.words {
-		if !strings.Contains(haystack, word) {
-			return false
-		}
-	}
-	return true
-}
 
 func hasLabelFold(message mailMessage, wanted string) bool {
 	for _, label := range message.LabelIDs {

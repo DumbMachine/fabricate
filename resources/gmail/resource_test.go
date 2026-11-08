@@ -149,8 +149,8 @@ func TestCompiledOpenAPIContractIsValid(t *testing.T) {
 			seen[operation.OperationID] = method + " " + path
 		}
 	}
-	if len(seen) != 10 {
-		t.Fatalf("compiled operation count = %d, want 10", len(seen))
+	if len(seen) != 11 {
+		t.Fatalf("compiled operation count = %d, want 11", len(seen))
 	}
 	contract := resource.Contract()
 	if got, want := resource.Descriptor().OpenAPIDigest, scenario.Digest(contract.OpenAPIJSON); got != want {
